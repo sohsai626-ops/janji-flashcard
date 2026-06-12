@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢字フラッシュカード</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap');
+
+  :root {
+    --bg: #fff5f8;
+    --surface: #ffffff;
+    --surface2: #fff0f4;
+    --border: #f0d6e0;
+    --accent: #e8649a;
+    --accent2: #f4a0c0;
+    --accent3: #a78bca;
+    --accent4: #7ec8a4;
+    --text: #4a3040;
+    --text-muted: #b08898;
+    --card-front: #ffffff;
+    --card-back: #fdf0f8;
+    --correct: #6dbb8a;
+    --partial: #f6c75e;
+    --wrong: #f07a8a;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: linear-gradient(160deg, #fff5f8 0%, #fdf0ff 50%, #fff5f8 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* header */
+  header {
+    padding: 16px 20px 14px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+    background: linear-gradient(135deg, #fff0f6 0%, #fce8f3 50%, #f8f0ff 100%);
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .1em;
+  }
+
+  /* ── タブ ── */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 12px 16px;
+    background: var(--surface);
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── モード切替 ── */
+  .mode-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .mode-btn {
+    padding: 5px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .mode-btn.active {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── 進捗バー ── */
+  .progress-wrap {
+    padding: 10px 20px 4px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f4a0c0, #e8649a);
+    border-radius: 4px;
+    transition: width .4s;
+  }
+
+  /* ── カード ── */
+  .card-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 20px 10px;
+  }
+  .card-counter {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    letter-spacing: .05em;
+  }
+
+  .card-scene {
+    width: 100%;
+    max-width: 440px;
+    perspective: 1000px;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    padding-top: 62%;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    padding: 20px;
+    gap: 8px;
+  }
+  .card-front {
+    background: #ffffff;
+    border: 2px solid #f5c0d8;
+    box-shadow: 0 4px 20px rgba(232,100,154,0.10);
+  }
+  .card-back {
+    background: linear-gradient(135deg, #fdf3ff 0%, #f0e8ff 100%);
+    border: 2px solid var(--accent3);
+    box-shadow: 0 4px 20px rgba(167,139,202,0.15);
+    transform: rotateY(180deg);
+  }
+
+  .card-label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .card-main {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.5;
+    word-break: break-all;
+  }
+  .card-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .card-hint {
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-top: 6px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .score-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .score-badge.maru { background: var(--correct); color: #000; }
+  .score-badge.sankaku { background: var(--partial); color: #000; }
+  .score-badge.batsu { background: var(--wrong); color: #fff; }
+
+  /* ── 採点ボタン ── */
+  .score-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .score-btn {
+    padding: 10px 28px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s, opacity .15s;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .score-btn:active { transform: scale(.94); }
+  .score-btn.maru { background: var(--correct); color: #000; }
+  .score-btn.sankaku { background: var(--partial); color: #000; }
+  .score-btn.batsu { background: var(--wrong); color: #fff; }
+  .score-btns-placeholder {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 14px;
+  }
+
+  /* ── ナビゲーション ── */
+  .nav-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 14px 20px;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.82rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── 習得率 ── */
+  .mastery-section {
+    padding: 10px 20px;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+  }
+  .mastery-title {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: .05em;
+  }
+  .mastery-bars {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .mastery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+  }
+  .mini-bar {
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .mini-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .mini-fill.maru { background: var(--correct); }
+  .mini-fill.sankaku { background: var(--partial); }
+  .mini-fill.batsu { background: var(--wrong); }
+
+  /* ── 苦手ランキング ── */
+  .ranking-section {
+    padding: 10px 20px 16px;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+  }
+  .ranking-title {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    letter-spacing: .05em;
+  }
+  .ranking-list { list-style: none; }
+  .ranking-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 0.78rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .rank-num {
+    width: 18px;
+    color: var(--accent2);
+    font-weight: 700;
+    text-align: right;
+    font-size: 0.7rem;
+  }
+  .rank-q { flex: 1; color: var(--text); }
+  .rank-a { color: var(--text-muted); font-size: 0.72rem; }
+  .rank-cnt {
+    background: var(--wrong);
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  /* ── 完了画面 ── */
+  .complete-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 40px 24px;
+    text-align: center;
+    gap: 16px;
+  }
+  .complete-screen.show { display: flex; }
+  .complete-emoji { font-size: 3rem; }
+  .complete-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .complete-stats {
+    display: flex;
+    gap: 20px;
+    margin: 8px 0;
+  }
+  .stat-box {
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: 'Noto Serif JP', serif;
+  }
+  .stat-num.maru { color: var(--correct); }
+  .stat-num.sankaku { color: var(--partial); }
+  .stat-num.batsu { color: var(--wrong); }
+  .stat-label { font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ── 番外編ヘッダー ── */
+  .extra-label {
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+  }
+
+  /* ── 手書きモード ── */
+  #writeArea {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 20px;
+    gap: 14px;
+  }
+  #writeArea.show { display: flex; }
+
+  .write-prompt {
+    text-align: center;
+  }
+  .write-prompt-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+  }
+  .write-prompt-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.4rem, 6vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text);
+  }
+  .write-counter {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .canvas-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+  }
+  #writeCanvas {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+    border-radius: var(--radius);
+    background: #fff;
+    border: 2px solid #f5c0d8;
+    box-shadow: 0 4px 20px rgba(232,100,154,0.10);
+    touch-action: none;
+    cursor: crosshair;
+    display: block;
+  }
+  .canvas-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--radius);
+  }
+
+  .write-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .write-btn {
+    padding: 9px 22px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .write-btn:active { transform: scale(.95); }
+  .write-btn.clear { border-color: var(--wrong); color: var(--wrong); }
+  .write-btn.show-ans { border-color: var(--accent3); color: var(--accent3); }
+  .write-btn.next-w { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+
+  .write-answer-box {
+    width: 100%;
+    max-width: 340px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #fdf3ff 0%, #f0e8ff 100%);
+    border: 2px solid var(--accent3);
+    text-align: center;
+    display: none;
+  }
+  .write-answer-box.show { display: block; }
+  .write-answer-label {
+    font-size: 0.7rem;
+    color: var(--accent3);
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+  }
+  .write-answer-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .write-score-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .write-score-btn {
+    padding: 10px 30px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: transform .15s;
+  }
+  .write-score-btn:active { transform: scale(.93); }
+  .write-score-btn.maru  { background: var(--correct); color: #fff; }
+  .write-score-btn.batsu { background: var(--wrong);   color: #fff; }
+
+  .write-progress-wrap {
+    width: 100%;
+    max-width: 340px;
+  }
+  .write-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  /* AI判定ボタン */
+  .write-btn.judge {
+    border-color: #e8649a;
+    color: #e8649a;
+    font-weight: 700;
+  }
+  .write-btn.judge:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+
+  /* AI判定結果ボックス */
+  .ai-result-box {
+    width: 100%;
+    max-width: 340px;
+    border-radius: var(--radius);
+    padding: 18px 16px 14px;
+    text-align: center;
+    border: 2px solid var(--border);
+    background: #fff;
+    transition: border-color .3s, background .3s;
+  }
+  .ai-result-box.correct {
+    border-color: var(--correct);
+    background: linear-gradient(135deg, #f0fff6, #e8fdf0);
+  }
+  .ai-result-box.wrong {
+    border-color: var(--wrong);
+    background: linear-gradient(135deg, #fff0f3, #ffe8ec);
+  }
+  .ai-result-box.loading {
+    border-color: var(--accent2);
+    background: #fff8fb;
+  }
+  .ai-result-icon {
+    font-size: 2.8rem;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .ai-result-msg {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .ai-result-detail {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    min-height: 1.2em;
+  }
+  /* ローディングアニメ */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .ai-loading-icon {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- APIキーモーダル -->
+<div id="apiModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;display:none">
+  <div style="background:#fff;border-radius:16px;padding:24px;width:90%;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
+    <h3 style="font-family:'Noto Serif JP',serif;color:#e8649a;margin-bottom:12px;font-size:1.1rem">🔑 OpenAI APIキーの設定</h3>
+    <p style="font-size:0.8rem;color:#b08898;margin-bottom:16px;line-height:1.6">AI手書き判定機能を使うには、OpenAI APIキーが必要です。<br>キーは端末に保存され、外部に送信されません。</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-proj-..." style="width:100%;padding:10px 12px;border:2px solid #e8649a;border-radius:8px;font-size:0.85rem;margin-bottom:12px;outline:none" />
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button onclick="skipApiKey()" style="padding:8px 16px;background:transparent;color:#b08898;border:1px solid #b08898;border-radius:8px;cursor:pointer;font-size:0.9rem">あとで</button>
+      <button onclick="saveApiKey()" style="padding:8px 20px;background:#e8649a;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.9rem">保存して使う</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <h1>漢字フラッシュカード</h1>
+  <div id="apiIndicator" onclick="showApiModal()" style="font-size:0.72rem;color:#f07a8a;cursor:pointer;text-decoration:underline;margin-top:4px">🔑 APIキー未設定（タップして設定）</div>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="mode-bar">
+  <button class="mode-btn active" id="modeKana" onclick="setMode('kana')">読み→漢字</button>
+  <button class="mode-btn" id="modeKanji" onclick="setMode('kanji')">漢字→読み</button>
+  <button class="mode-btn" id="modeWrite" onclick="setMode('write')">手書き練習</button>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 0</span>
+    <span id="masteryText">習得率 0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- メイン -->
+<div id="mainArea">
+  <div class="card-area">
+    <div class="card-counter" id="cardCounter">1 / 20</div>
+    <div class="card-scene">
+      <div class="card-inner" id="cardInner" onclick="flipCard()">
+        <div class="card-face card-front" id="cardFront">
+          <div class="card-label" id="frontLabel">問題</div>
+          <div class="card-main" id="frontText">読み込み中…</div>
+          <div class="card-hint">タップして答えを確認</div>
+          <div class="score-badge" id="scoreBadge" style="display:none"></div>
+        </div>
+        <div class="card-face card-back" id="cardBack">
+          <div class="card-label" id="backLabel">解答</div>
+          <div class="card-main" id="backText">—</div>
+          <div class="card-sub" id="backSub"></div>
+        </div>
+      </div>
+    </div>
+    <div id="scoreBtnsWrap">
+      <div class="score-btns-placeholder" id="scorePlaceholder">← カードをタップして答えを確認</div>
+      <div class="score-btns" id="scoreBtns" style="display:none">
+        <button class="score-btn maru" onclick="score('maru')">○</button>
+        <button class="score-btn sankaku" onclick="score('sankaku')">△</button>
+        <button class="score-btn batsu" onclick="score('batsu')">×</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn" onclick="prevCard()">◀ 前へ</button>
+    <button class="nav-btn" onclick="shuffleDeck()">シャッフル</button>
+    <button class="nav-btn" onclick="resetDeck()">リセット</button>
+    <button class="nav-btn primary" onclick="nextCard()">次へ ▶</button>
+  </div>
+
+  <div class="mastery-section">
+    <div class="mastery-title">📊 採点内訳</div>
+    <div class="mastery-bars" id="masteryBars"></div>
+  </div>
+
+  <div class="ranking-section">
+    <div class="ranking-title">⚠️ 苦手ランキング（×が多い順）</div>
+    <ul class="ranking-list" id="rankingList"></ul>
+  </div>
+</div>
+
+
+<!-- 手書き練習モード -->
+<div id="writeArea">
+  <div class="write-counter" id="writeCounter">1 / 20</div>
+  <div class="write-progress-wrap">
+    <div class="write-stats">
+      <span id="writeProgressText">0 / 0</span>
+      <span id="writeMasteryText">正解率 0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="writeProgressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="write-prompt">
+    <div class="write-prompt-label">解答の漢字を書いてください</div>
+    <div class="write-prompt-text" id="writePrompt">—</div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="writeCanvas" width="1000" height="400"></canvas>
+  </div>
+
+  <div class="write-btns">
+    <button class="write-btn clear" onclick="clearCanvas()">🗑 消す</button>
+    <button class="write-btn show-ans" id="showAnsBtn" onclick="showWriteAnswer()">💡 答えを見る</button>
+    <button class="write-btn judge" id="judgeBtn" onclick="judgeWithGemini()">🤖 AI判定</button>
+    <button class="write-btn next-w" onclick="nextWriteCard()">次へ ▶</button>
+  </div>
+
+  <!-- AI判定結果 -->
+  <div class="ai-result-box" id="aiResultBox" style="display:none">
+    <div class="ai-result-icon" id="aiResultIcon">—</div>
+    <div class="ai-result-msg" id="aiResultMsg">判定中…</div>
+    <div class="ai-result-detail" id="aiResultDetail"></div>
+    <div class="write-score-btns" id="aiScoreBtns" style="display:none">
+      <button class="write-score-btn batsu" onclick="scoreWrite('batsu')">× もう一度</button>
+      <button class="write-score-btn maru"  onclick="scoreWrite('maru')">○ 次へ</button>
+    </div>
+  </div>
+
+  <div class="write-answer-box" id="writeAnswerBox">
+    <div class="write-answer-label">正解</div>
+    <div class="write-answer-text" id="writeAnswerText">—</div>
+    <div class="write-score-btns" id="writeScoreBtns">
+      <button class="write-score-btn batsu" onclick="scoreWrite('batsu')">× もう一度</button>
+      <button class="write-score-btn maru"  onclick="scoreWrite('maru')">○ できた！</button>
+    </div>
+  </div>
+</div>
+
+<!-- 完了画面 -->
+<div class="complete-screen" id="completeScreen">
+  <div class="complete-emoji">🎉</div>
+  <div class="complete-title">全問完了！</div>
+  <div id="completeSubtitle" style="font-size:.85rem;color:var(--text-muted)"></div>
+  <div class="complete-stats" id="completeStats"></div>
+  <div class="nav-btns">
+    <button class="nav-btn" onclick="resetDeck()">もう一度</button>
+    <button class="nav-btn primary" onclick="startReview()">×問題を復習</button>
+  </div>
+</div>
+
+<script>
+// ==============================
+// OpenAI API設定（localStorage方式）
+// ==============================
+let OPENAI_API_KEY = localStorage.getItem('openai_api_key') || '';
+const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+
+function showApiModal() {
+  document.getElementById('apiModal').style.display = 'flex';
+  document.getElementById('apiKeyInput').value = localStorage.getItem('openai_api_key') || '';
+}
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key) { alert('APIキーを入力してください'); return; }
+  OPENAI_API_KEY = key;
+  localStorage.setItem('openai_api_key', key);
+  document.getElementById('apiModal').style.display = 'none';
+  updateApiIndicator();
+  alert('APIキーを保存しました！');
+}
+function skipApiKey() {
+  document.getElementById('apiModal').style.display = 'none';
+}
+function updateApiIndicator() {
+  const el = document.getElementById('apiIndicator');
+  if (!el) return;
+  if (OPENAI_API_KEY) {
+    el.textContent = '🔑 APIキー設定済（タップして変更）';
+    el.style.color = '#6dbb8a';
+  } else {
+    el.textContent = '🔑 APIキー未設定（タップして設定）';
+    el.style.color = '#f07a8a';
+  }
+}
+window.addEventListener('load', () => {
+  OPENAI_API_KEY = localStorage.getItem('openai_api_key') || '';
+  updateApiIndicator();
+  if (!OPENAI_API_KEY) setTimeout(showApiModal, 500);
+});
+
+// ==============================
+// データ定義
+// ==============================
+const DATA = {
+  'A': [
+    {q:'キョウボウな野生動物', a:'凶暴'},
+    {q:'ヒゲキをもたらす', a:'悲劇'},
+    {q:'ジュウを構える', a:'銃を構える'},
+    {q:'ユウソウな行進曲', a:'勇壮'},
+    {q:'テンコウが回復する', a:'天候'},
+    {q:'ヒサンな旅をする', a:'悲惨'},
+    {q:'オウベイを旅する', a:'欧米'},
+    {q:'適切にタイショする', a:'対処'},
+    {q:'富をチクセキする', a:'蓄積'},
+    {q:'ヒヤクな発展', a:'飛躍'},
+    {q:'コチョウして言う', a:'誇張'},
+    {q:'フンソウを防ぐ', a:'紛争'},
+    {q:'意見がショウトツする', a:'衝突'},
+    {q:'伝統芸能のケイショウ', a:'継承'},
+    {q:'机をセイトンする', a:'整頓'},
+    {q:'野生動物のチョウジュの保護', a:'鳥獣'},   // 修正
+    {q:'サンプルのハンプ', a:'頒布'},
+    {q:'ながそでのシャツ', a:'長袖'},
+    {q:'時計をまくらもとに置く', a:'枕元'},
+    {q:'そとぼりを埋める', a:'外堀'},
+  ],
+  'B': [
+    {q:'まゆだまをおろす', a:'繭玉'},
+    {q:'カンジャをおろす', a:'患者'},   // 
+    {q:'ジョウマエをおろす', a:'錠前'},
+    {q:'こうおつをつける', a:'甲乙'},   // 修正
+    {q:'歯をチリョウする', a:'治療'},
+    {q:'ゴイシを並べる', a:'碁石'},
+    {q:'清らかなおとめ', a:'乙女'},
+    {q:'建物がホウカイする', a:'崩壊'},
+    {q:'なだれで遭難する', a:'雪崩'},
+    {q:'ヤキン技術を学ぶ', a:'冶金'},
+    {q:'中世のかたなかじ', a:'鍛冶'},
+    {q:'リュウサンカルシウム', a:'硫酸'},
+    {q:'いおうの化合物', a:'硫黄'},
+    {q:'都内ボウショで働く', a:'某所'},
+    {q:'あわがたつ', a:'泡立つ'},
+    {q:'シンボクを深める', a:'親睦'},
+    {q:'職場のドウリョウ', a:'同僚'},
+    {q:'魚の腐ったにおい', a:'腐った臭い'},
+    {q:'シヘイで支払う', a:'紙幣'},
+    {q:'五百円コウカ', a:'硬貨'},
+  ],
+  'C': [
+    {q:'チャがまで湯を沸かす', a:'茶釜'},
+    {q:'リョウわきに抱える', a:'両脇'},
+    {q:'ベツむねに転ずる', a:'別棟'},
+    {q:'わくないに収める', a:'枠内'},
+    {q:'さみだれが降る', a:'五月雨'},
+    {q:'つゆあけの空', a:'梅雨'},
+    {q:'激しいふぶき', a:'吹雪'},
+    {q:'フクスウの意味を持つ', a:'複数'},
+    {q:'ぶんみゃくで判断する', a:'文脈'},
+    {q:'キョウコクを歩く', a:'峡谷'},
+    {q:'ひがたを守る活動', a:'干潟'},
+    {q:'もちゅうのはがき', a:'喪中'},
+    {q:'あいいろぞめ', a:'藍色'},
+    {q:'タンものを染める', a:'反物'},
+    {q:'川のあさせを渡る', a:'浅瀬'},
+    {q:'美しいにしきエ', a:'錦絵'},
+    {q:'テンランカイを開く', a:'展覧会'},
+    {q:'ジュンスイな気持ち', a:'純粋'},
+    {q:'ひとみを閉じる', a:'瞳'},        // 修正
+    {q:'王にエッケンする', a:'謁見'},
+  ],
+  'D': [
+    {q:'スイソウで魚を飼う', a:'水槽'},
+    {q:'雪山でソウナンする', a:'遭難'},
+    {q:'コンダン会に行く', a:'懇談'},
+    {q:'原野をカイコンする', a:'開墾'},
+    {q:'ホニュウルイの祖先', a:'哺乳類'},
+    {q:'熊をホカクする', a:'捕獲'},
+    {q:'ボウケン生活を送る', a:'冒険'},
+    {q:'ケンヤクに努める', a:'倹約'},    // 修正
+    {q:'力がハクチュウする', a:'伯仲'},
+    {q:'ハクライの品を買う', a:'舶来'},
+    {q:'イジン伝を読む', a:'偉人'},
+    {q:'ソウインに入る', a:'僧院'},
+    {q:'ハンリョに恵まれる', a:'伴侶'},
+    {q:'名画をモホウする', a:'模倣'},
+    {q:'ギソウ工作をする', a:'偽装'},
+    {q:'ことのホッタン', a:'発端'},
+    {q:'生け花のソウケ', a:'宗家'},
+    {q:'ジッケイに会う', a:'実兄'},      // 修正
+    {q:'コクダかが下がる', a:'石高'},
+    {q:'スイトウ帳をつける', a:'出納'},
+  ],
+  'E': [
+    {q:'音楽をカンショウする', a:'鑑賞'},
+    {q:'こかげで休む', a:'木陰'},
+    {q:'ひざを抱える', a:'膝'},
+    {q:'要点をとらえる', a:'捉える'},
+    {q:'つりを楽しむ', a:'釣り'},
+    {q:'マンガを描く', a:'漫画'},
+    {q:'入部をすすめる', a:'勧める'},
+    {q:'武士とさむらい', a:'侍'},
+    {q:'まだよいの口', a:'宵の口'},
+    {q:'たきつぼを眺める', a:'滝つぼ'},  // 修正
+    {q:'くわばたけが広がる', a:'桑畑'},
+    {q:'かたい文章', a:'硬い'},
+    {q:'彼のセンモンは法律だ', a:'専門'},
+    {q:'ソショウを起こす', a:'訴訟'},
+    {q:'サイケンを譲る', a:'債権'},
+    {q:'財政がハタンする', a:'破綻'},
+    {q:'ネンポウが上がる', a:'年俸'},
+    {q:'証拠をインペイする', a:'隠蔽'},
+    {q:'工事のシンチョク状況', a:'進捗'},
+    {q:'おろし売り業を営む', a:'卸売り'},
+  ],
+  '番外編': [
+    {q:'まぎれる', a:'紛れる'},
+    {q:'ほり', a:'堀'},
+    {q:'ほる', a:'掘る'},
+    {q:'かいきょう', a:'海峡'},
+    {q:'せまい', a:'狭い'},
+    {q:'きんしゅう', a:'錦秋'},
+    {q:'いきな', a:'粋な'},
+    {q:'すいほう', a:'水泡'},
+    {q:'におい', a:'匂い'},
+    {q:'いだい', a:'偉大'},
+    {q:'いきさつ', a:'経緯'},
+    {q:'ほきゅう', a:'補給'},
+    {q:'しんぎ', a:'真偽'},
+    {q:'こうい', a:'行為'},
+  ],
+  '全問': []
+};
+
+// 全問を生成（各セットに属性付き）
+function buildAll() {
+  const all = [];
+  ['A','B','C','D','E','番外編'].forEach(key => {
+    DATA[key].forEach((item, i) => {
+      all.push({...item, _set: key, _idx: i+1});
+    });
+  });
+  DATA['全問'] = all;
+}
+buildAll();
+
+// ==============================
+// 状態
+// ==============================
+let currentSet = 'A';
+let mode = 'kana';        // 'kana' = 読み→漢字, 'kanji' = 漢字→読み
+let deck = [];
+let deckIndex = 0;
+let isFlipped = false;
+let scores = {};          // key: `${set}:${idx}` → {○,△,×}
+let reviewMode = false;
+
+// ==============================
+// タブ描画
+// ==============================
+function renderTabs() {
+  const container = document.getElementById('tabs');
+  container.innerHTML = '';
+  ['A','B','C','D','E','番外編','全問'].forEach(key => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (key === currentSet ? ' active' : '');
+    btn.textContent = key === '全問' ? '🔀全問' : key === '番外編' ? '★番外編' : `セット${key}`;
+    btn.onclick = () => switchSet(key);
+    container.appendChild(btn);
+  });
+}
+
+// ==============================
+// セット切替
+// ==============================
+function switchSet(key) {
+  currentSet = key;
+  reviewMode = false;
+  buildDeck();
+  renderTabs();
+  hideComplete();
+}
+
+function buildDeck() {
+  deck = DATA[currentSet].map((item, i) => ({
+    ...item,
+    _set: item._set || currentSet,
+    _idx: item._idx || i+1,
+    _key: `${item._set || currentSet}:${item._idx !== undefined ? item._idx : i+1}`
+  }));
+  deckIndex = 0;
+  renderCard();
+  updateProgress();
+  renderRanking();
+}
+
+// ==============================
+// モード
+// ==============================
+function setMode(m) {
+  mode = m;
+  const isWrite = (m === 'write');
+  document.getElementById('modeKana').classList.toggle('active', m==='kana');
+  document.getElementById('modeKanji').classList.toggle('active', m==='kanji');
+  document.getElementById('modeWrite').classList.toggle('active', m==='write');
+
+  // エリア切替
+  document.getElementById('mainArea').style.display = isWrite ? 'none' : 'block';
+  document.getElementById('completeScreen').classList.remove('show');
+  const wa = document.getElementById('writeArea');
+  if (isWrite) {
+    wa.classList.add('show');
+    initWriteMode();
+  } else {
+    wa.classList.remove('show');
+    renderCard();
+  }
+}
+
+// ==============================
+// カード描画
+// ==============================
+function renderCard() {
+  if (!deck.length) return;
+  const card = deck[deckIndex];
+  const front = mode === 'kana' ? card.q : card.a;
+  const back  = mode === 'kana' ? card.a : card.q;
+  const frontLbl = mode === 'kana' ? '読み・問題文' : '漢字';
+  const backLbl  = mode === 'kana' ? '漢字（解答）' : '読み（解答）';
+
+  document.getElementById('frontLabel').textContent = frontLbl;
+  document.getElementById('frontText').textContent = front;
+  document.getElementById('backLabel').textContent = backLbl;
+  document.getElementById('backText').textContent = back;
+  document.getElementById('backSub').textContent = '';
+
+  // 番外編ラベル
+  const isExtra = card._set === '番外編';
+  document.getElementById('frontLabel').textContent = isExtra ? '★ 番外編 — ' + frontLbl : frontLbl;
+
+  document.getElementById('cardCounter').textContent = `${deckIndex+1} / ${deck.length}`;
+
+  // スコアバッジ
+  const badge = document.getElementById('scoreBadge');
+  const sc = scores[card._key];
+  if (sc) {
+    const last = sc.last;
+    const disp = {maru:'○', sankaku:'△', batsu:'×'}[last] || last;
+    badge.textContent = disp;
+    badge.className = 'score-badge ' + disp;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  // フリップリセット
+  isFlipped = false;
+  const inner = document.getElementById('cardInner');
+  inner.classList.remove('flipped');
+
+  // 採点ボタン非表示
+  showScoreBtns(false);
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+  showScoreBtns(isFlipped);
+}
+
+function showScoreBtns(show) {
+  document.getElementById('scoreBtns').style.display = show ? 'flex' : 'none';
+  document.getElementById('scorePlaceholder').style.display = show ? 'none' : 'flex';
+}
+
+// ==============================
+// 採点
+// ==============================
+
+// マーク変換
+function markToKey(m) {
+  return {maru:'maru', sankaku:'sankaku', batsu:'batsu', '○':'maru', '△':'sankaku', '×':'batsu'}[m] || m;
+}
+
+function score(mark) {
+  const card = deck[deckIndex];
+  if (!scores[card._key]) scores[card._key] = {"maru":0, "sankaku":0, "batsu":0, last:""};
+  const k2 = markToKey(mark); scores[card._key][k2]++;
+  scores[card._key].last = markToKey(mark);
+  saveScores();
+  nextCard();
+}
+
+function nextCard() {
+  if (deckIndex < deck.length - 1) {
+    deckIndex++;
+    renderCard();
+    updateProgress();
+  } else {
+    showComplete();
+  }
+}
+
+function prevCard() {
+  if (deckIndex > 0) {
+    deckIndex--;
+    renderCard();
+    updateProgress();
+  }
+}
+
+// ==============================
+// シャッフル / リセット
+// ==============================
+function shuffleDeck() {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  deckIndex = 0;
+  renderCard();
+  updateProgress();
+  hideComplete();
+}
+
+function resetDeck() {
+  buildDeck();
+  hideComplete();
+}
+
+// ==============================
+// 進捗
+// ==============================
+function updateProgress() {
+  const total = deck.length;
+  const done = deckIndex;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progressText').textContent = `${done} / ${total}`;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // 習得率（○の割合）
+  const allKeys = deck.map(c=>c._key);
+  const okCount = allKeys.filter(k => scores[k]?.last === '○').length;
+  const mastPct = total ? Math.round(okCount/total*100) : 0;
+  document.getElementById('masteryText').textContent = `習得率 ${mastPct}%`;
+
+  // 採点内訳バー
+  const oCount = allKeys.filter(k=>scores[k]?.last==='maru').length;
+  const dCount = allKeys.filter(k=>scores[k]?.last==='sankaku').length;
+  const xCount = allKeys.filter(k=>scores[k]?.last==='batsu').length;
+  const container = document.getElementById('masteryBars');
+  container.innerHTML = `
+    <div class="mastery-item"><div class="mini-bar"><div class="mini-fill maru" style="width:${total?oCount/total*100:0}%"></div></div><span>○ ${oCount}</span></div>
+    <div class="mastery-item"><div class="mini-bar"><div class="mini-fill sankaku" style="width:${total?dCount/total*100:0}%"></div></div><span>△ ${dCount}</span></div>
+    <div class="mastery-item"><div class="mini-bar"><div class="mini-fill batsu" style="width:${total?xCount/total*100:0}%"></div></div><span>× ${xCount}</span></div>
+  `;
+
+  renderRanking();
+}
+
+// ==============================
+// 苦手ランキング
+// ==============================
+function renderRanking() {
+  const allKeys = deck.map(c=>c._key);
+  // フラッシュカードと手書きのバツを合算
+  const items = allKeys
+    .filter(k => (scores[k]?.batsu || 0) + (writeScores[k]?.batsu || 0) > 0)
+    .sort((a,b) => {
+      const totalB = (scores[b]?.batsu || 0) + (writeScores[b]?.batsu || 0);
+      const totalA = (scores[a]?.batsu || 0) + (writeScores[a]?.batsu || 0);
+      return totalB - totalA;
+    })
+    .slice(0, 5);
+
+  const ul = document.getElementById('rankingList');
+  if (!items.length) {
+    ul.innerHTML = '<li style="color:var(--text-muted);font-size:.75rem;padding:6px 0;">まだ × がありません</li>';
+    return;
+  }
+  ul.innerHTML = items.map((k, i) => {
+    const card = deck.find(c=>c._key===k);
+    const total = (scores[k]?.batsu || 0) + (writeScores[k]?.batsu || 0);
+    return `<li>
+      <span class="rank-num">${i+1}</span>
+      <span class="rank-q">${card.q}</span>
+      <span class="rank-a">${card.a}</span>
+      <span class="rank-cnt">× ${total}</span>
+    </li>`;
+  }).join('');
+}
+
+// ==============================
+// 完了画面
+// ==============================
+function showComplete() {
+  document.getElementById('mainArea').style.display = 'none';
+  const cs = document.getElementById('completeScreen');
+  cs.classList.add('show');
+
+  const allKeys = deck.map(c=>c._key);
+  const o = allKeys.filter(k=>scores[k]?.last==='maru').length;
+  const d = allKeys.filter(k=>scores[k]?.last==='sankaku').length;
+  const x = allKeys.filter(k=>scores[k]?.last==='batsu').length;
+  document.getElementById('completeSubtitle').textContent = `セット ${currentSet} — ${deck.length}問 完了`;
+  document.getElementById('completeStats').innerHTML = `
+    <div class="stat-box"><div class="stat-num maru">${o}</div><div class="stat-label">○ 正解</div></div>
+    <div class="stat-box"><div class="stat-num sankaku">${d}</div><div class="stat-label">△ 惜しい</div></div>
+    <div class="stat-box"><div class="stat-num batsu">${x}</div><div class="stat-label">× 要復習</div></div>
+  `;
+}
+
+function hideComplete() {
+  document.getElementById('mainArea').style.display = 'block';
+  document.getElementById('completeScreen').classList.remove('show');
+}
+
+// ==============================
+// 復習モード
+// ==============================
+function startReview() {
+  const wrongCards = deck.filter(c => scores[c._key]?.last === 'batsu');
+  if (!wrongCards.length) { alert('× の問題がありません！'); return; }
+  deck = [...wrongCards];
+  deckIndex = 0;
+  reviewMode = true;
+  hideComplete();
+  renderCard();
+  updateProgress();
+}
+
+// ==============================
+// localStorage
+// ==============================
+function saveScores() {
+  try { localStorage.setItem('kanjiScores', JSON.stringify(scores)); } catch(e){}
+}
+function loadScores() {
+  try {
+    const s = localStorage.getItem('kanjiScores');
+    if (s) scores = JSON.parse(s);
+  } catch(e){}
+}
+
+// ==============================
+// 初期化
+// ==============================
+loadScores();
+renderTabs();
+buildDeck();
+
+
+// ==============================
+// 手書きモード
+// ==============================
+let writeDeck = [];
+let writeIndex = 0;
+let writeScores = {}; // key → {maru:n, batsu:n}
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+let answerShown = false;
+
+function initWriteMode() {
+  // 現在のセットでデッキ構築
+  writeDeck = DATA[currentSet].map((item, i) => ({
+    ...item,
+    _set: item._set || currentSet,
+    _idx: item._idx !== undefined ? item._idx : i+1,
+    _key: (item._set || currentSet) + ':' + (item._idx !== undefined ? item._idx : i+1)
+  }));
+  writeIndex = 0;
+  setupCanvas();
+  renderWriteCard();
+}
+
+function setupCanvas() {
+  const orig = document.getElementById('writeCanvas');
+  // クローンでイベント重複を防ぐ
+  const canvas = orig.cloneNode(true);
+  orig.parentNode.replaceChild(canvas, orig);
+  const ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#3a2040';
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  drawGrid(ctx, canvas.width, canvas.height);
+
+  // イベント（タッチ＋マウス）
+  canvas.addEventListener('mousedown',  startDraw);
+  canvas.addEventListener('mousemove',  draw);
+  canvas.addEventListener('mouseup',    endDraw);
+  canvas.addEventListener('mouseleave', endDraw);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(toMouse(e, canvas)); }, {passive:false});
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); draw(toMouse(e, canvas)); },      {passive:false});
+  canvas.addEventListener('touchend',   endDraw);
+}
+
+function toMouse(e, canvas) {
+  const t = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return { offsetX: (t.clientX - rect.left) * scaleX,
+           offsetY: (t.clientY - rect.top)  * scaleY };
+}
+
+function startDraw(e) {
+  isDrawing = true;
+  lastX = e.offsetX; lastY = e.offsetY;
+}
+function draw(e) {
+  if (!isDrawing) return;
+  const canvas = document.getElementById('writeCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  lastX = e.offsetX; lastY = e.offsetY;
+}
+function endDraw() { isDrawing = false; }
+
+function drawGrid(ctx, w, h) {
+  ctx.save();
+  ctx.strokeStyle = '#f5c0d8';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  // グリッドなし（AI誤認識防止）
+  ctx.restore();
+}
+
+function clearCanvas() {
+  const canvas = document.getElementById('writeCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#3a2040';
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  drawGrid(ctx, canvas.width, canvas.height);
+}
+
+function renderWriteCard() {
+  if (!writeDeck.length) return;
+  const card = writeDeck[writeIndex];
+  document.getElementById('writePrompt').textContent = card.q;
+  document.getElementById('writeCounter').textContent = (writeIndex + 1) + ' / ' + writeDeck.length;
+  document.getElementById('writeAnswerBox').classList.remove('show');
+  document.getElementById('showAnsBtn').style.display = '';
+  answerShown = false;
+  clearCanvas();
+  updateWriteProgress();
+}
+
+function showWriteAnswer() {
+  const card = writeDeck[writeIndex];
+  document.getElementById('writeAnswerText').textContent = card.a;
+  document.getElementById('writeAnswerBox').classList.add('show');
+  document.getElementById('showAnsBtn').style.display = 'none';
+  answerShown = true;
+}
+
+function scoreWrite(mark) {
+  const card = writeDeck[writeIndex];
+  if (!writeScores[card._key]) writeScores[card._key] = {maru:0, batsu:0, last:''};
+  writeScores[card._key][mark]++;
+  writeScores[card._key].last = mark;
+  try { localStorage.setItem('kanjiWriteScores', JSON.stringify(writeScores)); } catch(e){}
+  nextWriteCard();
+}
+
+function nextWriteCard() {
+  if (writeIndex < writeDeck.length - 1) {
+    writeIndex++;
+    renderWriteCard();
+  } else {
+    showWriteComplete();
+  }
+}
+
+function updateWriteProgress() {
+  const total = writeDeck.length;
+  const done = writeIndex;
+  const ok = Object.values(writeScores).filter(s => s.last === 'maru').length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const mastPct = total ? Math.round(ok / total * 100) : 0;
+  document.getElementById('writeProgressText').textContent = done + ' / ' + total;
+  document.getElementById('writeMasteryText').textContent = '正解率 ' + mastPct + '%';
+  document.getElementById('writeProgressFill').style.width = pct + '%';
+}
+
+function showWriteComplete() {
+  const total = writeDeck.length;
+  const ok = writeDeck.filter(c => writeScores[c._key]?.last === 'maru').length;
+  const ng = writeDeck.filter(c => writeScores[c._key]?.last === 'batsu').length;
+  document.getElementById('writeArea').classList.remove('show');
+  const cs = document.getElementById('completeScreen');
+  cs.classList.add('show');
+  document.getElementById('completeSubtitle').textContent = 'セット ' + currentSet + ' 手書き練習 — ' + total + '問 完了';
+  document.getElementById('completeStats').innerHTML =
+    '<div class="stat-box"><div class="stat-num maru">' + ok + '</div><div class="stat-label">○ できた</div></div>' +
+    '<div class="stat-box"><div class="stat-num batsu">' + ng + '</div><div class="stat-label">× 要練習</div></div>';
+}
+
+
+// ==============================
+// Gemini AI手書き判定
+// ==============================
+async function judgeWithGemini() {
+  const card = writeDeck[writeIndex];
+  const correctAnswer = card.a;
+
+  const canvas = document.getElementById('writeCanvas');
+  const ctx = canvas.getContext('2d');
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  let hasStroke = false;
+  for (let i = 0; i < imgData.data.length; i += 4) {
+    const r = imgData.data[i], g = imgData.data[i+1], b = imgData.data[i+2], a = imgData.data[i+3];
+    // 白(255,255,255)や透明でないピクセルがあれば筆跡あり
+    if (a > 10 && (r < 240 || g < 240 || b < 240)) { hasStroke = true; break; }
+  }
+  if (!hasStroke) {
+    showAiResult('loading', '✏️', 'まず漢字を書いてください', '');
+    document.getElementById('aiResultBox').style.display = 'block';
+    btn.disabled = false;
+    return;
+  }
+
+  const btn = document.getElementById('judgeBtn');
+  btn.disabled = true;
+
+  const box = document.getElementById('aiResultBox');
+  box.style.display = 'block';
+  box.className = 'ai-result-box loading';
+  document.getElementById('aiResultIcon').innerHTML = '<span class="ai-loading-icon">🔄</span>';
+  document.getElementById('aiResultMsg').textContent = 'AIが判定中…';
+  document.getElementById('aiResultDetail').textContent = '';
+  document.getElementById('aiScoreBtns').style.display = 'none';
+
+  const offscreen = document.createElement('canvas');
+  offscreen.width = canvas.width;
+  offscreen.height = canvas.height;
+  const offCtx = offscreen.getContext('2d');
+  offCtx.fillStyle = '#ffffff';
+  offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
+  offCtx.drawImage(canvas, 0, 0);
+  const base64 = offscreen.toDataURL('image/jpeg', 0.7).split(',')[1];
+
+  const answerChars = correctAnswer.replace(/[ぁ-んァ-ヶー]/g, '').trim();
+  const charCount = answerChars.length;
+  const prompt = `この画像は手書き漢字の練習です。
+書くべき漢字：「${correctAnswer}」（${charCount}文字）
+
+【判定ルール】
+・画像に書かれた漢字が「${correctAnswer}」と同じ漢字であれば「正解」
+・手書きなので多少の崩れ・はね・とめ・はらいの違いは大きく許容する
+・部首と全体の骨格が合っていれば「正解」とする
+・筆記体・草書風でも構造が読み取れれば「正解」
+・明らかに全く違う漢字の場合のみ「不正解」
+
+最初の行に必ず「正解」か「不正解」の一語だけを書いてください。
+2行目に20文字以内の短いコメントを書いてください。`;
+
+  try {
+    const res = await fetch(OPENAI_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + OPENAI_API_KEY
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        max_tokens: 200,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + base64, detail: 'low' } }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    const lines = text.trim().split('\n').filter(l => l.trim());
+    const verdict = lines[0]?.trim() || '';
+    const comment = lines.slice(1).join(' ').trim();
+
+    const isCorrect = verdict.includes('正解') && !verdict.includes('不正解');
+
+    if (isCorrect) {
+      showAiResult('correct', '⭕', '正解！', comment);
+      autoScoreAndShow('maru');
+    } else {
+      showAiResult('wrong', '❌', '不正解…', comment || ('正解は「' + correctAnswer + '」です'));
+      autoScoreAndShow('batsu');
+    }
+
+  } catch(e) {
+    showAiResult('loading', '⚠️', '判定エラー', e.message.slice(0, 80));
+    document.getElementById('aiScoreBtns').style.display = 'flex';
+    console.error('OpenAI error:', e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function showAiResult(type, icon, msg, detail) {
+  const box = document.getElementById('aiResultBox');
+  box.style.display = 'block';
+  box.className = 'ai-result-box ' + type;
+  document.getElementById('aiResultIcon').textContent = icon;
+  document.getElementById('aiResultMsg').textContent = msg;
+  document.getElementById('aiResultDetail').textContent = detail;
+}
+
+function autoScoreAndShow(mark) {
+  // スコアを記録
+  const card = writeDeck[writeIndex];
+  if (!writeScores[card._key]) writeScores[card._key] = {maru:0, batsu:0, last:''};
+  writeScores[card._key][mark]++;
+  writeScores[card._key].last = mark;
+  try { localStorage.setItem('kanjiWriteScores', JSON.stringify(writeScores)); } catch(e){}
+  // 「次へ」と「もう一度」ボタンを表示
+  document.getElementById('aiScoreBtns').style.display = 'flex';
+}
+
+</script>
+</body>
+</html>
