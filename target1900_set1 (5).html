@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ターゲット1900 フラッシュカード</title>
+<style>
+  :root{
+    --green:#1b6e3c;
+    --green-dark:#0f4d29;
+    --green-light:#e8f5ec;
+    --accent:#ffb703;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--green-light);
+    color:#222;
+    min-height:100vh;
+  }
+  header{
+    background:var(--green);
+    color:#fff;
+    padding:14px 16px 10px;
+    text-align:center;
+    position:relative;
+  }
+  header h1{margin:0;font-size:1.05rem;}
+  header .build{
+    font-size:0.65rem;
+    color:#cde9d6;
+    margin-top:2px;
+  }
+  .tabs{
+    display:flex;
+    background:var(--green-dark);
+  }
+  .tabs button{
+    flex:1;
+    padding:10px 4px;
+    background:none;
+    border:none;
+    color:#cde9d6;
+    font-size:0.8rem;
+    cursor:pointer;
+  }
+  .tabs button.active{
+    color:#fff;
+    background:var(--green);
+    font-weight:bold;
+  }
+  .screen{display:none;padding:16px;max-width:480px;margin:0 auto;}
+  .screen.show{display:block;}
+
+  /* 学習画面 */
+  .progress-bar{
+    height:6px;
+    background:#cfe7d8;
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .progress-bar-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .2s;
+  }
+  .progress-text{
+    text-align:center;
+    font-size:0.8rem;
+    color:#555;
+    margin-bottom:14px;
+  }
+  .card{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px 16px;
+    cursor:pointer;
+    user-select:none;
+    position:relative;
+  }
+  .card .no{
+    position:absolute;
+    top:10px;
+    left:14px;
+    font-size:0.75rem;
+    color:#aaa;
+  }
+  .card .word{
+    font-size:2rem;
+    font-weight:bold;
+    color:var(--green-dark);
+    margin-bottom:10px;
+    word-break:break-word;
+  }
+  .card .meaning{
+    font-size:1.2rem;
+    color:#444;
+    display:none;
+  }
+  .card.flipped .meaning{display:block;}
+  .card .hint{
+    font-size:0.75rem;
+    color:#bbb;
+    margin-top:14px;
+  }
+  .speak-btn{
+    position:absolute;
+    top:8px;
+    right:10px;
+    background:none;
+    border:none;
+    font-size:1.4rem;
+    cursor:pointer;
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+  .controls button{
+    flex:1;
+    padding:14px 0;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .btn-no{background:#f1d2d2;color:#a33;}
+  .btn-yes{background:#cdeedb;color:var(--green-dark);}
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+  }
+  .nav-row button{
+    background:none;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:0.85rem;
+    color:#666;
+  }
+
+  /* ランキング・履歴 */
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th,td{padding:8px 6px;border-bottom:1px solid #ddd;text-align:left;}
+  th{color:var(--green-dark);}
+  .stat-card{
+    background:#fff;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-num{font-size:1.6rem;font-weight:bold;color:var(--green);}
+  .small{font-size:0.8rem;color:#777;}
+  .reset-btn{
+    margin-top:18px;
+    width:100%;
+    padding:10px;
+    background:#eee;
+    border:none;
+    border-radius:8px;
+    color:#888;
+    font-size:0.85rem;
+  }
+  .letter-tile{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border:1px solid var(--green);
+    background:#fff;
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .letter-tile:disabled{
+    opacity:0.25;
+    cursor:default;
+  }
+  .answer-slot{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border-bottom:2px solid var(--green);
+    background:var(--green-light);
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+  }
+  .mode-btn.active{
+    background:var(--green)!important;
+    color:#fff!important;
+  }
+  .sub-mode-btn.active{
+    background:var(--accent)!important;
+    color:#5c3d00!important;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ターゲット1900 フラッシュカード</h1>
+  <div class="build">Set1〜2（No.1〜200）・build v12（1文字消すボタン追加）</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="study">学習</button>
+  <button class="tab-btn" data-tab="rank">苦手ランキング</button>
+  <button class="tab-btn" data-tab="history">学習履歴</button>
+</div>
+
+<!-- 学習タブ -->
+<div id="tabStudy" class="screen show">
+  <div id="setSelector" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;"></div>
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 100</div>
+
+  <div class="mode-toggle" style="display:flex;gap:8px;margin-bottom:10px;">
+    <button class="mode-btn active" id="modeCardBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">カード学習</button>
+    <button class="mode-btn" id="modeSpellBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">文字並べ式</button>
+  </div>
+
+  <div id="spellSubToggle" style="display:none;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button class="sub-mode-btn active" id="subBasicBtn" style="flex:1;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">ベーシック（ダミーなし）</button>
+    <button class="sub-mode-btn" id="subChallengeBtn" style="flex:1;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">チャレンジ（ダミーあり）</button>
+  </div>
+
+  <div id="voiceWarning" style="display:none;background:#fff3cd;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:0.8rem;color:#7a5b00;line-height:1.5;">
+    ⚠️ 英語の音声が見つかりません。発音がカタカナ読みになる場合は、iPhoneの「設定」→「アクセシビリティ」→「読み上げコンテンツ」→「声」で<strong>English</strong>の声をダウンロードしてください。
+  </div>
+
+  <div id="cardView">
+  <div class="card" id="card">
+    <div class="no" id="cardNo">No.1</div>
+    <button class="speak-btn" id="speakBtn" title="発音を聞く">🔊</button>
+    <div class="word" id="cardWord">create</div>
+    <div class="meaning" id="cardMeaning">創り出す</div>
+    <div class="hint" id="cardHint">タップして意味を表示</div>
+  </div>
+
+  <div class="controls" id="controls" style="visibility:hidden;">
+    <button class="btn-no" id="btnNo">✕ わからない</button>
+    <button class="btn-yes" id="btnYes">○ わかった</button>
+  </div>
+
+  <div class="nav-row">
+    <button id="btnShuffle">🔀 シャッフル</button>
+    <button id="btnRestart">↺ 最初から</button>
+  </div>
+  </div>
+
+  <div id="spellView" style="display:none;">
+    <div class="card" id="spellCard" style="cursor:default;">
+      <div class="no" id="spellNo">No.1</div>
+      <button class="speak-btn" id="spellSpeakBtn" title="発音を聞く">🔊</button>
+      <div class="meaning" id="spellMeaning" style="display:block;font-size:1.3rem;font-weight:bold;color:var(--green-dark);margin-bottom:14px;">創り出す</div>
+      <div id="spellAnswerSlot" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:46px;margin-bottom:16px;"></div>
+      <div id="spellLetterTray" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+      <div class="hint" id="spellFeedback" style="margin-top:14px;min-height:20px;"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-no" id="spellBackBtn" style="flex:0.8;">⌫ 1文字消す</button>
+      <button class="btn-no" id="spellClearBtn" style="flex:1;">↺ クリア</button>
+      <button class="btn-yes" id="spellCheckBtn">○ 判定する</button>
+    </div>
+
+    <div class="nav-row">
+      <button id="spellShuffleBtn">🔀 シャッフル</button>
+      <button id="spellNextBtn">次へ ➡</button>
+    </div>
+  </div>
+</div>
+
+<!-- 苦手ランキングタブ -->
+<div id="tabRank" class="screen">
+  <h2 style="color:var(--green-dark);font-size:1rem;">苦手ランキング</h2>
+  <p class="small">「わからない」を押した回数が多い順に表示します。</p>
+  <table>
+    <thead><tr><th>No.</th><th>単語</th><th>意味</th><th>✕回数</th></tr></thead>
+    <tbody id="rankBody"></tbody>
+  </table>
+</div>
+
+<!-- 学習履歴タブ -->
+<div id="tabHistory" class="screen">
+  <div class="stat-card">
+    <div class="stat-num" id="statTotal">0</div>
+    <div class="small">これまでの総学習回数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statMastered">0 / 100</div>
+    <div class="small">「わかった」が一度でもある語数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statLast">-</div>
+    <div class="small">最終学習日</div>
+  </div>
+  <button class="reset-btn" id="btnReset">学習履歴をリセットする</button>
+</div>
+
+<script>
+const SETS = {
+  1: [{"no": 1, "w": "create", "m": "創り出す"}, {"no": 2, "w": "increase", "m": "増加する"}, {"no": 3, "w": "improve", "m": "向上させる"}, {"no": 4, "w": "mean", "m": "意味する"}, {"no": 5, "w": "own", "m": "所有している"}, {"no": 6, "w": "include", "m": "含む"}, {"no": 7, "w": "consider", "m": "見なす"}, {"no": 8, "w": "allow", "m": "許す"}, {"no": 9, "w": "suggest", "m": "提案する"}, {"no": 10, "w": "produce", "m": "生産する"}, {"no": 11, "w": "decide", "m": "決める"}, {"no": 12, "w": "offer", "m": "提供する　申し出る"}, {"no": 13, "w": "require", "m": "要求する"}, {"no": 14, "w": "share", "m": "共有する"}, {"no": 15, "w": "store", "m": "保存する"}, {"no": 16, "w": "tend", "m": "傾向がある"}, {"no": 17, "w": "concern", "m": "心配している"}, {"no": 18, "w": "describe", "m": "述べる　説明する"}, {"no": 19, "w": "involve", "m": "関与させる"}, {"no": 20, "w": "reduce", "m": "減らす"}, {"no": 21, "w": "design", "m": "設計する"}, {"no": 22, "w": "force", "m": "強いる"}, {"no": 23, "w": "limit", "m": "制限[規制]する"}, {"no": 24, "w": "bear", "m": "耐える"}, {"no": 25, "w": "affect", "m": "影響を及ぼす"}, {"no": 26, "w": "deal", "m": "処理する"}, {"no": 27, "w": "avoid", "m": "避ける"}, {"no": 28, "w": "relate", "m": "関連づける"}, {"no": 29, "w": "realize", "m": "気づく"}, {"no": 30, "w": "encourage", "m": "奨励する"}, {"no": 31, "w": "compare", "m": "比較する"}, {"no": 32, "w": "measure", "m": "測る"}, {"no": 33, "w": "exist", "m": "存在する"}, {"no": 34, "w": "mark", "m": "印をつける"}, {"no": 35, "w": "challenge", "m": "異議を唱える"}, {"no": 36, "w": "depend", "m": "頼る"}, {"no": 37, "w": "object", "m": "反対する"}, {"no": 38, "w": "demand", "m": "要求する"}, {"no": 39, "w": "found", "m": "設立する"}, {"no": 40, "w": "complete", "m": "完成させる　仕上げる"}, {"no": 41, "w": "idea", "m": "考え　思いつき"}, {"no": 42, "w": "accord", "m": "一致"}, {"no": 43, "w": "company", "m": "会社"}, {"no": 44, "w": "interest", "m": "興味"}, {"no": 45, "w": "research", "m": "研究　調査"}, {"no": 46, "w": "cause", "m": "原因"}, {"no": 47, "w": "reason", "m": "理由"}, {"no": 48, "w": "effect", "m": "影響"}, {"no": 49, "w": "influence", "m": "影響（力）"}, {"no": 50, "w": "situation", "m": "状況"}, {"no": 51, "w": "environment", "m": "環境"}, {"no": 52, "w": "skill", "m": "技能"}, {"no": 53, "w": "matter", "m": "事柄"}, {"no": 54, "w": "view", "m": "見解"}, {"no": 55, "w": "value", "m": "価値"}, {"no": 56, "w": "species", "m": "（生物の）種"}, {"no": 57, "w": "thought", "m": "考え"}, {"no": 58, "w": "knowledge", "m": "知識"}, {"no": 59, "w": "memory", "m": "記憶（力）"}, {"no": 60, "w": "practice", "m": "実践　実行"}, {"no": 61, "w": "benefit", "m": "利益　恩恵"}, {"no": 62, "w": "theory", "m": "学説"}, {"no": 63, "w": "issue", "m": "問題（点）"}, {"no": 64, "w": "experiment", "m": "実験"}, {"no": 65, "w": "article", "m": "記事"}, {"no": 66, "w": "focus", "m": "焦点"}, {"no": 67, "w": "subject", "m": "話題"}, {"no": 68, "w": "project", "m": "計画"}, {"no": 69, "w": "quality", "m": "質"}, {"no": 70, "w": "role", "m": "役割"}, {"no": 71, "w": "term", "m": "（専門）用語"}, {"no": 72, "w": "statement", "m": "声明"}, {"no": 73, "w": "material", "m": "材料　素材"}, {"no": 74, "w": "evidence", "m": "証拠"}, {"no": 75, "w": "source", "m": "源　根源"}, {"no": 76, "w": "community", "m": "（共同）社会　～界"}, {"no": 77, "w": "technology", "m": "科学技術"}, {"no": 78, "w": "culture", "m": "文化"}, {"no": 79, "w": "appropriate", "m": "適切な"}, {"no": 80, "w": "likely", "m": "ありそうな"}, {"no": 81, "w": "possible", "m": "可能な"}, {"no": 82, "w": "individual", "m": "個々の"}, {"no": 83, "w": "public", "m": "公の"}, {"no": 84, "w": "common", "m": "共通の"}, {"no": 85, "w": "certain", "m": "確信して"}, {"no": 86, "w": "similar", "m": "似ている　類似した"}, {"no": 87, "w": "recent", "m": "最近の"}, {"no": 88, "w": "major", "m": "主要な　大きい（ほうの）"}, {"no": 89, "w": "patient", "m": "忍耐強い"}, {"no": 90, "w": "particular", "m": "特定の"}, {"no": 91, "w": "physical", "m": "身体の"}, {"no": 92, "w": "various", "m": "さまざまな"}, {"no": 93, "w": "available", "m": "手に入れる"}, {"no": 94, "w": "native", "m": "出生地の"}, {"no": 95, "w": "political", "m": "政治（上）の"}, {"no": 96, "w": "due", "m": "予定された"}, {"no": 97, "w": "blank", "m": "空白の"}, {"no": 98, "w": "ancient", "m": "古代の"}, {"no": 99, "w": "correct", "m": "正しい"}, {"no": 100, "w": "despite", "m": "～にもかかわらず"}],
+  2: [{"no": 101, "w": "notice", "m": "気づく"}, {"no": 102, "w": "refer", "m": "言及する　関連する"}, {"no": 103, "w": "approach", "m": "近づく"}, {"no": 104, "w": "wonder", "m": "かなと思う"}, {"no": 105, "w": "imagine", "m": "想像する"}, {"no": 106, "w": "recognize", "m": "識別できる"}, {"no": 107, "w": "solve", "m": "解く　解明する"}, {"no": 108, "w": "occur", "m": "起こる"}, {"no": 109, "w": "argue", "m": "主張する"}, {"no": 110, "w": "claim", "m": "主張する"}, {"no": 111, "w": "express", "m": "表す　述べる"}, {"no": 112, "w": "draw", "m": "引き出す"}, {"no": 113, "w": "waste", "m": "浪費する　無駄にする"}, {"no": 114, "w": "advance", "m": "進歩させる"}, {"no": 115, "w": "spread", "m": "広める"}, {"no": 116, "w": "prepare", "m": "準備する"}, {"no": 117, "w": "gain", "m": "獲得する"}, {"no": 118, "w": "achieve", "m": "達成する"}, {"no": 119, "w": "establish", "m": "確立する"}, {"no": 120, "w": "supply", "m": "供給する"}, {"no": 121, "w": "suppose", "m": "思う"}, {"no": 122, "w": "perform", "m": "行う"}, {"no": 123, "w": "prefer", "m": "ほうを好む"}, {"no": 124, "w": "determine", "m": "決定する"}, {"no": 125, "w": "treat", "m": "扱う"}, {"no": 126, "w": "prove", "m": "証明する"}, {"no": 127, "w": "apply", "m": "適用[応用]する"}, {"no": 128, "w": "mention", "m": "言及する"}, {"no": 129, "w": "communicate", "m": "情報交換をする"}, {"no": 130, "w": "contain", "m": "含む"}, {"no": 131, "w": "contact", "m": "連絡を取る"}, {"no": 132, "w": "regard", "m": "見なす"}, {"no": 133, "w": "respect", "m": "尊敬する"}, {"no": 134, "w": "search", "m": "捜す"}, {"no": 135, "w": "connect", "m": "つなぐ"}, {"no": 136, "w": "decline", "m": "減少する"}, {"no": 137, "w": "prevent", "m": "妨げる"}, {"no": 138, "w": "suffer", "m": "苦しむ"}, {"no": 139, "w": "survive", "m": "切り抜けて生き残る"}, {"no": 140, "w": "publish", "m": "出版する"}, {"no": 141, "w": "opportunity", "m": "機会"}, {"no": 142, "w": "task", "m": "（課せられた）仕事　作業"}, {"no": 143, "w": "industry", "m": "産業"}, {"no": 144, "w": "medium", "m": "（情報伝達の）媒体"}, {"no": 145, "w": "economy", "m": "経済（状態）"}, {"no": 146, "w": "policy", "m": "政策　方針"}, {"no": 147, "w": "account", "m": "説明"}, {"no": 148, "w": "trade", "m": "貿易"}, {"no": 149, "w": "model", "m": "模範"}, {"no": 150, "w": "figure", "m": "数字"}, {"no": 151, "w": "cell", "m": "細胞"}, {"no": 152, "w": "image", "m": "印象"}, {"no": 153, "w": "emotion", "m": "感情　情動"}, {"no": 154, "w": "stress", "m": "ストレス"}, {"no": 155, "w": "decade", "m": "10年間"}, {"no": 156, "w": "range", "m": "範囲"}, {"no": 157, "w": "character", "m": "性格　個性"}, {"no": 158, "w": "advantage", "m": "利点"}, {"no": 159, "w": "phrase", "m": "句"}, {"no": 160, "w": "damage", "m": "損害　損傷"}, {"no": 161, "w": "impact", "m": "影響"}, {"no": 162, "w": "method", "m": "方法"}, {"no": 163, "w": "resource", "m": "資源"}, {"no": 164, "w": "region", "m": "地域"}, {"no": 165, "w": "medicine", "m": "薬"}, {"no": 166, "w": "detail", "m": "詳細（な情報）細部"}, {"no": 167, "w": "feature", "m": "特徴"}, {"no": 168, "w": "function", "m": "機能"}, {"no": 169, "w": "access", "m": "利用　入手"}, {"no": 170, "w": "item", "m": "品目　項目"}, {"no": 171, "w": "income", "m": "収入"}, {"no": 172, "w": "attitude", "m": "態度"}, {"no": 173, "w": "site", "m": "用地　場所"}, {"no": 174, "w": "aspect", "m": "（物事の）側面"}, {"no": 175, "w": "structure", "m": "構造"}, {"no": 176, "w": "habit", "m": "習慣　癖"}, {"no": 177, "w": "link", "m": "関連　つながり"}, {"no": 178, "w": "instance", "m": "（具体的な）例　実例"}, {"no": 179, "w": "positive", "m": "肯定的な"}, {"no": 180, "w": "negative", "m": "否定的な"}, {"no": 181, "w": "complex", "m": "複雑な"}, {"no": 182, "w": "current", "m": "現在の"}, {"no": 183, "w": "mental", "m": "精神の"}, {"no": 184, "w": "specific", "m": "特定の"}, {"no": 185, "w": "significant", "m": "重要な　重大な"}, {"no": 186, "w": "essential", "m": "必要不可欠な"}, {"no": 187, "w": "official", "m": "公用の"}, {"no": 188, "w": "financial", "m": "財政（上）の"}, {"no": 189, "w": "academic", "m": "学問の"}, {"no": 190, "w": "aware", "m": "気づいて　知って"}, {"no": 191, "w": "worth", "m": "値する"}, {"no": 192, "w": "potential", "m": "潜在的な"}, {"no": 193, "w": "active", "m": "積極的な"}, {"no": 194, "w": "digital", "m": "デジタル方式の"}, {"no": 195, "w": "mobile", "m": "可動[移動]式の"}, {"no": 196, "w": "novel", "m": "斬新な　目新しい"}, {"no": 197, "w": "plastic", "m": "柔軟な"}, {"no": 198, "w": "chemical", "m": "化学の　化学的な"}, {"no": 199, "w": "necessary", "m": "必要な"}, {"no": 200, "w": "eventually", "m": "結局は"}]
+
+};
+let currentSet = 1;
+let DATA = SETS[currentSet];
+function allWords(){ return Object.keys(SETS).flatMap(k => SETS[k]); }
+
+const STORAGE_KEY = 'target1900_set1_progress';
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const init = {};
+  DATA.forEach(d => { init[d.no] = {wrong:0, right:0}; });
+  return { stats: init, totalSessions:0, lastDate:null };
+}
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+let progress = loadProgress();
+let order = DATA.map(d => d.no);
+let idx = 0;
+let flipped = false;
+
+const cardEl = document.getElementById('card');
+const cardNo = document.getElementById('cardNo');
+const cardWord = document.getElementById('cardWord');
+const cardMeaning = document.getElementById('cardMeaning');
+const cardHint = document.getElementById('cardHint');
+const controls = document.getElementById('controls');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+function dataByNo(no){ return DATA.find(d => d.no === no); }
+
+function renderCard(){
+  if(idx >= order.length){
+    cardNo.textContent = '完了!';
+    cardWord.textContent = 'お疲れさまでした 🎉';
+    cardMeaning.textContent = '';
+    cardHint.textContent = '「最初から」でもう一周できます';
+    controls.style.visibility = 'hidden';
+    cardEl.classList.remove('flipped');
+    progressFill.style.width = '100%';
+    progressText.textContent = `${order.length} / ${order.length}`;
+    return;
+  }
+  const no = order[idx];
+  const d = dataByNo(no);
+  cardNo.textContent = 'No.' + no;
+  cardWord.textContent = d.w;
+  cardMeaning.textContent = d.m;
+  cardHint.textContent = 'タップして意味を表示';
+  cardEl.classList.remove('flipped');
+  flipped = false;
+  controls.style.visibility = 'hidden';
+  progressFill.style.width = (idx / order.length * 100) + '%';
+  progressText.textContent = `${idx} / ${order.length}`;
+}
+
+cardEl.addEventListener('click', (e) => {
+  if(e.target.id === 'speakBtn') return;
+  if(idx >= order.length) return;
+  flipped = !flipped;
+  cardEl.classList.toggle('flipped', flipped);
+  controls.style.visibility = flipped ? 'visible' : 'hidden';
+});
+
+document.getElementById('speakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(idx >= order.length) return;
+  const d = dataByNo(order[idx]);
+  speak(d.w);
+});
+
+let englishVoice = null;
+
+function pickEnglishVoice(){
+  const voices = window.speechSynthesis.getVoices();
+  if(!voices || voices.length === 0) return null;
+  // 優先順位: en-US > en-GB > その他の en-*
+  let v = voices.find(v => v.lang === 'en-US');
+  if(!v) v = voices.find(v => v.lang === 'en-GB');
+  if(!v) v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  return v || null;
+}
+
+if('speechSynthesis' in window){
+  // 一部ブラウザは非同期に音声リストを読み込むため、準備できたら再取得
+  window.speechSynthesis.onvoiceschanged = () => {
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  };
+  englishVoice = pickEnglishVoice();
+}
+
+function updateVoiceWarning(){
+  const el = document.getElementById('voiceWarning');
+  if(!el) return;
+  el.style.display = englishVoice ? 'none' : 'block';
+}
+updateVoiceWarning();
+// iOSは読み込み直後に音声リストが空のことがあるため少し待って再チェック
+setTimeout(() => {
+  if(!englishVoice){
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  }
+}, 800);
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if(!englishVoice) englishVoice = pickEnglishVoice();
+  if(englishVoice){
+    u.voice = englishVoice;
+    u.lang = englishVoice.lang;
+  } else {
+    // 英語音声が見つからない場合の保険
+    u.lang = 'en-US';
+  }
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function answer(correct){
+  const no = order[idx];
+  if(!progress.stats[no]) progress.stats[no] = {wrong:0, right:0};
+  if(correct) progress.stats[no].right++;
+  else progress.stats[no].wrong++;
+  progress.totalSessions++;
+  progress.lastDate = new Date().toISOString().slice(0,10);
+  saveProgress();
+  idx++;
+  renderCard();
+}
+
+document.getElementById('btnYes').addEventListener('click', () => answer(true));
+document.getElementById('btnNo').addEventListener('click', () => answer(false));
+
+document.getElementById('btnShuffle').addEventListener('click', () => {
+  order = order.slice().sort(() => Math.random() - 0.5);
+  idx = 0;
+  renderCard();
+});
+document.getElementById('btnRestart').addEventListener('click', () => {
+  order = DATA.map(d => d.no);
+  idx = 0;
+  renderCard();
+});
+
+// タブ切り替え
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    // 先に新しいタブの内容を表示してから、他のタブを隠す
+    // (iPad Safariで「非表示→表示」の描画タイミングがズレ、高さ0pxになる不具合を回避)
+    if(tab === 'study'){
+      document.getElementById('tabStudy').classList.add('show');
+    }
+    if(tab === 'rank'){
+      document.getElementById('tabRank').classList.add('show');
+      renderRank();
+    }
+    if(tab === 'history'){
+      document.getElementById('tabHistory').classList.add('show');
+      renderHistory();
+    }
+    document.querySelectorAll('.screen').forEach(s => {
+      if(s.id !== 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1)){
+        s.classList.remove('show');
+      }
+    });
+  });
+});
+
+function renderRank(){
+  const rows = allWords().map(d => {
+    const s = progress.stats[d.no] || {wrong:0, right:0};
+    return { ...d, wrong: s.wrong };
+  }).filter(d => d.wrong > 0).sort((a,b) => b.wrong - a.wrong);
+  const body = document.getElementById('rankBody');
+  if(rows.length === 0){
+    body.innerHTML = '<tr><td colspan="4" class="small">まだデータがありません</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => `<tr><td>${r.no}</td><td>${r.w}</td><td>${r.m}</td><td>${r.wrong}</td></tr>`).join('');
+}
+
+function renderHistory(){
+  document.getElementById('statTotal').textContent = progress.totalSessions;
+  const masteredCount = Object.values(progress.stats).filter(s => s.right > 0).length;
+  document.getElementById('statMastered').textContent = `${masteredCount} / ${allWords().length}`;
+  document.getElementById('statLast').textContent = progress.lastDate || '-';
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  if(confirm('学習履歴をリセットしますか？この操作は元に戻せません。')){
+    localStorage.removeItem(STORAGE_KEY);
+    progress = loadProgress();
+    renderHistory();
+    renderRank();
+    alert('リセットしました');
+  }
+});
+
+renderCard();
+
+/* ===== スペリングモード ===== */
+let spellOrder = DATA.map(d => d.no);
+let spellIdx = 0;
+let spellAnswer = []; // 選択済みの文字（順番）
+let spellLetters = []; // {ch, used:bool}
+let spellChecked = false;
+
+const modeCardBtn = document.getElementById('modeCardBtn');
+const modeSpellBtn = document.getElementById('modeSpellBtn');
+const cardView = document.getElementById('cardView');
+const spellView = document.getElementById('spellView');
+const spellSubToggle = document.getElementById('spellSubToggle');
+const subBasicBtn = document.getElementById('subBasicBtn');
+const subChallengeBtn = document.getElementById('subChallengeBtn');
+let spellSubMode = 'basic'; // 'basic' | 'challenge'
+
+modeCardBtn.addEventListener('click', () => {
+  modeCardBtn.classList.add('active');
+  modeSpellBtn.classList.remove('active');
+  cardView.style.display = '';
+  spellView.style.display = 'none';
+  spellSubToggle.style.display = 'none';
+});
+modeSpellBtn.addEventListener('click', () => {
+  modeSpellBtn.classList.add('active');
+  modeCardBtn.classList.remove('active');
+  cardView.style.display = 'none';
+  spellView.style.display = '';
+  spellSubToggle.style.display = 'flex';
+  renderSpell();
+});
+subBasicBtn.addEventListener('click', () => {
+  spellSubMode = 'basic';
+  subBasicBtn.classList.add('active');
+  subChallengeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+subChallengeBtn.addEventListener('click', () => {
+  spellSubMode = 'challenge';
+  subChallengeBtn.classList.add('active');
+  subBasicBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+
+function shuffleArr(arr){
+  return arr.slice().sort(() => Math.random() - 0.5);
+}
+
+function makeDummyLetters(word, count){
+  const used = new Set(word.toLowerCase().split(''));
+  const pool = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(c => !used.has(c));
+  const shuffledPool = shuffleArr(pool);
+  return shuffledPool.slice(0, count);
+}
+
+function renderSpell(){
+  const fb = document.getElementById('spellFeedback');
+  fb.textContent = '';
+  if(spellIdx >= spellOrder.length){
+    document.getElementById('spellNo').textContent = '完了!';
+    document.getElementById('spellMeaning').textContent = 'お疲れさまでした 🎉';
+    document.getElementById('spellAnswerSlot').innerHTML = '';
+    document.getElementById('spellLetterTray').innerHTML = '';
+    return;
+  }
+  const d = dataByNo(spellOrder[spellIdx]);
+  document.getElementById('spellNo').textContent = 'No.' + d.no;
+  document.getElementById('spellMeaning').textContent = d.m;
+  spellAnswer = [];
+  spellChecked = false;
+  const letters = d.w.toLowerCase().split('');
+  let pool = letters.map((ch, i) => ({ch, id:'r'+i, dummy:false}));
+  if(spellSubMode === 'challenge'){
+    const dummyCount = Math.max(3, Math.min(6, Math.round(letters.length * 0.5)));
+    const dummies = makeDummyLetters(d.w, dummyCount).map((ch, i) => ({ch, id:'d'+i, dummy:true}));
+    pool = pool.concat(dummies);
+  }
+  const shuffled = shuffleArr(pool);
+  spellLetters = shuffled.map(item => ({...item, used:false}));
+  renderSpellSlots(letters.length);
+  renderSpellTray();
+}
+
+function renderSpellSlots(len){
+  const slot = document.getElementById('spellAnswerSlot');
+  slot.innerHTML = '';
+  for(let i=0;i<len;i++){
+    const div = document.createElement('div');
+    div.className = 'answer-slot';
+    div.textContent = spellAnswer[i] ? spellAnswer[i].ch : '';
+    div.addEventListener('click', () => {
+      if(spellChecked) return;
+      if(spellAnswer[i]){
+        const letterObj = spellAnswer[i];
+        letterObj.used = false;
+        spellAnswer.splice(i,1);
+        renderSpellSlots(len);
+        renderSpellTray();
+      }
+    });
+    slot.appendChild(div);
+  }
+}
+
+function renderSpellTray(){
+  const tray = document.getElementById('spellLetterTray');
+  tray.innerHTML = '';
+  spellLetters.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-tile';
+    btn.textContent = item.ch;
+    btn.style.opacity = item.used ? '0.25' : '1';
+    btn.disabled = item.used || spellChecked;
+    btn.addEventListener('click', () => {
+      if(spellChecked || item.used) return;
+      item.used = true;
+      spellAnswer.push(item);
+      renderSpellSlots(dataByNo(spellOrder[spellIdx]).w.length);
+      renderSpellTray();
+    });
+    tray.appendChild(btn);
+  });
+}
+
+document.getElementById('spellBackBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  if(spellAnswer.length === 0) return;
+  const letterObj = spellAnswer.pop();
+  letterObj.used = false;
+  const d = dataByNo(spellOrder[spellIdx]);
+  renderSpellSlots(d.w.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellClearBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  spellAnswer.forEach(item => item.used = false);
+  spellAnswer = [];
+  const d = dataByNo(spellOrder[spellIdx]);
+  renderSpellSlots(d.w.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellShuffleBtn').addEventListener('click', () => {
+  spellOrder = shuffleArr(spellOrder);
+  spellIdx = 0;
+  renderSpell();
+});
+
+document.getElementById('spellCheckBtn').addEventListener('click', () => {
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  const built = spellAnswer.map(a => a.ch).join('');
+  const fb = document.getElementById('spellFeedback');
+  spellChecked = true;
+  renderSpellTray();
+  if(built === d.w.toLowerCase()){
+    fb.textContent = '○ 正解！';
+    fb.style.color = 'var(--green-dark)';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].right++;
+  } else {
+    fb.textContent = `✕ 不正解（正解: ${d.w}）`;
+    fb.style.color = '#a33';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].wrong++;
+  }
+  progress.totalSessions++;
+  progress.lastDate = new Date().toISOString().slice(0,10);
+  saveProgress();
+});
+
+document.getElementById('spellNextBtn').addEventListener('click', () => {
+  spellIdx++;
+  renderSpell();
+});
+
+document.getElementById('spellSpeakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  speak(d.w);
+});
+
+/* ===== セット切替 ===== */
+function switchSet(n){
+  currentSet = n;
+  DATA = SETS[currentSet];
+  order = DATA.map(d => d.no);
+  idx = 0;
+  flipped = false;
+  renderCard();
+  spellOrder = DATA.map(d => d.no);
+  spellIdx = 0;
+  if(typeof renderSpell === 'function') renderSpell();
+  renderSetSelector();
+}
+
+function renderSetSelector(){
+  const el = document.getElementById('setSelector');
+  const keys = Object.keys(SETS).map(Number).sort((a,b)=>a-b);
+  el.innerHTML = keys.map(k => {
+    const active = k === currentSet;
+    return `<button class="set-btn" data-set="${k}" style="flex:1 1 auto;min-width:60px;padding:6px 4px;border:1px solid var(--green);border-radius:8px;font-size:0.78rem;background:${active ? 'var(--green)' : '#fff'};color:${active ? '#fff' : 'var(--green)'};">セット${k}</button>`;
+  }).join('');
+  el.querySelectorAll('.set-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchSet(Number(btn.dataset.set)));
+  });
+}
+renderSetSelector();
+
+</script>
+</body>
+</html>
+
