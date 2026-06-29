@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ターゲット1900 フラッシュカード</title>
+<style>
+  :root{
+    --green:#1b6e3c;
+    --green-dark:#0f4d29;
+    --green-light:#e8f5ec;
+    --accent:#ffb703;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--green-light);
+    color:#222;
+    min-height:100vh;
+  }
+  header{
+    background:var(--green);
+    color:#fff;
+    padding:14px 16px 10px;
+    text-align:center;
+    position:relative;
+  }
+  header h1{margin:0;font-size:1.05rem;}
+  header .build{
+    font-size:0.65rem;
+    color:#cde9d6;
+    margin-top:2px;
+  }
+  .tabs{
+    display:flex;
+    background:var(--green-dark);
+  }
+  .tabs button{
+    flex:1;
+    padding:10px 4px;
+    background:none;
+    border:none;
+    color:#cde9d6;
+    font-size:0.8rem;
+    cursor:pointer;
+  }
+  .tabs button.active{
+    color:#fff;
+    background:var(--green);
+    font-weight:bold;
+  }
+  .screen{display:none;padding:16px;max-width:480px;margin:0 auto;}
+  .screen.show{display:block;}
+
+  /* 学習画面 */
+  .progress-bar{
+    height:6px;
+    background:#cfe7d8;
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .progress-bar-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .2s;
+  }
+  .progress-text{
+    text-align:center;
+    font-size:0.8rem;
+    color:#555;
+    margin-bottom:14px;
+  }
+  .card{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px 16px;
+    cursor:pointer;
+    user-select:none;
+    position:relative;
+  }
+  .card .no{
+    position:absolute;
+    top:10px;
+    left:14px;
+    font-size:0.75rem;
+    color:#aaa;
+  }
+  .card .word{
+    font-size:2rem;
+    font-weight:bold;
+    color:var(--green-dark);
+    margin-bottom:10px;
+    word-break:break-word;
+  }
+  .card .meaning{
+    font-size:1.2rem;
+    color:#444;
+    display:none;
+  }
+  .card.flipped .meaning{display:block;}
+  .card .hint{
+    font-size:0.75rem;
+    color:#bbb;
+    margin-top:14px;
+  }
+  .speak-btn{
+    position:absolute;
+    top:8px;
+    right:10px;
+    background:none;
+    border:none;
+    font-size:1.4rem;
+    cursor:pointer;
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+  .controls button{
+    flex:1;
+    padding:14px 0;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .btn-no{background:#f1d2d2;color:#a33;}
+  .btn-yes{background:#cdeedb;color:var(--green-dark);}
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+  }
+  .nav-row button{
+    background:none;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:0.85rem;
+    color:#666;
+  }
+
+  /* ランキング・履歴 */
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th,td{padding:8px 6px;border-bottom:1px solid #ddd;text-align:left;}
+  th{color:var(--green-dark);}
+  .stat-card{
+    background:#fff;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-num{font-size:1.6rem;font-weight:bold;color:var(--green);}
+  .small{font-size:0.8rem;color:#777;}
+  .reset-btn{
+    margin-top:18px;
+    width:100%;
+    padding:10px;
+    background:#eee;
+    border:none;
+    border-radius:8px;
+    color:#888;
+    font-size:0.85rem;
+  }
+  .letter-tile{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border:1px solid var(--green);
+    background:#fff;
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .letter-tile:disabled{
+    opacity:0.25;
+    cursor:default;
+  }
+  .answer-slot{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border:2px solid transparent;
+    border-bottom:2px solid var(--green);
+    background:var(--green-light);
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .answer-slot.drag-over{
+    background:#fff8e1;
+    border-color:var(--accent);
+  }
+  .mode-btn.active{
+    background:var(--green)!important;
+    color:#fff!important;
+  }
+  .sub-mode-btn.active{
+    background:var(--accent)!important;
+    color:#5c3d00!important;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ターゲット1900 フラッシュカード</h1>
+  <div class="build">全19セット・1〜1900語・build v16（保護者向け週間レポート追加）</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="study">学習</button>
+  <button class="tab-btn" data-tab="rank">苦手ランキング</button>
+  <button class="tab-btn" data-tab="history">学習履歴</button>
+</div>
+
+<!-- 学習タブ -->
+<div id="tabStudy" class="screen show">
+  <div id="setSelector" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;"></div>
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 100</div>
+
+  <div class="mode-toggle" style="display:flex;gap:8px;margin-bottom:10px;">
+    <button class="mode-btn active" id="modeCardBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">カード学習</button>
+    <button class="mode-btn" id="modeSpellBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">文字並べ式</button>
+  </div>
+
+  <div style="display:flex;margin-bottom:10px;">
+    <button id="reviewToggleBtn" style="flex:1;padding:8px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.85rem;">🔁 苦手単語だけ復習（全セット対象）</button>
+  </div>
+
+  <div id="spellSubToggle" style="display:none;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button class="sub-mode-btn active" id="subBasicBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">ベーシック（ダミーなし）</button>
+    <button class="sub-mode-btn" id="subChallengeBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">チャレンジ（ダミーあり）</button>
+    <button class="sub-mode-btn" id="subTypeBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">✏️ フル入力</button>
+  </div>
+
+  <div id="voiceWarning" style="display:none;background:#fff3cd;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:0.8rem;color:#7a5b00;line-height:1.5;">
+    ⚠️ 英語の音声が見つかりません。発音がカタカナ読みになる場合は、iPhoneの「設定」→「アクセシビリティ」→「読み上げコンテンツ」→「声」で<strong>English</strong>の声をダウンロードしてください。
+  </div>
+
+  <div id="cardView">
+  <div class="card" id="card">
+    <div class="no" id="cardNo">No.1</div>
+    <button class="speak-btn" id="speakBtn" title="発音を聞く">🔊</button>
+    <div class="word" id="cardWord">create</div>
+    <div class="meaning" id="cardMeaning">創り出す</div>
+    <div class="hint" id="cardHint">タップして意味を表示</div>
+  </div>
+
+  <div class="controls" id="controls" style="visibility:hidden;">
+    <button class="btn-no" id="btnNo">✕ わからない</button>
+    <button class="btn-yes" id="btnYes">○ わかった</button>
+  </div>
+
+  <div class="nav-row">
+    <button id="btnShuffle">🔀 シャッフル</button>
+    <button id="btnRestart">↺ 最初から</button>
+  </div>
+  </div>
+
+  <div id="spellView" style="display:none;">
+    <div class="card" id="spellCard" style="cursor:default;">
+      <div class="no" id="spellNo">No.1</div>
+      <button class="speak-btn" id="spellSpeakBtn" title="発音を聞く">🔊</button>
+      <div class="meaning" id="spellMeaning" style="display:block;font-size:1.3rem;font-weight:bold;color:var(--green-dark);margin-bottom:14px;">創り出す</div>
+      <div id="spellAnswerSlot" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:46px;margin-bottom:16px;"></div>
+      <div id="spellLetterTray" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+      <div id="spellTypeWrap" style="display:none;justify-content:center;margin-bottom:6px;">
+        <input id="spellTypeInput" type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="英単語を入力" style="width:100%;max-width:280px;font-size:1.3rem;text-align:center;padding:10px 8px;border:2px solid var(--green);border-radius:10px;letter-spacing:2px;">
+      </div>
+      <div class="hint" id="spellFeedback" style="margin-top:14px;min-height:20px;"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-no" id="spellBackBtn" style="flex:0.8;">⌫ 1文字消す</button>
+      <button class="btn-no" id="spellClearBtn" style="flex:1;">↺ クリア</button>
+      <button class="btn-yes" id="spellCheckBtn">○ 判定する</button>
+    </div>
+
+    <div class="nav-row">
+      <button id="spellShuffleBtn">🔀 シャッフル</button>
+      <button id="spellNextBtn">次へ ➡</button>
+    </div>
+  </div>
+</div>
+
+<!-- 苦手ランキングタブ -->
+<div id="tabRank" class="screen">
+  <h2 style="color:var(--green-dark);font-size:1rem;">苦手ランキング</h2>
+  <p class="small">「わからない」を押した回数が多い順に表示します。</p>
+  <table>
+    <thead><tr><th>No.</th><th>単語</th><th>意味</th><th>✕回数</th></tr></thead>
+    <tbody id="rankBody"></tbody>
+  </table>
+</div>
+
+<!-- 学習履歴タブ -->
+<div id="tabHistory" class="screen">
+  <div class="stat-card" id="weeklyReportCard" style="background:linear-gradient(135deg,#1b6e3c,#0f4d29);color:#fff;padding:18px;">
+    <div style="font-size:0.95rem;font-weight:bold;margin-bottom:10px;">📊 今週の学習報告</div>
+    <div id="weeklyReportBody" style="font-size:0.85rem;line-height:1.9;white-space:pre-line;"></div>
+    <button id="copyReportBtn" style="margin-top:12px;width:100%;padding:9px;border:none;border-radius:8px;background:#ffb703;color:#5c3d00;font-size:0.85rem;font-weight:bold;">📋 報告文をコピー（LINE用）</button>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-num" id="statTotal">0</div>
+    <div class="small">これまでの総学習回数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statMastered">0 / 100</div>
+    <div class="small">「わかった」が一度でもある語数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statLast">-</div>
+    <div class="small">最終学習日</div>
+  </div>
+  <button class="reset-btn" id="btnReset">学習履歴をリセットする</button>
+</div>
+
+<script>
+const SETS = {"1": [{"no": 1, "w": "create", "m": "創り出す"}, {"no": 2, "w": "increase", "m": "増加する"}, {"no": 3, "w": "improve", "m": "向上させる"}, {"no": 4, "w": "mean", "m": "意味する"}, {"no": 5, "w": "own", "m": "所有している"}, {"no": 6, "w": "include", "m": "含む"}, {"no": 7, "w": "consider", "m": "見なす"}, {"no": 8, "w": "allow", "m": "許す"}, {"no": 9, "w": "suggest", "m": "提案する"}, {"no": 10, "w": "produce", "m": "生産する"}, {"no": 11, "w": "decide", "m": "決める"}, {"no": 12, "w": "offer", "m": "提供する　申し出る"}, {"no": 13, "w": "require", "m": "要求する"}, {"no": 14, "w": "share", "m": "共有する"}, {"no": 15, "w": "store", "m": "保存する"}, {"no": 16, "w": "tend", "m": "傾向がある"}, {"no": 17, "w": "concern", "m": "心配している"}, {"no": 18, "w": "describe", "m": "述べる　説明する"}, {"no": 19, "w": "involve", "m": "関与させる"}, {"no": 20, "w": "reduce", "m": "減らす"}, {"no": 21, "w": "design", "m": "設計する"}, {"no": 22, "w": "force", "m": "強いる"}, {"no": 23, "w": "limit", "m": "制限[規制]する"}, {"no": 24, "w": "bear", "m": "耐える"}, {"no": 25, "w": "affect", "m": "影響を及ぼす"}, {"no": 26, "w": "deal", "m": "処理する"}, {"no": 27, "w": "avoid", "m": "避ける"}, {"no": 28, "w": "relate", "m": "関連づける"}, {"no": 29, "w": "realize", "m": "気づく"}, {"no": 30, "w": "encourage", "m": "奨励する"}, {"no": 31, "w": "compare", "m": "比較する"}, {"no": 32, "w": "measure", "m": "測る"}, {"no": 33, "w": "exist", "m": "存在する"}, {"no": 34, "w": "mark", "m": "印をつける"}, {"no": 35, "w": "challenge", "m": "異議を唱える"}, {"no": 36, "w": "depend", "m": "頼る"}, {"no": 37, "w": "object", "m": "反対する"}, {"no": 38, "w": "demand", "m": "要求する"}, {"no": 39, "w": "found", "m": "設立する"}, {"no": 40, "w": "complete", "m": "完成させる　仕上げる"}, {"no": 41, "w": "idea", "m": "考え　思いつき"}, {"no": 42, "w": "accord", "m": "一致"}, {"no": 43, "w": "company", "m": "会社"}, {"no": 44, "w": "interest", "m": "興味"}, {"no": 45, "w": "research", "m": "研究　調査"}, {"no": 46, "w": "cause", "m": "原因"}, {"no": 47, "w": "reason", "m": "理由"}, {"no": 48, "w": "effect", "m": "影響"}, {"no": 49, "w": "influence", "m": "影響（力）"}, {"no": 50, "w": "situation", "m": "状況"}, {"no": 51, "w": "environment", "m": "環境"}, {"no": 52, "w": "skill", "m": "技能"}, {"no": 53, "w": "matter", "m": "事柄"}, {"no": 54, "w": "view", "m": "見解"}, {"no": 55, "w": "value", "m": "価値"}, {"no": 56, "w": "species", "m": "（生物の）種"}, {"no": 57, "w": "thought", "m": "考え"}, {"no": 58, "w": "knowledge", "m": "知識"}, {"no": 59, "w": "memory", "m": "記憶（力）"}, {"no": 60, "w": "practice", "m": "実践　実行"}, {"no": 61, "w": "benefit", "m": "利益　恩恵"}, {"no": 62, "w": "theory", "m": "学説"}, {"no": 63, "w": "issue", "m": "問題（点）"}, {"no": 64, "w": "experiment", "m": "実験"}, {"no": 65, "w": "article", "m": "記事"}, {"no": 66, "w": "focus", "m": "焦点"}, {"no": 67, "w": "subject", "m": "話題"}, {"no": 68, "w": "project", "m": "計画"}, {"no": 69, "w": "quality", "m": "質"}, {"no": 70, "w": "role", "m": "役割"}, {"no": 71, "w": "term", "m": "（専門）用語"}, {"no": 72, "w": "statement", "m": "声明"}, {"no": 73, "w": "material", "m": "材料　素材"}, {"no": 74, "w": "evidence", "m": "証拠"}, {"no": 75, "w": "source", "m": "源　根源"}, {"no": 76, "w": "community", "m": "（共同）社会　～界"}, {"no": 77, "w": "technology", "m": "科学技術"}, {"no": 78, "w": "culture", "m": "文化"}, {"no": 79, "w": "appropriate", "m": "適切な"}, {"no": 80, "w": "likely", "m": "ありそうな"}, {"no": 81, "w": "possible", "m": "可能な"}, {"no": 82, "w": "individual", "m": "個々の"}, {"no": 83, "w": "public", "m": "公の"}, {"no": 84, "w": "common", "m": "共通の"}, {"no": 85, "w": "certain", "m": "確信して"}, {"no": 86, "w": "similar", "m": "似ている　類似した"}, {"no": 87, "w": "recent", "m": "最近の"}, {"no": 88, "w": "major", "m": "主要な　大きい（ほうの）"}, {"no": 89, "w": "patient", "m": "忍耐強い"}, {"no": 90, "w": "particular", "m": "特定の"}, {"no": 91, "w": "physical", "m": "身体の"}, {"no": 92, "w": "various", "m": "さまざまな"}, {"no": 93, "w": "available", "m": "手に入れる"}, {"no": 94, "w": "native", "m": "出生地の"}, {"no": 95, "w": "political", "m": "政治（上）の"}, {"no": 96, "w": "due", "m": "予定された"}, {"no": 97, "w": "blank", "m": "空白の"}, {"no": 98, "w": "ancient", "m": "古代の"}, {"no": 99, "w": "correct", "m": "正しい"}, {"no": 100, "w": "despite", "m": "～にもかかわらず"}], "2": [{"no": 101, "w": "notice", "m": "気づく"}, {"no": 102, "w": "refer", "m": "言及する　関連する"}, {"no": 103, "w": "approach", "m": "近づく"}, {"no": 104, "w": "wonder", "m": "かなと思う"}, {"no": 105, "w": "imagine", "m": "想像する"}, {"no": 106, "w": "recognize", "m": "識別できる"}, {"no": 107, "w": "solve", "m": "解く　解明する"}, {"no": 108, "w": "occur", "m": "起こる"}, {"no": 109, "w": "argue", "m": "主張する"}, {"no": 110, "w": "claim", "m": "主張する"}, {"no": 111, "w": "express", "m": "表す　述べる"}, {"no": 112, "w": "draw", "m": "引き出す"}, {"no": 113, "w": "waste", "m": "浪費する　無駄にする"}, {"no": 114, "w": "advance", "m": "進歩させる"}, {"no": 115, "w": "spread", "m": "広める"}, {"no": 116, "w": "prepare", "m": "準備する"}, {"no": 117, "w": "gain", "m": "獲得する"}, {"no": 118, "w": "achieve", "m": "達成する"}, {"no": 119, "w": "establish", "m": "確立する"}, {"no": 120, "w": "supply", "m": "供給する"}, {"no": 121, "w": "suppose", "m": "思う"}, {"no": 122, "w": "perform", "m": "行う"}, {"no": 123, "w": "prefer", "m": "ほうを好む"}, {"no": 124, "w": "determine", "m": "決定する"}, {"no": 125, "w": "treat", "m": "扱う"}, {"no": 126, "w": "prove", "m": "証明する"}, {"no": 127, "w": "apply", "m": "適用[応用]する"}, {"no": 128, "w": "mention", "m": "言及する"}, {"no": 129, "w": "communicate", "m": "情報交換をする"}, {"no": 130, "w": "contain", "m": "含む"}, {"no": 131, "w": "contact", "m": "連絡を取る"}, {"no": 132, "w": "regard", "m": "見なす"}, {"no": 133, "w": "respect", "m": "尊敬する"}, {"no": 134, "w": "search", "m": "捜す"}, {"no": 135, "w": "connect", "m": "つなぐ"}, {"no": 136, "w": "decline", "m": "減少する"}, {"no": 137, "w": "prevent", "m": "妨げる"}, {"no": 138, "w": "suffer", "m": "苦しむ"}, {"no": 139, "w": "survive", "m": "切り抜けて生き残る"}, {"no": 140, "w": "publish", "m": "出版する"}, {"no": 141, "w": "opportunity", "m": "機会"}, {"no": 142, "w": "task", "m": "（課せられた）仕事　作業"}, {"no": 143, "w": "industry", "m": "産業"}, {"no": 144, "w": "medium", "m": "（情報伝達の）媒体"}, {"no": 145, "w": "economy", "m": "経済（状態）"}, {"no": 146, "w": "policy", "m": "政策　方針"}, {"no": 147, "w": "account", "m": "説明"}, {"no": 148, "w": "trade", "m": "貿易"}, {"no": 149, "w": "model", "m": "模範"}, {"no": 150, "w": "figure", "m": "数字"}, {"no": 151, "w": "cell", "m": "細胞"}, {"no": 152, "w": "image", "m": "印象"}, {"no": 153, "w": "emotion", "m": "感情　情動"}, {"no": 154, "w": "stress", "m": "ストレス"}, {"no": 155, "w": "decade", "m": "10年間"}, {"no": 156, "w": "range", "m": "範囲"}, {"no": 157, "w": "character", "m": "性格　個性"}, {"no": 158, "w": "advantage", "m": "利点"}, {"no": 159, "w": "phrase", "m": "句"}, {"no": 160, "w": "damage", "m": "損害　損傷"}, {"no": 161, "w": "impact", "m": "影響"}, {"no": 162, "w": "method", "m": "方法"}, {"no": 163, "w": "resource", "m": "資源"}, {"no": 164, "w": "region", "m": "地域"}, {"no": 165, "w": "medicine", "m": "薬"}, {"no": 166, "w": "detail", "m": "詳細（な情報）細部"}, {"no": 167, "w": "feature", "m": "特徴"}, {"no": 168, "w": "function", "m": "機能"}, {"no": 169, "w": "access", "m": "利用　入手"}, {"no": 170, "w": "item", "m": "品目　項目"}, {"no": 171, "w": "income", "m": "収入"}, {"no": 172, "w": "attitude", "m": "態度"}, {"no": 173, "w": "site", "m": "用地　場所"}, {"no": 174, "w": "aspect", "m": "（物事の）側面"}, {"no": 175, "w": "structure", "m": "構造"}, {"no": 176, "w": "habit", "m": "習慣　癖"}, {"no": 177, "w": "link", "m": "関連　つながり"}, {"no": 178, "w": "instance", "m": "（具体的な）例　実例"}, {"no": 179, "w": "positive", "m": "肯定的な"}, {"no": 180, "w": "negative", "m": "否定的な"}, {"no": 181, "w": "complex", "m": "複雑な"}, {"no": 182, "w": "current", "m": "現在の"}, {"no": 183, "w": "mental", "m": "精神の"}, {"no": 184, "w": "specific", "m": "特定の"}, {"no": 185, "w": "significant", "m": "重要な　重大な"}, {"no": 186, "w": "essential", "m": "必要不可欠な"}, {"no": 187, "w": "official", "m": "公用の"}, {"no": 188, "w": "financial", "m": "財政（上）の"}, {"no": 189, "w": "academic", "m": "学問の"}, {"no": 190, "w": "aware", "m": "気づいて　知って"}, {"no": 191, "w": "worth", "m": "値する"}, {"no": 192, "w": "potential", "m": "潜在的な"}, {"no": 193, "w": "active", "m": "積極的な"}, {"no": 194, "w": "digital", "m": "デジタル方式の"}, {"no": 195, "w": "mobile", "m": "可動[移動]式の"}, {"no": 196, "w": "novel", "m": "斬新な　目新しい"}, {"no": 197, "w": "plastic", "m": "柔軟な"}, {"no": 198, "w": "chemical", "m": "化学の　化学的な"}, {"no": 199, "w": "necessary", "m": "必要な"}, {"no": 200, "w": "eventually", "m": "結局は"}], "3": [{"no": 201, "w": "identify", "m": "特定する"}, {"no": 202, "w": "represent", "m": "表す"}, {"no": 203, "w": "indicate", "m": "指し示す"}, {"no": 204, "w": "manage", "m": "なんとか成し遂げる"}, {"no": 205, "w": "attend", "m": "出席する"}, {"no": 206, "w": "maintain", "m": "維持する"}, {"no": 207, "w": "survey", "m": "調査する"}, {"no": 208, "w": "replace", "m": "取って代わる"}, {"no": 209, "w": "sort", "m": "分類する"}, {"no": 210, "w": "conduct", "m": "（調査・実験などを）実施する"}, {"no": 211, "w": "associate", "m": "結び付けて考える"}, {"no": 212, "w": "attempt", "m": "試みる　企てる"}, {"no": 213, "w": "promote", "m": "促進する"}, {"no": 214, "w": "earn", "m": "稼ぐ"}, {"no": 215, "w": "unite", "m": "団結させる"}, {"no": 216, "w": "feed", "m": "食べ物[乳]を与える"}, {"no": 217, "w": "seek", "m": "追い求める"}, {"no": 218, "w": "observe", "m": "気づく"}, {"no": 219, "w": "reveal", "m": "明らかにする"}, {"no": 220, "w": "estimate", "m": "推定する"}, {"no": 221, "w": "reflect", "m": "反映する"}, {"no": 222, "w": "attract", "m": "引きつける"}, {"no": 223, "w": "decrease", "m": "減少する"}, {"no": 224, "w": "ignore", "m": "無視する"}, {"no": 225, "w": "match", "m": "合う"}, {"no": 226, "w": "define", "m": "定義する"}, {"no": 227, "w": "adapt", "m": "適応する"}, {"no": 228, "w": "contribute", "m": "貢献する　一因となる"}, {"no": 229, "w": "exchange", "m": "交換する"}, {"no": 230, "w": "display", "m": "示す"}, {"no": 231, "w": "respond", "m": "反応する"}, {"no": 232, "w": "hide", "m": "隠す"}, {"no": 233, "w": "doubt", "m": "ではないと思う"}, {"no": 234, "w": "remove", "m": "取り除く"}, {"no": 235, "w": "wind", "m": "（ねじなど）を巻く"}, {"no": 236, "w": "assume", "m": "当然のことと思う　仮定する"}, {"no": 237, "w": "relax", "m": "くつろぐ"}, {"no": 238, "w": "satisfy", "m": "満足させる"}, {"no": 239, "w": "desire", "m": "強く望む"}, {"no": 240, "w": "succeed", "m": "成功する"}, {"no": 241, "w": "concept", "m": "概念"}, {"no": 242, "w": "fashion", "m": "流行　ファッション"}, {"no": 243, "w": "device", "m": "装置　機器"}, {"no": 244, "w": "charge", "m": "料金"}, {"no": 245, "w": "contrast", "m": "対照"}, {"no": 246, "w": "colleague", "m": "（職場の）同僚"}, {"no": 247, "w": "pain", "m": "苦痛　痛み"}, {"no": 248, "w": "bill", "m": "請求書"}, {"no": 249, "w": "content", "m": "内容　中身"}, {"no": 250, "w": "section", "m": "部門　"}, {"no": 251, "w": "audience", "m": "聴衆　観客"}, {"no": 252, "w": "surface", "m": "表面"}, {"no": 253, "w": "crop", "m": "作物"}, {"no": 254, "w": "topic", "m": "話題　トピック"}, {"no": 255, "w": "technique", "m": "技術"}, {"no": 256, "w": "status", "m": "地位　"}, {"no": 257, "w": "option", "m": "選択（の自由）"}, {"no": 258, "w": "reward", "m": "報酬"}, {"no": 259, "w": "race", "m": "人種"}, {"no": 260, "w": "crime", "m": "罪　犯罪"}, {"no": 261, "w": "conflict", "m": "争い"}, {"no": 262, "w": "struggle", "m": "闘い"}, {"no": 263, "w": "context", "m": "状況　背景"}, {"no": 264, "w": "debate", "m": "討論　論争"}, {"no": 265, "w": "fuel", "m": "燃料"}, {"no": 266, "w": "pollution", "m": "汚染　公害"}, {"no": 267, "w": "trend", "m": "傾向"}, {"no": 268, "w": "balance", "m": "均衡　バランス"}, {"no": 269, "w": "traffic", "m": "交通"}, {"no": 270, "w": "strategy", "m": "戦略"}, {"no": 271, "w": "basis", "m": "基礎"}, {"no": 272, "w": "consequence", "m": "結果"}, {"no": 273, "w": "aim", "m": "目的　目標"}, {"no": 274, "w": "ancestor", "m": "祖先"}, {"no": 275, "w": "gene", "m": "遺伝子"}, {"no": 276, "w": "track", "m": "跡"}, {"no": 277, "w": "revolution", "m": "革命"}, {"no": 278, "w": "progress", "m": "進歩"}, {"no": 279, "w": "cognitive", "m": "認知の"}, {"no": 280, "w": "ideal", "m": "理想的な"}, {"no": 281, "w": "efficient", "m": "効率的な"}, {"no": 282, "w": "universal", "m": "普遍的な"}, {"no": 283, "w": "vast", "m": "莫大な"}, {"no": 284, "w": "extra", "m": "追加の　余分の"}, {"no": 285, "w": "entire", "m": "全体の　全部の"}, {"no": 286, "w": "familiar", "m": "精通している"}, {"no": 287, "w": "obvious", "m": "明らかな"}, {"no": 288, "w": "moral", "m": "道徳（上）の　倫理的な"}, {"no": 289, "w": "ordinary", "m": "一般の　普通の"}, {"no": 290, "w": "equal", "m": "等しい"}, {"no": 291, "w": "previous", "m": "以前の　前の"}, {"no": 292, "w": "false", "m": "間違った"}, {"no": 293, "w": "rare", "m": "まれな　珍しい"}, {"no": 294, "w": "legal", "m": "法律の"}, {"no": 295, "w": "independent", "m": "独立した"}, {"no": 296, "w": "extreme", "m": "極端な"}, {"no": 297, "w": "actual", "m": "実際の　現実の"}, {"no": 298, "w": "willing", "m": "いとわない　かまわないと思う"}, {"no": 299, "w": "urban", "m": "都市の"}, {"no": 300, "w": "whereas", "m": "～するのに（対し）\n～する一方"}], "4": [{"no": 301, "w": "predict", "m": "予言[予測]する"}, {"no": 302, "w": "examine", "m": "調べる"}, {"no": 303, "w": "trust", "m": "信頼する"}, {"no": 304, "w": "stick", "m": "動けなくする"}, {"no": 305, "w": "emerge", "m": "現れる"}, {"no": 306, "w": "vary", "m": "さまざまである"}, {"no": 307, "w": "release", "m": "放出する"}, {"no": 308, "w": "divide", "m": "分ける"}, {"no": 309, "w": "enable", "m": "（人が）・・・できるようにする"}, {"no": 310, "w": "judge", "m": "判断する"}, {"no": 311, "w": "rely", "m": "頼る"}, {"no": 312, "w": "engage", "m": "従事させる"}, {"no": 313, "w": "shift", "m": "変える　移す"}, {"no": 314, "w": "adopt", "m": "採用する"}, {"no": 315, "w": "acquire", "m": "得る"}, {"no": 316, "w": "expand", "m": "拡大する"}, {"no": 317, "w": "refuse", "m": "拒む"}, {"no": 318, "w": "strike", "m": "心を打つ"}, {"no": 319, "w": "repeat", "m": "繰り返す"}, {"no": 320, "w": "consume", "m": "消費する"}, {"no": 321, "w": "confuse", "m": "混同する"}, {"no": 322, "w": "select", "m": "選ぶ　えり抜く"}, {"no": 323, "w": "evolve", "m": "（徐々に）発展する"}, {"no": 324, "w": "convince", "m": "納得[確信]させる"}, {"no": 325, "w": "recall", "m": "思い出す"}, {"no": 326, "w": "destroy", "m": "破壊する"}, {"no": 327, "w": "preserve", "m": "保存する"}, {"no": 328, "w": "organize", "m": "準備する"}, {"no": 329, "w": "warn", "m": "（人）に警告[注意]する"}, {"no": 330, "w": "address", "m": "（問題など）に対処する"}, {"no": 331, "w": "operate", "m": "操作する"}, {"no": 332, "w": "participate", "m": "参加する"}, {"no": 333, "w": "surround", "m": "取り巻く"}, {"no": 334, "w": "flow", "m": "流れる"}, {"no": 335, "w": "bore", "m": "（人）を退屈させる　うんざりさせる"}, {"no": 336, "w": "complain", "m": "不平[苦情]を言う"}, {"no": 337, "w": "host", "m": "主催する"}, {"no": 338, "w": "combine", "m": "結び付ける"}, {"no": 339, "w": "extend", "m": "伸[延]ばす"}, {"no": 340, "w": "appreciate", "m": "正当に評価する"}, {"no": 341, "w": "target", "m": "（到達・攻撃）目標"}, {"no": 342, "w": "element", "m": "要素　成分"}, {"no": 343, "w": "principle", "m": "原則　原理"}, {"no": 344, "w": "phenomenon", "m": "現象"}, {"no": 345, "w": "atmosphere", "m": "大気"}, {"no": 346, "w": "origin", "m": "起源"}, {"no": 347, "w": "personality", "m": "個性　性格"}, {"no": 348, "w": "capacity", "m": "（最大）容量　収容能力"}, {"no": 349, "w": "profit", "m": "利益"}, {"no": 350, "w": "circumstance", "m": "状況　事情"}, {"no": 351, "w": "manner", "m": "作法"}, {"no": 352, "w": "threat", "m": "脅威"}, {"no": 353, "w": "resident", "m": "居住者"}, {"no": 354, "w": "wealth", "m": "富"}, {"no": 355, "w": "institution", "m": "機関"}, {"no": 356, "w": "authority", "m": "（関係）当局"}, {"no": 357, "w": "vote", "m": "投票"}, {"no": 358, "w": "sight", "m": "光景"}, {"no": 359, "w": "campaign", "m": "運動"}, {"no": 360, "w": "fund", "m": "基金　資金"}, {"no": 361, "w": "web", "m": "ウェブ"}, {"no": 362, "w": "symbol", "m": "象徴　シンボル"}, {"no": 363, "w": "analysis", "m": "分析（結果）"}, {"no": 364, "w": "version", "m": "（本・製品などの）版"}, {"no": 365, "w": "perspective", "m": "観点　見方"}, {"no": 366, "w": "crisis", "m": "危機"}, {"no": 367, "w": "disaster", "m": "災害"}, {"no": 368, "w": "lecture", "m": "講義　講演"}, {"no": 369, "w": "psychology", "m": "心理学"}, {"no": 370, "w": "gender", "m": "（社会的・文化的）性、性別"}, {"no": 371, "w": "custom", "m": "（社会的な）慣習"}, {"no": 372, "w": "court", "m": "裁判所　法廷"}, {"no": 373, "w": "desert", "m": "砂漠"}, {"no": 374, "w": "soil", "m": "土地、土壌"}, {"no": 375, "w": "agriculture", "m": "農業"}, {"no": 376, "w": "fossil", "m": "化石"}, {"no": 377, "w": "document", "m": "（公）文書　書類"}, {"no": 378, "w": "vocabulary", "m": "語彙"}, {"no": 379, "w": "intelligent", "m": "聡明な"}, {"no": 380, "w": "conscious", "m": "意識して　気づいて"}, {"no": 381, "w": "capable", "m": "能力がある"}, {"no": 382, "w": "accurate", "m": "正確な"}, {"no": 383, "w": "fundamental", "m": "基本的な"}, {"no": 384, "w": "artificial", "m": "人工の"}, {"no": 385, "w": "firm", "m": "確固たる"}, {"no": 386, "w": "overall", "m": "総合的な"}, {"no": 387, "w": "rural", "m": "田舎の　田園の"}, {"no": 388, "w": "military", "m": "軍の　軍事（用）の"}, {"no": 389, "w": "nuclear", "m": "核の　原子力の"}, {"no": 390, "w": "biological", "m": "生物学（上）の"}, {"no": 391, "w": "constant", "m": "絶え間ない"}, {"no": 392, "w": "severe", "m": "（人・規律・事態・\n天気などが）厳しい"}, {"no": 393, "w": "visual", "m": "視覚の"}, {"no": 394, "w": "enormous", "m": "莫大な　巨大な"}, {"no": 395, "w": "convenient", "m": "便利な　都合の良い"}, {"no": 396, "w": "domestic", "m": "家庭の"}, {"no": 397, "w": "mass", "m": "大規模な　大量の"}, {"no": 398, "w": "typical", "m": "典型的な"}, {"no": 399, "w": "overseas", "m": "海外へ[に、で]"}, {"no": 400, "w": "nevertheless", "m": "それにもかかわらず"}], "5": [{"no": 401, "w": "demonstrate", "m": "論証[証明]する"}, {"no": 402, "w": "behave", "m": "振る舞う"}, {"no": 403, "w": "educate", "m": "教育する"}, {"no": 404, "w": "purchase", "m": "購入する"}, {"no": 405, "w": "recommend", "m": "勧める"}, {"no": 406, "w": "admit", "m": "（しぶしぶ）認める"}, {"no": 407, "w": "generate", "m": "生み出す"}, {"no": 408, "w": "explore", "m": "調査[探求]する"}, {"no": 409, "w": "amaze", "m": "びっくりさせる"}, {"no": 410, "w": "tear", "m": "引き裂く"}, {"no": 411, "w": "settle", "m": "解決する"}, {"no": 412, "w": "afford", "m": "持つ[する]余裕がある"}, {"no": 413, "w": "conclude", "m": "結論づける"}, {"no": 414, "w": "advertise", "m": "宣伝する"}, {"no": 415, "w": "encounter", "m": "遭遇する"}, {"no": 416, "w": "remind", "m": "思い出させる"}, {"no": 417, "w": "locate", "m": "位置する"}, {"no": 418, "w": "aid", "m": "援助する　助ける"}, {"no": 419, "w": "bite", "m": "かむ　かみつく"}, {"no": 420, "w": "deliver", "m": "配達する"}, {"no": 421, "w": "perceive", "m": "気づく"}, {"no": 422, "w": "distinguish", "m": "区別する"}, {"no": 423, "w": "imply", "m": "暗に意味する"}, {"no": 424, "w": "handle", "m": "処理する　扱う"}, {"no": 425, "w": "praise", "m": "賞賛する"}, {"no": 426, "w": "appeal", "m": "訴える"}, {"no": 427, "w": "insist", "m": "強く主張する"}, {"no": 428, "w": "compete", "m": "競う"}, {"no": 429, "w": "rank ", "m": "位置づける　評価する"}, {"no": 430, "w": "deny", "m": "否定する"}, {"no": 431, "w": "reject", "m": "拒否する"}, {"no": 432, "w": "intend", "m": "意図する"}, {"no": 433, "w": "expose", "m": "さらす"}, {"no": 434, "w": "favor", "m": "賛成する"}, {"no": 435, "w": "inspire", "m": "（人を）奮起させる"}, {"no": 436, "w": "propose", "m": "提案する"}, {"no": 437, "w": "spell", "m": "（語を）つづる"}, {"no": 438, "w": "breathe", "m": "呼吸する"}, {"no": 439, "w": "repair", "m": "修理する"}, {"no": 440, "w": "consist", "m": "（～から）成る"}, {"no": 441, "w": "comment", "m": "意見　コメント"}, {"no": 442, "w": "instruction", "m": "指示"}, {"no": 443, "w": "religion", "m": "宗教"}, {"no": 444, "w": "neighborhood", "m": "地域"}, {"no": 445, "w": "laboratory", "m": "実験室　研究室"}, {"no": 446, "w": "presence", "m": "存在"}, {"no": 447, "w": "confidence", "m": "自信"}, {"no": 448, "w": "harm", "m": "害　損害"}, {"no": 449, "w": "instrument", "m": "器具"}, {"no": 450, "w": "category", "m": "部類　区分"}, {"no": 451, "w": "capital", "m": "資本"}, {"no": 452, "w": "outcome", "m": "結果"}, {"no": 453, "w": "notion", "m": "概念"}, {"no": 454, "w": "review", "m": "（書物などの）論評"}, {"no": 455, "w": "trait", "m": "特性"}, {"no": 456, "w": "diversity", "m": "多様性"}, {"no": 457, "w": "victim", "m": "犠牲（者）　被害者"}, {"no": 458, "w": "occasion", "m": "場合　時"}, {"no": 459, "w": "facility", "m": "施設　設備"}, {"no": 460, "w": "stock", "m": "在庫品"}, {"no": 461, "w": "conference", "m": "会議"}, {"no": 462, "w": "humanity", "m": "人類"}, {"no": 463, "w": "dialect", "m": "方言"}, {"no": 464, "w": "proportion", "m": "割合"}, {"no": 465, "w": "tip", "m": "助言　秘訣"}, {"no": 466, "w": "lawyer", "m": "弁護士"}, {"no": 467, "w": "stuff", "m": "（漠然と）物"}, {"no": 468, "w": "comfort", "m": "快適さ"}, {"no": 469, "w": "philosophy", "m": "哲学"}, {"no": 470, "w": "mammal", "m": "哺乳動物"}, {"no": 471, "w": "quantity", "m": "量"}, {"no": 472, "w": "landscape", "m": "風景"}, {"no": 473, "w": "tribe", "m": "部族"}, {"no": 474, "w": "organ", "m": "器官　臓器"}, {"no": 475, "w": "trial", "m": "試み　（品質・性能などの）試験"}, {"no": 476, "w": "norm", "m": "規範"}, {"no": 477, "w": "code", "m": "規範"}, {"no": 478, "w": "substance", "m": "物質"}, {"no": 479, "w": "multiple", "m": "多様な"}, {"no": 480, "w": "numerous", "m": "非常に数の多い"}, {"no": 481, "w": "narrow", "m": "狭い"}, {"no": 482, "w": "widespread", "m": "広範囲にわたる"}, {"no": 483, "w": "sufficient", "m": "十分な"}, {"no": 484, "w": "proper", "m": "適切な"}, {"no": 485, "w": "linguistic", "m": "言語の　言語学の"}, {"no": 486, "w": "annual", "m": "年一回の　例年の"}, {"no": 487, "w": "contemporary", "m": "現代の"}, {"no": 488, "w": "contrary", "m": "反対の"}, {"no": 489, "w": "strict", "m": "（規則などが）厳しい"}, {"no": 490, "w": "civil", "m": "市民の"}, {"no": 491, "w": "odd", "m": "奇妙な"}, {"no": 492, "w": "unknown", "m": "不明の"}, {"no": 493, "w": "superior", "m": "よりすぐれた"}, {"no": 494, "w": "sensitive", "m": "敏感な"}, {"no": 495, "w": "violent", "m": "（人・気質などが）激しい"}, {"no": 496, "w": "virtual", "m": "仮想の"}, {"no": 497, "w": "regardless", "m": "かまわない　無頓着な"}, {"no": 498, "w": "immediate", "m": "即座の"}, {"no": 499, "w": "crucial", "m": "重要な"}, {"no": 500, "w": "somewhat", "m": "いくぶん　多少"}], "6": [{"no": 501, "w": "interpret", "m": "解釈する"}, {"no": 502, "w": "translate", "m": "翻訳する"}, {"no": 503, "w": "concentrate", "m": "集中する"}, {"no": 504, "w": "request", "m": "頼む"}, {"no": 505, "w": "criticize", "m": "批判する"}, {"no": 506, "w": "overcome", "m": "克服する"}, {"no": 507, "w": "obtain", "m": "得る"}, {"no": 508, "w": "inform", "m": "知らせる"}, {"no": 509, "w": "ensure", "m": "確実にする"}, {"no": 510, "w": "announce", "m": "発表[公表]する　知らせる"}, {"no": 511, "w": "grant", "m": "（人に）（許可・権利などを）与える"}, {"no": 512, "w": "freeze", "m": "凍る"}, {"no": 513, "w": "oppose", "m": "反対する"}, {"no": 514, "w": "differ", "m": "異なる"}, {"no": 515, "w": "hate", "m": "ひどく嫌う"}, {"no": 516, "w": "emphasize", "m": "強調する"}, {"no": 517, "w": "employ", "m": "雇う"}, {"no": 518, "w": "credit", "m": "（功績など）を帰する"}, {"no": 519, "w": "transform", "m": "変える"}, {"no": 520, "w": "construct", "m": "建設する"}, {"no": 521, "w": "arise", "m": "生じる"}, {"no": 522, "w": "beat", "m": "打ち負かす"}, {"no": 523, "w": "regret", "m": "後悔する"}, {"no": 524, "w": "alter", "m": "変える"}, {"no": 525, "w": "absorb", "m": "吸収する"}, {"no": 526, "w": "disappoint", "m": "失望させる"}, {"no": 527, "w": "cure", "m": "治す"}, {"no": 528, "w": "transport", "m": "輸送する"}, {"no": 529, "w": "rush", "m": "急いで行く"}, {"no": 530, "w": "hang", "m": "掛ける"}, {"no": 531, "w": "blame", "m": "責める"}, {"no": 532, "w": "ban", "m": "（法的に）禁止する"}, {"no": 533, "w": "fascinate", "m": "魅了する"}, {"no": 534, "w": "recover", "m": "回復する"}, {"no": 535, "w": "celebrate", "m": "祝う"}, {"no": 536, "w": "manufacture", "m": "製造する"}, {"no": 537, "w": "interact", "m": "影響し合う"}, {"no": 538, "w": "arrange", "m": "段取りをつける"}, {"no": 539, "w": "adjust", "m": "調整する"}, {"no": 540, "w": "confirm", "m": "確認する"}, {"no": 541, "w": "insight", "m": "見識　理解（力）"}, {"no": 542, "w": "innovation", "m": "革新"}, {"no": 543, "w": "budget", "m": "予算"}, {"no": 544, "w": "fee", "m": "料金"}, {"no": 545, "w": "expense", "m": "経費"}, {"no": 546, "w": "debt", "m": "借金　負債"}, {"no": 547, "w": "loan", "m": "貸付金　融資"}, {"no": 548, "w": "duty", "m": "義務"}, {"no": 549, "w": "alarm", "m": "不安　恐れ"}, {"no": 550, "w": "emergency", "m": "緊急（事態）"}, {"no": 551, "w": "democracy", "m": "民主主義　民主政治"}, {"no": 552, "w": "minister", "m": "大臣"}, {"no": 553, "w": "fellow", "m": "仲間　同僚"}, {"no": 554, "w": "candidate", "m": "候補（者）"}, {"no": 555, "w": "corporation", "m": "（大）企業"}, {"no": 556, "w": "stereotype", "m": "固定観念"}, {"no": 557, "w": "route", "m": "道（筋）"}, {"no": 558, "w": "disorder", "m": "障害（心身の）不調"}, {"no": 559, "w": "depression", "m": "憂うつ"}, {"no": 560, "w": "weapon", "m": "兵器　武器"}, {"no": 561, "w": "immigration", "m": "（他国からの）移民　移住"}, {"no": 562, "w": "barrier", "m": "障壁"}, {"no": 563, "w": "disadvantage", "m": "不利（な点）"}, {"no": 564, "w": "mood", "m": "気分"}, {"no": 565, "w": "motion", "m": "動き　動作"}, {"no": 566, "w": "routine", "m": "決まり切った仕事"}, {"no": 567, "w": "discipline", "m": "規律　しつけ"}, {"no": 568, "w": "myth", "m": "作り話"}, {"no": 569, "w": "hypothesis", "m": "仮説"}, {"no": 570, "w": "physician", "m": "医師"}, {"no": 571, "w": "client", "m": "顧客"}, {"no": 572, "w": "colony", "m": "植民地"}, {"no": 573, "w": "statistics", "m": "統計"}, {"no": 574, "w": "grain", "m": "穀物"}, {"no": 575, "w": "ingredient", "m": "材料　成分"}, {"no": 576, "w": "treasure", "m": "宝物　財宝"}, {"no": 577, "w": "contract", "m": "契約（書）"}, {"no": 578, "w": "welfare", "m": "福祉　幸福"}, {"no": 579, "w": "prime", "m": "主要な　最も重要な"}, {"no": 580, "w": "curious", "m": "好奇心の強い"}, {"no": 581, "w": "dramatic", "m": "劇的な"}, {"no": 582, "w": "distinct", "m": "明らかに異なる"}, {"no": 583, "w": "anxious", "m": "心配して"}, {"no": 584, "w": "vital", "m": "必要不可欠な"}, {"no": 585, "w": "conventional", "m": "従来の"}, {"no": 586, "w": "abstract", "m": "抽象的な"}, {"no": 587, "w": "minor", "m": "重要でない"}, {"no": 588, "w": "extraordinary", "m": "並はずれた"}, {"no": 589, "w": "stable", "m": "安定した"}, {"no": 590, "w": "flexible", "m": "融通の利く　柔軟な"}, {"no": 591, "w": "brief", "m": "簡潔な"}, {"no": 592, "w": "aggressive", "m": "攻撃的な"}, {"no": 593, "w": "visible", "m": "（目に）見える"}, {"no": 594, "w": "unexpected", "m": "思いがけない　不意の"}, {"no": 595, "w": "ethnic", "m": "民族の　人種の"}, {"no": 596, "w": "alien", "m": "異質の"}, {"no": 597, "w": "initial", "m": "初めの"}, {"no": 598, "w": "exact", "m": "正確な"}, {"no": 599, "w": "precise", "m": "正確な"}, {"no": 600, "w": "latter", "m": "後者の　後半の"}], "7": [{"no": 601, "w": "commit", "m": "献身する"}, {"no": 602, "w": "stimulate", "m": "刺激する"}, {"no": 603, "w": "enhance", "m": "（価値などを）高める　増す"}, {"no": 604, "w": "pursue", "m": "追求する"}, {"no": 605, "w": "react", "m": "反応する"}, {"no": 606, "w": "disagree", "m": "不賛成である"}, {"no": 607, "w": "stare", "m": "じっと見る"}, {"no": 608, "w": "abandon", "m": "捨てる"}, {"no": 609, "w": "quit", "m": "やめる"}, {"no": 610, "w": "capture", "m": "とらえる"}, {"no": 611, "w": "transfer", "m": "移す"}, {"no": 612, "w": "bother", "m": "悩ます"}, {"no": 613, "w": "persuade", "m": "説得する"}, {"no": 614, "w": "rent", "m": "賃借りする"}, {"no": 615, "w": "breed", "m": "繁殖させる　育てる"}, {"no": 616, "w": "invest", "m": "投資する"}, {"no": 617, "w": "reserve", "m": "予約する"}, {"no": 618, "w": "trace", "m": "（足跡・起源などを）たどる"}, {"no": 619, "w": "illustrate", "m": "説明する"}, {"no": 620, "w": "advise", "m": "忠告[助言]する"}, {"no": 621, "w": "convey", "m": "伝える"}, {"no": 622, "w": "attach", "m": "（取り）付ける"}, {"no": 623, "w": "stretch", "m": "伸ばす"}, {"no": 624, "w": "puzzle", "m": "当惑させる"}, {"no": 625, "w": "disturb", "m": "かき乱す"}, {"no": 626, "w": "crash", "m": "衝突する　堕落する"}, {"no": 627, "w": "cope", "m": "うまく処理する"}, {"no": 628, "w": "permit", "m": "許可する"}, {"no": 629, "w": "impress", "m": "感動させる"}, {"no": 630, "w": "suspect", "m": "ではないかと思う"}, {"no": 631, "w": "upset", "m": "動揺させる"}, {"no": 632, "w": "frighten", "m": "（人を）怖がらせる"}, {"no": 633, "w": "import", "m": "輸入する"}, {"no": 634, "w": "export", "m": "輸出する"}, {"no": 635, "w": "investigate", "m": "調査する"}, {"no": 636, "w": "monitor", "m": "監視する"}, {"no": 637, "w": "calculate", "m": "計算する"}, {"no": 638, "w": "eliminate", "m": "取り除く"}, {"no": 639, "w": "ease", "m": "軽減する"}, {"no": 640, "w": "launch", "m": "開始する"}, {"no": 641, "w": "sequence", "m": "連続"}, {"no": 642, "w": "therapy ", "m": "療法"}, {"no": 643, "w": "symptom", "m": "症状"}, {"no": 644, "w": "incident", "m": "出来事　事件"}, {"no": 645, "w": "witness", "m": "目撃者"}, {"no": 646, "w": "sum", "m": "（金）額"}, {"no": 647, "w": "burden", "m": "負担"}, {"no": 648, "w": "tone", "m": "口調"}, {"no": 649, "w": "honor", "m": "光栄"}, {"no": 650, "w": "award", "m": "賞"}, {"no": 651, "w": "priority", "m": "優先（事項）"}, {"no": 652, "w": "logic", "m": "論理"}, {"no": 653, "w": "minimum", "m": "最小限度"}, {"no": 654, "w": "exception", "m": "例外"}, {"no": 655, "w": "clue", "m": "手がかり"}, {"no": 656, "w": "bond", "m": "絆"}, {"no": 657, "w": "virus", "m": "ウイルス"}, {"no": 658, "w": "surgery", "m": "（外科）手術"}, {"no": 659, "w": "insurance", "m": "保険"}, {"no": 660, "w": "frame", "m": "枠　（額）縁"}, {"no": 661, "w": "shelter", "m": "避難（所）　保護"}, {"no": 662, "w": "territory", "m": "領土"}, {"no": 663, "w": "boundary", "m": "境界（線）"}, {"no": 664, "w": "habitat", "m": "生息地"}, {"no": 665, "w": "district", "m": "地区"}, {"no": 666, "w": "conservation", "m": "（動植物などの）保護"}, {"no": 667, "w": "harvest", "m": "収穫（物）"}, {"no": 668, "w": "predator", "m": "捕食動物"}, {"no": 669, "w": "trap", "m": "わな"}, {"no": 670, "w": "trick", "m": "こつ"}, {"no": 671, "w": "fault", "m": "責任"}, {"no": 672, "w": "discount", "m": "割引"}, {"no": 673, "w": "bias", "m": "偏見"}, {"no": 674, "w": "cooperation", "m": "協力　共同"}, {"no": 675, "w": "patent", "m": "特許（権）"}, {"no": 676, "w": "dialogue", "m": "対話　会話"}, {"no": 677, "w": "component", "m": "構成要素"}, {"no": 678, "w": "reputation", "m": "評判"}, {"no": 679, "w": "verbal", "m": "言葉の"}, {"no": 680, "w": "internal", "m": "内部の"}, {"no": 681, "w": "solid", "m": "しっかりした"}, {"no": 682, "w": "remote", "m": "遠く離れた"}, {"no": 683, "w": "principal", "m": "主要な"}, {"no": 684, "w": "sophisticated", "m": "高性能の　精巧な"}, {"no": 685, "w": "equivalent", "m": "等しい　相当する"}, {"no": 686, "w": "rational", "m": "理性的な"}, {"no": 687, "w": "relevant", "m": "関係がある"}, {"no": 688, "w": "absolute", "m": "絶対的な"}, {"no": 689, "w": "frequent", "m": "頻繁な"}, {"no": 690, "w": "permanent", "m": "永続的な"}, {"no": 691, "w": "intense", "m": "強烈な"}, {"no": 692, "w": "meaningful", "m": "意味のある"}, {"no": 693, "w": "evil", "m": "邪悪な"}, {"no": 694, "w": "extinct", "m": "絶滅した"}, {"no": 695, "w": "random", "m": "無作為の"}, {"no": 696, "w": "raw", "m": "生の"}, {"no": 697, "w": "rude", "m": "無礼な"}, {"no": 698, "w": "mere", "m": "単なる　ほんの"}, {"no": 699, "w": "tropical", "m": "熱帯の"}, {"no": 700, "w": "forth", "m": "前へ　先へ"}], "8": [{"no": 701, "w": "possess", "m": "所有している"}, {"no": 702, "w": "dominate", "m": "支配する"}, {"no": 703, "w": "guarantee", "m": "保証する"}, {"no": 704, "w": "melt", "m": "溶ける"}, {"no": 705, "w": "embarrass", "m": "恥ずかしい思いをさせる"}, {"no": 706, "w": "discourage", "m": "（人に）やる気をなくさせる"}, {"no": 707, "w": "detect", "m": "感知する"}, {"no": 708, "w": "devote", "m": "ささげる"}, {"no": 709, "w": "urge", "m": "（強く）促す"}, {"no": 710, "w": "lend", "m": "貸す"}, {"no": 711, "w": "restrict", "m": "制限する"}, {"no": 712, "w": "isolate", "m": "孤立させる"}, {"no": 713, "w": "accompany", "m": "同行する"}, {"no": 714, "w": "exhaust", "m": "疲れ果てさせる"}, {"no": 715, "w": "annoy", "m": "悩ます"}, {"no": 716, "w": "endanger", "m": "危険にさらす"}, {"no": 717, "w": "acknowledge", "m": "（事実などを）認める"}, {"no": 718, "w": "admire", "m": "敬服[感心]する"}, {"no": 719, "w": "evaluate", "m": "評価する"}, {"no": 720, "w": "declare", "m": "宣言する"}, {"no": 721, "w": "secure", "m": "確保する"}, {"no": 722, "w": "specialize", "m": "専門とする"}, {"no": 723, "w": "attribute", "m": "（結果などを)帰する"}, {"no": 724, "w": "pretend", "m": "ふりをする"}, {"no": 725, "w": "bury", "m": "埋める"}, {"no": 726, "w": "reverse", "m": "逆転させる"}, {"no": 727, "w": "resist", "m": "抵抗する"}, {"no": 728, "w": "scare", "m": "おびえさせる"}, {"no": 729, "w": "imitate", "m": "まねる"}, {"no": 730, "w": "assist", "m": "援助する"}, {"no": 731, "w": "resemble", "m": "似ている"}, {"no": 732, "w": "retire", "m": "引退する　退職する"}, {"no": 733, "w": "neglect", "m": "おろそかにする　怠る"}, {"no": 734, "w": "collapse", "m": "崩壊する"}, {"no": 735, "w": "reform", "m": "改革する"}, {"no": 736, "w": "protest", "m": "抗議する"}, {"no": 737, "w": "owe", "m": "借りがある"}, {"no": 738, "w": "sustain", "m": "持続させる"}, {"no": 739, "w": "assign", "m": "割り当てる"}, {"no": 740, "w": "accomplish", "m": "成し遂げる"}, {"no": 741, "w": "wisdom", "m": "知恵"}, {"no": 742, "w": "literacy", "m": "読み書きの能力"}, {"no": 743, "w": "heritage", "m": "遺産"}, {"no": 744, "w": "mission ", "m": "使命"}, {"no": 745, "w": "license", "m": "免許（証）"}, {"no": 746, "w": "elite", "m": "エリート"}, {"no": 747, "w": "layer", "m": "層"}, {"no": 748, "w": "motor", "m": "モーター"}, {"no": 749, "w": "protein", "m": "タンパク質"}, {"no": 750, "w": "profession", "m": "職業"}, {"no": 751, "w": "editor", "m": "編集者"}, {"no": 752, "w": "agent", "m": "仲介者　代理人"}, {"no": 753, "w": "globe", "m": "地球　世界"}, {"no": 754, "w": "haven", "m": "避難所　保護区"}, {"no": 755, "w": "row", "m": "列"}, {"no": 756, "w": "sacrifice", "m": "犠牲"}, {"no": 757, "w": "means", "m": "手段"}, {"no": 758, "w": "session", "m": "集まり"}, {"no": 759, "w": "league", "m": "（競技）連盟"}, {"no": 760, "w": "contest", "m": "コンテスト　競技（会）"}, {"no": 761, "w": "guard", "m": "警備員"}, {"no": 762, "w": "opponent", "m": "（試合・論争などの）相手"}, {"no": 763, "w": "glance", "m": "ちらっと見ること"}, {"no": 764, "w": "divorce", "m": "離婚"}, {"no": 765, "w": "tissue", "m": "（生物の）組織"}, {"no": 766, "w": "liquid", "m": "液体"}, {"no": 767, "w": "inequality", "m": "不平等"}, {"no": 768, "w": "prejudice", "m": "偏見"}, {"no": 769, "w": "justice", "m": "公正　正義"}, {"no": 770, "w": "guideline", "m": "指針　ガイドライン"}, {"no": 771, "w": "platform", "m": "プラットフォーム"}, {"no": 772, "w": "sector", "m": "（社会・経済などの）部門、セクター"}, {"no": 773, "w": "channel", "m": "チャンネル"}, {"no": 774, "w": "glacier", "m": "氷河"}, {"no": 775, "w": "primate", "m": "霊長類の動物"}, {"no": 776, "w": "usage", "m": "（使）用法"}, {"no": 777, "w": "fortune", "m": "財産"}, {"no": 778, "w": "correlation", "m": "相互関係　相関（関係）"}, {"no": 779, "w": "artistic", "m": "芸術的な"}, {"no": 780, "w": "literary", "m": "文学の"}, {"no": 781, "w": "classic", "m": "第一級の"}, {"no": 782, "w": "liberal", "m": "自由主義の"}, {"no": 783, "w": "concrete", "m": "具体的な"}, {"no": 784, "w": "slight", "m": "わずかな"}, {"no": 785, "w": "federal", "m": "連邦（政府）の"}, {"no": 786, "w": "primitive", "m": "原始的な"}, {"no": 787, "w": "unfamiliar", "m": "不慣れな"}, {"no": 788, "w": "subtle", "m": "微妙な"}, {"no": 789, "w": "plain", "m": "明らかな"}, {"no": 790, "w": "marine", "m": "海の"}, {"no": 791, "w": "apparent", "m": "明白な"}, {"no": 792, "w": "reluctant", "m": "気が進まない　嫌がる"}, {"no": 793, "w": "temporary", "m": "一時的な"}, {"no": 794, "w": "guilty", "m": "罪悪感のある"}, {"no": 795, "w": "royal", "m": "王の"}, {"no": 796, "w": "pure", "m": "純粋な"}, {"no": 797, "w": "incredible", "m": "信じられない"}, {"no": 798, "w": "eager", "m": "熱望して"}, {"no": 799, "w": "adequate", "m": "十分な"}, {"no": 800, "w": "via", "m": "経由で"}], "9": [{"no": 801, "w": "assess", "m": "評価する"}, {"no": 802, "w": "approve", "m": "賛成する"}, {"no": 803, "w": "remark", "m": "述べる"}, {"no": 804, "w": "pose", "m": "（危険）を引き起こす"}, {"no": 805, "w": "yield", "m": "もたらす"}, {"no": 806, "w": "exhibit", "m": "示す"}, {"no": 807, "w": "distribute", "m": "分配する"}, {"no": 808, "w": "command", "m": "命じる"}, {"no": 809, "w": "occupy", "m": "（空間・時間を）占める"}, {"no": 810, "w": "pop", "m": "ひょいと動く"}, {"no": 811, "w": "pile", "m": "積み重ねる"}, {"no": 812, "w": "greet", "m": "挨拶する"}, {"no": 813, "w": "apologize", "m": "謝る"}, {"no": 814, "w": "frustrate", "m": "いら立たせる"}, {"no": 815, "w": "relieve", "m": "和らげる"}, {"no": 816, "w": "derive", "m": "由来する"}, {"no": 817, "w": "deserve", "m": "値する"}, {"no": 818, "w": "peer", "m": "じっと見る"}, {"no": 819, "w": "defeat", "m": "負かす"}, {"no": 820, "w": "convert", "m": "変える"}, {"no": 821, "w": "wed", "m": "結婚する"}, {"no": 822, "w": "delight", "m": "喜ばせる"}, {"no": 823, "w": "boost", "m": "押し上げる"}, {"no": 824, "w": "endure", "m": "耐える"}, {"no": 825, "w": "correspond", "m": "一致する"}, {"no": 826, "w": "impose", "m": "課す"}, {"no": 827, "w": "rescue", "m": "救う"}, {"no": 828, "w": "resolve", "m": "解決する"}, {"no": 829, "w": "register", "m": "記録する　登録する"}, {"no": 830, "w": "interrupt", "m": "中断させる"}, {"no": 831, "w": "rid", "m": "取り除く　除去する"}, {"no": 832, "w": "prohibit", "m": "禁止する"}, {"no": 833, "w": "compose", "m": "構成する"}, {"no": 834, "w": "misunderstand", "m": "誤解する"}, {"no": 835, "w": "punish", "m": "罰する"}, {"no": 836, "w": "ruin", "m": "だめにする"}, {"no": 837, "w": "defend", "m": "防御する"}, {"no": 838, "w": "embrace", "m": "受け入れる"}, {"no": 839, "w": "modify", "m": "修正する"}, {"no": 840, "w": "qualify", "m": "（人に）資格を与える"}, {"no": 841, "w": "passion", "m": "情熱"}, {"no": 842, "w": "enthusiasm", "m": "熱情　熱意"}, {"no": 843, "w": "phase", "m": "段階　局面"}, {"no": 844, "w": "mode", "m": "方式"}, {"no": 845, "w": "span", "m": "期間"}, {"no": 846, "w": "gravity", "m": "重力　引力"}, {"no": 847, "w": "orbit", "m": "軌道"}, {"no": 848, "w": "asteroid", "m": "小惑星"}, {"no": 849, "w": "core", "m": "核心"}, {"no": 850, "w": "soul", "m": "精神"}, {"no": 851, "w": "nerve", "m": "神経"}, {"no": 852, "w": "infection", "m": "感染（症）"}, {"no": 853, "w": "mall", "m": "モール　ショッピングセンター"}, {"no": 854, "w": "grocery", "m": "食料雑貨"}, {"no": 855, "w": "humor", "m": "ユーモア"}, {"no": 856, "w": "instinct", "m": "本能"}, {"no": 857, "w": "faith", "m": "信頼"}, {"no": 858, "w": "courage", "m": "勇気"}, {"no": 859, "w": "incentive", "m": "動機（づけ）"}, {"no": 860, "w": "prospect", "m": "見込み"}, {"no": 861, "w": "obstacle", "m": "障害（物）"}, {"no": 862, "w": "architecture", "m": "建築"}, {"no": 863, "w": "stem", "m": "（草木の）茎・幹"}, {"no": 864, "w": "illusion", "m": "錯覚　思い違い"}, {"no": 865, "w": "discrimination", "m": "差別"}, {"no": 866, "w": "shame", "m": "恥"}, {"no": 867, "w": "drought", "m": "干ばつ"}, {"no": 868, "w": "flavor", "m": "風味"}, {"no": 869, "w": "portion", "m": "部分"}, {"no": 870, "w": "recipe", "m": "調理法　レシピ"}, {"no": 871, "w": "luxury", "m": "ぜいたく品"}, {"no": 872, "w": "chip", "m": "小片　破片"}, {"no": 873, "w": "ritual", "m": "儀式"}, {"no": 874, "w": "sake", "m": "のために　の目的で"}, {"no": 875, "w": "prefecture", "m": "（日本の）県、府"}, {"no": 876, "w": "council", "m": "（地方）議会"}, {"no": 877, "w": "administration", "m": "管理（部）"}, {"no": 878, "w": "curriculum", "m": "教育課程　カリキュラム"}, {"no": 879, "w": "precious", "m": "貴重な"}, {"no": 880, "w": "generous", "m": "寛大な"}, {"no": 881, "w": "casual", "m": "何気ない"}, {"no": 882, "w": "optimistic", "m": "楽観的な"}, {"no": 883, "w": "rough", "m": "粗い"}, {"no": 884, "w": "unpleasant", "m": "不愉快な"}, {"no": 885, "w": "Arctic", "m": "北極の"}, {"no": 886, "w": "ultimate", "m": "究極の"}, {"no": 887, "w": "deaf", "m": "耳が聞こえない"}, {"no": 888, "w": "genuine", "m": "本物の"}, {"no": 889, "w": "manual", "m": "体[手]を使う"}, {"no": 890, "w": "mechanical", "m": "機械の"}, {"no": 891, "w": "instant", "m": "即時の　すぐの"}, {"no": 892, "w": "spare", "m": "余分の　予備の"}, {"no": 893, "w": "immune", "m": "免疫を持つ"}, {"no": 894, "w": "harsh", "m": "厳しい"}, {"no": 895, "w": "collective", "m": "集団の　共同の"}, {"no": 896, "w": "inevitable", "m": "避けられない"}, {"no": 897, "w": "profound", "m": "重大な"}, {"no": 898, "w": "steady", "m": "着実な　一定の"}, {"no": 899, "w": "mature", "m": "成熟した"}, {"no": 900, "w": "likewise", "m": "同様に"}], "10": [{"no": 901, "w": "chase", "m": "追跡する"}, {"no": 902, "w": "sue", "m": "告訴する"}, {"no": 903, "w": "gaze", "m": "じっと見る"}, {"no": 904, "w": "slip", "m": "滑る"}, {"no": 905, "w": "load", "m": "積む"}, {"no": 906, "w": "overwhelm", "m": "圧倒する"}, {"no": 907, "w": "wander", "m": "歩き回る"}, {"no": 908, "w": "float", "m": "漂う　浮かぶ"}, {"no": 909, "w": "pour", "m": "注ぐ"}, {"no": 910, "w": "substitute", "m": "代わりに使う"}, {"no": 911, "w": "pronounce", "m": "発音する"}, {"no": 912, "w": "shrink", "m": "縮む　縮小する"}, {"no": 913, "w": "restore", "m": "回復させる"}, {"no": 914, "w": "trigger", "m": "引き起こす"}, {"no": 915, "w": "grab", "m": "つかむ"}, {"no": 916, "w": "retain", "m": "保持する"}, {"no": 917, "w": "reproduce", "m": "複製する"}, {"no": 918, "w": "bob", "m": "上下に動く"}, {"no": 919, "w": "entertain", "m": "楽しませる"}, {"no": 920, "w": "interfere", "m": "干渉する　介入する"}, {"no": 921, "w": "cultivate", "m": "養う"}, {"no": 922, "w": "underlie", "m": "根底にある"}, {"no": 923, "w": "anticipate", "m": "予期する"}, {"no": 924, "w": "justify", "m": "正当化する"}, {"no": 925, "w": "regulate", "m": "規制する"}, {"no": 926, "w": "scan", "m": "走査（スキャン）する"}, {"no": 927, "w": "classify", "m": "分類する"}, {"no": 928, "w": "submit", "m": "提出する"}, {"no": 929, "w": "pause", "m": "（一時的に）中止する"}, {"no": 930, "w": "lean", "m": "傾く"}, {"no": 931, "w": "bump", "m": "ぶつかる"}, {"no": 932, "w": "fold", "m": "折り畳む"}, {"no": 933, "w": "hesitate", "m": "躊躇する　ためらう"}, {"no": 934, "w": "pump", "m": "（液体・気体を）ポンプで送り込む"}, {"no": 935, "w": "mount", "m": "添えつける"}, {"no": 936, "w": "exceed", "m": "超える"}, {"no": 937, "w": "undergo", "m": "経験する"}, {"no": 938, "w": "confront", "m": "立ち向かう"}, {"no": 939, "w": "consult", "m": "相談する"}, {"no": 940, "w": "fulfill", "m": "実現させる"}, {"no": 941, "w": "privilege", "m": "特権、特典"}, {"no": 942, "w": "formation", "m": "形成"}, {"no": 943, "w": "dimension", "m": "側面　局面"}, {"no": 944, "w": "neuron", "m": "ニューロン　神経単位"}, {"no": 945, "w": "sensation", "m": "感覚"}, {"no": 946, "w": "chart", "m": "図　グラフ"}, {"no": 947, "w": "geography", "m": "地理"}, {"no": 948, "w": "panel", "m": "（専門家の）一団"}, {"no": 949, "w": "semester", "m": "（2学期制の）学期"}, {"no": 950, "w": "workforce", "m": "労働人口　総労働力"}, {"no": 951, "w": "mill", "m": "製造工場"}, {"no": 952, "w": "abuse", "m": "乱用"}, {"no": 953, "w": "vice", "m": "（道徳上の）悪"}, {"no": 954, "w": "fate", "m": "運命"}, {"no": 955, "w": "tragedy", "m": "悲劇（的な事態）"}, {"no": 956, "w": "scenario", "m": "（予想される）筋書き　事態"}, {"no": 957, "w": "allergy", "m": "アレルギー"}, {"no": 958, "w": "wound", "m": "（銃弾　刃物などによる）傷"}, {"no": 959, "w": "antibiotic", "m": "抗生物質"}, {"no": 960, "w": "vaccine", "m": "ワクチン"}, {"no": 961, "w": "metaphor", "m": "隠喩"}, {"no": 962, "w": "folk", "m": "人々"}, {"no": 963, "w": "fare", "m": "（乗り物の）料金"}, {"no": 964, "w": "transition", "m": "移り変わり"}, {"no": 965, "w": "maximum", "m": "最大限"}, {"no": 966, "w": "galaxy", "m": "星雲　銀河"}, {"no": 967, "w": "mineral", "m": "鉱物"}, {"no": 968, "w": "skeleton", "m": "骨格"}, {"no": 969, "w": "counterpart", "m": "相当する[人]"}, {"no": 970, "w": "stroke", "m": "脳卒中"}, {"no": 971, "w": "pedestrian", "m": "歩行者"}, {"no": 972, "w": "trail", "m": "（野山などの）小道"}, {"no": 973, "w": "ecology", "m": "生態学"}, {"no": 974, "w": "sibling", "m": "きょうだい（の1人）"}, {"no": 975, "w": "ratio", "m": "比率"}, {"no": 976, "w": "mixture", "m": "混合（物）"}, {"no": 977, "w": "charm", "m": "魅力"}, {"no": 978, "w": "ambition", "m": "願望　野望"}, {"no": 979, "w": "prominent", "m": "卓越した"}, {"no": 980, "w": "radical", "m": "急進的な"}, {"no": 981, "w": "prompt", "m": "即座の　迅速な"}, {"no": 982, "w": "informal", "m": "形式ばらない　略式の"}, {"no": 983, "w": "mutual", "m": "相互の"}, {"no": 984, "w": "neutral", "m": "中立の"}, {"no": 985, "w": "alert", "m": "警戒して"}, {"no": 986, "w": "magnetic", "m": "磁気の"}, {"no": 987, "w": "polar", "m": "流ちょうな"}, {"no": 988, "w": "fluent", "m": "外部の"}, {"no": 989, "w": "external", "m": "受動的な"}, {"no": 990, "w": "passive", "m": "受動的な"}, {"no": 991, "w": "awful", "m": "ひどい"}, {"no": 992, "w": "unrelated", "m": "無関係の"}, {"no": 993, "w": "cruel", "m": "残酷な"}, {"no": 994, "w": "fake", "m": "偽の"}, {"no": 995, "w": "vulnerable", "m": "（攻撃などに）弱い　もろい"}, {"no": 996, "w": "urgent", "m": "緊急の"}, {"no": 997, "w": "spiritual", "m": "精神の"}, {"no": 998, "w": "modest", "m": "謙虚な"}, {"no": 999, "w": "keen", "m": "熱心な"}, {"no": 1000, "w": "nonetheless", "m": "それにもかかわらず　それでもなお"}], "11": [{"no": 1001, "w": "negotiate", "m": "交渉する"}, {"no": 1002, "w": "grasp", "m": "把握[理解]する"}, {"no": 1003, "w": "donate", "m": "寄付する"}, {"no": 1004, "w": "arrest", "m": "逮捕する"}, {"no": 1005, "w": "crack", "m": "ひびが入る"}, {"no": 1006, "w": "tap", "m": "軽くたたく"}, {"no": 1007, "w": "split", "m": "分割する"}, {"no": 1008, "w": "forecast", "m": "予想[予測]する"}, {"no": 1009, "w": "exclude", "m": "除外する"}, {"no": 1010, "w": "overlook", "m": "見落とす"}, {"no": 1011, "w": "burst", "m": "破裂する"}, {"no": 1012, "w": "heal", "m": "（人・傷など）を治す"}, {"no": 1013, "w": "forbid", "m": "禁じる"}, {"no": 1014, "w": "install", "m": "インストールする"}, {"no": 1015, "w": "diminish", "m": "減らす"}, {"no": 1016, "w": "cite", "m": "引き合いに出す"}, {"no": 1017, "w": "quote", "m": "引用する"}, {"no": 1018, "w": "dispute", "m": "異議を唱える"}, {"no": 1019, "w": "highlight", "m": "目立たせる　強調する"}, {"no": 1020, "w": "distract", "m": "（注意などを）そらす"}, {"no": 1021, "w": "cheat", "m": "だます"}, {"no": 1022, "w": "foster", "m": "はぐくむ"}, {"no": 1023, "w": "obey", "m": "従う"}, {"no": 1024, "w": "bend", "m": "曲げる"}, {"no": 1025, "w": "deprive", "m": "（権利などを）奪う"}, {"no": 1026, "w": "govern", "m": "統治する　支配する"}, {"no": 1027, "w": "log", "m": "ログオンする"}, {"no": 1028, "w": "transmit", "m": "伝える"}, {"no": 1029, "w": "bully", "m": "いじめる"}, {"no": 1030, "w": "leap", "m": "跳ぶ"}, {"no": 1031, "w": "astonish", "m": "驚かす"}, {"no": 1032, "w": "thrill", "m": "ぞくぞくさせる"}, {"no": 1033, "w": "nod", "m": "うなずく"}, {"no": 1034, "w": "bow", "m": "おじぎする"}, {"no": 1035, "w": "blend", "m": "混ぜる"}, {"no": 1036, "w": "complicate", "m": "複雑にする"}, {"no": 1037, "w": "pitch", "m": "投げる"}, {"no": 1038, "w": "persist", "m": "続く"}, {"no": 1039, "w": "dedicate", "m": "ささげる"}, {"no": 1040, "w": "equip", "m": "備えつける"}, {"no": 1041, "w": "premise", "m": "前提"}, {"no": 1042, "w": "input", "m": "入力（情報）投入"}, {"no": 1043, "w": "merit", "m": "利点"}, {"no": 1044, "w": "sympathy", "m": "同情"}, {"no": 1045, "w": "compliment", "m": "賛辞"}, {"no": 1046, "w": "infrastructure", "m": "インフラ　基本的施設"}, {"no": 1047, "w": "ray", "m": "光線"}, {"no": 1048, "w": "distress", "m": "苦悩"}, {"no": 1049, "w": "joint", "m": "関節"}, {"no": 1050, "w": "expedition", "m": "遠征（隊）探検（隊）"}, {"no": 1051, "w": "adolescent", "m": "青年"}, {"no": 1052, "w": "shade", "m": "（日）陰"}, {"no": 1053, "w": "jury", "m": "陪審（員団）"}, {"no": 1054, "w": "ethic", "m": "倫理　道徳"}, {"no": 1055, "w": "penalty", "m": "（刑）罰"}, {"no": 1056, "w": "faculty", "m": "能力　機能"}, {"no": 1057, "w": "scheme", "m": "計画"}, {"no": 1058, "w": "nutrition", "m": "栄養（の摂取）"}, {"no": 1059, "w": "particle", "m": "（微）粒子"}, {"no": 1060, "w": "molecule", "m": "分子"}, {"no": 1061, "w": "nationality", "m": "国籍"}, {"no": 1062, "w": "poll", "m": "世論調査"}, {"no": 1063, "w": "clinic", "m": "診療所　クリニック"}, {"no": 1064, "w": "dementia", "m": "認知症"}, {"no": 1065, "w": "fatigue", "m": "疲労"}, {"no": 1066, "w": "dilemma", "m": "ジレンマ　板ばさみ"}, {"no": 1067, "w": "queue", "m": "（順番を待つ）列"}, {"no": 1068, "w": "curve", "m": "（道路などの）カーブ"}, {"no": 1069, "w": "narrative", "m": "物語　話"}, {"no": 1070, "w": "fingerprint", "m": "指紋"}, {"no": 1071, "w": "file", "m": "ファイル"}, {"no": 1072, "w": "wilderness", "m": "荒野"}, {"no": 1073, "w": "pesticide", "m": "殺虫剤"}, {"no": 1074, "w": "panic", "m": "パニック（状態）"}, {"no": 1075, "w": "fabric", "m": "織物　布（地）"}, {"no": 1076, "w": "fantasy", "m": "空想"}, {"no": 1077, "w": "fancy", "m": "（気まぐれな）好み"}, {"no": 1078, "w": "virtue", "m": "美徳"}, {"no": 1079, "w": "grateful", "m": "感謝している"}, {"no": 1080, "w": "valid", "m": "妥当な"}, {"no": 1081, "w": "elaborate", "m": "入念な"}, {"no": 1082, "w": "moderate", "m": "適度な"}, {"no": 1083, "w": "dynamic", "m": "活動的な　精力的な"}, {"no": 1084, "w": "brave", "m": "勇敢な"}, {"no": 1085, "w": "brilliant", "m": "すばらしい"}, {"no": 1086, "w": "tremendous", "m": "途方もない　莫大な"}, {"no": 1087, "w": "oral", "m": "口頭の"}, {"no": 1088, "w": "innocent", "m": "無罪の"}, {"no": 1089, "w": "subsequent", "m": "その後の"}, {"no": 1090, "w": "shallow", "m": "浅い"}, {"no": 1091, "w": "indifferent", "m": "無関心な"}, {"no": 1092, "w": "inferior", "m": "より劣った"}, {"no": 1093, "w": "awkward", "m": "気まずい"}, {"no": 1094, "w": "obese", "m": "肥満した"}, {"no": 1095, "w": "pregnant", "m": "妊娠した"}, {"no": 1096, "w": "intimate", "m": "親密な"}, {"no": 1097, "w": "medieval", "m": "中世の"}, {"no": 1098, "w": "sacred", "m": "神聖な"}, {"no": 1099, "w": "simultaneously", "m": "同時に"}, {"no": 1100, "w": "versus", "m": "（A versus Bで）Ａ対Ｂ"}], "12": [{"no": 1101, "w": "proceed", "m": "進む　進行する"}, {"no": 1102, "w": "orient", "m": "慣らす"}, {"no": 1103, "w": "surf", "m": "（インターネット上の情報などを）見て回る"}, {"no": 1104, "w": "filter", "m": "ろ過する　取り除く"}, {"no": 1105, "w": "bind", "m": "縛る"}, {"no": 1106, "w": "resort", "m": "訴える　頼る"}, {"no": 1107, "w": "reinforce", "m": "強化する"}, {"no": 1108, "w": "accumulate", "m": "蓄積する　集める"}, {"no": 1109, "w": "bet", "m": "確信する　断言する"}, {"no": 1110, "w": "advocate", "m": "主張する"}, {"no": 1111, "w": "constitute", "m": "構成する"}, {"no": 1112, "w": "undertake", "m": "引き受ける"}, {"no": 1113, "w": "grip", "m": "握る"}, {"no": 1114, "w": "dismiss", "m": "（意見などを）退ける"}, {"no": 1115, "w": "fade", "m": "薄れる"}, {"no": 1116, "w": "conceal", "m": "隠す"}, {"no": 1117, "w": "chew", "m": "噛む"}, {"no": 1118, "w": "swallow", "m": "飲み込む"}, {"no": 1119, "w": "seal", "m": "密閉する"}, {"no": 1120, "w": "migrate", "m": "移住する"}, {"no": 1121, "w": "exaggerate", "m": "誇張する"}, {"no": 1122, "w": "accuse", "m": "非難する"}, {"no": 1123, "w": "vanish", "m": "消える"}, {"no": 1124, "w": "polish", "m": "磨く"}, {"no": 1125, "w": "wipe", "m": "拭く"}, {"no": 1126, "w": "sweep", "m": "掃く"}, {"no": 1127, "w": "mislead", "m": "誤解させる　欺く"}, {"no": 1128, "w": "spoil", "m": "台無しにする"}, {"no": 1129, "w": "compound", "m": "悪化させる"}, {"no": 1130, "w": "explode", "m": "爆発する"}, {"no": 1131, "w": "disgust", "m": "むかつかせる"}, {"no": 1132, "w": "commute", "m": "通勤[通学]する"}, {"no": 1133, "w": "decorate", "m": "装飾する"}, {"no": 1134, "w": "postpone", "m": "延期する"}, {"no": 1135, "w": "cease", "m": "やめる"}, {"no": 1136, "w": "compromise", "m": "妥協する"}, {"no": 1137, "w": "elect", "m": "選出する"}, {"no": 1138, "w": "extract", "m": "取り[搾り]出す"}, {"no": 1139, "w": "inherit", "m": "受け継ぐ"}, {"no": 1140, "w": "rear", "m": "（人・動物・植物を）育てる"}, {"no": 1141, "w": "empathy", "m": "感情移入　共感"}, {"no": 1142, "w": "cue", "m": "合図"}, {"no": 1143, "w": "enterprise", "m": "企業　事業"}, {"no": 1144, "w": "output", "m": "生産（高）"}, {"no": 1145, "w": "congress", "m": "（米国などの）議会"}, {"no": 1146, "w": "millennium", "m": "千年間　千年紀"}, {"no": 1147, "w": "mankind", "m": "人類"}, {"no": 1148, "w": "Muslim", "m": "イスラム教徒"}, {"no": 1149, "w": "estate", "m": "（動産・不動産などの）財産"}, {"no": 1150, "w": "landmine", "m": "地雷"}, {"no": 1151, "w": "caution", "m": "用心"}, {"no": 1152, "w": "controversy", "m": "論争"}, {"no": 1153, "w": "consensus", "m": "総意"}, {"no": 1154, "w": "retail", "m": "小売り"}, {"no": 1155, "w": "fiber", "m": "繊維（質）"}, {"no": 1156, "w": "scent", "m": "（よい）香り"}, {"no": 1157, "w": "beverage", "m": "（水以外の）飲み物　飲料"}, {"no": 1158, "w": "supplement", "m": "栄養補助剤　サプリメント"}, {"no": 1159, "w": "diabetes", "m": "糖尿病"}, {"no": 1160, "w": "province", "m": "州　省"}, {"no": 1161, "w": "reef", "m": "（岩や砂の）礁"}, {"no": 1162, "w": "microbe", "m": "微生物"}, {"no": 1163, "w": "excess", "m": "過剰　超過"}, {"no": 1164, "w": "gallery ", "m": "美術館　画廊"}, {"no": 1165, "w": "fame", "m": "名声"}, {"no": 1166, "w": "deadline", "m": "締め切り"}, {"no": 1167, "w": "undergraduate", "m": "学部学生"}, {"no": 1168, "w": "slavery", "m": "奴隷制度"}, {"no": 1169, "w": "prey", "m": "獲物"}, {"no": 1170, "w": "mess", "m": "散らかった状態[物]"}, {"no": 1171, "w": "recession", "m": "不況"}, {"no": 1172, "w": "retreat", "m": "後退　退却"}, {"no": 1173, "w": "grave", "m": "墓"}, {"no": 1174, "w": "column", "m": "コラム"}, {"no": 1175, "w": "scenery", "m": "景色"}, {"no": 1176, "w": "plot", "m": "（小説などの）筋"}, {"no": 1177, "w": "sculpture", "m": "彫刻（作品）"}, {"no": 1178, "w": "tablet", "m": "タブレット（型情報端末）"}, {"no": 1179, "w": "dense ", "m": "密集した　密度の高い"}, {"no": 1180, "w": "exotic", "m": "外来の"}, {"no": 1181, "w": "acid", "m": "酸性の"}, {"no": 1182, "w": "bitter", "m": "苦い　つらい"}, {"no": 1183, "w": "sensible", "m": "賢明な"}, {"no": 1184, "w": "noble", "m": "高貴な"}, {"no": 1185, "w": "vague", "m": "漠然とした　あいまいな"}, {"no": 1186, "w": "parallel", "m": "平行[並行]の"}, {"no": 1187, "w": "tense", "m": "張り詰めた　緊張した"}, {"no": 1188, "w": "vertical", "m": "垂直の"}, {"no": 1189, "w": "indigenous", "m": "原産の　先住の"}, {"no": 1190, "w": "aboriginal", "m": "アボリジニの"}, {"no": 1191, "w": "seasonal", "m": "季節の　季節的な"}, {"no": 1192, "w": "abundant", "m": "豊富な"}, {"no": 1193, "w": "hybrid", "m": "ハイブリッドの"}, {"no": 1194, "w": "irrelevant", "m": "無関係の"}, {"no": 1195, "w": "ridiculous", "m": "ばかげた"}, {"no": 1196, "w": "fairy", "m": "妖精の（ような）"}, {"no": 1197, "w": "sensory", "m": "感覚の"}, {"no": 1198, "w": "chronic", "m": "慢性の"}, {"no": 1199, "w": "voluntary", "m": "自発的な"}, {"no": 1200, "w": "inclined", "m": "傾向がある"}], "13": [{"no": 1201, "w": "infer", "m": "推論する　推測する"}, {"no": 1202, "w": "esteem", "m": "尊敬する"}, {"no": 1203, "w": "tackle", "m": "取り組む"}, {"no": 1204, "w": "venture", "m": "危険を冒して進む"}, {"no": 1205, "w": "accelerate", "m": "加速させる　促進する"}, {"no": 1206, "w": "accustom", "m": "（人を）慣れさせる"}, {"no": 1207, "w": "amuse", "m": "おもしろがらせる　楽しませる"}, {"no": 1208, "w": "flourish", "m": "繁栄する　"}, {"no": 1209, "w": "thrive", "m": "繁栄する　うまくいく"}, {"no": 1210, "w": "nurture", "m": "はぐくむ"}, {"no": 1211, "w": "click", "m": "クリックする"}, {"no": 1212, "w": "spin", "m": "回転する"}, {"no": 1213, "w": "clip", "m": "切り抜く"}, {"no": 1214, "w": "drag", "m": "引きずる"}, {"no": 1215, "w": "cast", "m": "投じる"}, {"no": 1216, "w": "scatter", "m": "まき散らす"}, {"no": 1217, "w": "tempt", "m": "気にさせる"}, {"no": 1218, "w": "withdraw", "m": "引き出す"}, {"no": 1219, "w": "yawn", "m": "あくびをする"}, {"no": 1220, "w": "blink", "m": "まばたきする"}, {"no": 1221, "w": "dye", "m": "染める"}, {"no": 1222, "w": "spill", "m": "こぼす"}, {"no": 1223, "w": "irritate", "m": "いらいらさせる"}, {"no": 1224, "w": "insult", "m": "侮辱する"}, {"no": 1225, "w": "enforce", "m": "施行[実施]する"}, {"no": 1226, "w": "rob", "m": "（金品を）奪う"}, {"no": 1227, "w": "drain ", "m": "（液体を）流出させる"}, {"no": 1228, "w": "suspend", "m": "停職[停学　出場停止]にする"}, {"no": 1229, "w": "drift", "m": "漂う"}, {"no": 1230, "w": "forgive", "m": "許す"}, {"no": 1231, "w": "revise", "m": "修正する"}, {"no": 1232, "w": "recruit", "m": "募る"}, {"no": 1233, "w": "twist", "m": "ねじる　ひねる"}, {"no": 1234, "w": "crush", "m": "押しつぶす"}, {"no": 1235, "w": "pin", "m": "ピンで留める"}, {"no": 1236, "w": "uncover", "m": "暴く"}, {"no": 1237, "w": "exploit", "m": "活用する"}, {"no": 1238, "w": "implement", "m": "実行[実施]する"}, {"no": 1239, "w": "integrate", "m": "統合する"}, {"no": 1240, "w": "incorporate", "m": "取り入れる"}, {"no": 1241, "w": "profile", "m": "人物の紹介"}, {"no": 1242, "w": "appetite", "m": "食欲"}, {"no": 1243, "w": "impulse", "m": "衝動"}, {"no": 1244, "w": "script", "m": "台本"}, {"no": 1245, "w": "anniversary", "m": "（～周年）記念日"}, {"no": 1246, "w": "pension", "m": "年金"}, {"no": 1247, "w": "temper", "m": "気質　気性"}, {"no": 1248, "w": "cortex", "m": "皮質"}, {"no": 1249, "w": "syndrome", "m": "症候群"}, {"no": 1250, "w": "chamber", "m": "（特定の目的の）部屋"}, {"no": 1251, "w": "utility", "m": "公共事業"}, {"no": 1252, "w": "cattle", "m": "牛"}, {"no": 1253, "w": "herd", "m": "（牛などの）群れ"}, {"no": 1254, "w": "fluid", "m": "流動体　液体"}, {"no": 1255, "w": "pity", "m": "残念なこと"}, {"no": 1256, "w": "priest", "m": "聖職者"}, {"no": 1257, "w": "acquaintance", "m": "知人"}, {"no": 1258, "w": "offspring", "m": "子孫　子"}, {"no": 1259, "w": "famine", "m": "飢饉"}, {"no": 1260, "w": "deforestation", "m": "森林伐採"}, {"no": 1261, "w": "jail", "m": "刑務所　拘置所"}, {"no": 1262, "w": "commodity", "m": "商品　"}, {"no": 1263, "w": "format", "m": "書式　形式"}, {"no": 1264, "w": "recipient", "m": "受け取る人"}, {"no": 1265, "w": "drill", "m": "訓練"}, {"no": 1266, "w": "inability", "m": "無能　無力"}, {"no": 1267, "w": "republic", "m": "共和国"}, {"no": 1268, "w": "combat", "m": "戦闘"}, {"no": 1269, "w": "debris", "m": "（破壊された後の）残骸　瓦礫"}, {"no": 1270, "w": "bug", "m": "病原菌（が起こす病気）"}, {"no": 1271, "w": "fraction", "m": "わずか　一部"}, {"no": 1272, "w": "index", "m": "指標"}, {"no": 1273, "w": "intuition", "m": "直観（力）　直感"}, {"no": 1274, "w": "motive", "m": "動機"}, {"no": 1275, "w": "consent", "m": "同意　承諾"}, {"no": 1276, "w": "hierarchy", "m": "（社会の）階層制"}, {"no": 1277, "w": "monument", "m": "記念碑　遺跡"}, {"no": 1278, "w": "asset", "m": "資産"}, {"no": 1279, "w": "decent", "m": "まずまずの"}, {"no": 1280, "w": "competent", "m": "有能な"}, {"no": 1281, "w": "straightforward", "m": "単純な"}, {"no": 1282, "w": "cosmetic", "m": "化粧の　美容の"}, {"no": 1283, "w": "delicate", "m": "繊細な"}, {"no": 1284, "w": "interior", "m": "室内の"}, {"no": 1285, "w": "transparent", "m": "透明な"}, {"no": 1286, "w": "aesthetic", "m": "美的な"}, {"no": 1287, "w": "deliberate", "m": "故意の"}, {"no": 1288, "w": "demographic", "m": "人口統計学の"}, {"no": 1289, "w": "prehistoric", "m": "有史以前の"}, {"no": 1290, "w": "innate", "m": "生まれながらの"}, {"no": 1291, "w": "mild", "m": "穏やかな"}, {"no": 1292, "w": "toxic", "m": "有毒な"}, {"no": 1293, "w": "ashamed", "m": "恥じて"}, {"no": 1294, "w": "humble", "m": "謙虚な"}, {"no": 1295, "w": "peculiar", "m": "特有の"}, {"no": 1296, "w": "steep", "m": "（傾斜が）急な"}, {"no": 1297, "w": "trivial", "m": "ささいな　取るに足りない"}, {"no": 1298, "w": "magnificent", "m": "壮大な"}, {"no": 1299, "w": "wireless", "m": "無線（電信）の　ラジオの"}, {"no": 1300, "w": "ongoing", "m": "継続している　進行中の"}], "14": [{"no": 1301, "w": "assure", "m": "自信をもって言う"}, {"no": 1302, "w": "precede", "m": "先行する"}, {"no": 1303, "w": "revive", "m": "復活させる"}, {"no": 1304, "w": "compel", "m": "強いる"}, {"no": 1305, "w": "blossom", "m": "花が咲く"}, {"no": 1306, "w": "terrify", "m": "怖がらせる"}, {"no": 1307, "w": "violate", "m": "（法律　規則など）に違反する"}, {"no": 1308, "w": "suppress", "m": "抑える"}, {"no": 1309, "w": "deceive", "m": "だます"}, {"no": 1310, "w": "manipulate", "m": "（巧みに）操る"}, {"no": 1311, "w": "starve", "m": "飢える"}, {"no": 1312, "w": "flee", "m": "逃げる"}, {"no": 1313, "w": "whisper", "m": "ささやく"}, {"no": 1314, "w": "yell", "m": "叫ぶ　どなる"}, {"no": 1315, "w": "deposit", "m": "置く"}, {"no": 1316, "w": "confine", "m": "限定する"}, {"no": 1317, "w": "swing", "m": "揺らす　振る"}, {"no": 1318, "w": "prolong", "m": "長引かせる"}, {"no": 1319, "w": "depict", "m": "描く"}, {"no": 1320, "w": "outline", "m": "要点を述べる"}, {"no": 1321, "w": "shed", "m": "捨て去る"}, {"no": 1322, "w": "emit", "m": "（光・熱などを）出す　排出する"}, {"no": 1323, "w": "renew", "m": "更新する"}, {"no": 1324, "w": "utilize", "m": "利用する"}, {"no": 1325, "w": "assert", "m": "主張する"}, {"no": 1326, "w": "strain", "m": "負担をかける"}, {"no": 1327, "w": "strive", "m": "努力する"}, {"no": 1328, "w": "dare", "m": "あえて[思い切って]・・・する"}, {"no": 1329, "w": "boast", "m": "誇る"}, {"no": 1330, "w": "startle", "m": "びっくりさせる"}, {"no": 1331, "w": "offend", "m": "気分を害する"}, {"no": 1332, "w": "compute", "m": "計算する"}, {"no": 1333, "w": "assemble", "m": "集める"}, {"no": 1334, "w": "worsen", "m": "悪化させる"}, {"no": 1335, "w": "flip", "m": "（ぱっと）裏返す"}, {"no": 1336, "w": "rub", "m": "こする"}, {"no": 1337, "w": "descend", "m": "降りる"}, {"no": 1338, "w": "compensate", "m": "補償する"}, {"no": 1339, "w": "comprise", "m": "から成る"}, {"no": 1340, "w": "prevail", "m": "普及している"}, {"no": 1341, "w": "quest", "m": "探求"}, {"no": 1342, "w": "dignity", "m": "尊厳"}, {"no": 1343, "w": "criterion", "m": "（判断・評価の）基準"}, {"no": 1344, "w": "paradox", "m": "逆説"}, {"no": 1345, "w": "parliament", "m": "（英国などの）議会"}, {"no": 1346, "w": "legislation", "m": "法律"}, {"no": 1347, "w": "agenda", "m": "協議事項（リスト）"}, {"no": 1348, "w": "mainstream", "m": "（活動・思想などの）主流"}, {"no": 1349, "w": "troop", "m": "軍隊"}, {"no": 1350, "w": "epidemic", "m": "流行（病）"}, {"no": 1351, "w": "outbreak", "m": "発生　勃発"}, {"no": 1352, "w": "chaos", "m": "混沌　大混乱"}, {"no": 1353, "w": "nightmare", "m": "悪夢（のような状況）"}, {"no": 1354, "w": "horror", "m": "恐怖"}, {"no": 1355, "w": "cluster", "m": "集団"}, {"no": 1356, "w": "pollen", "m": "花粉"}, {"no": 1357, "w": "hive", "m": "ミツバチの巣（箱）"}, {"no": 1358, "w": "irrigation", "m": "灌漑"}, {"no": 1359, "w": "dose", "m": "（薬の1回分の）服用量"}, {"no": 1360, "w": "suicide", "m": "自殺"}, {"no": 1361, "w": "feast", "m": "祝宴"}, {"no": 1362, "w": "cuisine", "m": "（独特の）料理　料理法"}, {"no": 1363, "w": "rumor", "m": "うわさ"}, {"no": 1364, "w": "proverb", "m": "ことわざ"}, {"no": 1365, "w": "signature", "m": "署名"}, {"no": 1366, "w": "formula", "m": "方法　解決策"}, {"no": 1367, "w": "tuition", "m": "授業料"}, {"no": 1368, "w": "intake", "m": "摂取量"}, {"no": 1369, "w": "spectrum", "m": "スペクトル"}, {"no": 1370, "w": "kidney", "m": "腎臓"}, {"no": 1371, "w": "gear", "m": "用具（一式）器具"}, {"no": 1372, "w": "aisle", "m": "（座席間などの）通路"}, {"no": 1373, "w": "grief", "m": "深い悲しみ"}, {"no": 1374, "w": "destiny", "m": "運命"}, {"no": 1375, "w": "skull", "m": "頭骨　頭蓋骨"}, {"no": 1376, "w": "tomb", "m": "墓"}, {"no": 1377, "w": "monk", "m": "修道士　僧"}, {"no": 1378, "w": "worship", "m": "崇拝　礼拝（式）"}, {"no": 1379, "w": "outstanding", "m": "際立った"}, {"no": 1380, "w": "unprecedented", "m": "前例のない"}, {"no": 1381, "w": "infinite", "m": "無限の"}, {"no": 1382, "w": "worthwhile", "m": "価値がある"}, {"no": 1383, "w": "indispensable", "m": "不可欠な"}, {"no": 1384, "w": "compulsory", "m": "義務的な　強制的な"}, {"no": 1385, "w": "probable", "m": "十分にありそうな"}, {"no": 1386, "w": "ambiguous", "m": "あいまいな"}, {"no": 1387, "w": "obscure", "m": "（世に）知られていない"}, {"no": 1388, "w": "skeptical", "m": "懐疑的な"}, {"no": 1389, "w": "fragile", "m": "壊れやすい"}, {"no": 1390, "w": "static", "m": "静的な"}, {"no": 1391, "w": "gradual", "m": "徐々の　緩やかな"}, {"no": 1392, "w": "vocal", "m": "声の　発声の"}, {"no": 1393, "w": "vivid", "m": "鮮やかな"}, {"no": 1394, "w": "imperial", "m": "帝国の"}, {"no": 1395, "w": "hostile", "m": "敵意のある"}, {"no": 1396, "w": "superficial", "m": "表面的な"}, {"no": 1397, "w": "scarce", "m": "乏しい"}, {"no": 1398, "w": "gross", "m": "統計の"}, {"no": 1399, "w": "inherent", "m": "生来の　本来的に備わっている"}, {"no": 1400, "w": "notable", "m": "注目に値する"}], "15": [{"no": 1401, "w": "update", "m": "最新のものにする"}, {"no": 1402, "w": "refresh", "m": "（気分を）さわやかにする"}, {"no": 1403, "w": "bloom", "m": "花が咲く"}, {"no": 1404, "w": "conquer", "m": "征服する"}, {"no": 1405, "w": "induce", "m": "引き起こす"}, {"no": 1406, "w": "attain", "m": "獲得する　達成する"}, {"no": 1407, "w": "spray", "m": "吹きかける　吹きつける"}, {"no": 1408, "w": "retrieve", "m": "（情報を）検索する"}, {"no": 1409, "w": "portray", "m": "描く"}, {"no": 1410, "w": "scratch", "m": "引っかく"}, {"no": 1411, "w": "designate", "m": "指定する"}, {"no": 1412, "w": "contradict", "m": "矛盾する"}, {"no": 1413, "w": "sigh", "m": "ため息をつく"}, {"no": 1414, "w": "disrupt", "m": "混乱させる"}, {"no": 1415, "w": "depart", "m": "出発する"}, {"no": 1416, "w": "navigate", "m": "誘導する"}, {"no": 1417, "w": "beg", "m": "切に頼む"}, {"no": 1418, "w": "inhabit", "m": "住んでいる"}, {"no": 1419, "w": "diagnose", "m": "診断する"}, {"no": 1420, "w": "comprehend", "m": "理解する"}, {"no": 1421, "w": "oblige", "m": "義務づける"}, {"no": 1422, "w": "cram", "m": "詰め込む"}, {"no": 1423, "w": "flock", "m": "群がる　集まる"}, {"no": 1424, "w": "underestimate", "m": "過小評価する"}, {"no": 1425, "w": "clarify", "m": "明確にする"}, {"no": 1426, "w": "spark", "m": "引き起こす"}, {"no": 1427, "w": "seize", "m": "つかむ"}, {"no": 1428, "w": "soar", "m": "急上昇する"}, {"no": 1429, "w": "glow", "m": "光り[照り]輝く"}, {"no": 1430, "w": "disguise", "m": "変装させる"}, {"no": 1431, "w": "distort", "m": "歪める"}, {"no": 1432, "w": "undermine", "m": "徐々にむしばむ"}, {"no": 1433, "w": "abolish", "m": "廃止する"}, {"no": 1434, "w": "strip", "m": "取り去る"}, {"no": 1435, "w": "dispose", "m": "処分する"}, {"no": 1436, "w": "dump", "m": "投棄する"}, {"no": 1437, "w": "weave", "m": "織る"}, {"no": 1438, "w": "refine", "m": "洗練する"}, {"no": 1439, "w": "enrich", "m": "豊かにする"}, {"no": 1440, "w": "coordinate", "m": "調整する"}, {"no": 1441, "w": "headline", "m": "（新聞などの）見出し"}, {"no": 1442, "w": "internship", "m": "実務「医学]研修"}, {"no": 1443, "w": "outlet", "m": "直売店　特売店"}, {"no": 1444, "w": "remedy", "m": "治療（法）"}, {"no": 1445, "w": "pill", "m": "調剤　丸薬"}, {"no": 1446, "w": "reception", "m": "反応"}, {"no": 1447, "w": "transaction", "m": "（商）取引"}, {"no": 1448, "w": "mutation", "m": "突然変異（体）"}, {"no": 1449, "w": "dairy", "m": "乳製品"}, {"no": 1450, "w": "compassion", "m": "同情"}, {"no": 1451, "w": "posture", "m": "姿勢"}, {"no": 1452, "w": "curse", "m": "悪態　ののしりの言葉"}, {"no": 1453, "w": "funeral", "m": "葬式"}, {"no": 1454, "w": "census", "m": "国勢調査"}, {"no": 1455, "w": "encyclopedia", "m": "百科事典"}, {"no": 1456, "w": "cereal", "m": "穀物"}, {"no": 1457, "w": "fragment", "m": "断片"}, {"no": 1458, "w": "patch", "m": "部品　斑点"}, {"no": 1459, "w": "rubbish", "m": "ごみ"}, {"no": 1460, "w": "maze", "m": "迷路"}, {"no": 1461, "w": "outlook", "m": "見解"}, {"no": 1462, "w": "breakthrough", "m": "大発見　飛躍的進歩"}, {"no": 1463, "w": "triumph", "m": "勝利"}, {"no": 1464, "w": "ally", "m": "同盟国"}, {"no": 1465, "w": "spectator", "m": "（試合などの）観客"}, {"no": 1466, "w": "sphere", "m": "領域"}, {"no": 1467, "w": "county", "m": "郡"}, {"no": 1468, "w": "behalf", "m": "利益　味方"}, {"no": 1469, "w": "interval", "m": "（時間の）間隔"}, {"no": 1470, "w": "circulation", "m": "循環"}, {"no": 1471, "w": "blade", "m": "刃"}, {"no": 1472, "w": "theft", "m": "窃盗（罪）"}, {"no": 1473, "w": "vacuum", "m": "真空"}, {"no": 1474, "w": "collision", "m": "衝突"}, {"no": 1475, "w": "bargain", "m": "買い得品"}, {"no": 1476, "w": "landmark", "m": "（ある場所の）目印"}, {"no": 1477, "w": "revenue", "m": "歳入"}, {"no": 1478, "w": "treaty", "m": "（国家間の）条約"}, {"no": 1479, "w": "supreme", "m": "最高の"}, {"no": 1480, "w": "thorough", "m": "徹底的な"}, {"no": 1481, "w": "naked", "m": "裸の"}, {"no": 1482, "w": "sincere", "m": "心からの"}, {"no": 1483, "w": "tame", "m": "飼いならされた　人に慣れた"}, {"no": 1484, "w": "insufficient", "m": "不十分な"}, {"no": 1485, "w": "dim", "m": "薄暗い"}, {"no": 1486, "w": "acute", "m": "（痛み・感覚などが）激しい"}, {"no": 1487, "w": "disabled", "m": "障害のある"}, {"no": 1488, "w": "metropolitan", "m": "大都市の　首都圏の"}, {"no": 1489, "w": "monetary", "m": "金銭的な"}, {"no": 1490, "w": "alternate", "m": "代わりの"}, {"no": 1491, "w": "partial", "m": "部分的な"}, {"no": 1492, "w": "divine", "m": "神の"}, {"no": 1493, "w": "drastic", "m": "徹底的な　抜本的な"}, {"no": 1494, "w": "fierce", "m": "獰猛な"}, {"no": 1495, "w": "sole", "m": "唯一の"}, {"no": 1496, "w": "spontaneous", "m": "自然発生的な"}, {"no": 1497, "w": "spatial", "m": "空間の"}, {"no": 1498, "w": "neat", "m": "きちんとした"}, {"no": 1499, "w": "tidy", "m": "きちんとした　整頓された"}, {"no": 1500, "w": "loyal", "m": "忠実な"}], "16": [{"no": 1501, "w": "bless", "m": "恩恵を与える"}, {"no": 1502, "w": "regain", "m": "取り戻す"}, {"no": 1503, "w": "conform", "m": "順応する"}, {"no": 1504, "w": "enroll", "m": "登録する　入会する"}, {"no": 1505, "w": "entitle", "m": "権利を与える"}, {"no": 1506, "w": "halt", "m": "止める"}, {"no": 1507, "w": "provoke", "m": "（感情・行動などを）引き起こす"}, {"no": 1508, "w": "invade", "m": "侵略する"}, {"no": 1509, "w": "squeeze", "m": "押し入る"}, {"no": 1510, "w": "crawl", "m": "はう"}, {"no": 1511, "w": "digest", "m": "消化する"}, {"no": 1512, "w": "utter", "m": "（声を）発する"}, {"no": 1513, "w": "refrain", "m": "控える"}, {"no": 1514, "w": "populate", "m": "住む　住民である"}, {"no": 1515, "w": "accommodate", "m": "収容する"}, {"no": 1516, "w": "steer", "m": "操縦する"}, {"no": 1517, "w": "drown", "m": "溺死する"}, {"no": 1518, "w": "dip", "m": "浸す"}, {"no": 1519, "w": "soak", "m": "浸す"}, {"no": 1520, "w": "stir", "m": "かき回す"}, {"no": 1521, "w": "transplant", "m": "移植する"}, {"no": 1522, "w": "reassure", "m": "安心させる"}, {"no": 1523, "w": "resume", "m": "再開する"}, {"no": 1524, "w": "speculate", "m": "推測する"}, {"no": 1525, "w": "surpass", "m": "上回る"}, {"no": 1526, "w": "appoint", "m": "任命する"}, {"no": 1527, "w": "intrigue", "m": "興味を持たせる"}, {"no": 1528, "w": "decay", "m": "腐敗する"}, {"no": 1529, "w": "contaminate", "m": "汚染する"}, {"no": 1530, "w": "swell", "m": "膨張する　腫れる"}, {"no": 1531, "w": "delete", "m": "削除する　消す"}, {"no": 1532, "w": "tolerate", "m": "許容する　我慢する"}, {"no": 1533, "w": "envy", "m": "うらやむ"}, {"no": 1534, "w": "pray", "m": "祈る"}, {"no": 1535, "w": "confess", "m": "告白する"}, {"no": 1536, "w": "resign", "m": "辞任する"}, {"no": 1537, "w": "dissolve", "m": "溶かす"}, {"no": 1538, "w": "unfold", "m": "（閉じたものを）開く"}, {"no": 1539, "w": "awaken", "m": "目覚めさせる"}, {"no": 1540, "w": "conceive", "m": "思いつく"}, {"no": 1541, "w": "entrepreneur", "m": "起業家　事業家"}, {"no": 1542, "w": "stake", "m": "利害関係"}, {"no": 1543, "w": "surplus", "m": "余剰　過剰"}, {"no": 1544, "w": "inflation", "m": "インフレーション"}, {"no": 1545, "w": "sweatshop", "m": "搾取工場"}, {"no": 1546, "w": "clash", "m": "衝突"}, {"no": 1547, "w": "sociology", "m": "社会学"}, {"no": 1548, "w": "ideology", "m": "イデオロギー　思想傾向"}, {"no": 1549, "w": "margin", "m": "余白"}, {"no": 1550, "w": "realm", "m": "領域"}, {"no": 1551, "w": "domain", "m": "分野"}, {"no": 1552, "w": "algorithm", "m": "アルゴリズム"}, {"no": 1553, "w": "prairie", "m": "大草原"}, {"no": 1554, "w": "frontier", "m": "最先端"}, {"no": 1555, "w": "bullet", "m": "銃弾"}, {"no": 1556, "w": "shield", "m": "縦　防御物"}, {"no": 1557, "w": "despair", "m": "絶望"}, {"no": 1558, "w": "radiation", "m": "放射能　放射線"}, {"no": 1559, "w": "placebo", "m": "偽薬　プラシーボ"}, {"no": 1560, "w": "nursery", "m": "託児所"}, {"no": 1561, "w": "spouse", "m": "配偶者"}, {"no": 1562, "w": "makeup", "m": "化粧"}, {"no": 1563, "w": "mummy", "m": "ミイラ"}, {"no": 1564, "w": "flesh", "m": "（人・動物の）肉"}, {"no": 1565, "w": "limb", "m": "手足"}, {"no": 1566, "w": "odor", "m": "におい"}, {"no": 1567, "w": "laundry", "m": "洗濯（物）"}, {"no": 1568, "w": "tide", "m": "潮（の干満）"}, {"no": 1569, "w": "questionnaire", "m": "アンケート"}, {"no": 1570, "w": "nonsense", "m": "ばかげた物[話・考え]"}, {"no": 1571, "w": "revenge", "m": "復讐"}, {"no": 1572, "w": "intellect", "m": "知性"}, {"no": 1573, "w": "hospitality", "m": "親切なもてなし　歓待"}, {"no": 1574, "w": "librarian", "m": "司書　図書館員"}, {"no": 1575, "w": "manuscript", "m": "（手書きの）原稿"}, {"no": 1576, "w": "obsession", "m": "（考えなどに）取りつかれること"}, {"no": 1577, "w": "hygiene", "m": "衛生（状態）"}, {"no": 1578, "w": "paradigm", "m": "理論的枠組み　パラダイム"}, {"no": 1579, "w": "legitimate", "m": "合法的な"}, {"no": 1580, "w": "authentic", "m": "本物の"}, {"no": 1581, "w": "empirical", "m": "経験的な"}, {"no": 1582, "w": "immense", "m": "膨大な"}, {"no": 1583, "w": "absurd", "m": "ばかげた"}, {"no": 1584, "w": "weird", "m": "異様な　奇妙な"}, {"no": 1585, "w": "accidental", "m": "偶然の　"}, {"no": 1586, "w": "uneasy", "m": "不安な"}, {"no": 1587, "w": "jealous", "m": "嫉妬深い"}, {"no": 1588, "w": "feminine", "m": "女らしい"}, {"no": 1589, "w": "swift", "m": "素早い"}, {"no": 1590, "w": "hollow", "m": "空洞の"}, {"no": 1591, "w": "crude", "m": "大まかな"}, {"no": 1592, "w": "sore", "m": "痛い"}, {"no": 1593, "w": "pessimistic", "m": "悲観的な"}, {"no": 1594, "w": "vain", "m": "無駄な"}, {"no": 1595, "w": "susceptible", "m": "影響を受けやすい"}, {"no": 1596, "w": "edible", "m": "食用の　食べられる"}, {"no": 1597, "w": "sheer", "m": "純然たる　真の"}, {"no": 1598, "w": "explicit", "m": "明白な"}, {"no": 1599, "w": "prone", "m": "なりやすい"}, {"no": 1600, "w": "affluent", "m": "裕福な"}], "17": [{"no": 1601, "w": "collaborate", "m": "共同して働く"}, {"no": 1602, "w": "exert", "m": "及ぼす"}, {"no": 1603, "w": "excel", "m": "秀でている"}, {"no": 1604, "w": "prosper", "m": "栄える　成功する"}, {"no": 1605, "w": "surge", "m": "殺到する　"}, {"no": 1606, "w": "intervene", "m": "介入する"}, {"no": 1607, "w": "insert", "m": "挿入する"}, {"no": 1608, "w": "overtake", "m": "追い抜く"}, {"no": 1609, "w": "snap", "m": "パチンと鳴らす"}, {"no": 1610, "w": "carve", "m": "彫る"}, {"no": 1611, "w": "addict", "m": "中毒になる"}, {"no": 1612, "w": "condemn", "m": "非難する"}, {"no": 1613, "w": "convict", "m": "有罪を宣告する"}, {"no": 1614, "w": "dictate", "m": "指図する"}, {"no": 1615, "w": "prescribe", "m": "（薬などを）処方する"}, {"no": 1616, "w": "inhibit", "m": "抑制する"}, {"no": 1617, "w": "stray", "m": "はぐれる（道に）迷う"}, {"no": 1618, "w": "roam", "m": "歩き回る"}, {"no": 1619, "w": "enclose", "m": "同封する"}, {"no": 1620, "w": "execute", "m": "実行する"}, {"no": 1621, "w": "coincide", "m": "同時に起こる"}, {"no": 1622, "w": "lag", "m": "遅れる"}, {"no": 1623, "w": "cling", "m": "しがみつく"}, {"no": 1624, "w": "erase ", "m": "消す"}, {"no": 1625, "w": "grind", "m": "（穀物などを）ひく"}, {"no": 1626, "w": "knit", "m": "編む"}, {"no": 1627, "w": "inquire", "m": "尋ねる"}, {"no": 1628, "w": "betray", "m": "うっかり表す"}, {"no": 1629, "w": "leak", "m": "漏れる"}, {"no": 1630, "w": "smash", "m": "粉砕する"}, {"no": 1631, "w": "bounce", "m": "跳ねる"}, {"no": 1632, "w": "sprawl", "m": "（都市などが）不規則に広がる"}, {"no": 1633, "w": "converse", "m": "会話をする"}, {"no": 1634, "w": "recite", "m": "暗唱する"}, {"no": 1635, "w": "disregard", "m": "無視する"}, {"no": 1636, "w": "frown", "m": "眉をひそめる"}, {"no": 1637, "w": "evoke", "m": "呼び起こす"}, {"no": 1638, "w": "pledge", "m": "誓う　約束する"}, {"no": 1639, "w": "aspire", "m": "熱望する"}, {"no": 1640, "w": "contemplate", "m": "熟考する"}, {"no": 1641, "w": "grace", "m": "優美　優雅"}, {"no": 1642, "w": "enlightenment", "m": "啓蒙　啓発"}, {"no": 1643, "w": "commerce", "m": "商業"}, {"no": 1644, "w": "draft", "m": "下書き"}, {"no": 1645, "w": "barrel", "m": "バレル"}, {"no": 1646, "w": "timber", "m": "木材"}, {"no": 1647, "w": "garment", "m": "衣服"}, {"no": 1648, "w": "thread", "m": "糸"}, {"no": 1649, "w": "cabinet", "m": "内閣"}, {"no": 1650, "w": "bureau", "m": "（官庁の）局"}, {"no": 1651, "w": "autonomy", "m": "（個人の）自律"}, {"no": 1652, "w": "toll", "m": "損害（の程度）"}, {"no": 1653, "w": "discourse", "m": "話し合い　会話"}, {"no": 1654, "w": "superstition", "m": "迷信"}, {"no": 1655, "w": "glimpse", "m": "ちらりと見えること"}, {"no": 1656, "w": "arithmetic", "m": "計算"}, {"no": 1657, "w": "glossary", "m": "用語小辞典"}, {"no": 1658, "w": "archive", "m": "記録文書　公文書"}, {"no": 1659, "w": "legacy", "m": "遺産"}, {"no": 1660, "w": "anthropology", "m": "人類学"}, {"no": 1661, "w": "rage", "m": "激怒"}, {"no": 1662, "w": "sorrow", "m": "悲しみ"}, {"no": 1663, "w": "psychiatrist", "m": "精神科医"}, {"no": 1664, "w": "ward", "m": "行政区"}, {"no": 1665, "w": "stall", "m": "露店"}, {"no": 1666, "w": "flame", "m": "炎"}, {"no": 1667, "w": "moisture", "m": "水分"}, {"no": 1668, "w": "irony", "m": "皮肉"}, {"no": 1669, "w": "warrior", "m": "戦士"}, {"no": 1670, "w": "astronomy", "m": "天文学"}, {"no": 1671, "w": "probe", "m": "（無人）宇宙探査機"}, {"no": 1672, "w": "altitude", "m": "高度　標高"}, {"no": 1673, "w": "tumor", "m": "腫瘍"}, {"no": 1674, "w": "defect", "m": "欠陥"}, {"no": 1675, "w": "sanitation", "m": "公衆衛生（学）"}, {"no": 1676, "w": "longevity", "m": "長寿"}, {"no": 1677, "w": "scope", "m": "（活動・能力などの）範囲"}, {"no": 1678, "w": "sentiment", "m": "感情"}, {"no": 1679, "w": "plausible", "m": "もっともらしい"}, {"no": 1680, "w": "vigorous", "m": "精力的な"}, {"no": 1681, "w": "masculine", "m": "男らしい"}, {"no": 1682, "w": "rigid", "m": "厳しい"}, {"no": 1683, "w": "adverse", "m": "不都合な"}, {"no": 1684, "w": "coherent", "m": "一貫した　筋の通った"}, {"no": 1685, "w": "literal", "m": "文字どおりの"}, {"no": 1686, "w": "arbitrary", "m": "恣意的な"}, {"no": 1687, "w": "anonymous", "m": "匿名の"}, {"no": 1688, "w": "antique", "m": "骨董の　アンティークの"}, {"no": 1689, "w": "eternal", "m": "永遠の"}, {"no": 1690, "w": "intermediate", "m": "中級の"}, {"no": 1691, "w": "subordinate", "m": "下位の"}, {"no": 1692, "w": "gloomy", "m": "陰気な"}, {"no": 1693, "w": "thermal", "m": "熱の　熱による"}, {"no": 1694, "w": "faint", "m": "かすかな"}, {"no": 1695, "w": "naive", "m": "お人よしの　愚直な"}, {"no": 1696, "w": "apt", "m": "傾向がある"}, {"no": 1697, "w": "arrogant", "m": "横柄な　傲慢な"}, {"no": 1698, "w": "extrovert", "m": "外交的な"}, {"no": 1699, "w": "conspicuous", "m": "目立つ"}, {"no": 1700, "w": "intact", "m": "損なわれていない　手つかずの"}], "18": [{"no": 1701, "w": "embody", "m": "具現する"}, {"no": 1702, "w": "illuminate", "m": "照らす"}, {"no": 1703, "w": "console", "m": "慰める"}, {"no": 1704, "w": "verify", "m": "正しさを証明[確認]する"}, {"no": 1705, "w": "disclose", "m": "公表する　暴く"}, {"no": 1706, "w": "stack", "m": "積む　積み重ねる"}, {"no": 1707, "w": "rotate", "m": "回転する"}, {"no": 1708, "w": "constrain", "m": "強いる"}, {"no": 1709, "w": "hinder", "m": "妨げる"}, {"no": 1710, "w": "withstand", "m": "耐える"}, {"no": 1711, "w": "tweet", "m": "ツイートする　つぶやく"}, {"no": 1712, "w": "sneeze", "m": "くしゃみをする"}, {"no": 1713, "w": "erupt", "m": "（火山が）噴火する"}, {"no": 1714, "w": "blur", "m": "ぼかす"}, {"no": 1715, "w": "overlap", "m": "（一部）重なる"}, {"no": 1716, "w": "embed", "m": "埋め込まれる　はめ込まれる"}, {"no": 1717, "w": "displace", "m": "取って代わる"}, {"no": 1718, "w": "render", "m": "（ある状態に）する"}, {"no": 1719, "w": "plunge", "m": "突っ込む"}, {"no": 1720, "w": "surrender", "m": "放棄する　引き渡す"}, {"no": 1721, "w": "plug", "m": "プラグを電源に差し込む"}, {"no": 1722, "w": "suck", "m": "吸う"}, {"no": 1723, "w": "mock", "m": "ばかにする"}, {"no": 1724, "w": "tease", "m": "からかう"}, {"no": 1725, "w": "soothe", "m": "なだめる"}, {"no": 1726, "w": "stain", "m": "汚す"}, {"no": 1727, "w": "shun", "m": "避ける"}, {"no": 1728, "w": "stumble", "m": "よろけながら歩く"}, {"no": 1729, "w": "flush", "m": "紅潮させる"}, {"no": 1730, "w": "impair", "m": "損なう"}, {"no": 1731, "w": "presume", "m": "思う"}, {"no": 1732, "w": "contend", "m": "主張する"}, {"no": 1733, "w": "roar", "m": "うなる　ほえる"}, {"no": 1734, "w": "haunt", "m": "（記憶・考えなどが）つきまとう"}, {"no": 1735, "w": "divert", "m": "（注意などを）そらす"}, {"no": 1736, "w": "await", "m": "待つ"}, {"no": 1737, "w": "fetch", "m": "（行って）持って[連れて]くる"}, {"no": 1738, "w": "unify", "m": "統合[統一]する"}, {"no": 1739, "w": "inspect", "m": "点検する"}, {"no": 1740, "w": "entail", "m": "伴う　引き起こす"}, {"no": 1741, "w": "tactics", "m": "作戦　方策"}, {"no": 1742, "w": "feat", "m": "偉業　功績"}, {"no": 1743, "w": "prestige", "m": "名声"}, {"no": 1744, "w": "analogy", "m": "類推"}, {"no": 1745, "w": "conscience", "m": "良心"}, {"no": 1746, "w": "textile", "m": "織物"}, {"no": 1747, "w": "deficit", "m": "赤字　不足"}, {"no": 1748, "w": "plague", "m": "疫病"}, {"no": 1749, "w": "hazard", "m": "危険（要素）"}, {"no": 1750, "w": "metabolism", "m": "（新陳）代謝　代謝作用"}, {"no": 1751, "w": "paralysis", "m": "麻痺"}, {"no": 1752, "w": "grid", "m": "（電気などの）供給網"}, {"no": 1753, "w": "carriage", "m": "馬車"}, {"no": 1754, "w": "friction", "m": "不和"}, {"no": 1755, "w": "rebel", "m": "反逆者"}, {"no": 1756, "w": "regime", "m": "政権　政体"}, {"no": 1757, "w": "monopoly", "m": "独占（権）"}, {"no": 1758, "w": "staple", "m": "必需商品"}, {"no": 1759, "w": "merchandise", "m": "商品"}, {"no": 1760, "w": "vendor", "m": "物売り　行商人"}, {"no": 1761, "w": "supervisor", "m": "監督者"}, {"no": 1762, "w": "predecessor", "m": "前任者"}, {"no": 1763, "w": "personnel", "m": "職員　社員"}, {"no": 1764, "w": "vessel", "m": "船舶"}, {"no": 1765, "w": "liver", "m": "肝臓"}, {"no": 1766, "w": "duration", "m": "（時間の）継続　持続（時間）"}, {"no": 1767, "w": "certificate", "m": "証明書"}, {"no": 1768, "w": "geometry", "m": "幾何学"}, {"no": 1769, "w": "symmetry", "m": "（左右）対称"}, {"no": 1770, "w": "biography", "m": "伝記"}, {"no": 1771, "w": "masterpiece", "m": "傑作"}, {"no": 1772, "w": "rhyme", "m": "押韻詩"}, {"no": 1773, "w": "premium", "m": "保険料"}, {"no": 1774, "w": "breakdown", "m": "崩壊"}, {"no": 1775, "w": "courtesy", "m": "礼儀正しさ"}, {"no": 1776, "w": "protocol", "m": "（条約）議定書"}, {"no": 1777, "w": "specimen", "m": "標本"}, {"no": 1778, "w": "thesis", "m": "論文"}, {"no": 1779, "w": "eligible", "m": "適格の　資格のある"}, {"no": 1780, "w": "intrinsic", "m": "固有の　本質的な"}, {"no": 1781, "w": "diligent", "m": "勤勉な"}, {"no": 1782, "w": "vocational", "m": "職業の　職業訓練の（ための）"}, {"no": 1783, "w": "bankrupt", "m": "破産宣告を受けた"}, {"no": 1784, "w": "stern", "m": "厳しい"}, {"no": 1785, "w": "stubborn", "m": "頑固な　強情な"}, {"no": 1786, "w": "maternal", "m": "母の　母親らしい"}, {"no": 1787, "w": "fertile", "m": "肥沃な"}, {"no": 1788, "w": "ripe", "m": "熟した"}, {"no": 1789, "w": "stiff", "m": "硬直した　凝った"}, {"no": 1790, "w": "obsolete", "m": "廃れた　使われなくなった"}, {"no": 1791, "w": "vacant", "m": "空いている"}, {"no": 1792, "w": "acoustic", "m": "音響の"}, {"no": 1793, "w": "preliminary", "m": "予備の　準備の"}, {"no": 1794, "w": "approximate", "m": "おおよその"}, {"no": 1795, "w": "implicit", "m": "暗黙の"}, {"no": 1796, "w": "punctual", "m": "時間を守る"}, {"no": 1797, "w": "compatible", "m": "矛盾しない"}, {"no": 1798, "w": "ample", "m": "十分すぎるほどの"}, {"no": 1799, "w": "pervasive", "m": "隅々に広がった"}, {"no": 1800, "w": "ubiquitous", "m": "至る所にある"}], "19": [{"no": 1801, "w": "deduce", "m": "推測する　演繹する"}, {"no": 1802, "w": "simulate", "m": "模擬実験する"}, {"no": 1803, "w": "merge", "m": "合併する"}, {"no": 1804, "w": "penetrate", "m": "浸透する"}, {"no": 1805, "w": "cater", "m": "料理をまかなう"}, {"no": 1806, "w": "assault", "m": "暴行する"}, {"no": 1807, "w": "torture", "m": "拷問にかける"}, {"no": 1808, "w": "bleed", "m": "出血する"}, {"no": 1809, "w": "erect", "m": "建てる"}, {"no": 1810, "w": "cherish", "m": "大切にする"}, {"no": 1811, "w": "arouse", "m": "（感情など）を引き起こす"}, {"no": 1812, "w": "doom", "m": "運命にある"}, {"no": 1813, "w": "mourn", "m": "悼む"}, {"no": 1814, "w": "dread", "m": "ひどく恐れる"}, {"no": 1815, "w": "nourish", "m": "栄養を与える"}, {"no": 1816, "w": "inject", "m": "（人に）注射する　注入する"}, {"no": 1817, "w": "swear", "m": "ののしる"}, {"no": 1818, "w": "bid", "m": "値をつける"}, {"no": 1819, "w": "corrupt", "m": "堕落させる"}, {"no": 1820, "w": "preoccupy", "m": "心を奪う　夢中にさせる"}, {"no": 1821, "w": "browse", "m": "拾い読みする"}, {"no": 1822, "w": "compile", "m": "編集する"}, {"no": 1823, "w": "allocate", "m": "割り当てる　分配する"}, {"no": 1824, "w": "offset", "m": "相殺する　埋め合わせる"}, {"no": 1825, "w": "restrain", "m": "制止する"}, {"no": 1826, "w": "comply", "m": "従う　応じる"}, {"no": 1827, "w": "expire", "m": "期限が切れる"}, {"no": 1828, "w": "embark", "m": "乗り出す"}, {"no": 1829, "w": "flap", "m": "パタパタ動く"}, {"no": 1830, "w": "furnish", "m": "備えつける"}, {"no": 1831, "w": "forge", "m": "偽造する"}, {"no": 1832, "w": "thrust", "m": "押しつける"}, {"no": 1833, "w": "dispatch", "m": "派遣する"}, {"no": 1834, "w": "resent", "m": "憤慨する"}, {"no": 1835, "w": "reconcile", "m": "一致させる"}, {"no": 1836, "w": "allege", "m": "主張する"}, {"no": 1837, "w": "oppress", "m": "抑圧[迫害]する"}, {"no": 1838, "w": "expel", "m": "追放する"}, {"no": 1839, "w": "ascend", "m": "上がる"}, {"no": 1840, "w": "commence", "m": "始まる"}, {"no": 1841, "w": "advent", "m": "出現　到来"}, {"no": 1842, "w": "reign", "m": "治世"}, {"no": 1843, "w": "diplomacy", "m": "外交（的手段）"}, {"no": 1844, "w": "embassy", "m": "大使館"}, {"no": 1845, "w": "exile", "m": "亡命（者）"}, {"no": 1846, "w": "refuge", "m": "避難（所）"}, {"no": 1847, "w": "plight", "m": "窮状"}, {"no": 1848, "w": "solitude", "m": "ひとりでいること"}, {"no": 1849, "w": "fallacy", "m": "誤った考え　誤信"}, {"no": 1850, "w": "latitude", "m": "緯度"}, {"no": 1851, "w": "eclipse", "m": "（日食・月食などの）食"}, {"no": 1852, "w": "basin", "m": "流域"}, {"no": 1853, "w": "erosion", "m": "浸食"}, {"no": 1854, "w": "archaeology", "m": "考古学"}, {"no": 1855, "w": "errand", "m": "（人の）使い　使い走り"}, {"no": 1856, "w": "mercy", "m": "慈悲"}, {"no": 1857, "w": "rhetoric", "m": "修辞（法）"}, {"no": 1858, "w": "verse", "m": "韻文"}, {"no": 1859, "w": "congestion", "m": "混雑"}, {"no": 1860, "w": "sewage", "m": "下水"}, {"no": 1861, "w": "complement", "m": "補完物　補足"}, {"no": 1862, "w": "subsidy", "m": "補助金"}, {"no": 1863, "w": "mortgage", "m": "住宅ローン"}, {"no": 1864, "w": "attorney", "m": "弁護士"}, {"no": 1865, "w": "outfit", "m": "衣装一式"}, {"no": 1866, "w": "bulk", "m": "大半"}, {"no": 1867, "w": "reunion", "m": "再会（の集い）"}, {"no": 1868, "w": "synthesis", "m": "合成"}, {"no": 1869, "w": "mold", "m": "鋳型"}, {"no": 1870, "w": "thirst", "m": "（のどの）渇き"}, {"no": 1871, "w": "greed", "m": "強欲"}, {"no": 1872, "w": "bribe", "m": "賄賂"}, {"no": 1873, "w": "contempt", "m": "軽蔑"}, {"no": 1874, "w": "texture", "m": "感触　手触り"}, {"no": 1875, "w": "orphan", "m": "孤児"}, {"no": 1876, "w": "harassment", "m": "嫌がらせ　ハラスメント"}, {"no": 1877, "w": "hay", "m": "干し草"}, {"no": 1878, "w": "doctrine", "m": "教義"}, {"no": 1879, "w": "holistic", "m": "全体論の"}, {"no": 1880, "w": "liable", "m": "しがちな"}, {"no": 1881, "w": "earnest", "m": "まじめな　熱心な"}, {"no": 1882, "w": "intelligible", "m": "（簡単に）理解できる"}, {"no": 1883, "w": "abrupt", "m": "突然の"}, {"no": 1884, "w": "reckless", "m": "無謀な"}, {"no": 1885, "w": "furious", "m": "激怒した"}, {"no": 1886, "w": "eloquent", "m": "雄弁な"}, {"no": 1887, "w": "juvenile", "m": "青少年の"}, {"no": 1888, "w": "notorious", "m": "悪名高い"}, {"no": 1889, "w": "timid", "m": "臆病な"}, {"no": 1890, "w": "humid", "m": "湿気のある"}, {"no": 1891, "w": "contagious", "m": "感染（性）の"}, {"no": 1892, "w": "cynical", "m": "冷笑的な　皮肉な"}, {"no": 1893, "w": "dumb", "m": "ばかげた"}, {"no": 1894, "w": "monotonous", "m": "単調な"}, {"no": 1895, "w": "perpetual", "m": "永続的な"}, {"no": 1896, "w": "dizzy", "m": "目まいがする"}, {"no": 1897, "w": "weary", "m": "疲れ果てた"}, {"no": 1898, "w": "numb", "m": "麻痺した　無感覚な"}, {"no": 1899, "w": "mortal", "m": "致命的な"}, {"no": 1900, "w": "zealous", "m": "熱心な"}]};
+const PARTS = {1:[1,2,3,4,5,6,7,8], 2:[9,10,11,12,13,14,15], 3:[16,17,18,19]};
+let currentSet = 1;
+let DATA = SETS[currentSet];
+function allWords(){ return Object.keys(SETS).flatMap(k => SETS[k]); }
+
+const STORAGE_KEY = 'target1900_set1_progress';
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const init = {};
+  DATA.forEach(d => { init[d.no] = {wrong:0, right:0}; });
+  return { stats: init, totalSessions:0, lastDate:null };
+}
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+let progress = loadProgress();
+let order = DATA.map(d => d.no);
+let idx = 0;
+let flipped = false;
+
+const cardEl = document.getElementById('card');
+const cardNo = document.getElementById('cardNo');
+const cardWord = document.getElementById('cardWord');
+const cardMeaning = document.getElementById('cardMeaning');
+const cardHint = document.getElementById('cardHint');
+const controls = document.getElementById('controls');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+function dataByNo(no){ return allWords().find(d => d.no === no); }
+
+let reviewMode = false;
+
+function wrongList(){
+  // 全セット対象。「✕回数 > ○回数」の単語を苦手単語とみなす
+  return allWords().filter(d => {
+    const s = progress.stats[d.no];
+    return s && s.wrong > s.right;
+  }).map(d => d.no);
+}
+
+function buildOrder(){
+  if(reviewMode){
+    return wrongList();
+  }
+  return DATA.map(d => d.no);
+}
+
+function renderCard(){
+  if(reviewMode && order.length === 0){
+    cardNo.textContent = '';
+    cardWord.textContent = '🎉 苦手な単語はありません';
+    cardMeaning.textContent = 'このまま頑張ろう！';
+    cardHint.textContent = '';
+    controls.style.visibility = 'hidden';
+    cardEl.classList.remove('flipped');
+    progressFill.style.width = '0%';
+    progressText.textContent = '0 / 0';
+    return;
+  }
+  if(idx >= order.length){
+    cardNo.textContent = '完了!';
+    cardWord.textContent = 'お疲れさまでした 🎉';
+    cardMeaning.textContent = '';
+    cardHint.textContent = '「最初から」でもう一周できます';
+    controls.style.visibility = 'hidden';
+    cardEl.classList.remove('flipped');
+    progressFill.style.width = '100%';
+    progressText.textContent = `${order.length} / ${order.length}`;
+    return;
+  }
+  const no = order[idx];
+  const d = dataByNo(no);
+  cardNo.textContent = 'No.' + no;
+  cardWord.textContent = d.w;
+  cardMeaning.textContent = d.m;
+  cardHint.textContent = 'タップして意味を表示';
+  cardEl.classList.remove('flipped');
+  flipped = false;
+  controls.style.visibility = 'hidden';
+  progressFill.style.width = (idx / order.length * 100) + '%';
+  progressText.textContent = `${idx} / ${order.length}`;
+}
+
+cardEl.addEventListener('click', (e) => {
+  if(e.target.id === 'speakBtn') return;
+  if(idx >= order.length) return;
+  flipped = !flipped;
+  cardEl.classList.toggle('flipped', flipped);
+  controls.style.visibility = flipped ? 'visible' : 'hidden';
+});
+
+document.getElementById('speakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(idx >= order.length) return;
+  const d = dataByNo(order[idx]);
+  speak(d.w);
+});
+
+let englishVoice = null;
+
+function pickEnglishVoice(){
+  const voices = window.speechSynthesis.getVoices();
+  if(!voices || voices.length === 0) return null;
+  // 優先順位: en-US > en-GB > その他の en-*
+  let v = voices.find(v => v.lang === 'en-US');
+  if(!v) v = voices.find(v => v.lang === 'en-GB');
+  if(!v) v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  return v || null;
+}
+
+if('speechSynthesis' in window){
+  // 一部ブラウザは非同期に音声リストを読み込むため、準備できたら再取得
+  window.speechSynthesis.onvoiceschanged = () => {
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  };
+  englishVoice = pickEnglishVoice();
+}
+
+function updateVoiceWarning(){
+  const el = document.getElementById('voiceWarning');
+  if(!el) return;
+  el.style.display = englishVoice ? 'none' : 'block';
+}
+updateVoiceWarning();
+// iOSは読み込み直後に音声リストが空のことがあるため少し待って再チェック
+setTimeout(() => {
+  if(!englishVoice){
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  }
+}, 800);
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if(!englishVoice) englishVoice = pickEnglishVoice();
+  if(englishVoice){
+    u.voice = englishVoice;
+    u.lang = englishVoice.lang;
+  } else {
+    // 英語音声が見つからない場合の保険
+    u.lang = 'en-US';
+  }
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function answer(correct){
+  const no = order[idx];
+  if(!progress.stats[no]) progress.stats[no] = {wrong:0, right:0};
+  if(correct) progress.stats[no].right++;
+  else progress.stats[no].wrong++;
+  const today = new Date().toISOString().slice(0,10);
+  progress.stats[no].lastSeen = today;
+  if(!progress.dailyStats) progress.dailyStats = {};
+  if(!progress.dailyStats[today]) progress.dailyStats[today] = {right:0, wrong:0, words:{}};
+  if(correct) progress.dailyStats[today].right++;
+  else progress.dailyStats[today].wrong++;
+  progress.dailyStats[today].words[no] = true;
+  progress.totalSessions++;
+  progress.lastDate = today;
+  saveProgress();
+  idx++;
+  renderCard();
+}
+
+document.getElementById('btnYes').addEventListener('click', () => answer(true));
+document.getElementById('btnNo').addEventListener('click', () => answer(false));
+
+document.getElementById('btnShuffle').addEventListener('click', () => {
+  order = order.slice().sort(() => Math.random() - 0.5);
+  idx = 0;
+  renderCard();
+});
+document.getElementById('btnRestart').addEventListener('click', () => {
+  order = buildOrder();
+  idx = 0;
+  renderCard();
+});
+
+const reviewToggleBtn = document.getElementById('reviewToggleBtn');
+reviewToggleBtn.addEventListener('click', () => {
+  reviewMode = !reviewMode;
+  if(reviewMode){
+    reviewToggleBtn.style.background = 'var(--accent)';
+    reviewToggleBtn.style.color = '#5c3d00';
+    reviewToggleBtn.textContent = '✕ 復習モード解除（' + wrongList().length + '語）';
+  } else {
+    reviewToggleBtn.style.background = '#fff';
+    reviewToggleBtn.style.color = '#8a6300';
+    reviewToggleBtn.textContent = '🔁 苦手単語だけ復習（全セット対象）';
+  }
+  order = buildOrder();
+  idx = 0;
+  renderCard();
+});
+
+// タブ切り替え
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    // 先に新しいタブの内容を表示してから、他のタブを隠す
+    // (iPad Safariで「非表示→表示」の描画タイミングがズレ、高さ0pxになる不具合を回避)
+    if(tab === 'study'){
+      document.getElementById('tabStudy').classList.add('show');
+    }
+    if(tab === 'rank'){
+      document.getElementById('tabRank').classList.add('show');
+      renderRank();
+    }
+    if(tab === 'history'){
+      document.getElementById('tabHistory').classList.add('show');
+      renderHistory();
+    }
+    document.querySelectorAll('.screen').forEach(s => {
+      if(s.id !== 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1)){
+        s.classList.remove('show');
+      }
+    });
+  });
+});
+
+function renderRank(){
+  const rows = allWords().map(d => {
+    const s = progress.stats[d.no] || {wrong:0, right:0};
+    return { ...d, wrong: s.wrong };
+  }).filter(d => d.wrong > 0).sort((a,b) => b.wrong - a.wrong);
+  const body = document.getElementById('rankBody');
+  if(rows.length === 0){
+    body.innerHTML = '<tr><td colspan="4" class="small">まだデータがありません</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => `<tr><td>${r.no}</td><td>${r.w}</td><td>${r.m}</td><td>${r.wrong}</td></tr>`).join('');
+}
+
+function dateNDaysAgo(n){
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0,10);
+}
+
+function aggregateDailyStats(startDaysAgo, endDaysAgo){
+  // startDaysAgo > endDaysAgo （例：直近7日間は startDaysAgo=6, endDaysAgo=0）
+  const ds = progress.dailyStats || {};
+  let right = 0, wrong = 0;
+  const wordSet = new Set();
+  for(let n = startDaysAgo; n >= endDaysAgo; n--){
+    const day = dateNDaysAgo(n);
+    const rec = ds[day];
+    if(!rec) continue;
+    right += rec.right || 0;
+    wrong += rec.wrong || 0;
+    Object.keys(rec.words || {}).forEach(w => wordSet.add(w));
+  }
+  return { right, wrong, wordCount: wordSet.size };
+}
+
+function buildWeeklyReportText(){
+  const thisWeek = aggregateDailyStats(6, 0);
+  const lastWeek = aggregateDailyStats(13, 7);
+  const diff = thisWeek.wordCount - lastWeek.wordCount;
+  const diffText = diff > 0 ? `（先週より+${diff}語）` : diff < 0 ? `（先週より${diff}語）` : '（先週と同じ）';
+  const totalAnswered = thisWeek.right + thisWeek.wrong;
+  const correctRate = totalAnswered > 0 ? Math.round(thisWeek.right / totalAnswered * 100) : 0;
+  const weakCount = wrongList().length;
+
+  let comment;
+  if(thisWeek.wordCount === 0){
+    comment = '今週はまだ学習記録がありません。';
+  } else if(diff > 0){
+    comment = '先週よりペースが上がっています。とても良い調子です！';
+  } else if(weakCount > 0){
+    comment = `苦手単語が${weakCount}語あります。「苦手単語だけ復習」で見直すのがおすすめです。`;
+  } else {
+    comment = 'このまま続けていきましょう。';
+  }
+
+  return `📅 今週（直近7日間）の学習\n`
+    + `・学習した単語数：${thisWeek.wordCount}語 ${diffText}\n`
+    + `・「わかった」率：${totalAnswered > 0 ? correctRate + '%' : '-'}\n`
+    + `・現在の苦手単語：${weakCount}語\n\n`
+    + `💬 ${comment}`;
+}
+
+function renderWeeklyReport(){
+  const body = document.getElementById('weeklyReportBody');
+  if(body) body.textContent = buildWeeklyReportText();
+}
+
+document.getElementById('copyReportBtn').addEventListener('click', () => {
+  const text = buildWeeklyReportText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => {
+      alert('報告文をコピーしました。LINEなどに貼り付けてください。');
+    }).catch(() => {
+      alert('コピーに失敗しました。お手数ですが、文章を長押しして手動でコピーしてください。');
+    });
+  } else {
+    alert('このブラウザではコピー機能が使えません。お手数ですが、文章を長押しして手動でコピーしてください。');
+  }
+});
+
+function renderHistory(){
+  document.getElementById('statTotal').textContent = progress.totalSessions;
+  const masteredCount = Object.values(progress.stats).filter(s => s.right > 0).length;
+  document.getElementById('statMastered').textContent = `${masteredCount} / ${allWords().length}`;
+  document.getElementById('statLast').textContent = progress.lastDate || '-';
+  renderWeeklyReport();
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  if(confirm('学習履歴をリセットしますか？この操作は元に戻せません。')){
+    localStorage.removeItem(STORAGE_KEY);
+    progress = loadProgress();
+    renderHistory();
+    renderRank();
+    alert('リセットしました');
+  }
+});
+
+renderCard();
+
+/* ===== スペリングモード ===== */
+let spellOrder = DATA.map(d => d.no);
+let spellIdx = 0;
+let spellAnswer = []; // 各マスの内容（位置固定の配列。nullは空マス）
+let spellLetters = []; // {ch, used:bool}
+let spellChecked = false;
+let selectedSlotIndex = null; // タップで選択中の空マス
+
+const modeCardBtn = document.getElementById('modeCardBtn');
+const modeSpellBtn = document.getElementById('modeSpellBtn');
+const cardView = document.getElementById('cardView');
+const spellView = document.getElementById('spellView');
+const spellSubToggle = document.getElementById('spellSubToggle');
+const subBasicBtn = document.getElementById('subBasicBtn');
+const subChallengeBtn = document.getElementById('subChallengeBtn');
+const subTypeBtn = document.getElementById('subTypeBtn');
+const spellTypeWrap = document.getElementById('spellTypeWrap');
+const spellTypeInput = document.getElementById('spellTypeInput');
+let spellSubMode = 'basic'; // 'basic' | 'challenge' | 'type'
+
+modeCardBtn.addEventListener('click', () => {
+  modeCardBtn.classList.add('active');
+  modeSpellBtn.classList.remove('active');
+  cardView.style.display = '';
+  spellView.style.display = 'none';
+  spellSubToggle.style.display = 'none';
+});
+modeSpellBtn.addEventListener('click', () => {
+  modeSpellBtn.classList.add('active');
+  modeCardBtn.classList.remove('active');
+  cardView.style.display = 'none';
+  spellView.style.display = '';
+  spellSubToggle.style.display = 'flex';
+  renderSpell();
+});
+subBasicBtn.addEventListener('click', () => {
+  spellSubMode = 'basic';
+  subBasicBtn.classList.add('active');
+  subChallengeBtn.classList.remove('active');
+  subTypeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+subChallengeBtn.addEventListener('click', () => {
+  spellSubMode = 'challenge';
+  subChallengeBtn.classList.add('active');
+  subBasicBtn.classList.remove('active');
+  subTypeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+subTypeBtn.addEventListener('click', () => {
+  spellSubMode = 'type';
+  subTypeBtn.classList.add('active');
+  subBasicBtn.classList.remove('active');
+  subChallengeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+
+function shuffleArr(arr){
+  return arr.slice().sort(() => Math.random() - 0.5);
+}
+
+function makeDummyLetters(word, count){
+  const used = new Set(word.toLowerCase().split(''));
+  const pool = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(c => !used.has(c));
+  const shuffledPool = shuffleArr(pool);
+  return shuffledPool.slice(0, count);
+}
+
+function renderSpell(){
+  const fb = document.getElementById('spellFeedback');
+  fb.textContent = '';
+  selectedSlotIndex = null;
+  if(spellIdx >= spellOrder.length){
+    document.getElementById('spellNo').textContent = '完了!';
+    document.getElementById('spellMeaning').textContent = 'お疲れさまでした 🎉';
+    document.getElementById('spellAnswerSlot').innerHTML = '';
+    document.getElementById('spellLetterTray').innerHTML = '';
+    spellTypeWrap.style.display = 'none';
+    return;
+  }
+  const d = dataByNo(spellOrder[spellIdx]);
+  document.getElementById('spellNo').textContent = 'No.' + d.no;
+  document.getElementById('spellMeaning').textContent = d.m;
+  spellChecked = false;
+
+  if(spellSubMode === 'type'){
+    document.getElementById('spellAnswerSlot').innerHTML = '';
+    document.getElementById('spellLetterTray').innerHTML = '';
+    spellTypeWrap.style.display = 'flex';
+    spellTypeInput.value = '';
+    spellTypeInput.disabled = false;
+    spellTypeInput.style.borderColor = 'var(--green)';
+    return;
+  }
+  spellTypeWrap.style.display = 'none';
+
+  const letters = d.w.toLowerCase().split('');
+  spellAnswer = new Array(letters.length).fill(null); // 位置固定（どこからでも埋められる）
+  let pool = letters.map((ch, i) => ({ch, id:'r'+i, dummy:false}));
+  if(spellSubMode === 'challenge'){
+    const dummyCount = Math.max(3, Math.min(6, Math.round(letters.length * 0.5)));
+    const dummies = makeDummyLetters(d.w, dummyCount).map((ch, i) => ({ch, id:'d'+i, dummy:true}));
+    pool = pool.concat(dummies);
+  }
+  const shuffled = shuffleArr(pool);
+  spellLetters = shuffled.map(item => ({...item, used:false}));
+  renderSpellSlots(letters.length);
+  renderSpellTray();
+}
+
+function firstEmptySlot(){
+  return spellAnswer.findIndex(s => s === null);
+}
+
+function placeLetterAt(item, idx){
+  item.used = true;
+  spellAnswer[idx] = item;
+  selectedSlotIndex = null;
+  const next = firstEmptySlot();
+  if(next !== -1) selectedSlotIndex = next;
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+}
+
+function placeLetter(item){
+  // 選択中の空マスがあればそこへ、なければ最初の空マスへ
+  let idx = (selectedSlotIndex !== null && spellAnswer[selectedSlotIndex] === null) ? selectedSlotIndex : firstEmptySlot();
+  if(idx === -1) return; // 満杯
+  placeLetterAt(item, idx);
+}
+
+function renderSpellSlots(len){
+  const slot = document.getElementById('spellAnswerSlot');
+  slot.innerHTML = '';
+  for(let i=0;i<len;i++){
+    const div = document.createElement('div');
+    div.className = 'answer-slot';
+    div.dataset.idx = i;
+    div.textContent = spellAnswer[i] ? spellAnswer[i].ch : '';
+    if(!spellChecked && i === selectedSlotIndex && spellAnswer[i] === null){
+      div.style.borderColor = 'var(--accent)';
+      div.style.borderWidth = '3px';
+      div.style.background = '#fff8e1';
+    }
+    div.addEventListener('click', () => {
+      if(spellChecked) return;
+      if(spellAnswer[i]){
+        // 文字が入っているマスをタップ → そのマスだけ消す
+        const letterObj = spellAnswer[i];
+        letterObj.used = false;
+        spellAnswer[i] = null;
+        selectedSlotIndex = i;
+        renderSpellSlots(len);
+        renderSpellTray();
+      } else {
+        // 空マスをタップ → ここに次の文字を置く、と選択する
+        selectedSlotIndex = i;
+        renderSpellSlots(len);
+      }
+    });
+    slot.appendChild(div);
+  }
+}
+
+let dragGhost = null;
+let dragStartPos = null;
+let dragItem = null;
+
+function clearDragGhost(){
+  if(dragGhost){ dragGhost.remove(); dragGhost = null; }
+  document.querySelectorAll('.answer-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function renderSpellTray(){
+  const tray = document.getElementById('spellLetterTray');
+  tray.innerHTML = '';
+  spellLetters.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-tile';
+    btn.textContent = item.ch;
+    btn.style.opacity = item.used ? '0.25' : '1';
+    btn.style.touchAction = 'none';
+    btn.disabled = item.used || spellChecked;
+
+    btn.addEventListener('pointerdown', (e) => {
+      if(spellChecked || item.used) return;
+      dragItem = item;
+      dragStartPos = {x:e.clientX, y:e.clientY};
+      dragGhost = btn.cloneNode(true);
+      dragGhost.style.position = 'fixed';
+      dragGhost.style.zIndex = '9999';
+      dragGhost.style.pointerEvents = 'none';
+      dragGhost.style.opacity = '0.9';
+      dragGhost.style.left = (e.clientX - 18) + 'px';
+      dragGhost.style.top = (e.clientY - 18) + 'px';
+      document.body.appendChild(dragGhost);
+    });
+    tray.appendChild(btn);
+  });
+}
+
+document.addEventListener('pointermove', (e) => {
+  if(!dragGhost) return;
+  dragGhost.style.left = (e.clientX - 18) + 'px';
+  dragGhost.style.top = (e.clientY - 18) + 'px';
+  document.querySelectorAll('.answer-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  const slotEl = under ? under.closest('.answer-slot') : null;
+  if(slotEl) slotEl.classList.add('drag-over');
+});
+
+document.addEventListener('pointerup', (e) => {
+  if(!dragItem) return;
+  const item = dragItem;
+  const moved = dragStartPos ? Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y) : 0;
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  const slotEl = under ? under.closest('.answer-slot') : null;
+  clearDragGhost();
+  dragItem = null;
+  dragStartPos = null;
+  if(item.used || spellChecked) return;
+  if(slotEl && spellAnswer[Number(slotEl.dataset.idx)] === null){
+    // 指定のマスにドロップ
+    placeLetterAt(item, Number(slotEl.dataset.idx));
+  } else if(moved < 8){
+    // ほぼ動いていない＝タップ扱い
+    placeLetter(item);
+  }
+  // ドラッグしたが空マス以外の場所で離した場合は何もしない（元に戻る）
+});
+
+document.getElementById('spellBackBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  if(spellSubMode === 'type'){
+    spellTypeInput.value = spellTypeInput.value.slice(0, -1);
+    return;
+  }
+  // 一番右（末尾）の、文字が入っているマスを1つ消す
+  for(let i = spellAnswer.length - 1; i >= 0; i--){
+    if(spellAnswer[i]){
+      spellAnswer[i].used = false;
+      spellAnswer[i] = null;
+      selectedSlotIndex = i;
+      break;
+    }
+  }
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellClearBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  if(spellSubMode === 'type'){
+    spellTypeInput.value = '';
+    return;
+  }
+  spellAnswer.forEach(item => { if(item) item.used = false; });
+  spellAnswer = spellAnswer.map(() => null);
+  selectedSlotIndex = 0;
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellShuffleBtn').addEventListener('click', () => {
+  spellOrder = shuffleArr(spellOrder);
+  spellIdx = 0;
+  renderSpell();
+});
+
+document.getElementById('spellCheckBtn').addEventListener('click', () => {
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  const built = spellSubMode === 'type'
+    ? spellTypeInput.value.trim().toLowerCase()
+    : spellAnswer.map(a => a ? a.ch : '').join('');
+  const fb = document.getElementById('spellFeedback');
+  spellChecked = true;
+  if(spellSubMode === 'type'){
+    spellTypeInput.disabled = true;
+  } else {
+    renderSpellTray();
+  }
+  const today = new Date().toISOString().slice(0,10);
+  if(!progress.dailyStats) progress.dailyStats = {};
+  if(!progress.dailyStats[today]) progress.dailyStats[today] = {right:0, wrong:0, words:{}};
+  if(built === d.w.toLowerCase()){
+    fb.textContent = '○ 正解！';
+    fb.style.color = 'var(--green-dark)';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].right++;
+    progress.dailyStats[today].right++;
+  } else {
+    fb.textContent = `✕ 不正解（正解: ${d.w}）`;
+    fb.style.color = '#a33';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].wrong++;
+    progress.dailyStats[today].wrong++;
+  }
+  progress.stats[d.no].lastSeen = today;
+  progress.dailyStats[today].words[d.no] = true;
+  progress.totalSessions++;
+  progress.lastDate = today;
+  saveProgress();
+});
+
+document.getElementById('spellNextBtn').addEventListener('click', () => {
+  spellIdx++;
+  renderSpell();
+});
+
+document.getElementById('spellSpeakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  speak(d.w);
+});
+
+/* ===== セット切替 ===== */
+let currentPart = null; // 現在選択中のPart（初期はセット1が属するPartを自動選択）
+
+function partOf(setNo){
+  for(const p in PARTS){ if(PARTS[p].includes(setNo)) return Number(p); }
+  return 1;
+}
+
+function switchSet(n){
+  currentSet = n;
+  currentPart = partOf(n);
+  DATA = SETS[currentSet];
+  order = DATA.map(d => d.no);
+  idx = 0;
+  flipped = false;
+  renderCard();
+  spellOrder = DATA.map(d => d.no);
+  spellIdx = 0;
+  if(typeof renderSpell === 'function') renderSpell();
+  renderSetSelector();
+}
+
+function switchPart(p){
+  currentPart = p;
+  renderSetSelector();
+}
+
+function renderSetSelector(){
+  if(currentPart === null) currentPart = partOf(currentSet);
+  const el = document.getElementById('setSelector');
+  const partKeys = Object.keys(PARTS).map(Number).sort((a,b)=>a-b);
+  const partRange = p => {
+    const sets = PARTS[p];
+    const first = SETS[sets[0]][0].no;
+    const last = SETS[sets[sets.length-1]][SETS[sets[sets.length-1]].length-1].no;
+    return `${first}〜${last}`;
+  };
+  let html = '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-bottom:6px;">';
+  html += partKeys.map(p => {
+    const active = p === currentPart;
+    return `<button class="part-btn" data-part="${p}" style="flex:1 1 auto;min-width:90px;padding:7px 4px;border:1px solid var(--green-dark);border-radius:8px;font-size:0.8rem;font-weight:bold;background:${active ? 'var(--green-dark)' : '#fff'};color:${active ? '#fff' : 'var(--green-dark)'};">Part${p}（${partRange(p)}）</button>`;
+  }).join('');
+  html += '</div>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;">';
+  html += PARTS[currentPart].map(k => {
+    const active = k === currentSet && Object.keys(SETS).map(Number).includes(k);
+    const exists = SETS.hasOwnProperty(k);
+    return `<button class="set-btn" data-set="${k}" ${exists ? '' : 'disabled'} style="flex:1 1 auto;min-width:60px;padding:6px 4px;border:1px solid var(--green);border-radius:8px;font-size:0.78rem;background:${active ? 'var(--green)' : '#fff'};color:${active ? '#fff' : (exists ? 'var(--green)' : '#bbb')};opacity:${exists ? '1':'0.5'};">セット${k}</button>`;
+  }).join('');
+  html += '</div>';
+  el.innerHTML = html;
+  el.querySelectorAll('.part-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPart(Number(btn.dataset.part)));
+  });
+  el.querySelectorAll('.set-btn:not([disabled])').forEach(btn => {
+    btn.addEventListener('click', () => switchSet(Number(btn.dataset.set)));
+  });
+}
+renderSetSelector();
+
+</script>
+</body>
+</html>
+
