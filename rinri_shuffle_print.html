@@ -165,6 +165,10 @@
       <label><input type="radio" name="shufMode" value="all"> 選択した範囲をまとめて並び替え（総合問題）</label>
     </div>
 
+    <div class="shuffle-mode">
+      <label><input type="checkbox" id="weakOnlyCheckbox" onchange="renderUnitList()"> 苦手問題のみを対象にする（出題ツールの記録・現在<span id="weakTotalCount">0</span>問）</label>
+    </div>
+
     <button class="action-btn btn-shuffle" onclick="doShuffle()">シャッフルする</button>
     <button class="action-btn btn-reset" onclick="showOriginal()">教科書の元の順番で表示</button>
 
@@ -206,12 +210,33 @@ let currentChapterGroups = null; // for unit-mode display: [{title, items}]
 let currentMode = 'unit';
 let currentCodeSeed = null;
 
+// Shared with the quiz tool: same localStorage key on the same GitHub Pages origin
+const weakStats = JSON.parse(localStorage.getItem('rinri_weakstats_v1') || '{}');
+function isWeakOnly() {
+  const el = document.getElementById('weakOnlyCheckbox');
+  return el && el.checked;
+}
+function isWeakItem(it) {
+  const s = weakStats[it.no];
+  return !!(s && s.wrong > s.right);
+}
+function getPoolItems(items) {
+  return isWeakOnly() ? items.filter(isWeakItem) : items;
+}
+function totalWeakCount() {
+  return ALL_ITEMS.filter(isWeakItem).length;
+}
+
 function renderUnitList() {
+  const totalEl = document.getElementById('weakTotalCount');
+  if (totalEl) totalEl.textContent = totalWeakCount();
   const el = document.getElementById('unitList');
   el.innerHTML = '';
   let lastChapter = null;
   unitOrder.forEach(pr => {
     const u = unitMap[pr];
+    const count = getPoolItems(u.items).length;
+    if (isWeakOnly() && count === 0) return;
     if (u.chapter !== lastChapter) {
       const gt = document.createElement('div');
       gt.className = 'group-title';
@@ -229,7 +254,7 @@ function renderUnitList() {
     span.textContent = pr;
     const cnt = document.createElement('span');
     cnt.className = 'cnt';
-    cnt.textContent = u.items.length + '問';
+    cnt.textContent = count + '問';
     row.appendChild(cb); row.appendChild(span); row.appendChild(cnt);
     el.appendChild(row);
   });
@@ -270,18 +295,20 @@ function buildFromSeed(seed, mode) {
     let lastChapter = null; let curGroup = null;
     units.forEach(pr => {
       const u = unitMap[pr];
+      const pool = getPoolItems(u.items);
+      if (pool.length === 0) return;
       if (u.chapter !== lastChapter) {
         curGroup = { title: u.chapter, items: [] };
         groups.push(curGroup);
         lastChapter = u.chapter;
       }
-      const shuffledSub = shuffleWithRng(u.items, rng);
+      const shuffledSub = shuffleWithRng(pool, rng);
       curGroup.items.push(...shuffledSub);
     });
     return { groups, flat: null };
   } else {
     let pool = [];
-    units.forEach(pr => pool.push(...unitMap[pr].items));
+    units.forEach(pr => pool.push(...getPoolItems(unitMap[pr].items)));
     const flat = shuffleWithRng(pool, rng);
     return { groups: null, flat };
   }
@@ -289,6 +316,7 @@ function buildFromSeed(seed, mode) {
 
 function doShuffle() {
   if (selectedUnits.size === 0) { alert('出題する範囲を1つ以上選んでください。'); return; }
+  if (isWeakOnly() && totalWeakCount() === 0) { alert('苦手として記録されている問題がありません。出題ツールで問題に答えると、ここに反映されます。'); return; }
   const mode = document.querySelector('input[name="shufMode"]:checked').value;
   const seed = Math.floor(Math.random() * 900000) + 100000;
   applyShuffle(seed, mode);
@@ -309,6 +337,7 @@ function applyShuffle(seed, mode) {
 
 function showOriginal() {
   if (selectedUnits.size === 0) { alert('出題する範囲を1つ以上選んでください。'); return; }
+  if (isWeakOnly() && totalWeakCount() === 0) { alert('苦手として記録されている問題がありません。出題ツールで問題に答えると、ここに反映されます。'); return; }
   currentMode = 'original';
   currentCodeSeed = null;
   const units = getSelectedUnitsOrdered();
@@ -316,12 +345,14 @@ function showOriginal() {
   let lastChapter = null; let curGroup = null;
   units.forEach(pr => {
     const u = unitMap[pr];
+    const pool = getPoolItems(u.items);
+    if (pool.length === 0) return;
     if (u.chapter !== lastChapter) {
       curGroup = { title: u.chapter, items: [] };
       groups.push(curGroup);
       lastChapter = u.chapter;
     }
-    curGroup.items.push(...u.items);
+    curGroup.items.push(...pool);
   });
   currentChapterGroups = groups;
   currentOrder = null;
