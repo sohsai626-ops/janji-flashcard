@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>日本史 第12・13・14章 一問一答 統合ツール</title>
+<style>
+  :root {
+    --main: #5b3fa0;
+    --main-dark: #3d2a70;
+    --accent: #e08e45;
+    --bg: #f5f3fa;
+    --card-bg: #ffffff;
+    --correct: #2e8b57;
+    --wrong: #c0392b;
+    --text: #2a2a2a;
+    --sub: #6b6478;
+    --border: #ddd6c5;
+    --paper: #faf6ee;
+    --stamp: #a5342a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, var(--main), var(--main-dark));
+    color: #fff; padding: 16px 16px 12px; text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  header h1 { margin: 0; font-size: 1.2rem; letter-spacing: 0.02em; }
+  header .subtitle { font-size: 0.75rem; opacity: 0.9; margin-top: 4px; }
+
+  .top-tabs {
+    display: flex; gap: 8px; padding: 10px 16px 0; max-width: 720px; margin: 0 auto;
+  }
+  .top-tabs button {
+    flex: 1; padding: 10px 0; border: none; border-radius: 10px 10px 0 0; font-size: 0.88rem;
+    background: #e6e0f2; color: var(--main-dark); cursor: pointer; font-weight: bold;
+  }
+  .top-tabs button.active { background: var(--card-bg); }
+
+  #quizPage, #printPage { display: none; }
+  #quizPage.active, #printPage.active { display: block; }
+
+  /* ===== Quiz page ===== */
+  .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: 60px; background: var(--card-bg); }
+  .panel {
+    background: var(--card-bg); border-radius: 12px; padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px; border: 1px solid #eee;
+  }
+  .panel h2 { font-size: 0.95rem; margin: 0 0 10px; color: var(--main-dark); }
+  .unit-list label {
+    display: flex; align-items: center; gap: 8px; padding: 9px 10px;
+    border-radius: 8px; margin-bottom: 6px; background: #f2eefa; cursor: pointer;
+    font-size: 0.85rem; line-height: 1.35;
+  }
+  .unit-list input { width: 18px; height: 18px; accent-color: var(--main); flex-shrink: 0; }
+  .unit-list .count { margin-left: auto; color: var(--sub); font-size: 0.78rem; white-space: nowrap; }
+  .row-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+  .row-btns button {
+    flex: 1; padding: 8px; border: 1px solid #cfc8db; background: #fff; border-radius: 8px;
+    font-size: 0.78rem; color: var(--main-dark); cursor: pointer;
+  }
+  .opt-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 2px; font-size: 0.85rem; }
+  .opt-row select { padding: 6px 8px; border-radius: 6px; border: 1px solid #cfc8db; font-size: 0.85rem; }
+  .start-btn {
+    display: block; width: 100%; padding: 14px; margin-top: 6px;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(224,142,69,0.4);
+  }
+  .start-btn:disabled { background: #c9c9c9; box-shadow: none; }
+  #quizScreen { display: none; }
+  .quiz-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 0.8rem; color: var(--sub); }
+  .quiz-topbar .backbtn { background: none; border: none; color: var(--main-dark); font-size: 0.85rem; cursor: pointer; padding: 4px 0; }
+  .quiz-topbar .wrongListBtn { background: #fdf2ee; border-radius: 14px; padding: 5px 12px; color: var(--wrong); font-weight: bold; }
+  .wrong-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; align-items: flex-end; justify-content: center; }
+  .wrong-overlay.show { display: flex; }
+  .wrong-panel { background: #fff; width: 100%; max-width: 640px; max-height: 78vh; border-radius: 16px 16px 0 0; padding: 18px 18px 24px; overflow-y: auto; box-shadow: 0 -2px 12px rgba(0,0,0,0.2); }
+  .wrong-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .wrong-panel-header h2 { font-size: 1rem; color: var(--wrong); margin: 0; }
+  .wrong-close-btn { background: var(--main-dark); color: #fff; border: none; border-radius: 16px; padding: 6px 16px; font-size: 0.82rem; cursor: pointer; }
+  .wrong-item { background: #fdf2ee; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .wrong-item .wrong-q { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
+  .wrong-item .wrong-a { font-size: 0.9rem; color: var(--wrong); font-weight: bold; margin-top: 4px; }
+  .wrong-empty { color: var(--sub); font-size: 0.88rem; text-align: center; padding: 30px 10px; }
+  .progress-bar-outer { height: 6px; background: #e3ddef; border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
+  .progress-bar-inner { height: 100%; background: var(--main); width: 0%; transition: width 0.25s; }
+  .source-tag { font-size: 0.7rem; color: #fff; background: var(--main-dark); display: inline-block; padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+  .card { background: var(--card-bg); border-radius: 14px; padding: 26px 20px; min-height: 220px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; text-align: center; cursor: pointer; position: relative; border: 1px solid #eee; }
+  .card .qno { font-size: 0.75rem; color: var(--sub); position: absolute; top: 14px; left: 16px; }
+  .card .pageno { font-size: 0.7rem; color: var(--sub); position: absolute; top: 14px; right: 16px; }
+  .card .qtext { font-size: 1.02rem; line-height: 1.6; margin: 14px 0; }
+  .card .tapHint { font-size: 0.75rem; color: var(--sub); margin-top: 10px; }
+  .card .answerBlock { display: none; margin-top: 10px; }
+  .card.revealed .answerBlock { display: block; }
+  .card .ans { font-size: 1.35rem; font-weight: bold; color: var(--main-dark); }
+  .card .reading { font-size: 0.85rem; color: var(--sub); margin-top: 4px; }
+  .card .divider { border: none; border-top: 1px dashed #cfc8db; margin: 14px 0; }
+  .judge-row { display: none; gap: 10px; margin-top: 16px; }
+  .judge-row.show { display: flex; }
+  .judge-row button { flex: 1; padding: 13px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: bold; color: #fff; cursor: pointer; }
+  .btn-wrong { background: var(--wrong); }
+  .btn-correct { background: var(--correct); }
+  .speak-btn { position: absolute; bottom: 12px; right: 14px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--main); }
+  #resultScreen { display: none; text-align: center; }
+  #resultScreen .bigscore { font-size: 2.2rem; font-weight: bold; color: var(--main-dark); margin: 10px 0; }
+  #resultScreen .sub { color: var(--sub); font-size: 0.9rem; margin-bottom: 20px; }
+  .result-actions { display: flex; flex-direction: column; gap: 10px; }
+  .result-actions button { padding: 13px; border-radius: 10px; border: none; font-size: 0.95rem; cursor: pointer; font-weight: bold; }
+  .result-actions .primary { background: var(--accent); color: #fff; }
+  .result-actions .secondary { background: #fff; color: var(--main-dark); border: 1px solid #cfc8db; }
+  .weak-list { text-align: left; margin-top: 16px; }
+  .weak-list h3 { font-size: 0.85rem; color: var(--main-dark); margin-bottom: 8px; }
+  .weak-item { padding: 8px 10px; background: #fdf2ee; border-radius: 8px; margin-bottom: 6px; font-size: 0.82rem; }
+  .weak-item b { color: var(--wrong); }
+  footer { text-align: center; font-size: 0.7rem; color: var(--sub); margin-top: 20px; padding-bottom: 20px; }
+  .main-tabs { display: flex; gap: 8px; padding: 10px 16px 0; max-width: 640px; margin: 0 auto; }
+  .main-tabs button { flex: 1; padding: 9px 0; border: none; border-radius: 10px 10px 0 0; font-size: 0.85rem; background: #e6e0f2; color: var(--main-dark); cursor: pointer; }
+  .main-tabs button.active { background: var(--card-bg); font-weight: bold; }
+  #rankScreen { display: none; }
+  .rank-empty { color: var(--sub); font-size: 0.88rem; text-align: center; padding: 40px 10px; }
+  .rank-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 6px; background: #fdf2ee; }
+  .rank-item .rank-no { color: var(--wrong); font-weight: bold; font-size: 0.85rem; min-width: 22px; }
+  .rank-item .rank-body { flex: 1; }
+  .rank-item .rank-q { font-size: 0.82rem; color: var(--text); line-height: 1.4; }
+  .rank-item .rank-a { font-size: 0.9rem; color: var(--main-dark); font-weight: bold; margin-top: 2px; }
+  .rank-item .rank-score { font-size: 0.75rem; color: var(--sub); white-space: nowrap; }
+  .rank-reset-btn { display: block; margin: 14px auto 0; background: none; border: 1px solid var(--sub); color: var(--sub); border-radius: 16px; padding: 6px 16px; font-size: 0.78rem; cursor: pointer; }
+
+  /* ===== Print page ===== */
+  #printPage { font-family: "Hiragino Mincho ProN", "Yu Mincho", "Hiragino Sans", sans-serif; background: var(--paper); }
+  .p-toolbar { display: flex; gap: 8px; padding: 10px 16px; background: #fff; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+  .p-tab-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border); background: #fff; color: var(--main-dark); font-size: 0.88rem; cursor: pointer; }
+  .p-tab-btn.active { background: var(--main-dark); color: #fff; border-color: var(--main-dark); }
+  .p-print-btn { margin-left: auto; padding: 8px 18px; border-radius: 20px; border: none; background: var(--stamp); color: #fff; font-size: 0.88rem; cursor: pointer; }
+  .p-layout { display: flex; gap: 0; align-items: flex-start; }
+  .p-side-panel { width: 320px; flex-shrink: 0; background: #fff; padding: 18px; border-right: 1px solid var(--border); min-height: calc(100vh - 150px); }
+  .p-side-panel h2 { font-size: 1.05rem; margin: 0 0 4px; color: var(--main-dark); }
+  .p-side-panel .subhead { font-size: 0.78rem; color: var(--sub); margin-bottom: 14px; }
+  .p-sel-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .p-sel-header span.label { font-size: 0.9rem; font-weight: bold; color: var(--main-dark); }
+  .p-sel-header a { font-size: 0.78rem; color: var(--main); cursor: pointer; text-decoration: underline; }
+  .p-group-title { font-size: 0.78rem; color: var(--sub); margin: 10px 0 4px; font-weight: bold; }
+  .p-unit-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; margin-bottom: 3px; background: #f2eefa; font-size: 0.82rem; cursor: pointer; }
+  .p-unit-item input { width: 16px; height: 16px; accent-color: var(--main-dark); flex-shrink: 0; }
+  .p-unit-item .cnt { margin-left: auto; color: var(--sub); font-size: 0.74rem; white-space: nowrap; }
+  .p-shuffle-mode { margin-top: 16px; }
+  .p-shuffle-mode label { display: flex; align-items: flex-start; gap: 8px; padding: 8px; font-size: 0.82rem; cursor: pointer; }
+  .p-shuffle-mode input { margin-top: 3px; accent-color: var(--main-dark); }
+  .p-action-btn { display: block; width: 100%; padding: 12px; margin-top: 14px; border-radius: 8px; border: none; font-size: 0.92rem; font-weight: bold; cursor: pointer; }
+  .p-btn-shuffle { background: var(--main-dark); color: #fff; }
+  .p-btn-reset { background: #fff; color: var(--main-dark); border: 1px solid var(--main-dark); margin-top: 8px; }
+  .p-code-box { margin-top: 16px; background: #f2eefa; border: 1px dashed var(--border); border-radius: 8px; padding: 10px 12px; }
+  .p-code-box .cb-label { font-size: 0.74rem; color: var(--sub); margin-bottom: 4px; }
+  .p-code-box .cb-value { font-size: 0.86rem; font-weight: bold; color: var(--stamp); word-break: break-all; }
+  .p-reproduce { margin-top: 16px; }
+  .p-reproduce .rp-label { font-size: 0.82rem; font-weight: bold; color: var(--main-dark); margin-bottom: 6px; }
+  .p-reproduce input { width: 100%; padding: 9px; border-radius: 6px; border: 1px solid var(--border); font-size: 0.82rem; margin-bottom: 8px; }
+  .p-reproduce .hint { font-size: 0.72rem; color: var(--sub); margin-top: 8px; line-height: 1.5; }
+  .p-main-area { flex: 1; padding: 22px 30px; min-height: calc(100vh - 150px); }
+  .p-print-sheet { max-width: 780px; margin: 0 auto; background: #fff; padding: 30px 36px; border-radius: 4px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); position: relative; min-height: 500px; }
+  .p-placeholder { color: var(--sub); font-size: 0.95rem; line-height: 1.9; text-align: center; padding: 80px 20px; }
+  .p-sheet-title { font-size: 1.5rem; font-weight: bold; color: var(--main-dark); margin: 0 0 4px; }
+  .p-sheet-subtitle { font-size: 0.82rem; color: var(--sub); margin-bottom: 18px; }
+  .p-stamp { position: absolute; top: 22px; right: 30px; width: 108px; height: 108px; border: 2px solid var(--stamp); border-radius: 50%; color: var(--stamp); font-size: 0.62rem; display: flex; align-items: center; justify-content: center; text-align: center; transform: rotate(-8deg); padding: 8px; line-height: 1.3; font-weight: bold; }
+  .p-name-fields { display: flex; gap: 24px; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 18px; font-size: 0.88rem; }
+  .p-name-fields .nf { display: flex; align-items: baseline; gap: 6px; }
+  .p-name-fields .nf .line { display: inline-block; min-width: 90px; border-bottom: 1px solid #999; height: 1.2em; }
+  .p-name-fields .nf.wide .line { min-width: 160px; }
+  .p-chapter-block { margin-bottom: 20px; }
+  .p-chapter-block h3 { font-size: 0.98rem; color: var(--main-dark); border-bottom: 2px solid var(--main-dark); padding-bottom: 4px; margin: 0 0 10px; }
+  .p-q-item { font-size: 0.92rem; line-height: 1.75; margin-bottom: 9px; display: flex; gap: 6px; }
+  .p-q-item .no { color: var(--main-dark); font-weight: bold; flex-shrink: 0; }
+  .p-q-item .ans { font-weight: bold; }
+  .p-q-item .reading { color: var(--sub); font-size: 0.8rem; }
+  .p-qa-item { flex-direction: row; align-items: baseline; margin-bottom: 12px; }
+  .p-qa-body { display: flex; flex-direction: column; gap: 2px; }
+  .p-qa-q { color: var(--text); }
+  .p-qa-a { color: var(--main-dark); font-weight: bold; }
+
+  @media (max-width: 860px) {
+    .p-layout { flex-direction: column; }
+    .p-side-panel { width: 100%; border-right: none; border-bottom: 1px solid var(--border); min-height: unset; }
+    .p-main-area { padding: 16px; }
+    .p-print-sheet { padding: 20px 16px; }
+    .p-stamp { width: 84px; height: 84px; font-size: 0.52rem; top: 14px; right: 14px; }
+  }
+  @page {
+    margin: 18mm 14mm;
+  }
+  @media print {
+    header, .top-tabs, .p-toolbar, .p-side-panel { display: none !important; }
+    #quizPage { display: none !important; }
+    .p-main-area { padding: 0; }
+    .p-print-sheet { box-shadow: none; max-width: 100%; padding: 6mm 4mm 10mm; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>日本史 第12・13・14章「近代国家の成立/展開/近代産業と文化」　一問一答　統合ツール</h1>
+  <div class="subtitle">創才学院　自由民権運動〜初期議会（全9単元・142問／重要度⑤⑥⑦）</div>
+</header>
+
+<div class="top-tabs">
+  <button class="active" id="topTabQuiz" onclick="switchTopTab('quiz')">出題ツール</button>
+  <button id="topTabPrint" onclick="switchTopTab('print')">プリント作成</button>
+</div>
+
+<!-- ============ QUIZ PAGE ============ -->
+<div id="quizPage" class="active">
+
+<div class="main-tabs">
+  <button class="active" id="mainTabQuiz" onclick="switchMainTab('quiz')">出題</button>
+  <button id="mainTabRank" onclick="switchMainTab('rank')">苦手ランキング</button>
+</div>
+
+<div class="container">
+
+  <div id="rankScreen">
+    <div class="panel">
+      <h2>苦手ランキング（全単元合算・累計）</h2>
+      <div id="rankBody"></div>
+      <button class="rank-reset-btn" onclick="resetWeakStats()">記録をリセット</button>
+    </div>
+  </div>
+
+  <div id="setupScreen">
+    <div class="panel">
+      <span class="source-tag">元データ: 日本史 第12・13・14章 一問一答（重要度⑤⑥⑦・全550問）</span>
+      <h2>出題する単元を選択</h2>
+      <div class="row-btns">
+        <button onclick="selectAll(true)">すべて選択</button>
+        <button onclick="selectAll(false)">すべて解除</button>
+      </div>
+      <div class="unit-list" id="unitList"></div>
+    </div>
+
+    <div class="panel">
+      <h2>出題設定</h2>
+      <div class="opt-row">
+        <span>出題順</span>
+        <select id="orderSelect">
+          <option value="shuffle" selected>シャッフル</option>
+          <option value="order">単元順</option>
+        </select>
+      </div>
+      <div class="opt-row">
+        <span>出題形式</span>
+        <select id="modeSelect">
+          <option value="qa" selected>説明 → 用語</option>
+          <option value="aq">用語 → 説明を確認</option>
+        </select>
+      </div>
+      <div class="opt-row">
+        <span>苦手のみ出題</span>
+        <select id="weakOnlySelect">
+          <option value="no" selected>いいえ（全問対象）</option>
+          <option value="yes">はい（不正解が多い問題のみ）</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startQuiz()">この内容でシャッフル出題を始める</button>
+    <div id="selCount" style="text-align:center;font-size:0.78rem;color:var(--sub);margin-top:8px;"></div>
+  </div>
+
+  <div id="quizScreen">
+    <div class="quiz-topbar">
+      <button class="backbtn" onclick="backToSetup()">← 設定に戻る</button>
+      <button class="backbtn wrongListBtn" onclick="toggleWrongList()">✗ 間違い一覧（<span id="wrongCount">0</span>）</button>
+      <span id="quizCounter">1 / 30</span>
+    </div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="source-tag" id="quizSourceTag">シャッフル版：全142問中 30問を出題中</span>
+
+    <div class="card" id="card" onclick="cardTapped()">
+      <span class="qno" id="qNo">No.1</span>
+      <span class="pageno" id="qPage">ハードウェア</span>
+      <div class="qtext" id="qText">問題文がここに表示されます</div>
+      <div class="tapHint" id="tapHint">タップして読み上げ・答えを表示</div>
+      <div class="answerBlock" id="answerBlock">
+        <hr class="divider">
+        <div class="ans" id="aText"></div>
+        <div class="reading" id="aReading"></div>
+        <div class="tapHint" style="margin-top:10px;">タップすると答えをもう一度読み上げます</div>
+      </div>
+      <button class="speak-btn" id="speakBtn" onclick="speakAnswer(event)" title="読み上げ">🔊</button>
+    </div>
+
+    <div class="judge-row" id="judgeRow">
+      <button class="btn-wrong" onclick="judge(false)">✗ 不正解だった</button>
+      <button class="btn-correct" onclick="judge(true)">◯ 正解した</button>
+    </div>
+  </div>
+
+  <div class="wrong-overlay" id="wrongListOverlay">
+    <div class="wrong-panel">
+      <div class="wrong-panel-header">
+        <h2>これまで間違えた問題</h2>
+        <button class="wrong-close-btn" onclick="toggleWrongList()">閉じる</button>
+      </div>
+      <div id="wrongListBody"></div>
+    </div>
+  </div>
+
+  <div id="resultScreen">
+    <div class="panel">
+      <h2>結果</h2>
+      <div class="bigscore" id="scoreText">0 / 0</div>
+      <div class="sub" id="scoreSub">正答率 0%</div>
+      <div class="result-actions">
+        <button class="primary" onclick="restartSame()">同じ範囲でもう一度（再シャッフル）</button>
+        <button class="secondary" onclick="backToSetup()">単元選択に戻る</button>
+      </div>
+      <div class="weak-list" id="weakList"></div>
+    </div>
+  </div>
+
+  <footer>創才学院　日本史 第12・13章 一問一答　統合ツール　v1.0</footer>
+</div>
+</div>
+
+<!-- ============ PRINT PAGE ============ -->
+<div id="printPage">
+  <div class="p-toolbar">
+    <button class="p-tab-btn active" id="pTabQ" onclick="pSwitchTab('q')">問題編</button>
+    <button class="p-tab-btn" id="pTabA" onclick="pSwitchTab('a')">解答編</button>
+    <button class="p-tab-btn" id="pTabQA" onclick="pSwitchTab('qa')">問題+解答セット</button>
+    <button class="p-print-btn" onclick="window.print()">🖨 印刷</button>
+  </div>
+
+  <div class="p-layout">
+    <div class="p-side-panel">
+      <h2>出題設定</h2>
+      <div class="subhead">日本史 第12・13章「近代国家の成立/展開」　一問一答（自由民権運動〜護憲三派内閣　重要度⑤⑥⑦）</div>
+
+      <div class="p-sel-header">
+        <span class="label">出題する範囲</span>
+        <a onclick="pSelectAll(true)">全選択</a>&nbsp;/&nbsp;<a onclick="pSelectAll(false)">解除</a>
+      </div>
+      <div id="pUnitList"></div>
+
+      <div class="p-shuffle-mode">
+        <div class="p-sel-header"><span class="label">シャッフル方法</span></div>
+        <label><input type="radio" name="pShufMode" value="unit" checked> 単元ごとに並び替え（単元の区切りは維持）</label>
+        <label><input type="radio" name="pShufMode" value="all"> 選択した範囲をまとめて並び替え（総合問題）</label>
+      </div>
+
+      <div class="p-shuffle-mode">
+        <label><input type="checkbox" id="pWeakOnlyCheckbox" onchange="pRenderUnitList()"> 苦手問題のみを対象にする（出題ツールの記録・現在<span id="pWeakTotalCount">0</span>問）</label>
+      </div>
+
+      <button class="p-action-btn p-btn-shuffle" onclick="pDoShuffle()">シャッフルする</button>
+      <button class="p-action-btn p-btn-reset" onclick="pShowOriginal()">単元順で表示</button>
+
+      <div class="p-code-box">
+        <div class="cb-label">出題コード（この回のスタンプ）</div>
+        <div class="cb-value" id="pCodeValue">まだシャッフルしていません</div>
+      </div>
+
+      <div class="p-reproduce">
+        <div class="rp-label">同じ並びを再現する</div>
+        <input type="text" id="pCodeInput" placeholder="出題コードを貼り付け">
+        <button class="p-action-btn p-btn-reset" style="margin-top:0;" onclick="pReproduceFromCode()">このコードで再現</button>
+        <div class="hint">コードを控えておけば、後日まったく同じ並びの問題をもう一度出せます。クラスごと・回ごとに別コードにすれば、使い回しの判別にも使えます。</div>
+      </div>
+    </div>
+
+    <div class="p-main-area">
+      <div class="p-print-sheet" id="pPrintSheet">
+        <div class="p-placeholder">左の「出題設定」で範囲を選び、「シャッフルする」を押してください（スマホ・iPadの場合、操作パネルはページの上部にあります）。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_ITEMS = [{"no": 1, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "土佐藩出身。大政奉還に尽力し、明治政府の参議となる。征韓論争に敗れて下野。民撰議院設立の建白書を提出し、自由党の有力メンバーとなった。", "a": "後藤象二郎", "r": ""}, {"no": 2, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1874年1月、征韓論争で下野した板垣退助・後藤象二郎・江藤新平・副島種臣ら8人が、藩閥官僚の専制政治に反対し、愛国公党を結成して左院に提出した建白書。自由民権運動の口火となった。", "a": "民撰議院設立の建白書", "r": ""}, {"no": 3, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "人間は生まれながらにして自由平等で、幸福を求める権利(自然権)があるという主張。ルソーらのフランス啓蒙思想が中心で、自由民権運動の理論的支柱となった。", "a": "天賦人権思想(論)", "r": ""}, {"no": 4, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "啓蒙思想家。1868年、慶応義塾を創設。明六社創立に参加。『学問のすゝめ』『西洋事情』など多くの啓蒙書を著した。", "a": "福沢諭吉", "r": ""}, {"no": 5, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "高知出身の思想家。フランスに留学し、ルソーの『社会契約論』を『民約訳解』として翻訳。自由民権論を説き、「東洋のルソー」と呼ばれた。", "a": "中江兆民", "r": ""}, {"no": 6, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "福沢諭吉の啓蒙書。1872〜76年に17編まで刊行され、大ベストセラーとなった。実学を勧め、個人の独立が国家の隆盛につながると説いた。", "a": "学問のすゝめ", "r": ""}, {"no": 7, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "教育者・幕臣。イギリス留学後、ミルの『自由論』を『自由之理』として、スマイルズの『自助論』を『西国立志編』として翻訳した。", "a": "中村正直", "r": ""}, {"no": 8, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1872年公布、近代的学校制度を定めた法令。フランスの学制にならい、全国を大学区・中学区・小学区に分けた。", "a": "学制", "r": ""}, {"no": 9, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "明治期以降の初等教育機関。1872年の学制で創設され、1886年の小学校令で義務教育となった。", "a": "小学校", "r": ""}, {"no": 10, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1877年、東京開成学校・東京医学校を統合して文部省所管の下に創設された国立大学。1886年、帝国大学と改称した。", "a": "東京大学", "r": ""}, {"no": 11, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "仏教を排斥する行動や政策。神仏分離令を機に廃仏運動が激化し、全国的に寺院・仏像などの破壊が続出した。", "a": "廃仏毀釈", "r": ""}, {"no": 12, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1868年、政府が王政復古・祭政一致から神道国教化の方針をとり、神仏混淆を禁止した法令。神社を寺院から独立させた。", "a": "神仏分離(判然)令", "r": ""}, {"no": 13, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "明治政府が神道を国教として位置づけようとした方針。祭政一致の理念に基づき、神仏分離令や大教宣布の詔などを通じて進められた。", "a": "神道国教化", "r": ""}, {"no": 14, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1874〜75年発行の明六社の機関誌。啓蒙思想の紹介と宣伝に貢献したが、讒謗律・新聞紙条例の発布により廃刊した。", "a": "明六雑誌", "r": ""}, {"no": 15, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "政治家・外交官。旧薩摩藩士。明六社創立を発議した啓蒙思想家。1885年に伊藤内閣の文相となり、学校令を制定して教育体制を確立した。", "a": "森有礼", "r": ""}, {"no": 16, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "啓蒙思想家。津和野藩医の子。オランダに留学し政治・法律を研究、開成所教授。西洋哲学を最初に紹介し、明六社に参加した。", "a": "西周(周助)", "r": ""}, {"no": 17, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "地球が太陽の周りを一周する期間を1年とした暦。日本では1872年に太陰太陽暦を廃し、グレゴリオ暦を採用。明治5年12月3日を明治6年1月1日とした。", "a": "太陽暦(新暦)", "r": ""}, {"no": 18, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "太陽暦の採用と共に導入された時刻制度。それまでの不定時法に代わり、1日を均等に24時間に分ける制度となった。", "a": "1日24時間制", "r": ""}, {"no": 19, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "月の満ち欠けの周期を基にした太陰暦に、閏月などの太陽の動きも取り入れた暦。江戸時代には日本独自の暦がつくられ、明治初期は天保暦が使用された。", "a": "太陰太陽暦(旧暦)", "r": ""}, {"no": 20, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "明治期に、国家が定めた祝日・祭日。1873年に新年節・紀元節・天長節を国の祝日とし、皇室の祭典日も定めた。1948年に廃止された。", "a": "祝祭日", "r": ""}, {"no": 21, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1872年、太政官布告で制定された祝日。『日本書紀』の神武天皇即位日にあたる2月11日を、1873年に紀元節とした。", "a": "紀元節", "r": ""}, {"no": 22, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "天皇誕生日にあたる祝日。明治時代は改暦後の11月3日とされ、紀元節と共に天皇制確立の目的を持った。1948年に廃止された。", "a": "天長節", "r": ""}, {"no": 23, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "西洋式の服装。1871年の勅諭で洋服の自由が認められ、翌年軍や官僚の礼服に採用されたことから、警官や教員などを中心に広まった。", "a": "洋服", "r": ""}, {"no": 24, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "明治初期の断髪頭。1871年に散(断)髪令が布告され、文明開化のシンボルとされた。", "a": "ざんぎり(散切り)頭", "r": ""}, {"no": 25, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "明治時代に導入された洋風建築技術の一つ。1872年、お雇い外国人ウォートルスの設計による銀座通りの煉瓦街建設はその代表例。", "a": "煉瓦造", "r": ""}, {"no": 26, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1873年、浦上教徒弾圧事件で列国の抗議を受け、政府がキリスト教禁制の高札を廃止し、その布教を黙認したこと。", "a": "切支丹禁制高札廃止", "r": ""}, {"no": 27, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1873〜79年に活動した啓蒙的思想団体。森有礼が発議し、福沢諭吉・中村正直・西周・津田真道・加藤弘之・西村茂樹らが参加した。", "a": "明六社", "r": ""}, {"no": 28, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "東京の目抜き通り。1872年の大火後、煉瓦造の街並みとして整備され、文明開化のシンボルとなった。ガス灯や人力車が行き交う場所として賑わった。", "a": "銀座(通り)", "r": ""}, {"no": 29, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1872年、横浜外国人居留地で初めて使用され、ついで東京銀座通りに点灯した街灯。毎夜見物人で賑わった。", "a": "ガス灯", "r": ""}, {"no": 30, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "人力で引く乗用車。和泉要助らが発明し、1870年に官許された。以後、駕籠に代わって急速に普及した。", "a": "人力車", "r": ""}, {"no": 31, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "牛肉に豆腐・ネギなどを入れて煮込んだ汁の多い鍋物。気安くあぐらをかいて食べたので安愚楽鍋とも呼ばれ、学生間に流行した。", "a": "牛鍋", "r": ""}, {"no": 32, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1871年、条約改正の予備交渉などのために欧米に派遣された使節団。岩倉具視を大使とし、木戸孝允・大久保利通・伊藤博文・山口尚芳が副使を務めた。", "a": "岩倉(遣外)使節団", "r": ""}, {"no": 33, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "岩倉使節団の副使の一人。木戸孝允・大久保利通・伊藤博文と共に欧米を視察した。", "a": "山口尚芳", "r": ""}, {"no": 34, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "岩倉使節団に随行した最初の女子留学生の一人。8歳で渡米し、帰国後は女子教育に尽力。1900年に女子英学塾(のち津田塾大学)を設立した。", "a": "津田梅子", "r": ""}, {"no": 35, "ch": "明治初期の政治・文明開化", "pr": "明治初期の政治・文明開化", "q": "1871年、日清間で結ばれた最初の条約。領事の駐在・領事裁判権を相互に承認した初めての対等条約であった。", "a": "日清修好条規", "r": ""}, {"no": 36, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "明治政府による琉球王国の日本国への併合に至る一連の施策。1872年に琉球藩を設置し、1879年には沖縄県を設置して完成させた。", "a": "琉球処分", "r": ""}, {"no": 37, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1872年に、一方的に琉球王国を琉球藩とした措置。国王尚泰を藩王とし、華族として列した。", "a": "琉球藩", "r": ""}, {"no": 38, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1872年の琉球藩設置に伴い、琉球国王尚泰に与えられた地位。華族に列せられた。", "a": "藩王", "r": ""}, {"no": 39, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1879年、琉球藩を廃して設置された県。明治政府は軍隊・警察を派遣し、首里城の王府を接収して沖縄県設置を布告した。", "a": "沖縄県", "r": ""}, {"no": 40, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1871年、琉球王国宮古島の漁民66人が台湾に漂着し、54人が先住民に殺害された事件。台湾出兵の原因となった。", "a": "琉球漂流民(漁民)殺害事件", "r": ""}, {"no": 41, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1874年、明治政府による最初の海外出兵。西郷従道の指揮の下、琉球漂流民殺害事件を機に日本軍が台湾に出兵した。", "a": "台湾出兵(征台の役)", "r": ""}, {"no": 42, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "朝鮮の鎖国排外政策を武力で打破し、国交を開いて勢力を伸ばしていこうとする主張。岩倉使節団の外遊中、留守政府を預かった西郷隆盛・板垣退助らが主唱した。", "a": "征韓論", "r": ""}, {"no": 43, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "先島諸島の北方にある小島群。1895年、無人島で他国が占領した形跡のないことから日本領土に編入された。", "a": "尖閣諸島", "r": ""}, {"no": 44, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "島根県隠岐諸島の北西にある小島群。1905年、無人島で他国が占領した形跡のないことから日本領土に編入された。", "a": "竹島", "r": ""}, {"no": 45, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1873年の征韓論争により、政府内が分裂した政変。西郷・板垣らがとなえた征韓論は大久保・木戸ら内治優先派の反対で実現せず、征韓派は一斉に下野した。", "a": "明治六年の政変(征韓論政変)", "r": ""}, {"no": 46, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "土佐藩出身。参議。征韓論争に敗れて下野。民撰議院設立の建白書を提出、立志社・愛国社を設立し、自由民権運動の中心人物として自由党を結成し総理となった。", "a": "板垣退助", "r": ""}, {"no": 47, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1875年の日露国境画定条約。黒田清隆が樺太放棄を建議、駐露公使榎本武揚が交渉にあたり、樺太全島をロシア領、千島全島を日本領とした。", "a": "樺太・千島交換条約", "r": ""}, {"no": 48, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "太平洋上の諸島。1861年に江戸幕府が日本領と宣言、1876年に英米へ通告して統治を再開した。太平洋戦争後、一時米国の施政権下におかれたが、1968年に復帰した。", "a": "小笠原諸島", "r": ""}, {"no": 49, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1875年、日本の軍艦雲揚号が朝鮮の江華島で挑発行為を行い、砲撃を受けたため日本側が報復攻撃した事件。翌年、日朝修好条規締結のきっかけとなった。", "a": "江華島事件", "r": ""}, {"no": 50, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "1876年、江華島事件後に締結された日朝間の条約。朝鮮を「自主の国」として清との宗属関係を否定し、釜山など3港の開港などを定めた不平等条約。", "a": "日朝修好条規(江華条約)", "r": ""}, {"no": 51, "ch": "明治初期の対外関係", "pr": "明治初期の対外関係", "q": "朝鮮半島南東端の港。江戸時代には倭館が唯一設けられ、1876年の日朝修好条規により開港され、日朝貿易の拠点となった。", "a": "釜山", "r": ""}, {"no": 52, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "明治初期、政府の士族の特権廃止政策に対して不平士族が各地で起こした反乱。1874年の佐賀の乱から77年の西南戦争まで20余件を数える。", "a": "士族反乱", "r": ""}, {"no": 53, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "秩禄処分や廃刀令など、明治政府の士族特権廃止政策に不満を持った旧士族たち。各地で反乱を起こした。", "a": "不平士族", "r": ""}, {"no": 54, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "1874年2月、征韓を主張する征韓党などが江藤新平らを擁して起こした乱。佐賀県庁を襲撃するなど約1万2000人が蜂起し、大久保利通らの政府軍が鎮圧した。", "a": "佐賀の乱", "r": ""}, {"no": 55, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "佐賀藩出身の政治家。司法卿・参議として司法の整備に尽力。征韓論で下野し、民撰議院設立建白書を提出したが、佐賀の乱を起こしたとして刑死した。", "a": "江藤新平", "r": ""}, {"no": 56, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "1876年、福岡県旧秋月藩士族の反乱。宮崎車之助らが征韓・国権拡張を主張して、神風連の乱に呼応して挙兵したが鎮圧された。", "a": "秋月の乱", "r": ""}, {"no": 57, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "1876年、山口県萩での士族反乱。前原一誠らが神風連の乱・秋月の乱に呼応して挙兵したが鎮圧された。", "a": "萩の乱", "r": ""}, {"no": 58, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "高額な地租や永小作の特権はく奪に反抗して起こった農民一揆。1876年の茨城県真壁・那珂両郡での真壁騒動や、三重・愛知・岐阜・堺4県にまたがる伊勢暴動が大規模なもの。", "a": "地租改正反対一揆", "r": ""}, {"no": 59, "ch": "政府への反抗(士族反乱)", "pr": "政府への反抗(士族反乱)", "q": "1877年2〜9月、最大の士族反乱。鹿児島の私学校生を中心とした士族が、西郷隆盛を擁して挙兵。熊本城攻略に失敗し、政府軍に鎮圧された。", "a": "西南戦争(西南の役)", "r": ""}, {"no": 60, "ch": "自由民権運動", "pr": "自由民権運動", "q": "明治前期の1870〜80年代、政府に対し民主的改革を要求した政治運動。天賦人権思想をもとに藩閥専制打破・国会開設などを要求。大同団結運動を最後に衰退した。", "a": "自由民権運動", "r": ""}, {"no": 61, "ch": "自由民権運動", "pr": "自由民権運動", "q": "明治前期頃から、政治活動をめざして結成された団体。1874年の立志社設立以降、士族・豪農を中心に各地に多数成立し、民権運動の母体となった。", "a": "結社", "r": ""}, {"no": 62, "ch": "自由民権運動", "pr": "自由民権運動", "q": "土佐藩出身の政治家。板垣退助をたすけ、愛国公党・立志社・国会期成同盟の中心として活躍。自由党幹部、のち衆議院議長を務めた。", "a": "片岡健吉", "r": ""}, {"no": 63, "ch": "自由民権運動", "pr": "自由民権運動", "q": "民権運動の代表的な地方政社。1874年、愛国公党が解散すると板垣退助が土佐に帰り、片岡健吉・植木枝盛・林有造らと設立した士族中心の政社。", "a": "立志社", "r": ""}, {"no": 64, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年、立志社を中心に全国の有志が大阪で結成した政社。板垣が大阪会議後に政府に復帰したため事実上解散したが、1878年に再興され、国会期成同盟へと発展した。", "a": "愛国社", "r": ""}, {"no": 65, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年1〜2月、政局の行詰まりを打開するため、内務卿の大久保利通と在野の板垣退助・木戸孝允の三者が大阪で行った会議。板垣・木戸は参議に復帰し、立憲政体樹立の詔が出された。", "a": "大阪会議", "r": ""}, {"no": 66, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年の大阪会議後に出された詔。元老院・大審院を設け、地方官会議を召集して国会開設の準備を進める旨を示した。", "a": "漸次立憲政体樹立の詔", "r": ""}, {"no": 67, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年の大阪会議の結果、左院を廃して設けられた立法機関。1880年にイギリス風の憲法草案「日本国憲按」を作成したが、帝国議会の開設により1890年に廃止された。", "a": "元老院", "r": ""}, {"no": 68, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年の大阪会議の結果設けられた、司法権を行使する最高機関。控訴事件の最終裁判を行い、皇室に対する罪や内乱罪も裁判した。", "a": "大審院", "r": ""}, {"no": 69, "ch": "自由民権運動", "pr": "自由民権運動", "q": "大阪会議の時に木戸孝允の主張で開設。1875年以来3回、地方民情を知るために府知事・県令を召集した。", "a": "地方官会議", "r": ""}, {"no": 70, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年の言論弾圧法規。政府擁護のため、著作・文書などで官僚らの批判を禁止し、刑罰を規定した。1882年、刑法施行で廃止。", "a": "讒謗律", "r": ""}, {"no": 71, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1875年の言論弾圧法規。自由民権運動の高揚に対処するため、政府を攻撃する新聞・雑誌の弾圧を目的として公布された。", "a": "新聞紙条例", "r": ""}, {"no": 72, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1878年、府県会規則で定められた地方議会。自由民権の要求を形式的に認めたもので、議員は大・中地主など豪農から選ばれたが、権限は弱かった。", "a": "府県会", "r": ""}, {"no": 73, "ch": "自由民権運動", "pr": "自由民権運動", "q": "高知出身の自由民権運動家。立志社に入り、自由党の理論家・活動家として「東洋大日本国国憲按」や『天賦人権弁』などで民権思想の普及に努めた。", "a": "植木枝盛", "r": ""}, {"no": 74, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1880年、愛国社第4回大会で愛国社を改称して設立された国会開設運動の全国的団体。片岡健吉・河野広中らが中心となり、国会開設請願書を太政官に提出したが拒否された。", "a": "国会期成同盟", "r": ""}, {"no": 75, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1880年4月公布。集会・結社の自由を規制。讒謗律や新聞紙条例と共に、自由民権派による国会開設運動の高揚を弾圧した。", "a": "集会条例", "r": ""}, {"no": 76, "ch": "自由民権運動", "pr": "自由民権運動", "q": "各地の政社・民権論者の弁士による政府批判の時事演説会。政府は集会条例で規制した。", "a": "(政治)演説会", "r": ""}, {"no": 77, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1881年、開拓使長官黒田清隆が五代友厚らの関西貿易社に、開拓使官有物を不当に安く払い下げようとして問題化した事件。世論の政府攻撃が激化し、払下げは中止された。", "a": "開拓使官有物払下げ事件", "r": ""}, {"no": 78, "ch": "自由民権運動", "pr": "自由民権運動", "q": "薩摩藩出身の実業家。大阪造幣寮・為替会社・通商会社の設立に寄与。政商として彼の経営する関西貿易社が開拓使官有物払下げ事件の当事者となった。", "a": "五代友厚", "r": ""}, {"no": 79, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1881年10月、開拓使官有物払下げ事件で世論の動向を察した伊藤博文らが天皇に勧めて、1890年を期して国会を開くことを公約した詔。", "a": "国会開設の勅諭", "r": ""}, {"no": 80, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1881年10月、参議大隈重信が国会の開設・憲法の制定について急進的な意見を述べたため、払下げ問題にも関係ありとして免官された事件。政府は払下げ中止・大隈派官僚の追放・欽定憲法の方針を決定し、薩長藩閥による権力体制を固めた。", "a": "明治十四年の政変", "r": ""}, {"no": 81, "ch": "自由民権運動", "pr": "自由民権運動", "q": "明治前期の憲法私案の総称。政党・政社・民間有志が憲法制定に参加しようと、それぞれの意見を発表。現在約50編を発見。大部分は1880〜81年に作成された。", "a": "私擬憲法", "r": ""}, {"no": 82, "ch": "自由民権運動", "pr": "自由民権運動", "q": "政府関係者が個人的に作成したものを含めて私擬憲法とも呼ばれる、明治前期の憲法制定に向けた草案群。", "a": "憲法草案", "r": ""}, {"no": 83, "ch": "自由民権運動", "pr": "自由民権運動", "q": "自由民権左派の最も民主的な私擬憲法。「日本国国憲案」ともいう。国民主権・一院制・抵抗権・革命権を規定。起草者は植木枝盛とされる。", "a": "(東洋)大日本国国憲按", "r": ""}, {"no": 84, "ch": "自由民権運動", "pr": "自由民権運動", "q": "「東洋大日本国国憲按」などの私擬憲法に規定された、国民が不当な権力に抵抗する権利。", "a": "抵抗権", "r": ""}, {"no": 85, "ch": "自由民権運動", "pr": "自由民権運動", "q": "東京の五日市で活動していた学芸講談会の千葉卓三郎が起草した私擬憲法。国民の権利の保障に力点をおく。1968年、深沢家の土蔵から発見された。", "a": "五日市憲法(草案)(日本帝国憲法)", "r": ""}, {"no": 86, "ch": "自由民権運動", "pr": "自由民権運動", "q": "共通の政治的目的を持つ者が組織した政治団体。1881年に自由党、82年に立憲改進党や立憲帝政党が結党した。", "a": "政党", "r": ""}, {"no": 87, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1881年結党。国会期成同盟を中核に結成、総理板垣退助、副総理中島信行。「自由党盟約」3章を定め、主権在民・一院制を掲げ、フランス流の急進論を主張した。", "a": "自由党", "r": ""}, {"no": 88, "ch": "自由民権運動", "pr": "自由民権運動", "q": "1882年結党。総理大隈重信。明治十四年の政変で下野した官僚などが中心。君民同治を説き、二院制、イギリス流の立憲君主制を主張した。", "a": "立憲改進党", "r": ""}, {"no": 89, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1882年結党。福地源一郎・丸山作楽らが自由党・立憲改進党に対抗してつくった政府系政党。君主が主権を持つ主権在君を掲げ、神官・官吏などの保守層が支持した。", "a": "立憲帝政党", "r": ""}, {"no": 90, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "旧幕臣、政治評論家。1868年に『江湖新聞』を発行、のち東京日日新聞社長。政府支持の論陣を張り、御用新聞と目された。1882年に立憲帝政党を組織した。", "a": "福地源一郎", "r": ""}, {"no": 91, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "自由民権運動において、自由党急進派や貧農が直接行動に走った事件。1882年の福島事件以降に多発。豪農・地主らによる国会開設運動や松方デフレ政策により民権運動が分裂・後退したことが背景。", "a": "騒擾事件(激化事件)", "r": ""}, {"no": 92, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1882年、福島県令三島通庸の会津三方道路の土木工事強制に対して、農民や県会議長河野広中らの福島自由党員が反対運動を展開。県令はこれを自由党弾圧の好機として多数を逮捕・処罰した。", "a": "福島事件", "r": ""}, {"no": 93, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "鹿児島藩出身の政治家。福島県令として会津三方道路の強引な建設事業を進め福島事件を招き、栃木県令として加波山事件を弾圧した。ついで警視総監として保安条例を施行した。", "a": "三島通庸", "r": ""}, {"no": 94, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "福島出身の政党政治家。自由党幹部。福島事件の首謀者として内乱罪で入獄、憲法発布の大赦で出獄。1890年第1回総選挙以降、衆議院議員、衆議院議長を歴任した。", "a": "河野広中", "r": ""}, {"no": 95, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1883年3月、新潟県高田地方の自由党員が、政府高官暗殺計画の嫌疑で逮捕・処罰された事件。", "a": "高田事件", "r": ""}, {"no": 96, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1884年5月、政府の弾圧と自由党幹部の妥協に憤った急進派の群馬自由党員が貧農を結集して、群馬県妙義山麓で蜂起、失敗して処罰された事件。", "a": "群馬事件", "r": ""}, {"no": 97, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1884年9月、栃木県令三島通庸の圧政に対し、栃木・福島の自由党員が県令暗殺を計画したが失敗。茨城県加波山で政府打倒を図って蜂起したが、鎮圧された。", "a": "加波山事件", "r": ""}, {"no": 98, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "松方デフレ政策により、埼玉県秩父で起こった騒擾事件。農民が困民党を組織、在地の自由党員の指導で返済延期・減税を叫び、1884年、田代栄助を総理として約1万人の農民が蜂起した。", "a": "秩父事件", "r": ""}, {"no": 99, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1885年11月、旧自由党員大井憲太郎・磯山清兵衛らが、84年の甲申事変失敗を機に朝鮮に独立党政権を樹立し、日本国民に政治の関心を喚起して民権運動の再興を促そうとした事件。", "a": "大阪事件", "r": ""}, {"no": 100, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "自由党左派の指導者。1885年の大阪事件で重懲役、89年の憲法発布の大赦で出獄。1892年、東洋自由党を結成し、対外硬に傾斜した。", "a": "大井憲太郎", "r": ""}, {"no": 101, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1886〜89年の反政府諸派の反政府統一運動。三大事件建白運動と呼応して後藤象二郎・星亨らが民権派勢力を結集すると、政府は保安条例で弾圧した。", "a": "大同団結運動", "r": ""}, {"no": 102, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1887年の反政府運動。井上外相の条約改正への反対運動に端を発し、片岡健吉ら民権派が言論の自由・地租軽減・外交失策挽回の3項を主張する建白書を元老院に提出した。", "a": "三大事件建白運動", "r": ""}, {"no": 103, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "1887年、反政府運動の弾圧法規。三大事件建白運動・大同団結運動など民権運動の高揚に際し、第1次伊藤内閣の山県内相が発布。民権派を3年間皇居外3里の地に追放した。", "a": "保安条例", "r": ""}, {"no": 104, "ch": "自由民権運動の再編", "pr": "自由民権運動の再編", "q": "政党政治家。自由党幹部となり、三大事件建白・大同団結運動を発起。1892年から第2代衆議院議長。1900年、憲政党を分裂させて立憲政友会創設に参画した。", "a": "星亨", "r": ""}, {"no": 105, "ch": "新聞・思想", "pr": "新聞・思想", "q": "神奈川県知事の尽力で発刊した日本最初の日刊紙(1870年12月創刊)。本木昌造の鉛製活字を用い、1879年に東京に移り『東京横浜毎日新聞』と改題した。", "a": "横浜毎日新聞", "r": ""}, {"no": 106, "ch": "新聞・思想", "pr": "新聞・思想", "q": "1872年2月、イギリス人ブラックが東京で創刊した新聞。1874年1月、愛国公党が政府に提出した民撰議院設立建白書を掲載し、反響を呼んだ。", "a": "日新真事誌", "r": ""}, {"no": 107, "ch": "新聞・思想", "pr": "新聞・思想", "q": "1882年3月、福沢諭吉が創刊した新聞。独立不羈・不偏不党を主張、堅実な報道で商工業者の支持を得た。1936年、東京日日新聞に吸収・合併された。", "a": "時事新報", "r": ""}, {"no": 108, "ch": "新聞・思想", "pr": "新聞・思想", "q": "1892年11月、黒岩涙香が東京で創刊した新聞。藩閥政府攻撃を行い、1899年以後は最有力紙となった。日露開戦前には幸徳・堺・内村らの記者が非戦の論陣をはった。", "a": "万朝報", "r": ""}, {"no": 109, "ch": "新聞・思想", "pr": "新聞・思想", "q": "評論家。名は猪一郎。民友社を創立、『国民之友』『国民新聞』を創刊して平民主義を主唱。日清戦争を機に国権主義に転じ、対外膨張論で国家主義を主唱した。", "a": "徳富蘇峰", "r": ""}, {"no": 110, "ch": "新聞・思想", "pr": "新聞・思想", "q": "1887年、徳富蘇峰らが設立。雑誌『国民之友』を発刊して平民主義を主唱。明治20年代の文壇にも影響を及ぼした。", "a": "民友社", "r": ""}, {"no": 111, "ch": "新聞・思想", "pr": "新聞・思想", "q": "民友社の機関誌、総合雑誌。1887年創刊。社会論評、海外文化を紹介し、思想界・文学界にも影響を及ぼした。蘇峰の国家主義への転向で、1898年に『国民新聞』に吸収されて廃刊した。", "a": "国民之友", "r": ""}, {"no": 112, "ch": "新聞・思想", "pr": "新聞・思想", "q": "日本的な伝統・美意識を強調する思想。欧化政策に対する批判として、明治20年代から盛んになり、民族主義・国家主義に傾斜しており、近代的民族主義・国粋保存主義ともいう。", "a": "国粋主義", "r": ""}, {"no": 113, "ch": "新聞・思想", "pr": "新聞・思想", "q": "ジャーナリスト・評論家。名は雄二郎。政教社を創立し、国粋保存の立場をとる。同時に、世界における日本という立場からインターナショナリズムを説いた。", "a": "三宅雪嶺", "r": ""}, {"no": 114, "ch": "新聞・思想", "pr": "新聞・思想", "q": "政府の欧化主義を批判し、国粋保存をとなえる思想的結社。1888年、三宅雪嶺・志賀重昂・杉浦重剛らが設立。雑誌『日本人』を発行した。", "a": "政教社", "r": ""}, {"no": 115, "ch": "新聞・思想", "pr": "新聞・思想", "q": "政教社の機関誌。1888年創刊。三宅雪嶺らが国粋保存の論陣を張った。1907年に『日本及日本人』と改称した。", "a": "日本人", "r": ""}, {"no": 116, "ch": "新聞・思想", "pr": "新聞・思想", "q": "山口出身の政治家。大久保利通死後の政府最高指導者。華族令・内閣制度を創設し、初代首相。枢密院議長として明治憲法を制定した。第2・第3次の内閣を組織したのち、立憲政友会総裁となり第4次内閣を組織、政党政治への道を開いた。", "a": "伊藤博文", "r": ""}, {"no": 117, "ch": "憲法の制定", "pr": "憲法の制定", "q": "大日本帝国憲法下における最高立法機関。衆議院・貴族院の二院制。天皇大権が強く、議会は権限が弱く協賛機関であったが、政党の政権参入、政党内閣実現の基礎ともなった。", "a": "帝国議会", "r": ""}, {"no": 118, "ch": "憲法の制定", "pr": "憲法の制定", "q": "大日本帝国憲法下で衆議院と並んで帝国議会を構成した立法機関。皇族議員・華族議員らの世襲議員、勅選議員、多額納税者議員で構成され、衆議院とほぼ対等の権限を持った。", "a": "貴族院", "r": ""}, {"no": 119, "ch": "憲法の制定", "pr": "憲法の制定", "q": "貴族院を構成した議員の一種。皇族の世襲(互選)による議員。", "a": "皇族議員", "r": ""}, {"no": 120, "ch": "憲法の制定", "pr": "憲法の制定", "q": "貴族院を構成した議員の一種。華族の世襲(互選)による議員。", "a": "華族議員", "r": ""}, {"no": 121, "ch": "憲法の制定", "pr": "憲法の制定", "q": "大日本帝国憲法下で貴族院と共に帝国議会を構成した公選の立法機関。予算先議(議決)権を持つ以外は貴族院と対等とされた。", "a": "衆議院", "r": ""}, {"no": 122, "ch": "憲法の制定", "pr": "憲法の制定", "q": "1889年公布。定員1名原則の小選挙区制、議員定数300名、任期4年。選挙人は直接国税15円以上を納める25歳以上の男性(被選挙人は30歳以上)であった。", "a": "衆議院議員選挙法", "r": ""}, {"no": 123, "ch": "憲法の制定", "pr": "憲法の制定", "q": "衆議院議員選挙法における選挙権の要件となった、地租・所得税(のち営業税も)などの国税。金額の制限は段階的に引き下げられ、1925年に撤廃された。", "a": "直接国税", "r": ""}, {"no": 124, "ch": "憲法の制定", "pr": "憲法の制定", "q": "1889年、大日本帝国憲法と共に制定された皇室関係の法規。皇位の継承・即位、皇族、皇室経費などを規定した。", "a": "皇室典範", "r": ""}, {"no": 125, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "フランスの法学者。明治政府に招かれて1873年に来日。刑法・民法などを起草した。井上馨の条約改正案の外国人判事任用を批判し、反対運動に影響を与えた。", "a": "ボアソナード", "r": ""}, {"no": 126, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "1880年公布、82年施行。ボアソナードが起草したフランス法系の近代的刑法典。法律の規定がなければ罰しないという罪刑法定主義を採用した。", "a": "刑法", "r": ""}, {"no": 127, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "ボアソナードが草案を起草、1890年に公布したが、フランス法系民法が個人主義的で国情に適せずと施行は無期延期となった(旧民法)。その後、戸主権を重視した新民法(明治民法)を編纂、1896・98年公布。", "a": "民法", "r": ""}, {"no": 128, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "民法典論争を経て編纂された、戸主権を重視した明治民法。一夫一婦制をとり重婚の禁止も導入された。", "a": "新民法", "r": ""}, {"no": 129, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "1890年公布、ロエスレルの起草。外国法を模倣した傾向が強く、法典調査会で修正、99年修正(新)商法を施行した。", "a": "商法", "r": ""}, {"no": 130, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "旧民法が個人主義的で、日本古来の家族制度の美風をそこなうとして、1889年から本格的に起こった論争。「民法出デヽ忠孝亡ブ」とまでいわれ、92年に施行延期、新たに明治民法が編纂された。", "a": "民法典論争", "r": ""}, {"no": 131, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "1898年制定の民法で規定された家族制度。強大な戸主権の下、男女両性の不平等と家督相続制など、家長中心の封建的な家族制度で、明治民法によって温存された。", "a": "家制度", "r": ""}, {"no": 132, "ch": "諸法典の編纂", "pr": "諸法典の編纂", "q": "1871年の戸籍法で近代の戸主の制が成立。明治民法では家族の婚姻の同意権や居所指定権を含む戸主権を制度化し、親権と共に家族を拘束した。", "a": "戸主", "r": ""}, {"no": 133, "ch": "初期議会", "pr": "初期議会", "q": "1890年の第一議会から日清戦争直前の第六議会までをいう。超然主義・富国強兵政策を推進する藩閥政府と、議席の過半数を占める民党とが、衆議院で激しく対立した。", "a": "初期議会", "r": ""}, {"no": 134, "ch": "初期議会", "pr": "初期議会", "q": "政党の動向に左右されず、超然として公正な政策を行うとする政府の政治姿勢。憲法発布翌日の2月12日、首相黒田清隆が政党政治を拒む考えを表明した。", "a": "超然主義", "r": ""}, {"no": 135, "ch": "初期議会", "pr": "初期議会", "q": "1890年7月1日、第1次山県内閣の下で実施された最初の衆議院議員総選挙。直接国税15円以上、25歳以上の男性に選挙権が与えられ、藩閥政府と対立する民党が過半数を占めた。", "a": "第1回衆議院議員総選挙", "r": ""}, {"no": 136, "ch": "初期議会", "pr": "初期議会", "q": "1890.11〜91.3。民党勢力が衆議院の過半数を占め、「政費節減・民力休養」をとなえて第1次山県内閣と対決した議会。", "a": "第一(帝国)議会", "r": ""}, {"no": 137, "ch": "初期議会", "pr": "初期議会", "q": "立憲自由党・立憲改進党を中心とする野党勢力の呼称。軍備拡張の膨大な予算に反対、政費節減と民力休養を主張して提携、藩閥政府と対立した。", "a": "民党", "r": ""}, {"no": 138, "ch": "初期議会", "pr": "初期議会", "q": "1890年1月、第1回総選挙を目前にして大井憲太郎らが自由党を再建。選挙後、第一議会直前に立憲自由党を結成、翌1891年板垣を総理として自由党と改め、民党連合の中核となった。", "a": "立憲自由党", "r": ""}, {"no": 139, "ch": "初期議会", "pr": "初期議会", "q": "初期議会における藩閥政府支持派の政党。議会では少数派で、離合集散が多かった。", "a": "吏党", "r": ""}, {"no": 140, "ch": "初期議会", "pr": "初期議会", "q": "山口出身の政治家。陸軍の基礎を確立し、西南戦争を鎮圧。1889年と98年に長州閥・軍閥の巨頭として内閣を組織し、伊藤博文没後は政界に君臨した。", "a": "山県有朋", "r": ""}, {"no": 141, "ch": "初期議会", "pr": "初期議会", "q": "1892年2月の第2回総選挙で、内相品川弥二郎らによる大規模な選挙干渉が行われたが、民党が勝利する結果となった。", "a": "選挙干渉", "r": ""}, {"no": 142, "ch": "初期議会", "pr": "初期議会", "q": "1892.8〜96.9。山県(法)・黒田(逓)・井上(内)ら大物藩閥政治家を擁する「元勲総出」の内閣。第一次条約改正を達成し、日清戦争に突入した。", "a": "伊藤内閣(第2次)", "r": ""}, {"no": 143, "ch": "条約改正", "pr": "条約改正", "q": "領事裁判権の撤廃、輸入関税の一部引上げの代わりに外国人判事を任用し、居住権・所有権などを認める内地開放案などを示した井上改正案に盛り込まれた項目。", "a": "外国人判事任用", "r": ""}, {"no": 144, "ch": "条約改正", "pr": "条約改正", "q": "条約改正のためにとった西欧化政策をいう。欧米の制度・生活様式などを取り入れた欧化主義を示し、外国の歓心を買おうとしたが、民権・国権論側から反対を受け、国民主義・国粋保存主義からも批判された。", "a": "欧化政策", "r": ""}, {"no": 145, "ch": "条約改正", "pr": "条約改正", "q": "東京日比谷の官営国際社交場。英人コンドルの設計、1883年竣工。欧化政策は鹿鳴館での舞踏会（ダンスパーティ、夜に開かれた場合は夜会とも呼ばれた）などに象徴された。そのため、鹿鳴館外交とも呼ばれ、この時代は鹿鳴館時代ともいわれた。", "a": "鹿鳴館", "r": ""}, {"no": 146, "ch": "条約改正", "pr": "条約改正", "q": "1886年、横浜から神戸へ向う英貨物船ノルマントン号が紀伊半島沖で難破。その際、英人船長ドレイクら乗組員は脱出、日本人船客25人は全員溺死。神戸領事の海難審判で船長は無罪、国民は憤激。再度、横浜領事による刑事裁判で禁錮3カ月となったが無賠償。国民は法権回復の必要を痛感させられた。", "a": "ノルマントン号事件", "r": ""}, {"no": 147, "ch": "条約改正", "pr": "条約改正", "q": "1844〜1914 山口出身。1889〜91年、第1次山県・第1次松方内閣の外相。ロシアの東アジア進出に危機感を深める英国と条約改正に取り組み、法権の回復などの同意を得たが、1891年5月、大津事件の突発で退任（後任は榎本武揚）。1894年に駐英公使となり、陸奥外相の改正交渉をたすけ、日英通商航海条約を調印。", "a": "青木周蔵", "r": ""}, {"no": 148, "ch": "条約改正", "pr": "条約改正", "q": "1891年5月、シベリア鉄道起工式に出席の途次、訪日中のロシア皇太子ニコライ（のち皇帝ニコライ2世）が滋賀県大津で警備巡査津田三蔵に傷つけられた事件。政府は陳謝で事態を収拾、青木外相は辞任した。", "a": "大津事件", "r": ""}, {"no": 149, "ch": "条約改正", "pr": "条約改正", "q": "大津事件の犯人である警備巡査。担当判事に謀殺未遂罪として無期徒刑の判決が指示された。", "a": "津田三蔵", "r": ""}, {"no": 150, "ch": "条約改正", "pr": "条約改正", "q": "大津事件で警備巡査津田三蔵に傷つけられたロシア皇太子。のち皇帝ニコライ2世となる。", "a": "ニコライ（2世）", "r": ""}, {"no": 151, "ch": "条約改正", "pr": "条約改正", "q": "1837〜1908 大津事件の時の大審院長。日露関係の悪化を恐れる成立直後の松方内閣・元老らは、犯人津田三蔵の死刑を要請したが、児島は大津地裁の特別法廷で担当判事に謀殺未遂罪として無期徒刑の判決を指示した。司法権の独立を守った判決といわれる。", "a": "児島惟謙", "r": ""}, {"no": 152, "ch": "条約改正", "pr": "条約改正", "q": "1844〜97 和歌山出身。駐米公使を経て、第2次伊藤内閣の外相となり、日清開戦直前に日英通商航海条約を結び、条約改正に成功。日清戦争の講和条約と三国干渉の外交処理にあたった。『蹇蹇録』は回顧録。", "a": "陸奥宗光", "r": ""}, {"no": 153, "ch": "条約改正", "pr": "条約改正", "q": "1894年、駐英公使青木周蔵と英外相キャンバレーによってロンドンで調印。主な内容は、領事裁判権の廃止、関税自主権の一部回復、居留地の廃止、相互的最恵国待遇など。ついで1897年までに他の欧米諸国とも調印、99年より実施。有効期間12年。", "a": "日英通商航海条約", "r": ""}, {"no": 154, "ch": "条約改正", "pr": "条約改正", "q": "1855〜1911 宮崎出身。第1次桂内閣の外相として日英同盟協約の締結、日露戦争講和会議にあたる。第2次桂内閣外相時代の1910年に韓国併合、1911年に日米通商航海条約を調印して、関税自主権の回復を実現した。", "a": "小村寿太郎", "r": ""}, {"no": 155, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1394年、李成桂が朝鮮の首都とした都市。1910年の韓国併合に伴い、京城と改称され、朝鮮総督府が設置された。現在のソウル。", "a": "漢城", "r": ""}, {"no": 156, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1851〜95 高宗（李太王）の王妃。立后後、高宗の実父大院君を引退させ、閔氏一族の政権独占を図る。初め親日派と近代化を進めたが、壬午軍乱・甲申事変後は清・露勢力を背景に親日派を圧迫。日清戦争で勢力を失ったが、三国干渉後、ロシアに接近して親日派を追放、政権を握る。1895年に殺害された。", "a": "閔妃（明成皇后）", "r": ""}, {"no": 157, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1852〜1919 朝鮮の第26代国王。閔氏一族の政権独占を排除し、1897年に国号を大韓帝国と改めて、初代皇帝となる。1907年にハーグ密使事件を起こし、退位した。", "a": "高宗", "r": ""}, {"no": 158, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1882年、朝鮮の都、漢城（現、ソウル）で起こった事変。親日策をとる閔妃に対し、守旧派兵士が大院君を担いでクーデタを決行。日本公使館も襲われたが、清の派兵で鎮圧。日朝間に済物浦条約が成立したため、清は朝鮮への宗主権の強化を図り、閔派は親清策に転じた。", "a": "壬午軍乱（壬午事変）", "r": ""}, {"no": 159, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1820〜98 朝鮮の王族。国王高宗の生父として権力を握り、鎖国攘夷策をとる。閔妃の台頭で一時失脚した。壬午軍乱でクーデタを起こして失敗。1895年、閔妃殺害後に一時政権に復帰したが失脚した。", "a": "大院君", "r": ""}, {"no": 160, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1884年、漢城で起こった事変。独立党が日本公使と結び、清仏戦争（1884〜85年、仏がベトナムを保護国化）の勃発を好機とし、クーデタを起こして事大党を追放したが、清の干渉で失敗。日朝間で漢城条約を結んで結着した。", "a": "甲申事変", "r": ""}, {"no": 161, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1851〜94 独立党の指導者。壬午軍乱の謝罪大使として来日し、親日派となる。甲申事変を起こしたが、失敗して日本に亡命。札幌などに移送されたが、1894年、上海へ行き暗殺される。", "a": "金玉均", "r": ""}, {"no": 162, "ch": "朝鮮問題", "pr": "朝鮮問題", "q": "1885年の日清紳士協定。甲申事変の処理策として、日清両国軍の朝鮮撤退、日清両国軍事顧問の派遣中止、将来の出兵時には互いに通知し合うという3条。全権は伊藤博文と李鴻章。", "a": "天津条約", "r": ""}, {"no": 163, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1878年に創設された陸軍の最高軍令機関。軍令は軍隊の動員・作戦計画などをいい、天皇の統帥権発動を補佐。長官は参謀本部長（のち参謀総長）で、大将・中将から任用される。また、旅団以上には参謀が置かれた。", "a": "参謀本部", "r": ""}, {"no": 164, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1881年東京に設置。1889年東京に憲兵司令部設置。逐次地方にも拡大した。陸・海軍、内務、司法省に属した。軍隊内の犯罪を取り締まるが、「国内の安寧」を建前に、警察権も行使。民衆運動・思想の弾圧にも及んだ。", "a": "憲兵（隊）", "r": ""}, {"no": 165, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1888年、鎮台を改編した陸軍の常備兵団編制上の最大部隊で、独立して作戦する戦略単位。旅団・連隊・大隊と司令部などで構成され、平時人員は約1万人。1891年、特に宮城警衛を任とする近衛師団を設置した。", "a": "師団", "r": ""}, {"no": 166, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "海軍の中央軍令機関。1886年、参謀本部海軍部に始まり、93年に軍令部条例が制定され、海軍軍令部と称して独立。長官は海軍軍令部長。1933年には軍令部、長官は軍令部総長と改称され、権限・発言力を強めた。", "a": "海軍軍令部", "r": ""}, {"no": 167, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1894年の朝鮮南部での農民蜂起。東学はカトリックの西学に対する呼称で、崔済愚が創始した民衆宗教。斥倭斥洋（日本と西洋の排斥）をとなえ、全琫準らが農民軍を率いて大反乱となる。朝鮮政府は鎮圧できず、清軍が救援出兵し、日本軍も天津条約を口実に出兵。農民軍は朝鮮政府と和解した。", "a": "甲午農民戦争（東学の乱）", "r": ""}, {"no": 168, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "カトリックの西学に対する呼称で、崔済愚が創始した民衆宗教。斥倭斥洋（日本と西洋の排斥）をとなえた。", "a": "東学", "r": ""}, {"no": 169, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1894〜95。朝鮮の支配権をめぐる日清両国の戦争。甲午農民戦争を契機に、日本の朝鮮政府に対する内政改革要求を清に拒否され、8月1日に宣戦布告。大本営（戦時の最高統帥機関）を広島におく。日本軍は優秀な軍事力で勝利を収め、戦費は約2億円を要した。軍人の他、多くの軍夫（軍で雑役をする民間人）も使われた。", "a": "日清戦争", "r": ""}, {"no": 170, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1894年7月25日、仁川港外豊島沖で日本軍艦3隻が清軍艦2隻を撃破。日清戦争緒戦の勝利。", "a": "豊島沖（の）海戦", "r": ""}, {"no": 171, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1894年9月、黄海で清海軍主力の戦艦鎮遠・定遠を擁する北洋艦隊を、日本連合艦隊が撃破した海戦。", "a": "黄海（の）海戦", "r": ""}, {"no": 172, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1895年4月。日清戦争の講和条約。山口県下関の春帆楼で開かれた下関講和会議（日清講和会議）で締結。全権は日本が伊藤博文・陸奥宗光、清が李鴻章。清は朝鮮の独立を認め、日本へ遼東半島・台湾・澎湖諸島の割譲、賠償金2億両（邦貨約3億1000万円）、揚子江（現、長江）沿岸の沙市・重慶・蘇州・杭州の開市・開港と揚子江航行権を与えた。", "a": "下関条約（日清講和条約・下関講和条約）", "r": ""}, {"no": 173, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "下関条約で清が日本に支払った賠償金。邦貨約3億1000万円。", "a": "賠償金2億両", "r": ""}, {"no": 174, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "下関条約で開市・開港が定められた、揚子江（現、長江）沿岸の都市。", "a": "沙市・重慶・蘇州・杭州", "r": ""}, {"no": 175, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "中国東北部南端の半島。下関条約で日本に割譲されたが、三国干渉で清に返還。1898年、ロシアが半島南部の旅順・大連地域を清より租借。日露戦争後、日本が租借権を譲り受けた。", "a": "遼東半島", "r": ""}, {"no": 176, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "先住民はマライ系の高砂族。明代から漢民族が移り定住、17世紀後半から清が支配。1874年、日本は台湾出兵。1895年、下関条約で澎湖諸島と共に日本領となる。第二次世界大戦後、中国に返還。1949年以降、中国国民政府が本土から移って統治、中華民国を称する。", "a": "台湾", "r": ""}, {"no": 177, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "台湾の西にある60余りの小島群。1895年、下関条約で台湾と共に日本領となる。現在は台湾国民政府領。", "a": "澎湖諸島", "r": ""}, {"no": 178, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1823〜1901 清の政治家。北洋艦隊を組織。近代化（洋務運動）に努め、皇帝から全権を委任された北洋大臣や北京の直隷総督をつとめ、天津条約・下関条約の締結など、対日問題に対処した。", "a": "李鴻章", "r": ""}, {"no": 179, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "中国春秋時代、呉越の争いの故事。報復のため苦しみ努力することをいう。伊藤内閣は戦後危機の乗り切りと挙国一致体制のためにあおった。", "a": "臥薪嘗胆", "r": ""}, {"no": 180, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1895年4月、露・独・仏の3国が、下関条約で規定された日本の遼東半島領有が「朝鮮の独立を有名無実に為す」ことを理由に、清への返還を勧告。日本はやむなく5月に受諾、遼東半島還付賠償金として庫平銀3000万両（約4500万円）を取得した。以後、臥薪嘗胆を合言葉に、ロシアに敵対する世論が高まる。", "a": "三国干渉", "r": ""}, {"no": 181, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1895年10月、高宗妃の閔妃を公使館守備隊が殺害した事件。新任の駐朝公使三浦梧楼が指揮して、三国干渉以後に親露反日政策をとる閔妃を殺害し、大院君の親日内閣を結成した。", "a": "閔妃殺害事件", "r": ""}, {"no": 182, "ch": "日清戦争と三国干渉", "pr": "日清戦争と三国干渉", "q": "1897〜1910年の朝鮮の国号。朝鮮王朝の第26代国王高宗が皇帝に即位、大韓帝国と改称。清との宗属関係を絶ち、独立国であることを示した。通称は韓国。", "a": "大韓帝国（韓国）", "r": ""}, {"no": 183, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "国家の利益を個人の利益に優先させる思想。明治20年代に高まったが、日露戦争後はその達成感から人生の意義に煩悶する青年も出現した。その後、軍国主義・対外膨張論と結びついて超国家主義へと発展した。", "a": "国家主義", "r": ""}, {"no": 184, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1896年、立憲改進党を中心に少数派政党が加わり結成。党首は大隈重信。第2次松方内閣に、大隈が外相で入閣して与党となる。", "a": "進歩党", "r": ""}, {"no": 185, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1838〜1922 佐賀出身。大蔵卿・参議を歴任。1881年、国会開設意見書を左大臣に提出し、国会の早期開設を主張。明治十四年の政変で下野し、立憲改進党の総理となる。黒田内閣の外相として条約改正に尽力。1898年第1次内閣を組織。第2次内閣の時、第一次世界大戦に参戦。在野時代の1882年に東京専門学校を創立。", "a": "大隈重信", "r": ""}, {"no": 186, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1898.6〜98.11 憲政党を基礎に大隈（外相兼任）・板垣（内相）が中心となって成立したので、隈板内閣ともいわれる。陸・海軍大臣を除く閣僚を、すべて憲政党員が占めた最初の政党内閣。共和演説事件による与党憲政党の内紛・分裂で、退陣した。", "a": "大隈内閣（第1次）", "r": ""}, {"no": 187, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1898年、自由・進歩両党が第3次伊藤内閣の地租増徴案に反対して議会を解散させ、合同して成立した政党。隈板内閣を組織するが4カ月で分裂。名称を継いだ自由党系の星亨主導の憲政党は第2次山県内閣と提携し、地租増徴案に賛成。内閣が憲政党員の入閣要求を拒むと、伊藤博文に接近し、立憲政友会に合流。", "a": "憲政党", "r": ""}, {"no": 188, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1898.1〜98.6 地租増徴案などの増税案を議会に提出、自由・進歩党に否決され、衆議院解散。憲政党が結成されたため半年足らずで退陣し、隈板内閣に譲る。", "a": "伊藤内閣（第3次）", "r": ""}, {"no": 189, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1898〜1910 憲政党分裂により組織された旧進歩党系の政党。党首は大隈重信。地盤は都市商工業者。大隈引退後、1910年に立憲国民党となる。", "a": "憲政本党", "r": ""}, {"no": 190, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1898.11〜1900.10 憲政党を与党とし、議員の買収工作まで行い、懸案の地租増徴案（2.5％を3.3％に）を実現した。さらに文官任用令・選挙法を改正、軍部大臣現役武官制を定めるなど、山県系官僚（平田ら）・軍部（桂ら）の権力体制を固めた。また治安警察法を制定。義和団事件の際には派兵を決定した。", "a": "山県内閣（第2次）", "r": ""}, {"no": 191, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "第2次山県内閣が憲政党を与党として実現した、地租を2.5％から3.3％に引き上げる案。", "a": "地租増徴案", "r": ""}, {"no": 192, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "文官の任用資格の法規。1893年公布。1899年山県内閣が改正。政党員が官界（官僚）に進出するのを防ぐため、特別任用以外の勅任官を文官高等試験合格の奏任官より任用する試験任用に拡大し、自由任用を制限した。", "a": "文官任用令", "r": ""}, {"no": 193, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "1899年、第2次山県内閣が行った文官任用令の改正。政党員が官界に進出するのを防ぐため、特別任用以外の勅任官を試験任用に拡大し、自由任用を制限した。", "a": "文官任用令改正", "r": ""}, {"no": 194, "ch": "立憲政友会の成立", "pr": "立憲政友会の成立", "q": "陸・海軍大臣を現役の大将・中将から任用する制度。1900年に法制化。軍部に対する政党の影響力を阻止する目的。1913年に現役規定を削除したが、36年の二・二六事件後、広田弘毅内閣が復活させた。この規定により、組閣非協力や軍部大臣単独辞任などの手段で内閣を左右した例がある。", "a": "軍部大臣現役武官制", "r": ""}, {"no": 195, "ch": "桂園時代", "pr": "桂園時代", "q": "1900年、第2次山県内閣が公布。台頭してきた社会主義・労働運動・農民運動を抑えるために、1890年に制定した集会及政社法などを改補集成。労働者の団結権・ストライキ権（争議権）の制限、女性・未成年者の政談集会参加の禁止など、警察権の強化を図った。1945年廃止。", "a": "治安警察法", "r": ""}, {"no": 196, "ch": "桂園時代", "pr": "桂園時代", "q": "1900年成立。伊藤博文を総裁に伊藤系官僚と憲政党を中心に結党。幸徳秋水は『万朝報』に「自由党を祭る文」を発表、自由党の後身憲政党が藩閥と妥協したことを批判。2代総裁は西園寺公望、3代原敬。昭和初期に立憲民政党と二大政党時代を現出し、1940年、新体制運動で解党。", "a": "立憲政友会", "r": ""}, {"no": 197, "ch": "桂園時代", "pr": "桂園時代", "q": "1900.10〜01.6 立憲政友会を基盤とする内閣。北清事変後の外交・財政策に直面。増税案は山県系の貴族院勢力の反対に苦しみ、閣内不統一で退陣、桂内閣に代わった。", "a": "伊藤内閣（第4次）", "r": ""}, {"no": 198, "ch": "桂園時代", "pr": "桂園時代", "q": "1847〜1913 山口出身、軍人・政治家。台湾総督・陸相を歴任。山県有朋の後継者として軍部・藩閥官僚勢力の維持に努める。明治後期、1901〜12年に西園寺公望と交代で3度組閣する。", "a": "桂太郎", "r": ""}, {"no": 199, "ch": "桂園時代", "pr": "桂園時代", "q": "1901.6〜06.1 山県系官僚中心の内閣。日英同盟協約を結び、日露戦争を遂行し、ポーツマス条約に調印。日比谷焼打ち事件で国民の支持を失い、総辞職した。", "a": "桂内閣（第1次）", "r": ""}, {"no": 200, "ch": "桂園時代", "pr": "桂園時代", "q": "1849〜1940 公家出身の政治家。枢密院議長、文・外相などを歴任。1903年、伊藤博文の後を受けて立憲政友会総裁となり、明治末期に2度組閣。パリ講和会議の全権委員。大正後期以降は、唯一の元老として立憲政治の保持に尽力。", "a": "西園寺公望", "r": ""}, {"no": 201, "ch": "桂園時代", "pr": "桂園時代", "q": "1906.1〜08.7 立憲政友会を与党として組閣。日露戦後経営に努め、鉄道国有法を制定、満鉄設立などを行う。帝国国防方針に基づく軍備拡張財政は恐慌により難航。日本社会党結成や赤旗事件などの社会主義運動への対応で、元老たちの批判を受け、財政逼迫などで総辞職。", "a": "西園寺内閣（第1次）", "r": ""}, {"no": 202, "ch": "桂園時代", "pr": "桂園時代", "q": "元勲待遇者と、それに準ずる者をいう。天皇の最高顧問だが非公式の地位。首相の推薦や重要政策に関与し、藩閥勢力を擁護、民主勢力の発展を阻止するなど、絶大な影響を持った。当初の黒田清隆・伊藤博文・山県有朋・松方正義・井上馨・西郷従道・大山巌に桂太郎・西園寺公望らが加わった。", "a": "元老", "r": ""}, {"no": 203, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "軍事・外交力を持った、世界に影響力のあるヨーロッパやアメリカの大国。原材料や市場拡大のため、アジア・アフリカを植民地化した。アメリカを除いてヨーロッパ列強と呼ぶこともある。", "a": "（欧米）列強", "r": ""}, {"no": 204, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "1898年、米西（スペイン）戦争に勝利したアメリカがスペインから獲得。太平洋進出を本格化させた。", "a": "フィリピン領有", "r": ""}, {"no": 205, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "米国務長官ジョン=ヘイが1899年に提唱した中国の門戸開放・機会均等の原則。相互不干渉のモンロー宣言（主義）を捨て、門戸開放宣言を行った。", "a": "門戸開放・機会均等", "r": ""}, {"no": 206, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "ジョン=ヘイが1900年に提唱した、中国の領土保全の原則。", "a": "領土保全", "r": ""}, {"no": 207, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "19世紀末に起きた、列強の中国進出に反対する宗教結社義和団を中心とする民衆反乱。山東省で起こり、1900年河北省で本格的に拡大。清朝政府の支持下に「扶清滅洋」を掲げて北京に侵入、北清事変となる。", "a": "義和団戦争", "r": ""}, {"no": 208, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "義和団が掲げたスローガン。清を扶（たす）け西洋を滅ぼすの意。", "a": "扶清滅洋", "r": ""}, {"no": 209, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "列強の中国進出に反対する宗教結社。山東省で起こり、1900年河北省で本格的に拡大した民衆反乱の中心。", "a": "義和団", "r": ""}, {"no": 210, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "1900年の義和団事件に対し、英・米・日・仏・露・独など8カ国連合軍が出兵。義和団が北京の各国公使館を包囲、清朝政府も義和団に同調して各国に宣戦布告したが、連合軍が鎮圧。1901年清は北京議定書で謝罪。主力となった日本の軍事力の有用性が列国に評価された（「極東の憲兵」）。", "a": "北清事変", "r": ""}, {"no": 211, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "資本主義国家の政治的・経済的な侵略政策の段階をいう。独占・金融資本の形成、過剰資本の輸出、諸列強による世界再分割などが進展。世界史的には19世紀末〜20世紀初期の中国分割、日本では北清事変の出兵からとされる。", "a": "帝国主義", "r": ""}, {"no": 212, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "日清戦争後、「眠れる獅子」と呼ばれた中国の弱体化に乗じ、列強が中国に勢力範囲を設定。沿岸の要地・要港の租借、鉄道建設権などを獲得した。", "a": "中国分割（進出）", "r": ""}, {"no": 213, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "他国の領土の一部を借用することで、その領土を租借地、権利を租借権という。領土割譲と同様の特権を行使でき、独占的・排他的な管理特権を持つ。", "a": "租借", "r": ""}, {"no": 214, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "山東半島西南部の湾。中心が青島。1898年にドイツが99年間の期限で租借。第一次世界大戦で日本が占領したが、1922年の九カ国条約により中国に返還した。", "a": "膠州湾", "r": ""}, {"no": 215, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "遼東半島南部の港市。清の北洋艦隊基地。日清戦争では日本が占領。1898年ロシアが25年間の期限で租借。東洋艦隊の根拠地とした。日露戦争では日本軍が再び占領。日露戦争後はロシアが日本に租借権を譲渡し、関東都督府がおかれた。", "a": "旅順", "r": ""}, {"no": 216, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "遼東半島南部の都市。1898年ロシアが25年間の期限で租借。東清鉄道の駅を設置。日露戦争後、ロシアが日本に租借権を譲渡、南満洲鉄道の本社が設置された。", "a": "大連", "r": ""}, {"no": 217, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "広東省南部の半島。香港島の対岸。1860年に割譲された地域に新界を加えて、イギリスが1898年から99年間の期限で租借。1997年、香港と共に中国に返還した。", "a": "九竜（龍）半島", "r": ""}, {"no": 218, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "山東半島北岸の港市。清の北洋艦隊の拠点。1898年からイギリスが25年間の期限で租借。1930年に返還した。", "a": "威海衛", "r": ""}, {"no": 219, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "広東省西南部の湾。1899年からフランスが99年間の期限で租借。1946年に中国へ返還した。", "a": "広州湾", "r": ""}, {"no": 220, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "1901年、清政府と参戦国など11カ国間の協約。多額の賠償金と各国護衛兵の北京公使館区域駐留などを承認した。", "a": "北京議定書", "r": ""}, {"no": 221, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "北京議定書で承認された、各国護衛兵の北京公使館区域への駐留権。", "a": "北京駐留権", "r": ""}, {"no": 222, "ch": "列強の中国進出と日英同盟", "pr": "列強の中国進出と日英同盟", "q": "ロシアの南下策に対抗して日英間で結んだ同盟。北清事変が直接の契機となった。", "a": "日英同盟", "r": ""}, {"no": 223, "ch": "日露戦争", "pr": "日露戦争", "q": "日露戦争に反対する主張。内村鑑三らの人道主義的非戦論、平民社グループの社会主義的反戦論、与謝野晶子・大塚楠緒子らのロマン主義的厭戦詩など。", "a": "非戦論", "r": ""}, {"no": 224, "ch": "日露戦争", "pr": "日露戦争", "q": "日露戦争に反対する主張の総称。", "a": "反戦論", "r": ""}, {"no": 225, "ch": "日露戦争", "pr": "日露戦争", "q": "1904年、『明星』9月号に発表した与謝野晶子の反戦長詩「旅順口包囲軍の中に在る弟を歎きて」の表題である。大町桂月が『太陽』で晶子を「乱臣・賊子」と非難、晶子は「ひらきぶみ」（『明星』）で反論した。", "a": "「君死にたまふこと勿れ」", "r": ""}, {"no": 226, "ch": "日露戦争", "pr": "日露戦争", "q": "1871〜1911 本名伝次郎。高知出身。自由民権運動に参加、中江兆民の弟子となる。のち社会主義に関心を持ち、社会民主党結成に参加。平民社を設立し、『平民新聞』で日露戦争反対をとなえる。1905年に渡米、翌年に帰国し、無政府主義をとなえ、大逆事件で刑死した。", "a": "幸徳秋水", "r": ""}, {"no": 227, "ch": "日露戦争", "pr": "日露戦争", "q": "1903年、平民社の機関紙として週刊『平民新聞』を発刊、反戦論を展開した。度々の発禁処分を受け、1905年廃刊。1907年、日刊『平民新聞』を発刊、日本社会党の日刊機関紙となり、同党解散で廃刊した。", "a": "平民新聞", "r": ""}, {"no": 228, "ch": "日露戦争", "pr": "日露戦争", "q": "1870〜1933 日露開戦に反対して幸徳秋水と『万朝報』記者をやめ、平民社を設立。『平民新聞』で反戦論を展開。日本社会党結成にも参加。1920年社会主義同盟を組織、日本共産党創立にも参加したが、のち社会民主主義の立場で無産政党運動に関与した。", "a": "堺利彦", "r": ""}, {"no": 229, "ch": "日露戦争", "pr": "日露戦争", "q": "1904〜05。満洲・韓国をめぐる日露両国の戦争。1904年2月、日本軍の仁川港・旅順港奇襲攻撃に始まる。4月鴨緑江の戦いで勝利。05年3月の奉天会戦を経て、5月、日本海海戦で勝利。9月、米大統領の調停でポーツマス条約に調印。日本は国際上優位な地位を指す一等国となった。20世紀最初の帝国主義戦争。", "a": "日露戦争", "r": ""}, {"no": 230, "ch": "日露戦争", "pr": "日露戦争", "q": "バルチック艦隊の極東回航前にロシア太平洋艦隊の基地旅順を潰滅するため、1904年6月から乃木希典司令官の第三軍が攻撃。3度の攻撃に失敗、多大の犠牲を払った末、203高地を攻略。1905年1月、守備軍司令官ステッセルが降伏した。", "a": "旅順陥落（占領）", "r": ""}, {"no": 231, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年3月10日、南満洲の要地奉天（現、瀋陽）で日露両軍が主力を投入（日本25万人・ロシア32万人）。1週間の激戦の末、ロシア軍が後退、日本が陸戦の大勢を決めたが、日本の戦力は限界に達し、講和に期待をかけた。", "a": "奉天会戦", "r": ""}, {"no": 232, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年5月27〜28日。ヨーロッパから回航してきたロシアのバルチック艦隊（ロシア最大の艦隊、38隻）を迎え撃った日本連合艦隊（司令長官東郷平八郎、作戦参謀秋山真之、旗艦三笠以下41隻）が、対馬海峡で壊滅的な打撃を与え、戦局を決定した。", "a": "日本海海戦", "r": ""}, {"no": 233, "ch": "日露戦争", "pr": "日露戦争", "q": "1858〜1919 アメリカ第26代大統領。中国問題に関心を持つ。日本に好意的で、ポーツマス講和会議を仲介した。", "a": "セオドア=ローズヴェルト", "r": ""}, {"no": 234, "ch": "日露戦争", "pr": "日露戦争", "q": "三国干渉で日本が領有権を放棄、1898年にロシアが租借権（期間25年）を得て要塞・軍港を築いた。日本はその権益を日露講和条約と満洲に関する日清条約（北京条約）により継承。1915年、中国への二十一カ条要求によって期限を99年間に延長した。", "a": "旅順・大連租借権", "r": ""}, {"no": 235, "ch": "日露戦争", "pr": "日露戦争", "q": "ロシアが1901年に開通させた東清鉄道南部線（ハルビン・旅順）のうち、日本は長春・旅順間の鉄道とその付属権益を譲り受け、06年、南満洲鉄道株式会社を設立した。", "a": "長春以南の鉄道利権", "r": ""}, {"no": 236, "ch": "日露戦争", "pr": "日露戦争", "q": "樺太（サハリン島）の北緯50度以南を、ポーツマス条約で日本が獲得、1907年、樺太庁を大泊（翌年から豊原）に設置した。", "a": "北緯50度以南の樺太", "r": ""}, {"no": 237, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年9月、アメリカの大西洋に面するポーツマスで開かれたポーツマス（日露）講和会議で調印した日露講和条約。日本全権小村寿太郎外相、ロシア全権ウィッテ。ロシアは日本の韓国指導権を認め、旅順・大連の租借権とロシアの経営する東清鉄道の長春以南と付属利権を譲渡、樺太南半分割譲。日本は沿海州・カムチャツカ半島の漁業権も得たが、賠償金要求は放棄。", "a": "ポーツマス（講和）条約（日露講和条約）", "r": ""}, {"no": 238, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年9月、アメリカの大西洋に面するポーツマスで開かれた講和会議。日本全権小村寿太郎、ロシア全権ウィッテ。", "a": "ポーツマス（日露）講和会議", "r": ""}, {"no": 239, "ch": "日露戦争", "pr": "日露戦争", "q": "日露講和条約11条に基づき、1907年、日露漁業協約で確定した。すでに1875年の樺太・千島交換条約で、オホーツク海・カムチャツカでの日本人の漁業権は保障されていたが、これで日本海・オホーツク海・ベーリング海沿岸の漁業権も許与され、サケ・マス漁業の開発が進んだ。", "a": "沿海州・カムチャツカ漁業権", "r": ""}, {"no": 240, "ch": "日露戦争", "pr": "日露戦争", "q": "1849〜1915 ロシアの政治家。日露協調をとなえ、戦争中は不遇。ポーツマス講和会議の全権としてロシア有利に会議を運ぶ。帰国後に首相。", "a": "ウィッテ", "r": ""}, {"no": 241, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年9月5日、ポーツマス条約を受け、東京の日比谷公園で講和反対国民大会が開かれ、条約破棄を叫び暴動化。警察署・内相官邸や政府系の国民新聞社などを襲撃。政府は東京市などに戒厳令をしいて軍隊を出動、約1カ月間、全国各地に波及。死者17人、検挙者約2000人。都市民衆運動の起点となった。", "a": "日比谷焼打ち事件", "r": ""}, {"no": 242, "ch": "日露戦争", "pr": "日露戦争", "q": "1905年9月対露同志会などが中心となって結成された講和反対をとなえる組織。9月に日比谷公園での講和反対国民大会を計画。日比谷焼打ち事件につながった。", "a": "講和反対国民大会", "r": ""}, {"no": 243, "ch": "韓国併合", "pr": "韓国併合", "q": "1904年2月、日露開戦13日後に締結。韓国保全を名目に、日本の軍事行動に必要な便宜の提供を約した。", "a": "日韓議定書", "r": ""}, {"no": 244, "ch": "韓国併合", "pr": "韓国併合", "q": "1904年8月締結。日露戦争の軍事制圧下に強要。日本政府推薦の財政・外交顧問をおく顧問政治で、軍事・経済的支配の基礎をつくった。", "a": "第1次日韓協約", "r": ""}, {"no": 245, "ch": "韓国併合", "pr": "韓国併合", "q": "1905年11月、ポーツマス条約の2カ月後に締結した韓国保護条約。韓国では乙巳条約（乙巳勒約）という。日本は外交権を接収して保護国化（条約締結権などを持たない半主権国。外国の干渉排除を目的とする）、統監府を設置。", "a": "第2次日韓協約（乙巳条約）", "r": ""}, {"no": 246, "ch": "韓国併合", "pr": "韓国併合", "q": "第2次日韓協約で日本が設定した韓国の地位。条約締結権などを持たない半主権国。", "a": "保護国", "r": ""}, {"no": 247, "ch": "韓国併合", "pr": "韓国併合", "q": "第2次日韓協約に基づき、漢城におかれた日本政府の代表機関。外交権を持ち、内政にも関与。統監は天皇に直属、伊藤博文が就任。", "a": "統監府", "r": ""}, {"no": 248, "ch": "韓国併合", "pr": "韓国併合", "q": "統監府の長官。天皇に直属、伊藤博文が初代として就任した。", "a": "統監", "r": ""}, {"no": 249, "ch": "韓国併合", "pr": "韓国併合", "q": "1907年6月、オランダのハーグ第2回万国平和会議に、韓国皇帝高宗が密使を送り、外交権回復を提訴。韓国に外交権がないことや日本の阻止工作より、韓国全権委員の会議参加は拒絶された。統監は韓国皇帝を退位させ、第3次日韓協約を締結した。純宗が、景徳宮を宮殿として即位し、皇太子は李垠。", "a": "ハーグ密使事件", "r": ""}, {"no": 250, "ch": "韓国併合", "pr": "韓国併合", "q": "1907年、オランダのハーグで開かれた第2回万国平和会議。韓国皇帝高宗が密使を送り外交権回復を提訴した。", "a": "（ハーグ）万国平和会議", "r": ""}, {"no": 251, "ch": "韓国併合", "pr": "韓国併合", "q": "1907年7月、ハーグ密使派遣を契機に締結。内政権を掌握、同時に秘密覚書により韓国軍隊を解散、内政全般にわたる指導権を得た。", "a": "第3次日韓協約", "r": ""}, {"no": 252, "ch": "韓国併合", "pr": "韓国併合", "q": "第3次日韓協約に伴う秘密覚書により行われた、韓国軍隊の解散。", "a": "韓国軍隊解散", "r": ""}, {"no": 253, "ch": "韓国併合", "pr": "韓国併合", "q": "第3次日韓協約による軍隊解散命令に反対する一部の軍隊を中心に、武装闘争・反日抵抗が全土に拡大。日本軍は近代兵器や焦土戦術などで鎮圧。都市部で盛んとなった反日と教育・言論による愛国文化啓蒙の運動も弾圧。併合後、義兵は中国東北部に移り、反日武装闘争を継続した。", "a": "義兵運動（義兵闘争）", "r": ""}, {"no": 254, "ch": "韓国併合", "pr": "韓国併合", "q": "1909年10月、伊藤博文が韓国の義兵運動・独立運動家安重根に満洲のハルビン駅で暗殺された事件。統監を辞任し枢密院議長に復帰していた伊藤は、日露関係を調整するため渡満、ロシア蔵相と列車内会談を終えた直後に遭難した。安は「東洋平和論」を執筆し、翌年3月旅順監獄で死刑となる。", "a": "伊藤博文暗殺事件", "r": ""}, {"no": 255, "ch": "韓国併合", "pr": "韓国併合", "q": "伊藤博文暗殺事件の実行者である韓国の義兵運動・独立運動家。「東洋平和論」を執筆し、1910年3月旅順監獄で死刑となった。", "a": "安重根", "r": ""}, {"no": 256, "ch": "韓国併合", "pr": "韓国併合", "q": "満洲の都市。1909年10月、伊藤博文が安重根に暗殺されたハルビン駅がある。", "a": "ハルビン", "r": ""}, {"no": 257, "ch": "韓国併合", "pr": "韓国併合", "q": "1910年8月の韓国併合条約で韓国を植民地とした。1909年の伊藤博文暗殺、韓国首相李完用襲撃事件が契機となる。以後、憲兵が警察業務を兼ねる憲兵警察制度などによる強権的支配の武断政治（武力によって圧伏させる政治）が続いた。1945年まで朝鮮総督府により、同化〔主義〕政策などの植民地支配を行う。", "a": "韓国併合", "r": ""}, {"no": 258, "ch": "韓国併合", "pr": "韓国併合", "q": "憲兵が警察業務を兼ねる制度。武力によって朝鮮民衆を圧伏させる武断政治の中心的な支配機構となった。", "a": "憲兵警察（制度）", "r": ""}, {"no": 259, "ch": "韓国併合", "pr": "韓国併合", "q": "1910年8月、漢城で統監寺内正毅と韓国首相李完用が調印、韓国の全統治権を日本に譲渡することを約した条約（韓国併合に関する条約）。韓国は廃され日本領朝鮮となる。", "a": "韓国併合条約", "r": ""}, {"no": 260, "ch": "韓国併合", "pr": "韓国併合", "q": "現在のソウル。朝鮮王朝の太祖李成桂が高麗の漢陽府を首都として漢城府とした。1910年の韓国併合で朝鮮総督府の設置と共に京城と改称。日本の植民地支配の拠点となった。", "a": "京城", "r": ""}, {"no": 261, "ch": "韓国併合", "pr": "韓国併合", "q": "韓国併合後の朝鮮統治機関。京城に設置。天皇に直属し、軍事・行政の一切を統轄。三・一独立運動後の1919年に軍事権を分離、駐箚軍を朝鮮軍（常備2個師団）とした。初代朝鮮総督は陸軍大将寺内正毅で、総督の命令は制令といった。大院君が再建した朝鮮王宮である景福宮（正門は光化門）に庁舎を建てた。", "a": "朝鮮総督府", "r": ""}, {"no": 262, "ch": "韓国併合", "pr": "韓国併合", "q": "朝鮮総督府の長官。天皇に直属し、軍事・行政の一切を統轄した。初代は陸軍大将寺内正毅。", "a": "朝鮮総督", "r": ""}, {"no": 263, "ch": "韓国併合", "pr": "韓国併合", "q": "1910〜18年に実施された朝鮮の土地調査・測量事業。土地所有権の確定、価格の査定、台帳の作成などを行う。1911年、朝鮮土地収用令、翌年土地調査令を公布して本格化。多くの土地が国有地にされたが、朝鮮農民の土地が奪われて小農民の没落が進み、一部の人々は仕事を求めて日本に移住した。", "a": "土地調査事業（朝鮮）", "r": ""}, {"no": 264, "ch": "韓国併合", "pr": "韓国併合", "q": "1908年、朝鮮の土地開発を目的に日韓両国政府によって設立された国策会社。通称は東拓。朝鮮最大の土地所有者として営農・灌漑・金融を行う。", "a": "東洋拓殖会社", "r": ""}, {"no": 265, "ch": "満洲への進出", "pr": "満洲への進出", "q": "遼東半島南部の日本の租借地。旅順・大連とその付属地域で、日露戦争後は日本の大陸進出の拠点となる。その地方行政を担当する関東州庁も設置。1915年の二十一カ条要求で租借期限を99年間に延長した。", "a": "関東州", "r": ""}, {"no": 266, "ch": "満洲への進出", "pr": "満洲への進出", "q": "関東州の管轄と満鉄の保護・監督にあたる機関。1906年、前年遼陽に設置した関東総督府を旅順に移し、関東都督府とした。関東都督には陸軍大将・中将を任命。", "a": "関東都督府", "r": ""}, {"no": 267, "ch": "満洲への進出", "pr": "満洲への進出", "q": "1906年設立の半官半民の国策会社。翌年、本社は大連に置かれた。初代総裁は後藤新平。ポーツマス条約で得た東清鉄道南満洲支線の長春・旅順間の鉄道、鉱山・石炭採掘業（撫順・煙台炭鉱）・製鉄業（鞍山製鉄所）などを経営。満洲事変後、満洲国の委託経営となるが、満洲の植民地支配に大きな役割を果たした。", "a": "南満洲鉄道株式会社（満鉄）", "r": ""}, {"no": 268, "ch": "満洲への進出", "pr": "満洲への進出", "q": "1898年からロシアが満洲において敷設した鉄道。極東に進出するため、シベリア鉄道とウラジオストクを最短距離で結ぶことが目的。ポーツマス条約で、南満洲支線の長春以南は日本に譲渡された。", "a": "東清鉄道", "r": ""}, {"no": 269, "ch": "満洲への進出", "pr": "満洲への進出", "q": "第1次は1907年7月、アメリカの満洲進出への警戒、ロシアはヨーロッパ政略から、東アジアの現状維持を約す。秘密協定で日本の南満洲、ロシアの北満洲の勢力範囲を協定、日本の韓国保護国化とロシアの外蒙古に関する特殊権益を相互に認めた。第2次は1910年に調印。アメリカの満洲鉄道中立化案を阻止するため、満洲の現状維持、各自の鉄道権益確保の協力をより積極化した。第3次は1912年に調印。辛亥革命を機に起きた外蒙古独立問題などに対応。分界線を延長して、内蒙古の勢力範囲を東西に分割した。", "a": "日露協約", "r": ""}, {"no": 270, "ch": "満洲への進出", "pr": "満洲への進出", "q": "1906年、日本人移民労働者が多数流入したカリフォルニアを中心に起こった排斥運動。それに連動してサンフランシスコでは東洋人学校に転学を強制する日本人学童入学拒否事件も起こる。1907〜08年、日米紳士協約で日本も自粛に努めたが、鎮静しなかった。", "a": "日本人移民排斥運動", "r": ""}, {"no": 271, "ch": "大正政変", "pr": "大正政変", "q": "1912年、陸軍は財政緊縮をとなえる第2次西園寺内閣に対して、朝鮮駐屯の2個師団増設を要求。陸軍との衝突で内閣は総辞職。第1次護憲運動の契機となる。その後、第2次大隈内閣の手で2個師団増設が可決した。", "a": "2個師団増設問題", "r": ""}, {"no": 272, "ch": "大正政変", "pr": "大正政変", "q": "1879〜1926 在位1912〜26。名は嘉仁。病弱で体が弱かったため、実質的に政務を執ることが少なく、1921年皇太子裕仁を摂政に立てた。", "a": "大正天皇", "r": ""}, {"no": 273, "ch": "大正政変", "pr": "大正政変", "q": "1873〜1948 東大教授、貴族院議員。天皇機関説や政党内閣論をとなえ、明治末期〜昭和初期にかけて穂積八束・上杉慎吉らの天皇主権説と対立した。", "a": "美濃部達吉", "r": ""}, {"no": 274, "ch": "大正政変", "pr": "大正政変", "q": "法人としての国家が統治権の主体で、天皇は国家の最高機関とする憲法学説。美濃部達吉が『憲法講話』などの著書論文で論述。", "a": "天皇機関説（国家法人説）", "r": ""}, {"no": 275, "ch": "大正政変", "pr": "大正政変", "q": "1912.12〜13.2 第2次西園寺内閣総辞職後、大正天皇の内大臣兼侍従長（天皇の側近に仕える侍従職の長官）の桂太郎が組閣。議会停会など議会無視の態度をとったため、第1次護憲運動が起こり、わずか53日で崩壊した。", "a": "桂内閣（第3次）", "r": ""}, {"no": 276, "ch": "大正政変", "pr": "大正政変", "q": "1912年、第2次西園寺内閣の総辞職後、内大臣桂太郎の組閣に対して、立憲政友会の尾崎行雄・立憲国民党の犬養毅らは憲政擁護会をつくり、「閥族打破・憲政擁護」を叫んで倒閣運動を展開。憲政擁護運動ともいう。", "a": "第1次護憲運動", "r": ""}, {"no": 277, "ch": "大正政変", "pr": "大正政変", "q": "1910年、憲政本党の犬養毅らを中心として結成。1913年、大正政変の時に桂太郎に誘われた多くの議員は桂の新党、立憲同志会に走った。", "a": "立憲国民党", "r": ""}, {"no": 278, "ch": "大正政変", "pr": "大正政変", "q": "第3次桂内閣を倒した政変をいう。第1次護憲運動の展開に対し、桂は立憲同志会の結党で対抗したが少数派に終わり、1913年2月、53日で退陣した。", "a": "大正政変", "r": ""}, {"no": 279, "ch": "大正政変", "pr": "大正政変", "q": "1913年に桂太郎が創立を宣言。藩閥系の代議士と立憲国民党の離党者が参加。桂の死後、1913年12月に結党式。加藤高明が総裁となり、1916年、憲政会と改称。第2次大隈内閣の与党となる。", "a": "立憲同志会", "r": ""}, {"no": 280, "ch": "大正政変", "pr": "大正政変", "q": "第1次護憲運動の際に憲政擁護会が掲げたスローガン。", "a": "「閥族打破・憲政擁護」", "r": ""}, {"no": 281, "ch": "大正政変", "pr": "大正政変", "q": "1858〜1954 第一議会以来、立憲改進党・立憲政友会などの政党政治家として活躍。1898年、隈板内閣の文相の時に「共和演説」で辞職、のち東京市長もつとめる。第1次護憲運動・普選実現に尽力した。敗戦後まで50年間を衆議院議員として活躍し、「憲政の神様」と称された。", "a": "尾崎行雄", "r": ""}, {"no": 282, "ch": "大正政変", "pr": "大正政変", "q": "1852〜1933 日露戦争の時の海軍大臣、薩摩閥・海軍閥（元海軍大将）の実力者。大正時代に2度にわたり首相をつとめた。", "a": "山本権兵衛", "r": ""}, {"no": 283, "ch": "大正政変", "pr": "大正政変", "q": "1913.2〜14.4 第3次桂内閣退陣後、組閣。立憲政友会が与党。1913年に軍部大臣現役武官制を改正、文官任用令を緩和して、政党員の上級官吏任用の道を開く。シーメンス事件で総辞職。", "a": "山本内閣（第1次）", "r": ""}, {"no": 284, "ch": "大正政変", "pr": "大正政変", "q": "第2次山県内閣の1900年に公布された軍部大臣現役武官制では、陸軍・海軍大臣は現役の大将・中将に限るとしたが、第1次山本内閣は現役規定を削除し、予備役（有事の際に招集される軍人）・後備役（予備役を終了した軍人）まで就任を拡大した。しかし、実際に就任した例はない。二・二六事件後、1936年の広田内閣で、現役規定が復活。", "a": "軍部大臣現役武官制改正", "r": ""}, {"no": 285, "ch": "大正政変", "pr": "大正政変", "q": "1914年、軍需品購入をめぐり、ドイツのジーメンス社と海軍首脳部との贈収賄が露見した事件。ついで、イギリスのヴィッカーズ社も軍艦「金剛」の建造に関し、三井物産を介して汚職事件が発覚。海軍を非難する声の中で、海軍閥の山本内閣は総辞職した。", "a": "シーメンス事件", "r": ""}, {"no": 286, "ch": "大正政変", "pr": "大正政変", "q": "1914.4〜16.10 第1次山本内閣退陣後、組閣。立憲同志会と中正会が与党。加藤高明外相を中心に、第一次世界大戦に参戦、二十一カ条の要求を行う。1915年の総選挙で立憲同志会などの与党が大勝し、2個師団増設を可決した。", "a": "大隈内閣（第2次）", "r": ""}, {"no": 287, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1882年、ドイツ・オーストリア・イタリア3国で締結された相互防衛条約。三国協商と対立。", "a": "三国同盟", "r": ""}, {"no": 288, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "英仏・英露協商、露仏同盟の成立によってできた対ドイツ包囲体制。三国同盟に対抗。第一次世界大戦で連合国（協商国）となる。", "a": "三国協商", "r": ""}, {"no": 289, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1904年、イギリスとフランスの間で結ばれた協商。三国協商の一角を形成した。", "a": "英仏協商", "r": ""}, {"no": 290, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1907年、イギリスとロシアの間で結ばれた協商。三国協商の一角を形成した。", "a": "英露協商", "r": ""}, {"no": 291, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1891〜94年、ロシアとフランスの間で結ばれた同盟。三国協商の一角を形成した。", "a": "露仏同盟", "r": ""}, {"no": 292, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "第一次世界大戦において、同盟国（ドイツ・オーストリアなど4カ国）と戦った英・米・仏・露など27カ国の陣営。", "a": "連合国", "r": ""}, {"no": 293, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1914〜18年。ボスニアの都サライェヴォにおけるオーストリアの帝位継承者夫妻暗殺が引き金となる。ドイツ・オーストリアなど4カ国の同盟国と英・米・仏・露など27カ国の連合国との世界戦争。パリ講和会議で締結されたヴェルサイユ条約で終結。", "a": "第一次世界大戦", "r": ""}, {"no": 294, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "1914年、ボスニアの都サライェヴォで起きたオーストリアの帝位継承者夫妻暗殺事件。第一次世界大戦勃発の引き金となった。", "a": "サライェヴォ事件", "r": ""}, {"no": 295, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "東南ヨーロッパにあるバルカン半島は宗教・民族が異なり、歴史的に対立を深めていたため、対立に火がつくと一挙に拡大するという意味で「ヨーロッパの火薬庫」と呼ばれた。ロシアはバルカン半島のスラブ人の統合をめざしてパン=スラブ主義をとなえ、ドイツはゲルマン人の勢力拡大を図ってパン=ゲルマン主義をとなえた。", "a": "バルカン半島", "r": ""}, {"no": 296, "ch": "第一次世界大戦", "pr": "第一次世界大戦", "q": "第一次世界大戦により生まれた新しい戦争の形態、または概念。軍事作戦による戦闘のみが戦争の勝敗を決める要因ではなく、軍事・政治・経済・人的諸能力などの国力のすべてを戦争に投入することを重視する考え方。", "a": "総力戦", "r": ""}, {"no": 297, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "山東半島西南部膠州湾の中心港市。ドイツが1898年に租借。第一次世界大戦に参戦した日本軍がここを占領した。ヴェルサイユ条約で、日本は山東省の旧ドイツ権益を継承したが、ワシントン会議で中国への返還が決まる。", "a": "青島", "r": ""}, {"no": 298, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "日本の中国進出の対象となった、青島を中心とする中国の省。ドイツが租借していたが、第一次世界大戦で日本が占領した。", "a": "山東省", "r": ""}, {"no": 299, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "ドイツの植民地。日本が占領し、第一次世界大戦後、赤道以北は日本の委任統治領となった。日本は南洋庁を設置して統治。開発事業のために松江春次がつくった南洋興発は、「海の満鉄」と呼ばれた。", "a": "ドイツ領南洋諸島", "r": ""}, {"no": 300, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1915年、第2次大隈内閣が中国における利権拡大のため袁世凱政府に要求。(1)山東省ドイツ権益の譲渡、(2)南満洲・内モンゴル権益の99カ年延長と鉄道敷設権、(3)漢冶萍公司の日本と中国との共同経営、(4)福建省を他国に渡さず、日本の勢力圏にすることの確認などを要求。中国の主権を侵す第5号の中国政府の顧問として日本人を雇用することを削除して、第1号から第4号と第5号の一部を中国は承認。", "a": "二十一カ条の要求", "r": ""}, {"no": 301, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1865〜1936 中国の軍閥政治家。辛亥革命後、袁世凱のあとを受けて北京政府の実権を握り、日本から西原借款などの援助を受けて、孫文らの中国の南方革命勢力と対抗。のち北伐で没落した。", "a": "段祺瑞", "r": ""}, {"no": 302, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "第2次大隈内閣の1916年に調印。日露同盟ともいう。秘密協定で、満洲の分割支配と極東における日露の軍事同盟化を約す。ロシア革命で廃棄。", "a": "第4次日露協約", "r": ""}, {"no": 303, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1917年、日米両国間で交された協定。アメリカは中国における日本の「特殊権益」を、日本はアメリカに中国の「門戸開放」を認め合った。1923年に廃棄された。", "a": "石井・ランシング協定", "r": ""}, {"no": 304, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1917年3月、ニコライ2世を最後とするロマノフ王朝の帝政を倒した三月革命と、同年11月、レーニンを中心に社会主義革命によってソヴィエト政権を樹立した十一月革命とをいう。", "a": "ロシア革命", "r": ""}, {"no": 305, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "史上初の社会主義政権として、レーニンが十一月革命で樹立したソヴィエト政権。", "a": "社会主義政権", "r": ""}, {"no": 306, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "ソヴィエトはロシア語で会議の意味。労働者・兵士・農民のソヴィエト（労農兵協議会）が権力を握った政権をいう。ロシアを中心とした社会主義国は、1922年にソヴィエト社会主義共和国連邦を結成。", "a": "ソヴィエト政権", "r": ""}, {"no": 307, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1922年に結成された、ロシアを中心とした社会主義国の連邦国家。", "a": "ソヴィエト社会主義共和国連邦（ソ連）", "r": ""}, {"no": 308, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1918年8月、日・米・英・仏などが、ロシア革命に干渉する目的で、ヨーロッパからシベリアのウラジヴォストークに移動・集結したチェコスロヴァキア兵救出を名目として、20年まで出兵。日本のみ1922年まで出兵し、最大7万2000人の兵員を駐留。戦費は10億円に達し、3000人をこえる戦死者を出した。", "a": "シベリア出兵", "r": ""}, {"no": 309, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "大正期に高揚した自由主義・民主主義的風潮。その背景には産業の発展、市民社会の発展、第一次世界大戦前後の世界的なデモクラシー風潮の影響がある。民本主義思想が拡大し、普選運動、社会・労働運動や教育運動も進展。", "a": "大正デモクラシー", "r": ""}, {"no": 310, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "吉野作造が提唱したデモクラシー思想。主権在民の民主主義とは一線を画し、主権在君の明治憲法の下で、民衆の政治参加を主張。政治の目的は民衆の福利にあり、政策決定は民衆の意向によるとして、政党内閣制と普選の実現を説く。", "a": "民本主義", "r": ""}, {"no": 311, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1878〜1933 政治学者。東大教授。1916年、『中央公論』に「憲政の本義を説いて其有終の美を済すの途を論ず」を発表、民本主義を主唱した。黎明会・新人会で啓蒙・学生運動を指導、友愛会などの労働運動も支援。朝鮮・中国の民族主義にも理解を示した。", "a": "吉野作造", "r": ""}, {"no": 312, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1852〜1919 長州出身の軍人・政治家。陸軍大将、元帥。桂内閣時代の陸相。初代朝鮮総督を経て1916年に首相。", "a": "寺内正毅", "r": ""}, {"no": 313, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1916.10〜18.9 第2次大隈内閣の退陣後、寺内が朝鮮総督を辞し、「挙国一致」を掲げて組閣。大正デモクラシーの風潮の中で、非立憲的だと非難された。寺内首相の顔が、当時アメリカから渡ってきた神像であるビリケンに似ていることから、ビリケン（非立憲）内閣といわれる。シベリア出兵を行い、米騒動により総辞職。", "a": "寺内内閣", "r": ""}, {"no": 314, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1916年、立憲同志会・中正会・公友倶楽部が合同し、寺内内閣に対抗して設立された政党。総裁は加藤高明。1927年に政友本党と合同。立憲民政党となる。", "a": "憲政会", "r": ""}, {"no": 315, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1918年8月、富山県での米価高騰に対する漁村の主婦たちの蜂起（女一揆・女房一揆）を機に、1道3府35県にわたり米価引下げ・安売りを要求した暴動。参加者約70万人以上、一部に軍隊も出動して3カ月後に鎮静。", "a": "米騒動", "r": ""}, {"no": 316, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1856〜1921 寺内内閣の総辞職後、1918年に第3代立憲政友会総裁として政党内閣を組織。平民宰相（平民出身の総理大臣）として人気があったが、東京駅で刺殺された。", "a": "原敬", "r": ""}, {"no": 317, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1918.9〜21.11 原敬は衆議院議員で、政党の党首。陸軍・海軍・外務大臣以外は立憲政友会員で組閣した最初の本格的政党内閣。ヴェルサイユ条約調印・国際連盟加盟は協調外交の原型。鉄道院を鉄道省に改め、鉄道敷設による立憲政友会の基盤拡大を図り、「我田引鉄」といわれた。産業開発・高等教育普及政策を推進。普通選挙には反対。", "a": "原内閣", "r": ""}, {"no": 318, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "原敬に対する呼称。平民出身の総理大臣という意味。", "a": "平民宰相", "r": ""}, {"no": 319, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1919年、衆議院議員選挙法を改正し、納税資格を国税3円以上に引き下げ、小選挙区制とする。1890年の第1回総選挙は小選挙区制だが、1900年の改正で大選挙区となる。小選挙区制による1920年の総選挙で立憲政友会は大勝。", "a": "小選挙区制", "r": ""}, {"no": 320, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "議会内で多数を占める政党により組織された内閣。1898年の隈板内閣で成立するが、4カ月で崩壊。米騒動後の原内閣で、本格的に成立。1925年の加藤高明内閣から32年の五・一五事件で犬養内閣の崩壊まで8年間継続して成立。", "a": "政党内閣", "r": ""}, {"no": 321, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1854〜1936 日銀総裁・蔵相を経て1921年に首相、立憲政友会総裁。護憲三派内閣の農商務相。田中義一内閣の蔵相として金融恐慌を収拾。犬養内閣の蔵相として金輸出再禁止を行い、斎藤内閣では時局匡救事業を行う。岡田内閣蔵相在任中、二・二六事件で暗殺される。", "a": "高橋是清", "r": ""}, {"no": 322, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1921.11〜22.6 原首相暗殺後、蔵相の高橋是清が組閣、すべての閣僚を留任させた。ワシントン会議に参加。立憲政友会の内部対立で総辞職する。", "a": "高橋内閣", "r": ""}, {"no": 323, "ch": "日本の中国進出", "pr": "日本の中国進出", "q": "1861〜1923 大隈から高橋までの4内閣の海相を歴任。ワシントン会議の首席全権。1922年に組閣、在任中に病死。", "a": "加藤友三郎", "r": ""}, {"no": 324, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "高橋内閣の総辞職後、立憲政友会が支持し、官僚・貴族院を中心に組閣した内閣。ワシントン海軍軍縮条約後の軍縮、シベリア撤兵を行う。政党員ではない海軍大将の加藤に続き、海軍大将の山本権兵衛、枢密院議長の清浦奎吾が首相についたため、この3代は非政党内閣となった。", "a": "非政党内閣", "r": ""}, {"no": 325, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "1919年1月〜6月、第一次世界大戦終結後、連合国の首脳が集まり、ドイツとの講和問題や国際連盟設立を含めた第一次世界大戦後の国際体制の構築が話し合われた。米大統領ウィルソン、英首相ロイド=ジョージ、仏首相クレマンソー、伊首相オルランドらが参加。日本全権は西園寺公望。", "a": "パリ講和会議", "r": ""}, {"no": 326, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "アメリカ第28代大統領。パリ講和会議に参加し、14カ条の平和原則を提唱した。", "a": "ウィルソン", "r": ""}, {"no": 327, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "アメリカ第28代大統領ウィルソンが提唱した14カ条の平和原則。「勝利なき平和」をめざし、秘密外交の廃止・海洋の自由・軍備縮小・民族自決（民族が自己の意思で運命を決めるという原則）・国際平和機関の設立などを提唱。", "a": "ウィルソン14カ条", "r": ""}, {"no": 328, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "民族が自己の意思で運命を決めるという原則。ウィルソン14カ条で提唱された。", "a": "民族自決", "r": ""}, {"no": 329, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "第一次世界大戦後の1919年6月、パリ講和会議で結ばれたドイツと連合国との講和条約。ドイツに対して、賠償金、軍備制限、植民地の委任統治領移行、ポーランドの独立などを取り決めた。日本は山東省の旧ドイツ権益の継承、赤道以北の南洋諸島の委任統治権を得た。", "a": "ヴェルサイユ条約", "r": ""}, {"no": 330, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "第一次世界大戦後、国際連盟から委託されて、一定地域を統治する権利。旧ドイツ・トルコ領の植民地がその対象となった。第二次世界大戦後の国連の信託統治と同じ。", "a": "委任統治権", "r": ""}, {"no": 331, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "アメリカ大統領ウィルソンの提唱で、1920年に成立した史上初の国際平和機構。米・英・仏・日・伊の5大〔連合〕国の中で、米は上院の加盟否決で加盟しなかった。スイスのジュネーヴに事務局をおき、連盟総会・理事会・事務局の3機関をおく。", "a": "国際連盟", "r": ""}, {"no": 332, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "連盟理事会は英・仏・伊・日の4常任理事国（のちドイツを追加）と4非常任理事国（のち9カ国）で構成される。", "a": "常任理事国", "r": ""}, {"no": 333, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "ヴェルサイユ条約によって決められた、ドイツの封じ込めをめざす国際的体制をいう。", "a": "ヴェルサイユ体制", "r": ""}, {"no": 334, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "1919年5月4日、パリ講和会議で二十一カ条要求の解消を中国が求めたが拒否されたことから、北京の大学生が始めた抗議運動。天安門広場などに集まって、ヴェルサイユ条約の調印拒否を叫び、中国全土に愛国運動が広がる。日本の商品を買わない運動（日貨排斥運動）も展開された。", "a": "五・四運動", "r": ""}, {"no": 335, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "1919年3月1日、日本の植民地支配に反対し、「独立万歳」を叫んだ朝鮮全土にわたる朝鮮民族の独立運動。京城（現、ソウル）のパゴダ（タプッコル）公園で独立宣言書が読み上げられた。朝鮮総督府・朝鮮駐留軍・警察によって鎮圧される。", "a": "三・一独立運動（三・一事件）", "r": ""}, {"no": 336, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "三・一独立運動の際、独立宣言書が読み上げられた京城（現、ソウル）の公園。", "a": "パゴダ（タプッコル）公園", "r": ""}, {"no": 337, "ch": "パリ講和会議とその影響", "pr": "パリ講和会議とその影響", "q": "三・一独立運動の際、京城のパゴダ公園で読み上げられた宣言書。", "a": "独立宣言書", "r": ""}, {"no": 338, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "1921年、ワシントン会議で日・米・英・仏間で締結された条約。太平洋諸島の領土・権益の相互尊重、問題の平和的解決をめざす。日英同盟協約は廃棄。", "a": "四カ国条約", "r": ""}, {"no": 339, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "四カ国条約の締結によって廃棄された、日英同盟協約の廃棄。", "a": "日英同盟廃棄", "r": ""}, {"no": 340, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "1922年、英・米・日・仏・伊の5カ国にベルギー・ポルトガル・オランダ・中国を加えた九カ国が締結した条約。中国の主権尊重・門戸開放・機会均等を規定。日本はこの条約に基づき、石井・ランシング協定を廃棄し、中国と山東懸案解決条約を結んで山東省の旧ドイツ権益を返還した。", "a": "九カ国条約", "r": ""}, {"no": 341, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "1921年11月〜22年2月、アメリカ大統領ハーディングの提唱で開かれた国際会議。欧米や日本の海軍力拡大競争（建艦競争）を停止させる海軍軍備制限と極東・太平洋問題を協議、7条約、2協定を締結した。日本全権は海相加藤友三郎・駐米大使幣原喜重郎・貴族院議長徳川家達。", "a": "ワシントン会議", "r": ""}, {"no": 342, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "九カ国条約に基づき、日本が中国と山東懸案解決条約を結んで山東省の旧ドイツ権益を返還した際に廃棄された協定。", "a": "石井・ランシング協定廃棄", "r": ""}, {"no": 343, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "九カ国条約に基づき、日本が中国と結んで山東省の旧ドイツ権益を返還した条約。", "a": "山東懸案解決条約", "r": ""}, {"no": 344, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "1922年、英・米・日・仏・伊の5カ国間で主力艦（戦艦・巡洋戦艦など）の総トン数比率を5：5：3：1.67：1.67と規定。戦艦保有を制限されたため、海軍軍拡をめざす日本の八・八艦隊計画は挫折した。この条約により戦艦「土佐」の建設が中止となった。", "a": "ワシントン海軍軍備制限（軍縮）条約", "r": ""}, {"no": 345, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "ワシントン会議の諸条約・協定によって形成された新しい国際秩序。日本の勢力拡大をおさえ、東アジア・太平洋地域の安定を目的とした。", "a": "ワシントン体制", "r": ""}, {"no": 346, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "ワシントン会議以降とられた、英・米との武力的対立を避け、中国に対しては内政不干渉方針をとる外交政策。経済的には中国市場の拡大、満洲の特殊権益の維持を図る。主に憲政会・立憲民政党内閣の外相幣原喜重郎が推進したので、幣原外交ともいう。", "a": "協調外交", "r": ""}, {"no": 347, "ch": "ワシントン会議と協調外交", "pr": "ワシントン会議と協調外交", "q": "1924年以降、護憲三派・憲政会・立憲民政党内閣の外相をつとめた幣原喜重郎が推進した協調外交をいう。しかし、田中義一内閣が積極外交を進めると、軟弱外交と批判された。", "a": "幣原外交", "r": ""}, {"no": 348, "ch": "日ソ基本条約と社会運動", "pr": "日ソ基本条約と社会運動", "q": "1925年、北京で調印。シベリア出兵で延引されていた日ソ交渉は、中国公使芳沢謙吉とソ連の中国大使カラハン間で基本条約に調印、国交が樹立した。ソ連との国交樹立は、1924年の英・仏などに続いて12番目。", "a": "日ソ基本条約", "r": ""}, {"no": 349, "ch": "日ソ基本条約と社会運動", "pr": "日ソ基本条約と社会運動", "q": "労働者が資本家に対抗して、労働条件や生活改善を要求する運動。", "a": "労働運動", "r": ""}, {"no": 350, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "国家・議会・宗教など一切の権力を否定することで、理想的な社会ができると考える思想。早くから幸徳秋水らがとなえ、明治末期に社会主義運動の活動理論となる。", "a": "無政府主義（アナーキズム）", "r": ""}, {"no": 351, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "私有財産制を否定し、人民による財産の共有を実現することで平等な社会をつくろうとする思想。マルクスやエンゲルスによって体系化され、ロシアのレーニンは革命によって国家権力を奪い、共産主義社会の実現をめざした。", "a": "共産主義（マルクス・レーニン主義）", "r": ""}, {"no": 352, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1922年、モスクワのソ連共産党の指導下につくられた国際共産党（1919年結成。コミンテルン、共産主義インターナショナル、第3インターナショナルともいう）の日本支部として、堺利彦・山川均らが非合法で結成。機関誌『赤旗』。三・一五事件、四・一六事件などの検挙・弾圧により、1935年頃に活動不能となる。第二次世界大戦後、再建。労働運動・知識人に多大な影響を与えた。", "a": "日本共産党", "r": ""}, {"no": 353, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "男女差別を排除し、男女平等を実現することをめざす運動。平塚らいてうらの女性解放運動家や政治的要求を行う新婦人協会などが組織され、参政権獲得運動などに発展し、活発化した。", "a": "女性解放運動（婦人運動）", "r": ""}, {"no": 354, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1911年、平塚らいてうらにより設立された女性の感性の解放をめざす女性のみの文学団体。女性解放運動を始めたが、1916年に解散。", "a": "青鞜社", "r": ""}, {"no": 355, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "青鞜社が発行した女性だけの手による雑誌。1911年9月の創刊号の平塚らいてうの一文で、「元始、女性は実に太陽であった」と宣言した。創刊号表紙の絵は、長沼（高村）智恵子のデザイン。", "a": "『青鞜』", "r": ""}, {"no": 356, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1886〜1971 青鞜社をおこして女性解放運動・女性参政権運動を推進、ついで新婦人協会を設立した。", "a": "平塚らいてう（雷鳥、明）", "r": ""}, {"no": 357, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1920年、平塚らいてう・市川房枝らが設立。1890年に公布された集会及政社法を引き継いだ、治安警察法5条の「女子の政治結社・政治集会禁止」条項の撤廃運動を行ったが、1922年、女性の集会参加のみが議会で認められ、同年解散。機関誌は『女性同盟』。", "a": "新婦人協会", "r": ""}, {"no": 358, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1893〜1981 女性運動家。新婦人協会の設立に参加。日本労働総同盟で女性労働者を組織。婦人（女性）参政権獲得運動を推進し、婦人参政権獲得期成同盟会をつくって、委員長となる。第二次世界大戦後は、参議院議員となり活躍する。", "a": "市川房枝", "r": ""}, {"no": 359, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1924年、女性の選挙権獲得をめざして市川房枝らが結成。翌1925年、婦選獲得同盟となり、30年に全日本婦選大会を開いたが、40年に解散。女性に参政権を与えようという婦人公民権案は、1930年に衆議院で可決されたが、貴族院で否決。", "a": "婦人参政権獲得期成同盟会", "r": ""}, {"no": 360, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1871年、えた・非人の称が廃され、法的には農工商と等しく平民になったが、社会的差別は依然として残存した部落。明治期の解放運動は融和運動的なものが多かったが、大正期には被差別部落民の自主的な解放運動が起こり、全国水平社を創立し、全国的組織で解放運動が展開された。", "a": "被差別部落", "r": ""}, {"no": 361, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1922年3月、被差別民の差別解消のために結成された、自主的な解放団体。京都で全国水平社〔創立〕大会を開く。機関誌は『水平』。融和運動を克服、絶対の解放を期して糾弾闘争を強化したが、第二次世界大戦中は活動を停止。戦後、1946年に部落解放全国委員会として復活、55年に部落解放同盟と改称した。", "a": "全国水平社", "r": ""}, {"no": 362, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "1923年9月1日、関東地方を襲った大地震。マグニチュード7.9。震度は7。東京・横浜など大都市災害をもたらし、東京両国の陸軍の軍服などをつくっていた被服廠跡で死者約4万人。全体の死者約10万人、行方不明者4万人以上。2日に東京市、3日から東京府・神奈川県に戒厳令が施行された（11月16日に解除）。震災は大戦景気以来蓄積された国富に大被害を与えると共に、不況が深刻化。政府は支払猶予令・震災手形割引損失補償令を出し、日銀特別融資を行って経済活動の混乱を防いだ。", "a": "関東大震災", "r": ""}, {"no": 363, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "関東大震災の混乱下に朝鮮人が暴動を起こしたとの流言が飛びかい、住民で組織する自警団の手で、「朝鮮人狩り」と称して関東各地で多数（人数については諸説ある）の朝鮮人と共に中国人も殺害された。", "a": "朝鮮人殺害", "r": ""}, {"no": 364, "ch": "社会運動の勃興", "pr": "社会運動の勃興", "q": "関東大震災の混乱下、朝鮮人暴動の流言により住民で組織された団体。「朝鮮人狩り」と称して関東各地で多数の朝鮮人・中国人を殺害した。", "a": "自警団", "r": ""}, {"no": 365, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1885〜1923 無政府主義者。社会主義運動を再建し、直接行動を主張して大正期の労働運動に大きな影響を与えた。荒畑寒村と共に『近代思想』（1912〜14年）を発刊、伊藤野枝らと月刊・週刊『労働運動』（1919〜20年）を刊行し、盛んに評論活動も行った。関東大震災の時、甘粕正彦憲兵大尉に殺害される。", "a": "大杉栄", "r": ""}, {"no": 366, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1895〜1923 女性運動家。1913年に青鞜社に入り活動する。のち内縁の夫大杉栄と共に無政府主義運動に活躍。関東大震災の時、大杉と共に甘粕正彦憲兵大尉に殺害される。", "a": "伊藤野枝", "r": ""}, {"no": 367, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "納税額や教育程度などを選挙権の要件としないで、一定年齢以上のすべての成年に選挙権・被選挙権を与える選挙制度。19世紀末までは男性の普選を意味した。主に納税額などによる資格制限を設けるのは制限選挙。", "a": "普通選挙（制）", "r": ""}, {"no": 368, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "普通選挙の実施を要求する政治運動。長野県松本の中村太八郎らによる普通選挙期成同盟会が始まり。1911年に普選法が初めて衆議院を通過したが貴族院で否決。その後、各地の青年党と呼ばれる市民団体や労働組合も運動に参加。1920年には、普選大示威行進（普選デモ）などで高揚した。", "a": "普選運動", "r": ""}, {"no": 369, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1850〜1942 山県有朋系官僚。貴族院議員、枢密顧問官。1924年に首相。第2次護憲運動により辞職する。", "a": "清浦奎吾", "r": ""}, {"no": 370, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1924.1〜24.6 第2次山本内閣崩壊後、枢密院議長の清浦が組閣。政党から閣僚を入れず、貴族院中心の超然内閣（政党の意向にとらわれない内閣）であったため、第2次護憲運動が引き起こされ、わずか5カ月で総辞職。", "a": "清浦内閣", "r": ""}, {"no": 371, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "政党の意向にとらわれない内閣。清浦内閣はその典型とされる。", "a": "超然内閣", "r": ""}, {"no": 372, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1924年、護憲三派が中心となり、清浦内閣打倒、普選断行、政党内閣の実現、貴族院・枢密院改革、行政整理などを掲げて起こした運動。総選挙の勝利で護憲三派による加藤高明内閣が成立した。", "a": "第2次護憲運動", "r": ""}, {"no": 373, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "第2次護憲運動を行った憲政会（加藤高明）、革新倶楽部（犬養毅）、立憲政友会（高橋是清）をいう。清浦内閣を倒閣した後、連立内閣を組織する。", "a": "護憲三派", "r": ""}, {"no": 374, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1922年に成立。憲国民党の後身。代表は犬養毅。普選・軍縮などを主張。1925年、立憲政友会に吸収される。", "a": "革新倶楽部", "r": ""}, {"no": 375, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "原内閣の内相床次竹二郎を中心とする立憲政友会内の清浦内閣支持派が、1924年に分裂してつくった政党。清浦内閣の与党。選挙で大敗。のち憲政会と合同して立憲民政党を形成する。", "a": "政友本党", "r": ""}, {"no": 376, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1860〜1926 外交官。首相。妻は三菱の岩崎弥太郎の娘。1913年に立憲同志会の総裁となり、二十一カ条の要求提出時の第2次大隈内閣の外相。護憲三派内閣の首相。三派が分裂した後、憲政会単独内閣に改造したが病死する。", "a": "加藤高明", "r": ""}, {"no": 377, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1924.6〜26.1 総選挙後に第一党となった憲政会の総裁加藤高明を首相とする護憲三派連立内閣。内相若槻礼次郎、外相幣原喜重郎、蔵相浜口雄幸。普通選挙法・治安維持法の制定、貴族院の改革、日ソ国交樹立などを実現。立憲政友会が護憲三派から離脱した後、加藤は1925年8月に引き続き、憲政会単独の内閣に改造。これを第2次加藤高明内閣と呼ぶ。", "a": "加藤高明内閣", "r": ""}, {"no": 378, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1924年、総選挙後に第一党となった憲政会の総裁加藤高明を首相とする護憲三派連立内閣。", "a": "護憲三派内閣", "r": ""}, {"no": 379, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1925年、護憲三派内閣が改正した衆議院議員選挙法の通称。納税資格制限を撤廃し、25歳以上の男性に選挙権（女性は含まず）、30歳以上の男性に被選挙権を認めたもの。同時に小選挙区を中選挙区に戻した。", "a": "普通選挙法", "r": ""}, {"no": 380, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1925年、加藤（高）内閣が普選法成立直前に立法。国体の変革、私有財産の否認を目的とする結社を禁止する法。10年以下の懲役・禁錮の罰則。1928年に死刑を追加。1936年に思想犯保護観察法が成立し、41年予防拘禁制を導入した。普選の実施による社会主義の拡大、日ソ国交樹立後の社会主義運動の活発化を取り締まるのが目的。1945年10月、GHQ覚書で廃止された。", "a": "治安維持法", "r": ""}, {"no": 381, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "治安維持法が禁止の対象とした行為の一つ。天皇制の国家体制を変革すること。", "a": "国体の変革", "r": ""}, {"no": 382, "ch": "普選運動と護憲三派内閣の成立", "pr": "普選運動と護憲三派内閣の成立", "q": "1924年の加藤（高）内閣から32年の犬養内閣まで、衆議院で多数の議席を占める政党が内閣を担当することになった慣例をいう。第一党が総辞職後は第二党に交代する二大政党制を指す場合もある。戦後のような議院内閣制が制度化されたわけではない。昭和初期に立憲政友会・立憲民政党が拮抗して、交代したが、1932年の五・一五事件で犬養内閣が倒れ、挙国一致内閣の斎藤実内閣が成立して終止符が打たれた。", "a": "「憲政の常道」", "r": ""}, {"no": 383, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1872年の国立銀行条例により設立された、紙幣を発行できる銀行。渋沢栄一の尽力で第一国立銀行など設立が進んだ。", "a": "国立銀行", "r": ""}, {"no": 384, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1873年、渋沢栄一らが設立した最初の国立銀行。1873年、東京に設立された最初の国立銀行。", "a": "第一国立銀行", "r": ""}, {"no": 385, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "実業家。第一国立銀行・大阪紡績会社などの設立に尽力し、「日本資本主義の父」と呼ばれる。東京養育院の初代院長も務めた。", "a": "渋沢栄一", "r": ""}, {"no": 386, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1880年代前半に実施された松方大蔵卿の緊縮財政政策。紙幣整理、日本銀行設立、兌換制の確立、官営事業払下げ政策などが中心。厳しい緊縮財政がデフレを招いた。", "a": "松方財政", "r": ""}, {"no": 387, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "薩摩藩出身の政治家。大蔵卿・大蔵大臣を歴任し、紙幣整理・金本位制確立など財政・金融制度を整備した。薩摩閥の巨頭として2回組閣、元老となる。", "a": "松方正義", "r": ""}, {"no": 388, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1882年、松方大蔵卿の建議により設立された中央銀行。日本で唯一の銀行券発行権を持ち、1884年に兌換銀行券条例を制定した。", "a": "日本銀行", "r": ""}, {"no": 389, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1885年、日本銀行が発行した兌換銀行券。キヨソネが大黒天を描いた1円札(大黒札)が有名。翌年から政府紙幣の正貨兌換も開始し、確立した貨幣制度。", "a": "銀本位制", "r": ""}, {"no": 390, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "金貨を本位貨幣とする制度。1871年の新貨条例で採用を定めたが確立せず、日清戦争の賠償金で正貨不足を解消し、1897年の貨幣法で確立した。", "a": "金本位制", "r": ""}, {"no": 391, "ch": "貨幣制度と銀行", "pr": "貨幣制度と銀行", "q": "1897年着工、1901年操業開始。日清戦争後の軍備拡張・製鋼業振興政策による官営製鉄所。福岡県八幡村に設立された。", "a": "八幡製鉄所", "r": ""}, {"no": 392, "ch": "産業革命", "pr": "産業革命", "q": "機械の発明・応用で始まる工場制機械工業による生産の画期的進化。日本では日清戦争前後に軽工業、日露戦争前後に重工業部門で達成した。", "a": "産業革命", "r": ""}, {"no": 393, "ch": "産業革命", "pr": "産業革命", "q": "機械や工場などの生産手段を持つ資本家が労働力を売るしかない賃労働者を雇って利益目的で商品生産を行う社会の仕組み。日本では1880年代半ば以降の産業革命により定着。", "a": "資本主義", "r": ""}, {"no": 394, "ch": "産業革命", "pr": "産業革命", "q": "資本主義体制下で、不況が深刻化して経済が破綻してしまった状態。日本最初は1890年、続いて日清戦争後、日露戦後、1920年代の戦後恐慌・震災恐慌・金融恐慌、1930年からの昭和恐慌などがある。", "a": "恐慌", "r": ""}, {"no": 395, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1867年に操業開始した鹿児島紡績所に初めて洋式機械が入り、政府は各地に2000錘紡績工場を設立したが不振。1882年設立の大阪紡績会社が英国製ミュール紡績機導入以来、1万錘以上の機械制大紡績工場が急速に普及した。", "a": "機械紡績", "r": ""}, {"no": 396, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "綿花から綿糸を紡ぐ産業。大阪紡績会社が機械制大紡績工場による生産を確立し、1890年に綿生産高が輸入量を、97年に輸出量が輸入量を超え、朝鮮・中国市場を支配した。", "a": "紡績業", "r": ""}, {"no": 397, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1882年に渋沢栄一らが華族・政商などの出資を得て設立、翌年操業開始した紡績会社。英国製の紡績機械採用、蒸気力を利用した1万500錘の最新・最大の近代的紡績工場。", "a": "大阪紡績会社", "r": ""}, {"no": 398, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1873年に長野県人の臥雲辰致が発明した手回しの紡績機。回転音からこう呼ばれた。手紡の10倍の生産量があったが、のちに機械紡績に押され衰退した。", "a": "ガラ紡", "r": ""}, {"no": 399, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1867〜1930。自動織機の発明家・実業家。1896年に木製力織機を発明、1907年に豊田式織機会社を設立。子の喜一郎と共に自動織機を完成、トヨタ自動車の原点となった。", "a": "豊田佐吉", "r": ""}, {"no": 400, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "織物を織る時、たて糸の間によこ糸を通すために使うシャトルを飛ばす機械。1733年にイギリスのジョン=ケイが発明。日本には1873年のウィーン万国博覧会を機に紹介された。", "a": "飛び杼", "r": ""}, {"no": 401, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1918年、尼崎紡績と摂津紡績が合併して成立した紡績会社(現ユニチカ)。", "a": "大日本紡績会社", "r": ""}, {"no": 402, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "戦前の日本の紡績業をリードした東洋紡、鐘紡、大日本紡績をいう。", "a": "三大紡績", "r": ""}, {"no": 403, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1886年、呉服を扱っていた三越・大丸・白木屋などが共同で綿商社・綿糸製造所を開業。1889年に鐘淵紡績会社と改称(隅田川河畔鐘ヶ淵に工場、通称鐘紡)。", "a": "鐘淵紡績会社", "r": ""}, {"no": 404, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "繭から糸を繰り取り、生糸をつくる産業。日清戦争の頃、家内工業的な座繰製糸から中小経営中心の器械製糸に移行。1909年に清を抜き輸出が世界1位となった。", "a": "製糸業(蚕糸業)", "r": ""}, {"no": 405, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "幕末〜明治期の一般的な製糸技術。手回しの把手を回し、ベルト・歯車仕掛けで糸枠が回転する仕組みの簡単な器具を使う製糸。農村の家内工業として行われた。", "a": "座繰製糸", "r": ""}, {"no": 406, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "糸枠を動力(人力・水車・蒸気力など)で回転させ、生糸を巻き取る装置を持つ新技術。1872年、富岡製糸場に導入されたのを機に急速に発展した。", "a": "器械製糸", "r": ""}, {"no": 407, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1881年、華族の金禄公債を資金に設立された日本最初の私鉄会社。1884年に上野・高崎間が開通、1891年に上野・青森間全通。1906年の鉄道国有法により国有化された。", "a": "日本鉄道会社", "r": ""}, {"no": 408, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "新橋・横浜が1872年、神戸・大阪が74年、大阪・京都が77年、89年に東京・神戸間が全線開通した官営鉄道路線。", "a": "東海道線全通", "r": ""}, {"no": 409, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "日本鉄道会社の成功を受けて民営の鉄道建設ブームが起こり、1889年には民営鉄道が官営鉄道の営業距離を上回った。", "a": "民営鉄道", "r": ""}, {"no": 410, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1906年制定。産業上・軍事上から鉄道輸送の統一化・能率化が要請され、経営不振の私鉄の救済も求められた。鉄道会社の主要路線が国に買収され、官営鉄道と合体し、鉄道の90%が国有化されて国有鉄道となった。", "a": "鉄道国有法", "r": ""}, {"no": 411, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1882年設立、三井を中心とした半官半民の運輸会社。三菱汽船会社の独占を打破することをめざした。政府の調停で1885年に両者が合併、日本郵船会社となる。", "a": "共同運輸会社", "r": ""}, {"no": 412, "ch": "紡績と製糸", "pr": "紡績と製糸", "q": "1885年、郵便汽船三菱会社と共同運輸会社が合併して創立。近海航路、ボンベイ航路、欧米豪の3大外国航路を開設。日露戦争・第一次世界大戦を経て急速に発展した日本最大の汽船会社。", "a": "日本郵船会社", "r": ""}, {"no": 413, "ch": "重工業の形成", "pr": "重工業の形成", "q": "鉄鋼業、造船業、車両や動力を産む機械・器具をつくる製造業の部門。主に生産する時に必要となる金属にかかわる基礎的な工業部門。", "a": "重工業", "r": ""}, {"no": 414, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1880年の工場払下げ概則の制定から始まる。払下げ条件が厳しいため進展しなかったが、松方正義が大蔵卿に就任して本格的に推進。1884年、払下げ概則を廃止すると軌道に乗った。", "a": "官営事業払下げ", "r": ""}, {"no": 415, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1897年、産業資本の長期融資機関として設立された特殊銀行。外資導入・資本輸出に活躍。2002年に第一勧銀・富士銀行と合併し、現在はみずほ銀行。", "a": "日本興業銀行", "r": ""}, {"no": 416, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1907年、北海道室蘭に設立。三井資本と英国のアームストロング、ヴィッカーズ両兵器会社が共同出資。日本最大の民間兵器製鋼会社で、主に海軍向けの兵器を生産した。", "a": "日本製鋼所", "r": ""}, {"no": 417, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1902年、鉄鉱石は溶鉱炉でつくられた炭素を2%以上含有する鉄。銑鉄から炭素やそのほかの不純物を除去すると鋼となる。銑鉄は鋼の原料。", "a": "銑鉄", "r": ""}, {"no": 418, "ch": "重工業の形成", "pr": "重工業の形成", "q": "福岡県にある日本最大の炭田。1900年頃、財閥などの資本が入り、国内出炭量の半分を占めるに至った。", "a": "筑豊炭田", "r": ""}, {"no": 419, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1873年、東京麻布に工場を設立。工部省の指定の下で電気機械をつくった。政府に買収されたが82年に再興して芝浦製作所と称し、93年三井銀行が会社を継承。今の東芝の前身となる。", "a": "芝浦製作所", "r": ""}, {"no": 420, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1871年、新貨条例で金本位制の採用を定めたが、金の準備不足で確立せず。日清戦争の賠償金で正貨不足を解消、1897年の貨幣法で確立した。のち1917年に金輸出を禁止、30年に金解禁を実施して金本位制に復帰したが、翌31年、再禁止した。", "a": "金本位制(再掲)", "r": ""}, {"no": 421, "ch": "重工業の形成", "pr": "重工業の形成", "q": "政府が特定の政策を行うために特別法を制定して設立された銀行。主に明治30年代に設立。産業・貿易や植民地中央銀行などに長期・大口の融資を行う。", "a": "特殊銀行", "r": ""}, {"no": 422, "ch": "重工業の形成", "pr": "重工業の形成", "q": "一族の独占的で排他的な出資による資本を中心に結合した経営形態。維新後、明治政府の官営事業払下げを受けた政商からの進出が多い。運輸・鉱山・貿易・金融など事業を多角化し、大正初期にはコンツェルン形態を整えた。三井・三菱・住友・安田は四大財閥と呼ばれた。", "a": "財閥", "r": ""}, {"no": 423, "ch": "重工業の形成", "pr": "重工業の形成", "q": "江戸時代の両替商三井家に発する大財閥。1876年に三井銀行・三井物産を設立、金融・商業部門を中心に成長。1900年に家憲を定め、三井合名会社理事長となり、コンツェルン形態を整えた。", "a": "三井財閥", "r": ""}, {"no": 424, "ch": "重工業の形成", "pr": "重工業の形成", "q": "1873年に岩崎弥太郎が創立した三菱商会を基盤とする財閥。海運のほか、造船・炭鉱など重工業部門にも進出。三菱合資会社を設立して財閥化した。", "a": "三菱財閥", "r": ""}, {"no": 425, "ch": "重工業の形成", "pr": "重工業の形成", "q": "江戸時代の銅商・両替商住友家(屋号は泉屋)に発し、維新後、四国の別子銅山の経営を中心に発展。1921年、住友総本店は住友合資会社に改組、持株会社とした。", "a": "住友財閥", "r": ""}, {"no": 426, "ch": "重工業の形成", "pr": "重工業の形成", "q": "株式を所有することによって企業を支配する会社。三井合名会社・三菱合資会社・住友総本店(のち住友合資会社)・安田保善社などの財閥本社がこれで、傘下に多くの企業を擁したコンツェルンを形成した。", "a": "持株会社", "r": ""}, {"no": 427, "ch": "農業と農民", "pr": "農業と農民", "q": "自らは農業経営をせず、農地を小作農に貸しつけて高額な現物小作料を取ることで農業経営を行う大地主、あるいはその制度をいう。地租改正・松方財政後に急成長。第二次世界大戦後の農地改革で消滅。", "a": "寄生地主(制)", "r": ""}, {"no": 428, "ch": "農業と農民", "pr": "農業と農民", "q": "自分の農地を持たないで地主から田畑を借りて農業を行う零細な貧しい農民。村の中では地主に小作料の支払いなどで隷属的な立場にいる。生活が苦しく、子女を製糸工場の工女に出すなどしてやっと生活していた。", "a": "小作農", "r": ""}, {"no": 429, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "日本の繊維産業の女性労働者。多くは零細農家の若い女性で、当初は工女と呼ばれた。口減らし・家計補助のために親が前払いの前借金をもらって製糸工場や紡績工場へ出稼ぎした。逃亡を防ぐため会社の寄宿舎に閉じ込められ、低賃金で昼夜業(昼夜2交代制)の長時間労働と劣悪な作業環境に苦しんだ。", "a": "女工", "r": ""}, {"no": 430, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "口減らし・家計補助のために親が前借金をもらって、製糸工場や紡績工場へ出稼ぎした農村の若い女性の労働形態。", "a": "出稼ぎ", "r": ""}, {"no": 431, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "工女の低賃金の長時間労働形態。昼と夜の2交代制で工場を24時間フル稼働させるもの。", "a": "昼夜業(昼夜2交代制)", "r": ""}, {"no": 432, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1868〜1904。明治後期の労働運動の先駆者。1886年に渡米してアメリカの労働運動を学び、96年に帰国。翌年に職工義友会を組織、ついで労働組合期成会を結成した。", "a": "高野房太郎", "r": ""}, {"no": 433, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1859〜1933。明治・大正期の労働運動・社会主義運動の指導者。1884年に渡米、キリスト教徒となる。1896年に帰国し、労働組合期成会・社会民主党・日本社会党結成に参加。1921年にロシアに渡り、日本共産党の結成を指導した。", "a": "片山潜", "r": ""}, {"no": 434, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1897年、高野房太郎・片山潜らが労働組合結成促進の母体として組織。同年12月、鉄工組合が結成された。機関紙『労働世界』を発行。1900年の治安警察法の弾圧で衰退、翌年に解消した。", "a": "労働組合期成会", "r": ""}, {"no": 435, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "労働時間などの労働条件、賃金などの労働者の待遇問題をめぐって労働者と経営者(資本家)との間に起きる争い。", "a": "労働争議", "r": ""}, {"no": 436, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1912年、鈴木文治らにより設立された労働者の地位向上や福祉の増進をめざす労働団体。初めは親睦団体に近い。労働者と資本家の融和を図る労資協調をとなえると共に、労働組合運動の母体となる。", "a": "友愛会", "r": ""}, {"no": 437, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "毎年5月1日に行われる労働者の祝日。日本では大日本労働総同盟友愛会が中心となり、1920年に第1回メーデーが行われた。", "a": "メーデー", "r": ""}, {"no": 438, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "日本労働総同盟友愛会は、1921年、日本労働総同盟に発展し、労働者階級が資本家階級に対してストなどの直接行動で戦う階級闘争主義に転換した。", "a": "日本労働総同盟", "r": ""}, {"no": 439, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "小作人が地主へ小作料減免・小作権確認を要求した争い。1921年以降に増加、大規模な大衆行動もとられた。", "a": "小作争議", "r": ""}, {"no": 440, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1922年、杉山元治郎・賀川豊彦らにより設立。日本最初の小作人の全国組織組合。地主層との闘いの前面に立ち、小作争議を指導した。1926年に右派の平野力三らが脱退し、分裂した。", "a": "日本農民組合", "r": ""}, {"no": 441, "ch": "労働運動の進展", "pr": "労働運動の進展", "q": "1888〜1960。キリスト教社会主義者。関西の労働運動を指導。1922年に杉山元治郎と共に日本農民組合を創立。著書『死線を越えて』は、その伝道の体験を描いたもの。", "a": "賀川豊彦", "r": ""}, {"no": 442, "ch": "足尾鉱毒事件", "pr": "足尾鉱毒事件", "q": "古河市兵衛の足尾銅山精錬所の鉱毒が渡良瀬川から利根川まで流れ込み、流域の農民・漁民に被害を与え、社会問題化した公害事件。1901年には田中正造の天皇直訴に発展。1907年、谷中村を廃村にすることが決まった。", "a": "足尾鉱毒事件", "r": ""}, {"no": 443, "ch": "足尾鉱毒事件", "pr": "足尾鉱毒事件", "q": "渡良瀬遊水池をつくるために廃村にされた栃木県の村。田中正造はこの廃村に反対し、抵抗した。", "a": "谷中村", "r": ""}, {"no": 444, "ch": "足尾鉱毒事件", "pr": "足尾鉱毒事件", "q": "銅の製錬の時に出る亜硫酸ガスの通り道となり、山の草木が枯れ、土砂が流出し、岩盤がむき出しとなるまでに荒廃して人が住めなくなり、廃村となった足尾の谷間の村。", "a": "松木村", "r": ""}, {"no": 445, "ch": "足尾鉱毒事件", "pr": "足尾鉱毒事件", "q": "1841〜1913。栃木県会議員・同議長。第1回総選挙で衆議院議員に選出され、立憲改進党・進歩党・憲政本党議員などを歴任。足尾鉱毒事件発生と共にその解決に奔走、1901年、議員を辞任し天皇に直訴した。1904年以降は水没しつつある谷中村に住み、農民と共に闘い、生涯を終えた。", "a": "田中正造", "r": ""}, {"no": 446, "ch": "足尾鉱毒事件", "pr": "足尾鉱毒事件", "q": "1911年公布。工場労働者保護のため、事業主に義務を課す法律。最低年齢12歳、労働時間12時間、女性・年少者の午後10時から午前4時までの深夜業禁止など規定するが、15人未満の工場には適用されないなど不備な点が多く、実施は1916年まで延期。1947年、労働基準法公布で廃止された。", "a": "工場法", "r": ""}, {"no": 447, "ch": "教育の普及", "pr": "教育の普及", "q": "1879年、アメリカの教育制度を参考に学制を改正。学制の中央集権的画一主義を改め、学区制を廃止して小学校の設立経営を町村の自由裁量とし、義務教育を16カ月と緩和したため、自由教育令ともいわれる。", "a": "教育令", "r": ""}, {"no": 448, "ch": "教育の普及", "pr": "教育の普及", "q": "1886年公布。尋常・高等各4年。尋常小学校4年は義務教育とし、教科書検定制を実施。", "a": "小学校令", "r": ""}, {"no": 449, "ch": "教育の普及", "pr": "教育の普及", "q": "1872年の学制で方針が発表され、79年の教育令で期限を16カ月、86年の小学校令で3〜4年とし、1890年の小学校令改正で尋常小学校3年あるいは4年の義務教育が明確化され、高等小学校は2〜4年とされた。さらに日露戦後の1907年の小学校令改正では6年に延長され、10年には就学率98%に達した。", "a": "義務教育", "r": ""}, {"no": 450, "ch": "教育の普及", "pr": "教育の普及", "q": "1886年の学校制度に関する4つの法令の総称。初代文部大臣森有礼が公布。学校種別ごとに小学校令・中学校令・師範学校令・帝国大学令の4つの単独の勅令として出され、帝国大学を頂点とする近代的学校体系を確立した。", "a": "学校令", "r": ""}, {"no": 451, "ch": "教育の普及", "pr": "教育の普及", "q": "1886年公布。教員養成機関として学資を支給するかわりに、一定期間は教職に就く義務があった。尋常師範学校(府県立・4年)は小学校教員の養成、高等師範学校(官立・3年)は中学校や師範学校の教員を養成した。", "a": "師範学校令", "r": ""}, {"no": 452, "ch": "教育の普及", "pr": "教育の普及", "q": "1886年の帝国大学令により、東京大学が改組された官立の最高学府。分科大学(現在の学部にあたる法・医・工・文・理)と大学院で構成。1919年の大学令で改正。", "a": "帝国大学", "r": ""}, {"no": 453, "ch": "教育の普及", "pr": "教育の普及", "q": "1897年に京都帝国大学が設立されると東京の帝国大学(前身は東京大学)を改称してこう呼んだ。戦前の帝国大学は1897年京都、1907年東北、10年九州に、以後、北海道・台北・大阪・名古屋・京城に設立。9帝大となる。", "a": "東京帝国大学", "r": ""}, {"no": 454, "ch": "教育の普及", "pr": "教育の普及", "q": "1890年発布。戦前日本の教育の指導原理を示す勅語。元田永孚・井上毅らが原案を起草。忠君愛国(君主に忠義を尽くし、国を愛すること)や主君への忠・父母への孝などの儒教的道徳思想を基礎に、天皇制の強化を図る。御真影(天皇の写真)と共に各学校に配布、奉安殿に安置した。1948年、国会決議で失効。", "a": "教育(に関する)勅語", "r": ""}, {"no": 455, "ch": "教育の普及", "pr": "教育の普及", "q": "君主に忠義を尽くし、国を愛すること。教育勅語の中心思想で、主君への忠・父母への孝などの儒教的道徳思想を基礎に天皇制の強化を図った。", "a": "忠君愛国", "r": ""}, {"no": 456, "ch": "教育の普及", "pr": "教育の普及", "q": "1891年、第一高等中学校嘱託教員の内村鑑三が、キリスト教徒の良心から天皇署名のある教育勅語に最敬礼をせず、社会的攻撃を受け、辞職した事件。", "a": "内村鑑三不敬事件", "r": ""}, {"no": 457, "ch": "教育の普及", "pr": "教育の普及", "q": "1886年、文部省の検査に合格した教科書を使用する検定教科書制度開始。1903年、前年の教師が賄賂で教科書を採択したとされる疑獄事件を機に、小学校では文部省の国定教科書に統一。修身・国語(読本)・国史などが科目の中心で、国民思想統制の役割を果たす。1904年から修身教科書は国定となった。", "a": "国定教科書制度", "r": ""}, {"no": 458, "ch": "教育の普及", "pr": "教育の普及", "q": "初等・中等教育における道徳教育の科目。教育勅語の忠君愛国による臣民育成の趣旨に沿い、1904年から修身教科書は国定となった。", "a": "修身科", "r": ""}, {"no": 459, "ch": "教育の普及", "pr": "教育の普及", "q": "1858年、福沢諭吉が江戸築地鉄砲洲の中津藩邸に開いた蘭学塾に始まる。1868年、芝の新銭座に移り、慶応義塾と命名。1890年大学部を設置し、1920年、大学令により最初の私立大学(旧制)として認可された。", "a": "慶応義塾", "r": ""}, {"no": 460, "ch": "教育の普及", "pr": "教育の普及", "q": "1875年、新島襄が京都に同志社英学校を創立。キリスト教精神による教育を行う。以後、女学校・神学校などを設置。1912年に同志社大学と改称。1920年、大学令による大学として認可。", "a": "同志社", "r": ""}, {"no": 461, "ch": "教育の普及", "pr": "教育の普及", "q": "1843〜90。宗教家・教育者。1864年、上野安中藩を脱藩して米国に密航出国し、神学を学び、キリスト教の教師の資格を受ける。米国から岩倉使節団に同行して欧州の教育を視察し、1874年帰国。翌年に同志社英学校を創立。", "a": "新島襄", "r": ""}, {"no": 462, "ch": "教育の普及", "pr": "教育の普及", "q": "1882年、大隈重信が創立。参議を追われた大隈が、官学に対し在野的・自由主義的人材の育成を図り、小野梓らが教育にあたる。1902年に早稲田大学と改称。1920年、大学令により最初の私立大学として認可。", "a": "東京専門学校", "r": ""}, {"no": 463, "ch": "教育の普及", "pr": "教育の普及", "q": "早稲田大学の前身、東京専門学校を創立した政治家。", "a": "大隈重信", "r": ""}, {"no": 464, "ch": "教育の普及", "pr": "教育の普及", "q": "1900年、津田梅子によって設立された英語教育及び英語教員養成学校。1933年に津田英学塾と改称し、48年に津田塾大学となった。", "a": "女子英学塾", "r": ""}, {"no": 465, "ch": "教育の普及", "pr": "教育の普及", "q": "1849〜1913。ドイツ人内科医。1876年、政府に招かれ東京医学校・東大で内科・産科を講義。1905年に帰国。在日中の1876〜1905年の日記を長男トクが編集した『ベルツの日記』は、明治時代を知る好史料。", "a": "ベルツ", "r": ""}, {"no": 466, "ch": "教育の普及", "pr": "教育の普及", "q": "1853〜1908。アメリカ人。1878年、東大で哲学などを講義。日本美術を高く評価し、鑑画会をつくり、伝統美術復興をとなえた。岡倉天心と東京美術学校の設立に尽力。", "a": "フェノロサ", "r": ""}, {"no": 467, "ch": "教育の普及", "pr": "教育の普及", "q": "1852〜1931。細菌学者。1885年、ドイツに留学、コッホに師事。1889年、破傷風菌の純粋培養に成功し、90年にジフテリアと破傷風血清療法に関する論文を執筆した。帰国して伝染病研究所所長。1894年、香港のペスト流行の際、同地でペスト菌を発見。", "a": "北里柴三郎", "r": ""}, {"no": 468, "ch": "教育の普及", "pr": "教育の普及", "q": "1854〜1922。1890年渡米、ニューヨークに高峰研究所を創設(1902年)。強心薬アドレナリンの抽出、消化薬タカジアスターゼを創製した。", "a": "高峰譲吉", "r": ""}, {"no": 469, "ch": "教育の普及", "pr": "教育の普及", "q": "1865〜1950。東大教授、大阪大総長、学士院長。実地測量による磁気歪の研究を進め、1903年、土星型原子模型の理論を発表して原子構造の研究に寄与した。", "a": "長岡半太郎", "r": ""}, {"no": 470, "ch": "教育の普及", "pr": "教育の普及", "q": "1861〜1930。宗教家。札幌農学校卒業後に渡米。帰国後の1891年、第一高等中学校嘱託教員の時、不敬事件で退職。その後、『万朝報』に招かれ、日露戦争では非戦論をとなえ退社。日本的キリスト教の独立に努め、教会に属さず聖書を通してキリストに直接向き合う無教会主義をとなえた。", "a": "内村鑑三", "r": ""}, {"no": 471, "ch": "近代文学", "pr": "近代文学", "q": "1878〜1942。歌人。1900年に新詩社に入り、翌年鉄幹と結婚。歌風は情熱的で華麗。日露戦争を批判する「君死にたまふこと勿れ」を『明星』に発表した。", "a": "与謝野晶子", "r": ""}, {"no": 472, "ch": "近代文学", "pr": "近代文学", "q": "1872〜1943。小説家。透谷と『文学界』を創刊。ロマン主義詩人から出発し、のち小説家に転じ、日露戦争後は自然主義作家となる。", "a": "島崎藤村", "r": ""}, {"no": 473, "ch": "近代文学", "pr": "近代文学", "q": "1872〜96。女流作家。中島歌子の萩の舎塾に学び、貧窮の中で小説で生活を支えた。東京下町に暮らす女性の悲しみや喜びを擬古文で描く。『大つごもり』『十三夜』『たけくらべ』『にごりえ』などの作品がある。", "a": "樋口一葉", "r": ""}, {"no": 474, "ch": "近代文学", "pr": "近代文学", "q": "1867〜1902。俳人・歌人。伊予松山に生まれる。1883年に上京して大学予備門に入学、夏目漱石を知る。見たまま感じたままに描写する写生に基づく俳句・短歌革新運動を提唱。短歌は万葉集の表現を理想とした。俳句雑誌『ホトトギス』で活躍、和歌の根岸短歌会を設立する。", "a": "正岡子規", "r": ""}, {"no": 475, "ch": "近代文学", "pr": "近代文学", "q": "正岡子規が提唱した、見たまま感じたままに描写する写生に基づく俳句の革新運動。俳句雑誌『ホトトギス』で活躍した。", "a": "俳句革新運動", "r": ""}, {"no": 476, "ch": "近代文学", "pr": "近代文学", "q": "自然科学の発展やフランスのエミール=ゾラの影響を受け、初めはヨーロッパの自然主義のように旧習に対する批判や社会矛盾を描こうとした。日本では明治30年代に始まり、藤村の『破戒』、花袋の『蒲団』で確立。しかしすぐ社会矛盾を描こうとする情熱は薄れ、私小説・心境小説の方向をたどった。", "a": "自然主義", "r": ""}, {"no": 477, "ch": "近代文学", "pr": "近代文学", "q": "1867〜1916。松山中学・熊本の五高教授、文部省留学生としてロンドンに留学。1903年、一高教授・東京帝大講師。1905年、『吾輩は猫である』で文壇に登場。長編小説『三四郎』も著す。反自然主義でロマン的余裕派とされ、他人を尊重する個人主義を唱え、文明批評も行う。", "a": "夏目漱石", "r": ""}, {"no": 478, "ch": "近代文学", "pr": "近代文学", "q": "陸軍軍医総監・小説家。名は林太郎。ドイツに留学して衛生学を専攻。『舞姫』などのロマン的作品で登場。その後、翻訳・評論などで活躍。晩年は歴史小説が多い。", "a": "森鴎外", "r": ""}, {"no": 479, "ch": "近代文学", "pr": "近代文学", "q": "1859〜1935。小説家・劇作家。写実主義を主張し、文壇の中心的存在となる。『早稲田文学』を創刊。のち演劇改良を企て、文芸協会の設立に参加した。", "a": "坪内逍遙", "r": ""}, {"no": 480, "ch": "近代文学", "pr": "近代文学", "q": "1864〜1909。小説家。本名は長谷川辰之助。東京外国語学校ロシア語科に学ぶ。1887年に言文一致体の『浮雲』を発表。ロシア文学の翻訳などと共に、近代文学に多大な影響を与えた。", "a": "二葉亭四迷", "r": ""}, {"no": 481, "ch": "近代文学", "pr": "近代文学", "q": "坪内逍遙の主張に始まる、明治20年前後の文壇の潮流。戯作や勧善懲悪を排し、現実にある人情・世相をあるがままに描こうとする立場。近代文学の出発点となる。", "a": "写実主義", "r": ""}, {"no": 482, "ch": "近代文学", "pr": "近代文学", "q": "文語体に代えて、話し言葉に近い口語体で文章表現をする試み。二葉亭四迷の『浮雲』はその先駆。山田美妙も前後して主張した。", "a": "言文一致体", "r": ""}, {"no": 483, "ch": "近代文学", "pr": "近代文学", "q": "1871〜1930。小説家。評論『露骨なる描写』などで自然主義文学に傾斜、1907年に『蒲団』を発表。藤村と共に自然主義文学の旗頭となった。", "a": "田山花袋", "r": ""}, {"no": 484, "ch": "近代文学", "pr": "近代文学", "q": "18世紀末からのヨーロッパロマン主義の影響を受け、明治20年代から展開した文学・芸術・思想の潮流。感情の素直な表現を強調し、理想や恋愛へのあこがれを重んじ、生きる喜びや自我・個性の尊重と解放を主張。島崎藤村や『文学界』、鉄幹・晶子の明星派などに顕著にみられる。", "a": "ロマン主義(ロマンチシズム)", "r": ""}, {"no": 485, "ch": "近代文学", "pr": "近代文学", "q": "1873〜1935。歌人・詩人。本名は寛。雑誌『明星』創刊。1901年に晶子と結婚。初めは雄壮で豪快な歌風であったが、結婚後は妻晶子と共にロマン主義文学運動の中心になる。", "a": "与謝野鉄幹", "r": ""}, {"no": 486, "ch": "近代文学", "pr": "近代文学", "q": "1900年創刊。詩歌中心の文芸雑誌。与謝野鉄幹・晶子夫妻中心の新詩社・明星派の機関誌。星とすみれに象徴されるロマン的叙情。1908年に第100号で終刊。", "a": "明星", "r": ""}, {"no": 487, "ch": "近代文学", "pr": "近代文学", "q": "1868〜94。評論家・詩人。15歳で自由民権運動に参加したが、大阪事件で疑問を持ち、運動から離れる。キリスト教に入信。『文学界』を創刊。自己の内面を追求する中で、理想と現実の矛盾に追い詰められ、27歳で自殺。", "a": "北村透谷", "r": ""}, {"no": 488, "ch": "近代文学", "pr": "近代文学", "q": "1893年、北村透谷ら創刊の月刊文芸誌、ロマン主義文学の母体となる。樋口一葉の小説、島崎藤村の詩、透谷の評論などを掲載。1898年、58号で廃刊。", "a": "文学界", "r": ""}, {"no": 489, "ch": "近代文学", "pr": "近代文学", "q": "1887年、徳富蘇峰らが設立した思想団体。雑誌『国民之友』を発刊して平民主義を主唱した。(再掲・関連)", "a": "民友社", "r": ""}, {"no": 490, "ch": "近代文学", "pr": "近代文学", "q": "写実主義に基づき戯作や勧善懲悪を排するとした、近代文学の出発点となった思想。", "a": "写実主義(再掲)", "r": ""}, {"no": 491, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1844〜1903。歌舞伎俳優。演劇の改良・発展に努め、時代物狂言を史実に即して演じる活歴でも活躍、歌舞伎役者の地位向上に努める。九代目。", "a": "市川団十郎(九代目)", "r": ""}, {"no": 492, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1886年、末松謙澄(伊藤博文の長女の夫)らが演劇改良会を結成、演劇の近代化運動を始めた。劇場・興行の改革、女形の廃止を主張し、歌舞伎を史実に即し、写実的に演出する活歴を提唱。", "a": "演劇改良運動", "r": ""}, {"no": 493, "ch": "明治の芸術", "pr": "明治の芸術", "q": "明治前期に混乱していた歌舞伎界が、九代目市川団十郎、五代目尾上菊五郎、初代市川左団次によって迎えた明治中期の歌舞伎の黄金時代。", "a": "団菊左時代", "r": ""}, {"no": 494, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1864〜1911。俳優。自由党壮士。政治・時事風刺の演歌オッペケペー節で名をあげ、1891年、妻貞奴と壮士芝居をおこし、新派の創始者となる。欧米巡業でも名をあげた。", "a": "川上音二郎", "r": ""}, {"no": 495, "ch": "明治の芸術", "pr": "明治の芸術", "q": "自由と民権を喧伝する流行歌。「オッペケペ」は単なる口拍子。1889年、川上音二郎の京都での寄席口説から大流行した。演歌の始まりという。", "a": "オッペケペー節", "r": ""}, {"no": 496, "ch": "明治の芸術", "pr": "明治の芸術", "q": "国会が開設されると自由民権家は衆議院議員となる者が多く、自由党の壮士らは仕事を失った。川上音二郎がそれらの壮士の生活を支えるために始めた素人演劇。日清戦争の戦闘の様子を舞台で再現して人気を獲得し、やがて新派劇に成長した。", "a": "壮士芝居", "r": ""}, {"no": 497, "ch": "明治の芸術", "pr": "明治の芸術", "q": "古い歌舞伎劇に対し、明治中期に新しくおこった明治時代の社会を反映した当時の現代劇。起源は壮士芝居。日露戦争頃から尾崎紅葉の『金色夜叉』や泉鏡花の『婦系図』などの通俗小説を劇化することによって、人気を誇った。", "a": "新派劇", "r": ""}, {"no": 498, "ch": "明治の芸術", "pr": "明治の芸術", "q": "歌舞伎・新派劇に対する西洋から入った近代劇。文芸協会・自由劇場がシェークスピア・イプセン・チェーホフなどの翻訳劇を上演して始まる。", "a": "新劇", "r": ""}, {"no": 499, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1906年、坪内逍遙・島村抱月が文芸一般の革新を目的に設立したが、1909年から純然たる演劇団体に改組した。シェークスピアの「ハムレット」やイプセンの「人形の家」などを公演、新劇発展の基礎を築く。1913年に解散。", "a": "文芸協会", "r": ""}, {"no": 500, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1909年、二代目左団次と小山内薫が結成した新劇団体。東京有楽座でノルウェーの劇作家イプセンの翻訳劇を初演。1919年の最終公演まで数多くの翻訳劇、若手の戯曲を上演し、新劇発展の先駆的役割を果たす。", "a": "自由劇場", "r": ""}, {"no": 501, "ch": "明治の芸術", "pr": "明治の芸術", "q": "幕末〜明治期に西洋からもたらされた音楽。居留地の軍楽隊、宮内省雅楽部の洋楽伝習や鹿鳴館の演奏会、賛美歌などがもとになる。教育面では東京音楽学校で本格的に始められた。", "a": "西洋音楽(洋楽)", "r": ""}, {"no": 502, "ch": "明治の芸術", "pr": "明治の芸術", "q": "明治の音楽教育に採用された洋楽に基礎をおきながら児童が歌いやすいようにした音楽。伊沢修二は旧来の三味線音楽・民謡・能楽などを排しながらも、日本の音階を残して、1880年から唱歌教育を始めた。", "a": "唱歌", "r": ""}, {"no": 503, "ch": "明治の芸術", "pr": "明治の芸術", "q": "国立の音楽教育機関。音楽取調掛を拡充して、1887年に創立。第二次世界大戦後に東京美術学校と合併、東京芸術大学となる。", "a": "東京音楽学校", "r": ""}, {"no": 504, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1862〜1913。本名は覚三。フェノロサと東京美術学校を設立、校長となる。のち日本美術復興運動に尽力し、日本美術院を設立。狩野芳崖・橋本雅邦らと日本画に輪郭線をなくし、遠近法や陰影法などの西洋画の手法を加えた創作運動を進めた。", "a": "岡倉天心", "r": ""}, {"no": 505, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1887年10月、岡倉天心らの尽力で設立、東京の上野に89年開校。初めは絵画(日本画)・彫刻・美術工芸の3科で、西洋画はなかったが、フランスから帰国した黒田清輝によって、96年に西洋画科を増設。1949年、東京芸術大学となる。", "a": "東京美術学校", "r": ""}, {"no": 506, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1898年、東京美術学校校長を辞任した岡倉天心を中心に、橋本雅邦ら26人で創立した日本画の美術団体。日本絵画協会と連合して春秋に共進会を開催。", "a": "日本美術院", "r": ""}, {"no": 507, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1828〜88。日本画家。橋本雅邦と江戸狩野派の同門。天心・フェノロサに認められたが、東京美術学校開校前に死去した。代表作「悲母観音」。", "a": "狩野芳崖", "r": ""}, {"no": 508, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1835〜1908。日本画家。フェノロサに認められ、東京美術学校創立と共に同校教授。1898年、日本美術院創立に参加。弟子に観山・大観・春草らがいる。", "a": "橋本雅邦", "r": ""}, {"no": 509, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1866〜1924。洋画家。法律研究に渡仏中、絵に転向してラファエル=コランに師事。1893年帰国。東京美術学校に西洋画科を設置。「朝妝」で裸体画事件を起こす。白馬会創立。東京美術学校教授・帝国美術院院長。", "a": "黒田清輝", "r": ""}, {"no": 510, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1882〜1911。東京美術学校で黒田清輝の指導を受け、白馬会に所属。在学中に第1回白馬会賞受賞(「黄泉比良坂」)。歴史・神話を画題にしたロマン的作風が特色。「海の幸」が代表作。", "a": "青木繁", "r": ""}, {"no": 511, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1879〜1910。1901年に洋画研究のため米・仏に渡り、ロダンの「考える人」に感動して彫刻に転じた。1908年に帰国、新宿中村屋夫人の相馬黒光の援助を受ける。号は碌山。代表作に「坑夫」「女」などがある。", "a": "荻原守衛", "r": ""}, {"no": 512, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1852〜1934。江戸の仏師高村東雲門下の木彫家。光太郎の父。東京美術学校教授。仏師の伝統的な技法に西洋の特色を加えて新しい木彫を開く。代表作「老猿」。", "a": "高村光雲", "r": ""}, {"no": 513, "ch": "明治の芸術", "pr": "明治の芸術", "q": "1854〜1919。1879年、工部大学校第1期卒業生、翌年英国に留学。1883年に帰国、のち東京帝大工科大学長。1903年以後は民間の建築家として活動、日本銀行本店や東京駅など多くの本格的な洋風建築を設計・施工する。", "a": "辰野金吾", "r": ""}, {"no": 514, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1915〜18年の好景気。ヨーロッパの交戦国が輸出できなくなったアジア・中国市場を、日本が独占した。アメリカ向けの生糸輸出増加、造船業・海運業の発展により、日本はこの間に債務国から債権国に転じ、工業が飛躍的に発展した。", "a": "大戦景気", "r": ""}, {"no": 515, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "貿易収支が黒字で対外純資産が増えた国と、貿易収支が赤字続きで外国から資金を借りなければならない国。第一次世界大戦中、日本は前者から後者(逆)へ転じた。", "a": "債権国・債務国", "r": ""}, {"no": 516, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "第一次世界大戦中の好景気で巨利を得て、蓄財した人をいう。鉄と船と株で大富豪となった場合が多かったが、戦後恐慌で大部分は没落した。", "a": "成金", "r": ""}, {"no": 517, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "第一次世界大戦時、世界的な船舶不足によって船賃が高騰し、造船・海運業界が一挙に巨利を得た。内田信也が始めた内田汽船などが有名。", "a": "船成金", "r": ""}, {"no": 518, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "日本の紡績資本が、中国各地に建設した紡績工場。第一次世界大戦を機に、上海・青島・天津などに建設、大正末年には15社を数えた。", "a": "在華紡", "r": ""}, {"no": 519, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "第一次世界大戦中に、都市の中産階級として形成された、中等・高等教育の卒業者が多くなり産業・経済が発展する中で形成された都市の中産階級。高学歴の役人・会社員などの事務系のホワイトカラーのサラリーマンである都市生活者が中心。大正文化の担い手。", "a": "新中間層(都市中間層)", "r": ""}, {"no": 520, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "第一次世界大戦中から戦後の経済発展を契機に、職業を持った女性が社会的進出したことから出た呼称。バスガール、タイピスト、電話交換手、デパートの女性店員、女性事務員、女性教師、看護婦、女医、工女、女性アナウンサーなど。", "a": "職業婦人", "r": ""}, {"no": 521, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1923年につくられた鉄筋コンクリート造のアメリカ式高層事務所建築の走り。三菱合資会社地所課の手で東京の丸の内に建てられ、丸の内ビルヂング(通称丸ビル)という。", "a": "丸ビル", "r": ""}, {"no": 522, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1887年、外相井上馨が渋沢栄一らと図り、国賓の宿泊施設として構想されたホテル。2代目の建物はアメリカ人建築家ライトの設計になり、1923年に竣工した。", "a": "帝国ホテル", "r": ""}, {"no": 523, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "都市の中産階級の家庭で、家族が食事をしたり、くつろいだりする部屋。それまでの一人一人が箱膳で食べる様式から、家族が卓袱台を囲んで食事をとり、一家団欒を楽しむようになった。", "a": "茶の間", "r": ""}, {"no": 524, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "大正から昭和初期に流行した住宅建築。郊外に建てられた和風の日本建築にガラス戸・赤瓦の三角屋根のある洋風の応接間を付属させた住宅。都心の官庁や会社へ通勤する俸給生活者(サラリーマン)を中心とする中産階級の住宅。", "a": "文化住宅", "r": ""}, {"no": 525, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1918年、渋沢栄一が発起人代表として設立した会社。イギリスで理想とされた農村と都会の生活を調和させた田園趣味の豊かな町づくりをめざした。東京の多摩川沿いの丘陵地に田園調布を分譲したのは1923年から。", "a": "田園都市株式会社", "r": ""}, {"no": 526, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "百貨店(デパート)は第一次世界大戦前後の経済的発展は、都市における消費経済を発達させ、ショッピングが都市生活の娯楽となり、いろいろな品物を陳列・販売する百貨店が誕生した。東京日本橋の三越がその代表。", "a": "百貨店(デパート)", "r": ""}, {"no": 527, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "郊外電車(私鉄)の都市中心部の発着駅に、デパートを付属させ、サラリーマンの通勤客と郊外にできた新しい住宅地の人々の購買力をねらったもの。大阪・梅田の阪急百貨店が始まり。", "a": "ターミナルデパート", "r": ""}, {"no": 528, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "世界初の地下鉄は1863年にロンドンで開通。日本では1927年、早川徳次の東京地下鉄道会社により、浅草・上野間に開通したのが始まり。戦前では1933年に大阪でも開通する。", "a": "地下鉄", "r": ""}, {"no": 529, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "東京の都心部を環状に運行する鉄道路線。もとは日本鉄道会社が品川駅・赤羽駅間を結ぶ路線を敷設したことから品川駅が起点。環状運転は1925年に開始。", "a": "山の手線(山手線)", "r": ""}, {"no": 530, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1919年に公布された日本初の体系的な都市計画の基本法。第一次世界大戦前後の急速な都市化に対応するため、従来の東京市区改正条例に代わり制定。", "a": "都市計画法", "r": ""}, {"no": 531, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1920年10月1日に、初めて人口関係の事項、職業状態などを調査する国勢調査を実施。以後、5年ごとに実施、現在に至る。", "a": "国勢調査", "r": ""}, {"no": 532, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "大正から昭和初期の文化の特徴。都市の急速な発展、中等教育の普及と知識階級(インテリ)の増大、活字文化の広まりとマス=メディアの始まりなどが、大衆の文化参加・文化創造を生み出した。", "a": "大衆文化", "r": ""}, {"no": 533, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1918年公布。原内閣の時、官立の帝国大学以外に公・私立大学、単科大学の設立を認めた。大学制度を拡充し、大学数が急増。", "a": "大学令", "r": ""}, {"no": 534, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1919年、山本実彦が改造社を創立して発行した総合雑誌。社会改造を民衆解放に求めるという編集方針。社会主義者などの論文発表の場となる。1955年休刊。", "a": "改造", "r": ""}, {"no": 535, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "一週間に1回発行される雑誌。文化の大衆化と共に1922年、『週刊朝日』と『サンデー毎日』が発売されたのが始まり。", "a": "週刊誌", "r": ""}, {"no": 536, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1887年京都で刊行された『反省会雑誌』(浄土真宗系)が、のち東京に移り、99年『中央公論』と改題。宗門から独立した総合雑誌として、社会評論・学術・思想・文芸などを充実させる。大正初期、編集長滝田樗陰が基礎を確立し、大正デモクラシーの論壇の中心となる。", "a": "中央公論", "r": ""}, {"no": 537, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "関東大震災後の不況を打開するため、改造社が1冊1円という安価な『現代日本文学全集』を刊行して成功。ついで新潮社の『世界文学全集』などが出版された。昭和初期の円本ブームを現出した。", "a": "円本", "r": ""}, {"no": 538, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "大衆の要求に応え、娯楽的な読み物をはじめ、様々な情報を面白く提供し、大衆の読書欲を満たそうとした雑誌。『キング』がその代表。", "a": "大衆(娯楽)雑誌", "r": ""}, {"no": 539, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "大日本雄弁会講談社が創刊した大衆雑誌。「日本一面白くて為になる」雑誌界のキングをめざしたもので、創刊号(1925年1月号)は74万部を売った。のちに100万部を突破し、以後の大衆雑誌・少年少女雑誌流行の基礎となる。", "a": "キング", "r": ""}, {"no": 540, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1925年3月、東京芝浦仮放送所で初の電波を出し、7月に芝の愛宕山の東京放送局で本放送を開始。翌1926年、東京・大阪・名古屋の各放送局を統合し、日本放送協会(NHK)を設立した。", "a": "ラジオ放送", "r": ""}, {"no": 541, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1896〜97年に米・仏から輸入、神戸・大阪・東京などで公開された映画の初期呼称。1899年に国産映画を初制作、1903年に浅草の電気館が常設館となる。昭和初期までは無声映画で、活動弁士が画面に合わせて説明した。", "a": "活動写真", "r": ""}, {"no": 542, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "日本の映画制作会社は、1912年に日活が創立され、20年に松竹が映画制作に乗り出した。1931年に画面と音声が一体となったトーキー(有声映画)が始まり、51年カラー映画が登場した。", "a": "映画", "r": ""}, {"no": 543, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "画面と音声が一体となった映画。1931年に始まった。", "a": "トーキー(有声映画)", "r": ""}, {"no": 544, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1913年、阪急電鉄社長の小林一三が、宝塚唱歌隊を組織したのが始まり。関西で女性だけの劇団として発展。昭和期には、東京にも宝塚劇場ができた。", "a": "宝塚少女歌劇団(宝塚歌劇団)", "r": ""}, {"no": 545, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1923年につくられた高層建築物などで用いられた新しい建築構造。丸ビルの建築様式として代表的。", "a": "鉄筋コンクリート造", "r": ""}, {"no": 546, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "昭和初期に流行した語。近代的女性の意だが、多くは洋服を着て繁華街を歩く若い女性を批判の意を込めて呼んだ。男性はモダンボーイ(モボ)という。", "a": "モダンガール(モガ)", "r": ""}, {"no": 547, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "昭和初期に流行した語で、モダンガール(モガ)に対する男性の呼称。", "a": "モダンボーイ(モボ)", "r": ""}, {"no": 548, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "レコードを再生する機器、プレーヤーのこと。1877年、アメリカのエジソンの発明。1889年、蠟管蓄音器が輸入されて見世物に使用、92年国産を開始。", "a": "蓄音器", "r": ""}, {"no": 549, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "松井須磨子が『復活』劇中にうたった「カチューシャの唄」が始まり。大正末期の「船頭小唄」(1923年)、「籠の鳥」(1924年)などは世相をよく反映。昭和に入るとラジオ・レコードの普及により全国一斉に同じ歌が流行したのでこう呼ばれる。", "a": "流行歌", "r": ""}, {"no": 550, "ch": "生活様式の近代化と大衆文化", "pr": "生活様式の近代化と大衆文化", "q": "1915年、第1回大会が大阪朝日新聞社によって始められる。第10回大会から1924年に兵庫県西宮に甲子園野球場が完成、使用球場となる。1948年から全国高校野球選手権大会となる。", "a": "全国中等学校優勝野球大会", "r": ""}];
+
+function switchTopTab(tab) {
+  document.getElementById('topTabQuiz').classList.toggle('active', tab === 'quiz');
+  document.getElementById('topTabPrint').classList.toggle('active', tab === 'print');
+  document.getElementById('quizPage').classList.toggle('active', tab === 'quiz');
+  document.getElementById('printPage').classList.toggle('active', tab === 'print');
+}
+
+/* ============================================================
+   QUIZ TOOL (adapted from 倫理一問一答_シャッフル出題ツール.html)
+   ============================================================ */
+const chapterOrder = [];
+const chapterMap = {};
+ALL_ITEMS.forEach(it => {
+  if (!chapterMap[it.ch]) { chapterMap[it.ch] = { title: it.ch, items: [] }; chapterOrder.push(it.ch); }
+  chapterMap[it.ch].items.push(it);
+});
+
+let selectedChapters = new Set(chapterOrder);
+let quizItems = [];
+let currentIndex = 0;
+let revealed = false;
+let results = [];
+let weakStats = JSON.parse(localStorage.getItem('nihonshi121314_weakstats_v1') || '{}');
+let quizInProgress = false;
+
+function renderUnitList() {
+  const container = document.getElementById('unitList');
+  container.innerHTML = '';
+  chapterOrder.forEach(ch => {
+    const items = chapterMap[ch].items;
+    const label = document.createElement('label');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = selectedChapters.has(ch);
+    cb.onchange = () => {
+      if (cb.checked) selectedChapters.add(ch); else selectedChapters.delete(ch);
+      updateSelCount();
+    };
+    const span = document.createElement('span');
+    span.textContent = ch;
+    const count = document.createElement('span');
+    count.className = 'count';
+    count.textContent = items.length + '問';
+    label.appendChild(cb); label.appendChild(span); label.appendChild(count);
+    container.appendChild(label);
+  });
+  updateSelCount();
+}
+
+function selectAll(val) {
+  selectedChapters = val ? new Set(chapterOrder) : new Set();
+  renderUnitList();
+}
+
+function updateSelCount() {
+  const n = ALL_ITEMS.filter(it => selectedChapters.has(it.ch)).length;
+  document.getElementById('selCount').textContent = '選択中: ' + n + '問 / 全142問';
+  document.getElementById('startBtn').disabled = (n === 0);
+}
+
+function shuffleArr(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  let pool = ALL_ITEMS.filter(it => selectedChapters.has(it.ch));
+  const weakOnly = document.getElementById('weakOnlySelect').value === 'yes';
+  if (weakOnly) {
+    pool = pool.filter(it => {
+      const s = weakStats[it.no];
+      return s && s.wrong > s.right;
+    });
+    if (pool.length === 0) {
+      alert('苦手として記録されている問題がありません。まずは通常モードで出題してください。');
+      return;
+    }
+  }
+  const orderMode = document.getElementById('orderSelect').value;
+  quizItems = orderMode === 'shuffle' ? shuffleArr(pool) : pool.slice();
+  currentIndex = 0;
+  results = [];
+  document.getElementById('quizSourceTag').textContent =
+    'シャッフル版：全142問中 ' + quizItems.length + '問を出題中' + (orderMode === 'order' ? '（単元順）' : '（シャッフル）');
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  document.getElementById('wrongCount').textContent = '0';
+  document.getElementById('wrongListOverlay').classList.remove('show');
+  quizInProgress = true;
+  showCurrent();
+}
+
+function showCurrent() {
+  revealed = false;
+  const it = quizItems[currentIndex];
+  const mode = document.getElementById('modeSelect').value;
+  document.getElementById('qNo').textContent = 'No.' + it.no;
+  document.getElementById('qPage').textContent = it.pr;
+  document.getElementById('qText').textContent = mode === 'qa' ? it.q : ('用語: ' + it.a);
+  document.getElementById('aText').textContent = mode === 'qa' ? it.a : it.q;
+  document.getElementById('aReading').textContent = (mode === 'qa' && it.r) ? '【' + it.r + '】' : '';
+  document.getElementById('card').classList.remove('revealed');
+  document.getElementById('tapHint').style.display = 'block';
+  document.getElementById('judgeRow').classList.remove('show');
+  document.getElementById('quizCounter').textContent = (currentIndex + 1) + ' / ' + quizItems.length;
+  document.getElementById('progressBar').style.width = (currentIndex / quizItems.length * 100) + '%';
+}
+
+function revealAnswer() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('card').classList.add('revealed');
+  document.getElementById('tapHint').style.display = 'none';
+  document.getElementById('judgeRow').classList.add('show');
+}
+
+function speak(text) {
+  if (!text) return;
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ja-JP';
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+}
+
+function frontSpeechText() {
+  const it = quizItems[currentIndex];
+  const mode = document.getElementById('modeSelect').value;
+  return mode === 'qa' ? it.q : it.a;
+}
+function backSpeechText() {
+  const it = quizItems[currentIndex];
+  const mode = document.getElementById('modeSelect').value;
+  return mode === 'qa' ? it.a : it.q;
+}
+function cardTapped() {
+  if (!revealed) {
+    speak(frontSpeechText());
+    revealAnswer();
+  } else {
+    speak(backSpeechText());
+  }
+}
+function speakAnswer(e) {
+  e.stopPropagation();
+  speak(revealed ? backSpeechText() : frontSpeechText());
+}
+function escapeHtmlLocal(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function switchMainTab(tab) {
+  document.getElementById('mainTabQuiz').classList.toggle('active', tab === 'quiz');
+  document.getElementById('mainTabRank').classList.toggle('active', tab === 'rank');
+  if (tab === 'rank') {
+    document.getElementById('rankScreen').style.display = 'block';
+    document.getElementById('setupScreen').style.display = 'none';
+    document.getElementById('quizScreen').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'none';
+    renderRankScreen();
+  } else {
+    document.getElementById('rankScreen').style.display = 'none';
+    document.getElementById('setupScreen').style.display = quizInProgress ? 'none' : 'block';
+    document.getElementById('quizScreen').style.display = quizInProgress ? 'block' : 'none';
+    document.getElementById('resultScreen').style.display = 'none';
+  }
+}
+
+function renderRankScreen() {
+  const body = document.getElementById('rankBody');
+  const entries = Object.keys(weakStats)
+    .map(no => ({ no: parseInt(no, 10), wrong: weakStats[no].wrong || 0, right: weakStats[no].right || 0 }))
+    .filter(e => e.wrong > 0)
+    .sort((a, b) => b.wrong - a.wrong || (b.wrong - b.right) - (a.wrong - a.right));
+
+  if (entries.length === 0) {
+    body.innerHTML = '<div class="rank-empty">まだ記録がありません。出題タブで問題に答えると、ここに苦手な問題が集計されます。</div>';
+    return;
+  }
+  let html = '';
+  entries.forEach((e, idx) => {
+    const it = ALL_ITEMS.find(i => i.no === e.no);
+    if (!it) return;
+    const reading = it.r ? '　【' + escapeHtmlLocal(it.r) + '】' : '';
+    html += '<div class="rank-item">' +
+      '<div class="rank-no">' + (idx + 1) + '</div>' +
+      '<div class="rank-body">' +
+        '<div class="rank-q">' + escapeHtmlLocal(it.q) + '</div>' +
+        '<div class="rank-a">' + escapeHtmlLocal(it.a) + reading + '</div>' +
+      '</div>' +
+      '<div class="rank-score">✗' + e.wrong + '　◯' + e.right + '</div>' +
+    '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function resetWeakStats() {
+  if (!confirm('苦手ランキングの記録をすべてリセットします。よろしいですか？')) return;
+  weakStats = {};
+  localStorage.setItem('nihonshi121314_weakstats_v1', JSON.stringify(weakStats));
+  renderRankScreen();
+}
+
+function toggleWrongList() {
+  const el = document.getElementById('wrongListOverlay');
+  const showing = el.classList.toggle('show');
+  if (showing) renderWrongList();
+}
+
+function renderWrongList() {
+  const wrongResults = results.filter(r => !r.correct);
+  document.getElementById('wrongCount').textContent = wrongResults.length;
+  const body = document.getElementById('wrongListBody');
+  if (wrongResults.length === 0) {
+    body.innerHTML = '<div class="wrong-empty">まだ間違えた問題はありません</div>';
+    return;
+  }
+  let html = '';
+  wrongResults.forEach((r, idx) => {
+    const it = quizItems.find(i => i.no === r.no) || ALL_ITEMS.find(i => i.no === r.no);
+    if (!it) return;
+    const reading = it.r ? '　【' + escapeHtmlLocal(it.r) + '】' : '';
+    html += '<div class="wrong-item"><div class="wrong-q">' + (idx + 1) + '. ' + escapeHtmlLocal(it.q) + '</div><div class="wrong-a">→ ' + escapeHtmlLocal(it.a) + reading + '</div></div>';
+  });
+  body.innerHTML = html;
+}
+
+function judge(correct) {
+  const it = quizItems[currentIndex];
+  results.push({ no: it.no, correct });
+  if (!weakStats[it.no]) weakStats[it.no] = { wrong: 0, right: 0 };
+  if (correct) weakStats[it.no].right++; else weakStats[it.no].wrong++;
+  localStorage.setItem('nihonshi121314_weakstats_v1', JSON.stringify(weakStats));
+  document.getElementById('wrongCount').textContent = results.filter(r => !r.correct).length;
+
+  currentIndex++;
+  if (currentIndex >= quizItems.length) {
+    showResult();
+  } else {
+    showCurrent();
+  }
+}
+
+function showResult() {
+  quizInProgress = false;
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+  const correctCount = results.filter(r => r.correct).length;
+  document.getElementById('scoreText').textContent = correctCount + ' / ' + results.length;
+  const rate = results.length ? Math.round(correctCount / results.length * 100) : 0;
+  document.getElementById('scoreSub').textContent = '正答率 ' + rate + '%';
+
+  const wrongItems = results.filter(r => !r.correct).map(r => quizItems.find(it => it.no === r.no));
+  const weakListEl = document.getElementById('weakList');
+  if (wrongItems.length > 0) {
+    let html = '<h3>今回間違えた問題（' + wrongItems.length + '問）</h3>';
+    wrongItems.forEach(it => {
+      html += '<div class="weak-item">No.' + it.no + '　<b>' + it.a + '</b>' + (it.r ? '【' + it.r + '】' : '') + '</div>';
+    });
+    weakListEl.innerHTML = html;
+  } else {
+    weakListEl.innerHTML = '<h3 style="color:var(--correct);">全問正解でした！</h3>';
+  }
+}
+
+function restartSame() {
+  quizInProgress = true;
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  const orderMode = document.getElementById('orderSelect').value;
+  let pool = quizItems.slice();
+  quizItems = orderMode === 'shuffle' ? shuffleArr(pool) : pool;
+  currentIndex = 0;
+  results = [];
+  document.getElementById('wrongCount').textContent = '0';
+  document.getElementById('wrongListOverlay').classList.remove('show');
+  showCurrent();
+}
+
+function backToSetup() {
+  quizInProgress = false;
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'block';
+}
+
+renderUnitList();
+
+/* ============================================================
+   PRINT TOOL (adapted from 倫理一問一答_シャッフルプリント作成.html)
+   ============================================================ */
+const pUnitOrder = [];
+const pUnitMap = {};
+ALL_ITEMS.forEach(it => {
+  if (!pUnitMap[it.pr]) { pUnitMap[it.pr] = { chapter: it.ch, items: [] }; pUnitOrder.push(it.pr); }
+  pUnitMap[it.pr].items.push(it);
+});
+
+let pSelectedUnits = new Set(pUnitOrder);
+let pCurrentTab = 'q';
+let pCurrentOrder = null;
+let pCurrentChapterGroups = null;
+let pCurrentMode = 'unit';
+let pCurrentCodeSeed = null;
+
+function pIsWeakOnly() {
+  const el = document.getElementById('pWeakOnlyCheckbox');
+  return el && el.checked;
+}
+function pIsWeakItem(it) {
+  const s = weakStats[it.no];
+  return !!(s && s.wrong > s.right);
+}
+function pGetPoolItems(items) {
+  return pIsWeakOnly() ? items.filter(pIsWeakItem) : items;
+}
+function pTotalWeakCount() {
+  return ALL_ITEMS.filter(pIsWeakItem).length;
+}
+
+function pRenderUnitList() {
+  const totalEl = document.getElementById('pWeakTotalCount');
+  if (totalEl) totalEl.textContent = pTotalWeakCount();
+  const el = document.getElementById('pUnitList');
+  el.innerHTML = '';
+  let lastChapter = null;
+  pUnitOrder.forEach(pr => {
+    const u = pUnitMap[pr];
+    const count = pGetPoolItems(u.items).length;
+    if (pIsWeakOnly() && count === 0) return;
+    if (u.chapter !== lastChapter) {
+      const gt = document.createElement('div');
+      gt.className = 'p-group-title';
+      gt.textContent = u.chapter;
+      el.appendChild(gt);
+      lastChapter = u.chapter;
+    }
+    const row = document.createElement('label');
+    row.className = 'p-unit-item';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = pSelectedUnits.has(pr);
+    cb.onchange = () => { if (cb.checked) pSelectedUnits.add(pr); else pSelectedUnits.delete(pr); };
+    const span = document.createElement('span');
+    span.textContent = pr;
+    const cnt = document.createElement('span');
+    cnt.className = 'cnt';
+    cnt.textContent = count + '問';
+    row.appendChild(cb); row.appendChild(span); row.appendChild(cnt);
+    el.appendChild(row);
+  });
+}
+
+function pSelectAll(val) {
+  pSelectedUnits = val ? new Set(pUnitOrder) : new Set();
+  pRenderUnitList();
+}
+
+function pMulberry32(seed) {
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function pShuffleWithRng(arr, rng) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pGetSelectedUnitsOrdered() {
+  return pUnitOrder.filter(pr => pSelectedUnits.has(pr));
+}
+
+function pBuildFromSeed(seed, mode) {
+  const units = pGetSelectedUnitsOrdered();
+  const rng = pMulberry32(seed);
+  if (mode === 'unit') {
+    const groups = [];
+    let lastChapter = null; let curGroup = null;
+    units.forEach(pr => {
+      const u = pUnitMap[pr];
+      const pool = pGetPoolItems(u.items);
+      if (pool.length === 0) return;
+      if (u.chapter !== lastChapter) {
+        curGroup = { title: u.chapter, items: [] };
+        groups.push(curGroup);
+        lastChapter = u.chapter;
+      }
+      const shuffledSub = pShuffleWithRng(pool, rng);
+      curGroup.items.push(...shuffledSub);
+    });
+    return { groups, flat: null };
+  } else {
+    let pool = [];
+    units.forEach(pr => pool.push(...pGetPoolItems(pUnitMap[pr].items)));
+    const flat = pShuffleWithRng(pool, rng);
+    return { groups: null, flat };
+  }
+}
+
+function pDoShuffle() {
+  if (pSelectedUnits.size === 0) { alert('出題する範囲を1つ以上選んでください。'); return; }
+  if (pIsWeakOnly() && pTotalWeakCount() === 0) { alert('苦手として記録されている問題がありません。出題ツールで問題に答えると、ここに反映されます。'); return; }
+  const mode = document.querySelector('input[name="pShufMode"]:checked').value;
+  const seed = Math.floor(Math.random() * 900000) + 100000;
+  pApplyShuffle(seed, mode);
+}
+
+function pApplyShuffle(seed, mode) {
+  pCurrentMode = mode;
+  pCurrentCodeSeed = seed;
+  const result = pBuildFromSeed(seed, mode);
+  pCurrentChapterGroups = result.groups;
+  pCurrentOrder = result.flat;
+  const modeLetter = mode === 'unit' ? 'U' : 'A';
+  const unitIndices = pGetSelectedUnitsOrdered().map(pr => pUnitOrder.indexOf(pr) + 1).join('-');
+  const code = unitIndices + '/' + modeLetter + '/' + seed;
+  document.getElementById('pCodeValue').textContent = code;
+  pRender();
+}
+
+function pShowOriginal() {
+  if (pSelectedUnits.size === 0) { alert('出題する範囲を1つ以上選んでください。'); return; }
+  if (pIsWeakOnly() && pTotalWeakCount() === 0) { alert('苦手として記録されている問題がありません。出題ツールで問題に答えると、ここに反映されます。'); return; }
+  pCurrentMode = 'original';
+  pCurrentCodeSeed = null;
+  const units = pGetSelectedUnitsOrdered();
+  const groups = [];
+  let lastChapter = null; let curGroup = null;
+  units.forEach(pr => {
+    const u = pUnitMap[pr];
+    const pool = pGetPoolItems(u.items);
+    if (pool.length === 0) return;
+    if (u.chapter !== lastChapter) {
+      curGroup = { title: u.chapter, items: [] };
+      groups.push(curGroup);
+      lastChapter = u.chapter;
+    }
+    curGroup.items.push(...pool);
+  });
+  pCurrentChapterGroups = groups;
+  pCurrentOrder = null;
+  document.getElementById('pCodeValue').textContent = 'まだシャッフルしていません（単元順）';
+  pRender();
+}
+
+function pReproduceFromCode() {
+  const code = document.getElementById('pCodeInput').value.trim();
+  if (!code) return;
+  const parts = code.split('/');
+  if (parts.length !== 3) { alert('出題コードの形式が正しくありません。'); return; }
+  const [idxStr, modeLetter, seedStr] = parts;
+  const indices = idxStr.split('-').map(s => parseInt(s, 10)).filter(n => !isNaN(n));
+  const seed = parseInt(seedStr, 10);
+  if (indices.length === 0 || isNaN(seed)) { alert('出題コードの形式が正しくありません。'); return; }
+  pSelectedUnits = new Set(indices.map(i => pUnitOrder[i - 1]).filter(Boolean));
+  const mode = modeLetter === 'A' ? 'all' : 'unit';
+  document.querySelector('input[name="pShufMode"][value="' + mode + '"]').checked = true;
+  pRenderUnitList();
+  pApplyShuffle(seed, mode);
+}
+
+function pSwitchTab(t) {
+  pCurrentTab = t;
+  document.getElementById('pTabQ').classList.toggle('active', t === 'q');
+  document.getElementById('pTabA').classList.toggle('active', t === 'a');
+  document.getElementById('pTabQA').classList.toggle('active', t === 'qa');
+  pRender();
+}
+
+function pItemLineHtml(it, no) {
+  if (pCurrentTab === 'q') {
+    return '<div class="p-q-item"><span class="no">' + no + '.</span><span>' + pEscapeHtml(it.q) + '</span></div>';
+  } else if (pCurrentTab === 'a') {
+    const reading = it.r ? '　【' + it.r + '】' : '';
+    return '<div class="p-q-item"><span class="no">' + no + '.</span><span class="ans">' + pEscapeHtml(it.a) + '</span><span class="reading">' + reading + '</span></div>';
+  } else {
+    const reading = it.r ? '　【' + it.r + '】' : '';
+    return '<div class="p-q-item p-qa-item"><span class="no">' + no + '.</span><span class="p-qa-body"><span class="p-qa-q">' + pEscapeHtml(it.q) + '</span><span class="p-qa-a">→ ' + pEscapeHtml(it.a) + reading + '</span></span></div>';
+  }
+}
+function pEscapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function pRender() {
+  const sheet = document.getElementById('pPrintSheet');
+  if (!pCurrentChapterGroups && !pCurrentOrder) {
+    sheet.innerHTML = '<div class="p-placeholder">左の「出題設定」で範囲を選び、「シャッフルする」を押してください（スマホ・iPadの場合、操作パネルはページの上部にあります）。</div>';
+    return;
+  }
+  const modeLabel = pCurrentMode === 'original' ? '（単元順）' : (pCurrentMode === 'unit' ? '（単元内シャッフル）' : '（総合シャッフル）');
+  const editionLabel = pCurrentTab === 'q' ? '問題編' : (pCurrentTab === 'a' ? '解答編' : '問題+解答セット一覧');
+  const codeText = pCurrentCodeSeed !== null
+    ? '出題コード\n' + document.getElementById('pCodeValue').textContent
+    : '単元順';
+
+  let bodyHtml = '';
+  let no = 1;
+  if (pCurrentChapterGroups) {
+    pCurrentChapterGroups.forEach(g => {
+      bodyHtml += '<div class="p-chapter-block"><h3>' + pEscapeHtml(g.title) + '</h3>';
+      g.items.forEach(it => { bodyHtml += pItemLineHtml(it, no); no++; });
+      bodyHtml += '</div>';
+    });
+  } else {
+    bodyHtml += '<div class="p-chapter-block">';
+    pCurrentOrder.forEach(it => { bodyHtml += pItemLineHtml(it, no); no++; });
+    bodyHtml += '</div>';
+  }
+
+  sheet.innerHTML =
+    '<div class="p-stamp">' + codeText.replace('\n', '<br>') + '</div>' +
+    '<div class="p-sheet-title">日本史 一問一答（第12・13章）</div>' +
+    '<div class="p-sheet-subtitle">ハードウェア〜インターネットサービス　' + modeLabel + '　' + editionLabel + '</div>' +
+    '<div class="p-name-fields">' +
+      '<div class="nf">組<span class="line"></span></div>' +
+      '<div class="nf">番<span class="line"></span></div>' +
+      '<div class="nf wide">氏名<span class="line"></span></div>' +
+    '</div>' +
+    bodyHtml;
+}
+
+pRenderUnitList();
+</script>
+</body>
+</html>
