@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>英熟語ターゲット1000　161〜250番　例文並び替えツール</title>
+<style>
+  :root {
+    --main: #2e6b5b;
+    --main-dark: #1d4a3f;
+    --accent: #e08e45;
+    --bg: #f2f7f5;
+    --card-bg: #ffffff;
+    --correct: #2e8b57;
+    --wrong: #c0392b;
+    --text: #2a2a2a;
+    --sub: #6b7a75;
+    --border: #d7e3de;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, var(--main), var(--main-dark));
+    color: #fff; padding: 16px 16px 12px; text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  header h1 { margin: 0; font-size: 1.15rem; letter-spacing: 0.02em; }
+  header .subtitle { font-size: 0.75rem; opacity: 0.9; margin-top: 4px; }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: 60px; }
+  .panel {
+    background: var(--card-bg); border-radius: 12px; padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px; border: 1px solid #eee;
+  }
+  .panel h2 { font-size: 0.95rem; margin: 0 0 10px; color: var(--main-dark); }
+  .unit-list label {
+    display: flex; align-items: center; gap: 8px; padding: 9px 10px;
+    border-radius: 8px; margin-bottom: 6px; background: #eaf3f0; cursor: pointer;
+    font-size: 0.85rem; line-height: 1.35;
+  }
+  .unit-list input { width: 18px; height: 18px; accent-color: var(--main); flex-shrink: 0; }
+  .unit-list .no { color: var(--sub); font-size: 0.72rem; margin-right: 4px; }
+  .row-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+  .row-btns button {
+    flex: 1; padding: 8px; border: 1px solid #cfdbd6; background: #fff; border-radius: 8px;
+    font-size: 0.78rem; color: var(--main-dark); cursor: pointer;
+  }
+  .start-btn {
+    display: block; width: 100%; padding: 14px; margin-top: 6px;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(224,142,69,0.4);
+  }
+  #quizScreen { display: none; }
+  .quiz-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 0.8rem; color: var(--sub); }
+  .quiz-topbar .backbtn { background: none; border: none; color: var(--main-dark); font-size: 0.85rem; cursor: pointer; padding: 4px 0; }
+  .quiz-topbar .wrongListBtn { background: #fdf2ee; border-radius: 14px; padding: 5px 12px; color: var(--wrong); font-weight: bold; border: none; cursor: pointer; }
+  .progress-bar-outer { height: 6px; background: #dcece6; border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
+  .progress-bar-inner { height: 100%; background: var(--main); width: 0%; transition: width 0.25s; }
+
+  .card {
+    background: var(--card-bg); border-radius: 14px; padding: 22px 18px; min-height: 260px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; border: 1px solid #eee;
+  }
+  .card .qno { font-size: 0.75rem; color: var(--sub); }
+  .idiom-tag { display: inline-block; margin-top: 4px; font-size: 0.72rem; color: #fff; background: var(--main-dark); padding: 3px 10px; border-radius: 20px; }
+  .ja-prompt { font-size: 1.02rem; line-height: 1.6; margin: 16px 0 18px; text-align: center; }
+  .answer-slot {
+    min-height: 52px; border: 2px dashed #b9d0c8; border-radius: 10px; padding: 8px;
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: #f7fbf9; margin-bottom: 14px;
+  }
+  .answer-slot.empty::before { content: "ここに単語をタップして並べる"; color: var(--sub); font-size: 0.8rem; }
+  .word-tile {
+    padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; cursor: pointer;
+    border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .tile-tray .word-tile { background: var(--main); color: #fff; }
+  .answer-slot .word-tile { background: var(--accent); color: #fff; }
+  .tile-tray { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; min-height: 44px; }
+  .tile-tray .word-tile.used { visibility: hidden; }
+  .card-btns { display: flex; gap: 10px; }
+  .card-btns button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: bold; cursor: pointer; }
+  .btn-clear { background: #fff; color: var(--main-dark); border: 1px solid #cfdbd6 !important; }
+  .btn-check { background: var(--main); color: #fff; }
+  .judge-row { display: none; gap: 10px; margin-top: 14px; }
+  .judge-row.show { display: flex; }
+  .judge-row button { flex: 1; padding: 13px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: bold; color: #fff; cursor: pointer; }
+  .btn-wrong { background: var(--wrong); }
+  .btn-correct { background: var(--correct); }
+  .result-line { margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 0.88rem; line-height: 1.6; }
+  .result-line.ok { background: #eaf6ee; color: var(--correct); }
+  .result-line.ng { background: #fdf2ee; color: var(--wrong); }
+  .result-line .correct-sentence { color: var(--text); font-weight: bold; margin-top: 4px; display: block; }
+
+  .wrong-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; align-items: flex-end; justify-content: center; }
+  .wrong-overlay.show { display: flex; }
+  .wrong-panel { background: #fff; width: 100%; max-width: 640px; max-height: 78vh; border-radius: 16px 16px 0 0; padding: 18px 18px 24px; overflow-y: auto; box-shadow: 0 -2px 12px rgba(0,0,0,0.2); }
+  .wrong-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .wrong-panel-header h2 { font-size: 1rem; color: var(--wrong); margin: 0; }
+  .wrong-close-btn { background: var(--main-dark); color: #fff; border: none; border-radius: 16px; padding: 6px 16px; font-size: 0.82rem; cursor: pointer; }
+  .wrong-item { background: #fdf2ee; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .wrong-item .wrong-q { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
+  .wrong-item .wrong-a { font-size: 0.9rem; color: var(--wrong); font-weight: bold; margin-top: 4px; }
+  .wrong-empty { color: var(--sub); font-size: 0.88rem; text-align: center; padding: 30px 10px; }
+
+  #resultScreen { display: none; text-align: center; }
+  #resultScreen .bigscore { font-size: 2.2rem; font-weight: bold; color: var(--main-dark); margin: 10px 0; }
+  #resultScreen .sub { color: var(--sub); font-size: 0.9rem; margin-bottom: 20px; }
+  .result-actions { display: flex; flex-direction: column; gap: 10px; }
+  .result-actions button { padding: 13px; border-radius: 10px; border: none; font-size: 0.95rem; cursor: pointer; font-weight: bold; }
+  .result-actions .primary { background: var(--accent); color: #fff; }
+  .result-actions .secondary { background: #fff; color: var(--main-dark); border: 1px solid #cfdbd6; }
+  footer { text-align: center; font-size: 0.7rem; color: var(--sub); margin-top: 20px; padding-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>英熟語ターゲット1000　例文並び替えツール</h1>
+  <div class="subtitle">テスト範囲　熟語番号161〜250番</div>
+</header>
+
+<div class="container">
+
+  <div id="setupPage">
+    <div class="panel">
+      <h2>出題する熟語を選ぶ</h2>
+      <div class="row-btns">
+        <button onclick="selectAll(true)">すべて選択</button>
+        <button onclick="selectAll(false)">すべて解除</button>
+      </div>
+      <div class="unit-list" id="unitList"></div>
+    </div>
+    <div class="panel">
+      <h2>復習モード</h2>
+      <button id="reviewToggleBtn" class="row-btns" style="width:100%;padding:9px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a5300;font-size:0.82rem;cursor:pointer;">🔁 苦手な例文だけ復習する</button>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">▶ 並び替えスタート</button>
+  </div>
+
+  <div id="quizScreen">
+    <div class="quiz-topbar">
+      <button class="backbtn" onclick="backToSetup()">← 設定に戻る</button>
+      <button class="wrongListBtn" onclick="openWrongList()">✕ 間違いリスト</button>
+    </div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressFill"></div></div>
+
+    <div class="card">
+      <div class="qno" id="qno">1 / 23</div>
+      <span class="idiom-tag" id="idiomTag">due to ~</span>
+      <div class="ja-prompt" id="jaPrompt">日本語訳</div>
+
+      <div class="answer-slot" id="answerSlot"></div>
+      <div class="tile-tray" id="tileTray"></div>
+
+      <div class="card-btns" id="cardBtns">
+        <button class="btn-clear" onclick="clearAnswer()">↺ クリア</button>
+        <button class="btn-check" onclick="checkAnswer()">○ 判定する</button>
+      </div>
+
+      <div id="resultArea"></div>
+
+      <div class="judge-row" id="judgeRow">
+        <button class="btn-wrong" onclick="markResult(false)">✕ 間違えた</button>
+        <button class="btn-correct" onclick="markResult(true)">○ 正解した</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultScreen">
+    <div class="panel">
+      <h2>結果</h2>
+      <div class="bigscore" id="scoreText">0 / 0</div>
+      <div class="sub" id="scoreSub"></div>
+      <div class="result-actions">
+        <button class="primary" onclick="startQuiz()">もう一度この範囲で挑戦</button>
+        <button class="secondary" onclick="backToSetup()">設定に戻る</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="wrong-overlay" id="wrongOverlay">
+  <div class="wrong-panel">
+    <div class="wrong-panel-header">
+      <h2>間違いリスト</h2>
+      <button class="wrong-close-btn" onclick="closeWrongList()">閉じる</button>
+    </div>
+    <div id="wrongListBody"></div>
+  </div>
+</div>
+
+<footer>英熟語ターゲット1000（5訂版）テスト範囲 161〜250番 準拠</footer>
+
+<script>
+/* ============================================================
+   DATA — 161〜250番から抽出した熟語のオリジナル例文
+   ============================================================ */
+const SENTENCES = [
+  {no:165, idiom:"due [owing] to ~", en:"The delay was due to heavy snow.", ja:"遅延は大雪のせいだった。"},
+  {no:167, idiom:"with all ~", en:"With all his effort, he still failed the exam.", ja:"あれだけ努力したにもかかわらず、彼はやはり試験に落ちた。"},
+  {no:182, idiom:"call off ~", en:"They decided to call off the trip because of the storm.", ja:"彼らは嵐のため旅行を中止することにした。"},
+  {no:183, idiom:"carry on (~)", en:"She carried on working even after everyone else left.", ja:"他の皆が帰った後も、彼女は働き続けた。"},
+  {no:"186,238", idiom:"come up with ~", en:"He came up with a great idea for the project.", ja:"彼はそのプロジェクトについて素晴らしい考えを思いついた。"},
+  {no:187, idiom:"do away with ~", en:"We should do away with this old rule.", ja:"私たちはこの古い規則を廃止すべきだ。"},
+  {no:188, idiom:"find fault with ~", en:"My teacher always finds fault with my handwriting.", ja:"私の先生はいつも私の字を非難する。"},
+  {no:189, idiom:"get into ~", en:"It's hard to get into a top university these days.", ja:"最近では一流大学に入るのは難しい。"},
+  {no:209, idiom:"out of hand", en:"The meeting got out of hand when everyone started shouting.", ja:"みんなが叫び始めたとき、会議は収拾がつかなくなった。"},
+  {no:213, idiom:"before long", en:"Before long, the sun began to set behind the mountains.", ja:"まもなく、太陽は山の向こうに沈み始めた。"},
+  {no:223, idiom:"over and over (again)", en:"She practiced the song over and over again.", ja:"彼女はその歌を何度も何度も練習した。"},
+  {no:225, idiom:"consent to ~", en:"Her parents finally consented to the plan.", ja:"彼女の両親はついにその計画に同意した。"},
+  {no:"231,232", idiom:"catch up with [to] ~", en:"I ran fast to catch up with my friends.", ja:"私は友達に追いつくために速く走った。"},
+  {no:233, idiom:"keep up with ~", en:"It's hard to keep up with all the homework this week.", ja:"今週の宿題すべてに遅れずについていくのは大変だ。"},
+  {no:236, idiom:"correspond to ~", en:"This mark on the map corresponds to our school.", ja:"地図上のこの印は私たちの学校に相当する。"},
+  {no:241, idiom:"make the best of ~", en:"We tried to make the best of a difficult situation.", ja:"私たちは困難な状況を最大限に活用しようとした。"},
+  {no:242, idiom:"make the most of ~", en:"You should make the most of your summer vacation.", ja:"あなたは夏休みを最大限に活用すべきだ。"},
+  {no:245, idiom:"be concerned about [for] ~", en:"Many students are concerned about the coming exam.", ja:"多くの生徒が近づく試験について心配している。"},
+  {no:246, idiom:"be concerned with [in] ~", en:"This chapter is concerned with Japanese history.", ja:"この章は日本史に関するものだ。"},
+  {no:246, idiom:"be indispensable to [for] ~", en:"Water is indispensable to life.", ja:"水は生命に不可欠だ。"},
+  {no:247, idiom:"be free from [of] ~", en:"This drink is free from sugar.", ja:"この飲み物は砂糖を含んでいない。"},
+  {no:248, idiom:"be free to do", en:"You are free to ask any questions after class.", ja:"授業後は自由に質問してよい。"},
+  {no:249, idiom:"be familiar to ~", en:"This song is familiar to almost everyone in Japan.", ja:"この歌は日本のほとんど誰もが知っている。"},
+  {no:250, idiom:"be familiar with ~", en:"He is familiar with the local train system.", ja:"彼はその地域の鉄道網に詳しい。"}
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let selectedNos = new Set(SENTENCES.map((s,i) => i));
+let quizOrder = [];
+let idx = 0;
+let currentWords = [];
+let answerWords = [];
+let usedFlags = [];
+let judged = false;
+let results = [];
+let reviewMode = false;
+let weakStats = JSON.parse(localStorage.getItem('jukugo161_250_weakstats_v1') || '{}');
+
+/* ============================================================
+   SETUP SCREEN
+   ============================================================ */
+function renderUnitList() {
+  const box = document.getElementById('unitList');
+  box.innerHTML = '';
+  SENTENCES.forEach((s, i) => {
+    const label = document.createElement('label');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = selectedNos.has(i);
+    cb.onchange = () => { if (cb.checked) selectedNos.add(i); else selectedNos.delete(i); };
+    label.appendChild(cb);
+    const span = document.createElement('span');
+    span.innerHTML = '<span class="no">' + s.no + '.</span>' + s.idiom;
+    label.appendChild(span);
+    box.appendChild(label);
+  });
+}
+function selectAll(v) {
+  selectedNos = new Set();
+  if (v) SENTENCES.forEach((s,i) => selectedNos.add(i));
+  renderUnitList();
+}
+
+document.getElementById('reviewToggleBtn').onclick = () => {
+  reviewMode = !reviewMode;
+  document.getElementById('reviewToggleBtn').style.background = reviewMode ? 'var(--accent)' : '#fff';
+  document.getElementById('reviewToggleBtn').style.color = reviewMode ? '#fff' : '#8a5300';
+};
+
+function weakIndices() {
+  return SENTENCES.map((s,i) => i).filter(i => (weakStats[i]?.wrong || 0) > (weakStats[i]?.right || 0));
+}
+
+/* ============================================================
+   QUIZ FLOW
+   ============================================================ */
+function startQuiz() {
+  let pool = reviewMode ? weakIndices() : [...selectedNos];
+  if (pool.length === 0) { alert(reviewMode ? '苦手として記録されている例文がありません。' : '出題する熟語を1つ以上選んでください。'); return; }
+  quizOrder = pool.slice().sort(() => Math.random() - 0.5);
+  idx = 0;
+  results = [];
+  document.getElementById('setupPage').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  renderCard();
+}
+
+function backToSetup() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('setupPage').style.display = 'block';
+  renderUnitList();
+}
+
+function renderCard() {
+  if (idx >= quizOrder.length) { showResult(); return; }
+  const s = SENTENCES[quizOrder[idx]];
+  document.getElementById('qno').textContent = (idx+1) + ' / ' + quizOrder.length;
+  document.getElementById('idiomTag').textContent = s.idiom;
+  document.getElementById('jaPrompt').textContent = s.ja;
+  document.getElementById('progressFill').style.width = (idx / quizOrder.length * 100) + '%';
+
+  currentWords = s.en.split(' ');
+  answerWords = [];
+  usedFlags = currentWords.map(() => false);
+  judged = false;
+
+  document.getElementById('resultArea').innerHTML = '';
+  document.getElementById('judgeRow').classList.remove('show');
+  document.getElementById('cardBtns').style.display = 'flex';
+
+  const shuffleOrder = currentWords.map((_,i) => i).sort(() => Math.random() - 0.5);
+  const tray = document.getElementById('tileTray');
+  tray.innerHTML = '';
+  shuffleOrder.forEach(wi => {
+    const btn = document.createElement('button');
+    btn.className = 'word-tile';
+    btn.textContent = currentWords[wi];
+    btn.dataset.wi = wi;
+    btn.onclick = () => placeTile(wi);
+    tray.appendChild(btn);
+  });
+  renderAnswerSlot();
+}
+
+function placeTile(wi) {
+  if (judged || usedFlags[wi]) return;
+  usedFlags[wi] = true;
+  answerWords.push(wi);
+  document.querySelector('.tile-tray [data-wi="' + wi + '"]').classList.add('used');
+  renderAnswerSlot();
+}
+
+function removeTile(posInAnswer) {
+  if (judged) return;
+  const wi = answerWords[posInAnswer];
+  answerWords.splice(posInAnswer, 1);
+  usedFlags[wi] = false;
+  document.querySelector('.tile-tray [data-wi="' + wi + '"]').classList.remove('used');
+  renderAnswerSlot();
+}
+
+function renderAnswerSlot() {
+  const slot = document.getElementById('answerSlot');
+  slot.innerHTML = '';
+  slot.classList.toggle('empty', answerWords.length === 0);
+  answerWords.forEach((wi, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'word-tile';
+    btn.textContent = currentWords[wi];
+    btn.onclick = () => removeTile(pos);
+    slot.appendChild(btn);
+  });
+}
+
+function clearAnswer() {
+  if (judged) return;
+  answerWords.forEach(wi => usedFlags[wi] = false);
+  answerWords = [];
+  document.querySelectorAll('.tile-tray .word-tile').forEach(el => el.classList.remove('used'));
+  renderAnswerSlot();
+}
+
+function checkAnswer() {
+  if (answerWords.length !== currentWords.length) { alert('すべての単語を並べてください。'); return; }
+  judged = true;
+  const s = SENTENCES[quizOrder[idx]];
+  const built = answerWords.map(wi => currentWords[wi]).join(' ');
+  const isCorrect = built === s.en;
+  const area = document.getElementById('resultArea');
+  area.innerHTML = '<div class="result-line ' + (isCorrect ? 'ok' : 'ng') + '">' +
+    (isCorrect ? '○ 正解！' : '✕ 語順が違います') +
+    '<span class="correct-sentence">' + s.en + '</span></div>';
+  document.getElementById('cardBtns').style.display = 'none';
+
+  if (isCorrect) {
+    recordResult(true);
+    setTimeout(nextCard, 700);
+  } else {
+    document.getElementById('judgeRow').classList.add('show');
+  }
+}
+
+function markResult(correct) {
+  recordResult(correct);
+  nextCard();
+}
+
+function recordResult(correct) {
+  const si = quizOrder[idx];
+  results.push({si, correct});
+  if (!weakStats[si]) weakStats[si] = {right:0, wrong:0};
+  if (correct) weakStats[si].right++; else weakStats[si].wrong++;
+  localStorage.setItem('jukugo161_250_weakstats_v1', JSON.stringify(weakStats));
+}
+
+function nextCard() {
+  idx++;
+  renderCard();
+}
+
+function showResult() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+  const right = results.filter(r => r.correct).length;
+  document.getElementById('scoreText').textContent = right + ' / ' + results.length;
+  const wrongCount = results.length - right;
+  document.getElementById('scoreSub').textContent = wrongCount === 0 ? 'パーフェクトです！' : (wrongCount + '問、間違えました。');
+}
+
+/* ============================================================
+   WRONG LIST OVERLAY
+   ============================================================ */
+function openWrongList() {
+  const body = document.getElementById('wrongListBody');
+  const wrongOnes = results.filter(r => !r.correct).map(r => SENTENCES[r.si]);
+  if (wrongOnes.length === 0) {
+    body.innerHTML = '<div class="wrong-empty">まだ間違えた例文はありません。</div>';
+  } else {
+    body.innerHTML = wrongOnes.map(s =>
+      '<div class="wrong-item"><div class="wrong-q">' + s.idiom + '　' + s.ja + '</div><div class="wrong-a">' + s.en + '</div></div>'
+    ).join('');
+  }
+  document.getElementById('wrongOverlay').classList.add('show');
+}
+function closeWrongList() {
+  document.getElementById('wrongOverlay').classList.remove('show');
+}
+
+renderUnitList();
+</script>
+</body>
+</html>
