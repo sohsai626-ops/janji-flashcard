@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>古文単語アプリ（文月・葉月・長月）</title>
+<style>
+  :root{
+    --main:#a6314a;
+    --main-dark:#7d2138;
+    --bg:#fdf6f2;
+    --card:#ffffff;
+    --accent:#e8b4b8;
+    --text:#3a2c2c;
+    --muted:#8a7a7a;
+    --good:#4a8c5f;
+    --bad:#c0432f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    background:var(--bg);color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    background:linear-gradient(135deg,var(--main),var(--main-dark));
+    color:#fff;padding:14px 10px 0;position:sticky;top:0;z-index:10;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+  }
+  header h1{margin:0 0 10px;font-size:16px;text-align:center;font-weight:600;letter-spacing:.05em;}
+  .tabs{display:flex;}
+  .tabbtn{
+    flex:1;text-align:center;padding:10px 4px;color:#ffe4e8;
+    font-size:13px;cursor:pointer;border-bottom:3px solid transparent;
+    transition:.2s;
+  }
+  .tabbtn.active{color:#fff;border-bottom:3px solid #fff;font-weight:700;}
+  .tab{display:none;padding:16px 14px 40px;max-width:520px;margin:0 auto;}
+  .tab.show{display:block;}
+
+  /* ===== フラッシュカード ===== */
+  .progressbar{font-size:12px;color:var(--muted);text-align:center;margin-bottom:8px;}
+  .card{
+    background:var(--card);border-radius:16px;padding:36px 20px;
+    min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);border:1px solid #f0dede;
+    position:relative;
+  }
+  .typeTag{
+    font-size:12px;background:var(--accent);color:var(--main-dark);
+    padding:3px 10px;border-radius:10px;margin-bottom:10px;font-weight:600;
+  }
+  .monthTag{
+    font-size:11px;color:var(--muted);margin-bottom:6px;
+  }
+  .word{font-size:30px;font-weight:700;color:var(--main-dark);letter-spacing:.03em;text-align:center;}
+  .meaning{font-size:18px;margin-top:18px;color:var(--text);text-align:center;line-height:1.6;display:none;}
+  .meaning.show{display:block;}
+  .hint{font-size:12px;color:var(--muted);margin-top:20px;}
+  .speakBtn{
+    position:absolute;top:12px;right:12px;background:var(--accent);border:none;
+    border-radius:50%;width:38px;height:38px;font-size:16px;cursor:pointer;color:var(--main-dark);
+  }
+  .cardnav{display:flex;gap:10px;margin-top:16px;}
+  .btn{
+    flex:1;padding:13px 0;border-radius:10px;border:none;font-size:15px;font-weight:600;
+    cursor:pointer;color:#fff;
+  }
+  .btn.primary{background:var(--main);}
+  .btn.secondary{background:#c9a6a6;}
+  .btn.good{background:var(--good);}
+  .btn.bad{background:var(--bad);}
+  .judgerow{display:flex;gap:10px;margin-top:14px;}
+  .judgerow .btn{display:none;}
+  .judgerow.show .btn{display:block;}
+  .modeRow{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .modeChip{
+    padding:6px 12px;border-radius:16px;background:#fff;border:1px solid var(--accent);
+    font-size:12px;color:var(--main-dark);cursor:pointer;
+  }
+  .modeChip.active{background:var(--main);color:#fff;border-color:var(--main);}
+
+  /* ===== 4択 ===== */
+  .quizWord{font-size:26px;font-weight:700;text-align:center;color:var(--main-dark);margin:14px 0 4px;}
+  .quizType{font-size:12px;text-align:center;color:var(--muted);margin-bottom:18px;}
+  .choice{
+    background:var(--card);border:2px solid #eee;border-radius:12px;padding:14px 16px;
+    margin-bottom:10px;font-size:15px;cursor:pointer;transition:.15s;line-height:1.5;
+  }
+  .choice.correct{background:#e5f5e9;border-color:var(--good);}
+  .choice.wrong{background:#fbe9e7;border-color:var(--bad);}
+  .quizFeedback{text-align:center;font-size:14px;margin-top:10px;min-height:20px;color:var(--muted);}
+  .scoreBox{text-align:center;font-size:13px;color:var(--muted);margin-bottom:10px;}
+
+  /* ===== 苦手ランキング ===== */
+  .rankItem{
+    background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:center;border:1px solid #f0dede;
+  }
+  .rankItem .w{font-weight:700;color:var(--main-dark);}
+  .rankItem .m{font-size:13px;color:var(--muted);margin-top:2px;}
+  .rankItem .stat{font-size:12px;text-align:right;color:var(--bad);white-space:nowrap;}
+  .emptyMsg{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>古文単語アプリ（文月・葉月・長月）</h1>
+  <div class="tabs">
+    <div class="tabbtn active" data-tab="tabStudy">フラッシュカード</div>
+    <div class="tabbtn" data-tab="tabQuiz">4択問題</div>
+    <div class="tabbtn" data-tab="tabRank">苦手ランキング</div>
+  </div>
+</header>
+
+<div id="tabStudy" class="tab show">
+  <div class="modeRow" id="studyMonthRow">
+    <div class="modeChip active" data-month="all">すべて(100語)</div>
+    <div class="modeChip" data-month="fumizuki">文月(36)</div>
+    <div class="modeChip" data-month="hazuki">葉月(31)</div>
+    <div class="modeChip" data-month="nagatsuki">長月(33)</div>
+  </div>
+  <div class="modeRow">
+    <div class="modeChip active" data-mode="all">全問</div>
+    <div class="modeChip" data-mode="weak">苦手のみ</div>
+  </div>
+  <div class="progressbar" id="studyProgress">1 / 100</div>
+  <div class="card" id="flashcard">
+    <button class="speakBtn" id="speakBtn" title="読み上げ">🔊</button>
+    <div class="monthTag" id="cardMonth">―</div>
+    <div class="typeTag" id="cardType">―</div>
+    <div class="word" id="cardWord">―</div>
+    <div class="meaning" id="cardMeaning">―</div>
+    <div class="hint" id="cardHint">タップして意味を表示</div>
+  </div>
+  <div class="judgerow" id="judgeRow">
+    <button class="btn bad" id="markWrong">✗ わからなかった</button>
+    <button class="btn good" id="markGood">◯ 覚えている</button>
+  </div>
+  <div class="cardnav">
+    <button class="btn secondary" id="prevBtn">← 前へ</button>
+    <button class="btn primary" id="nextBtn">次へ →</button>
+  </div>
+</div>
+
+<div id="tabQuiz" class="tab">
+  <div class="modeRow" id="quizMonthRow">
+    <div class="modeChip active" data-month="all">すべて(100語)</div>
+    <div class="modeChip" data-month="fumizuki">文月(36)</div>
+    <div class="modeChip" data-month="hazuki">葉月(31)</div>
+    <div class="modeChip" data-month="nagatsuki">長月(33)</div>
+  </div>
+  <div class="scoreBox" id="quizScore">正解 0 / 0</div>
+  <div class="quizWord" id="quizWord">―</div>
+  <div class="quizType" id="quizType">―</div>
+  <div id="quizChoices"></div>
+  <div class="quizFeedback" id="quizFeedback"></div>
+  <button class="btn primary" id="quizNextBtn" style="margin-top:14px;">次の問題へ</button>
+</div>
+
+<div id="tabRank" class="tab">
+  <div id="rankList"></div>
+</div>
+
+<script>
+/* ================= データ（P110〜P190 / 文月・葉月・長月 / 100語） ================= */
+const WORDS = [
+/* ---- 文月：敬語（36語） ---- */
+{no:1,word:"あそばす",meaning:"なさる。演奏なさる。お詠みになる。",group:"sonkei-suru",month:"fumizuki",type:"尊敬語"},
+{no:2,word:"います",meaning:"いらっしゃる（「あり」「行く」「来」の尊敬語）",group:"sonkei-iru",month:"fumizuki",type:"尊敬語"},
+{no:3,word:"いますがり",meaning:"いらっしゃる（「あり」の尊敬語）",group:"sonkei-iru",month:"fumizuki",type:"尊敬語"},
+{no:4,word:"いまそがり",meaning:"いらっしゃる（「あり」の尊敬語）",group:"sonkei-iru",month:"fumizuki",type:"尊敬語"},
+{no:5,word:"おはします",meaning:"いらっしゃる。（補助動詞で）〜ていらっしゃる。",group:"sonkei-iru",month:"fumizuki",type:"尊敬語"},
+{no:6,word:"おはす",meaning:"いらっしゃる。（補助動詞で）〜ていらっしゃる。",group:"sonkei-iru",month:"fumizuki",type:"尊敬語"},
+{no:7,word:"おぼしめす",meaning:"お思いになる。",group:"sonkei-omou",month:"fumizuki",type:"尊敬語"},
+{no:8,word:"おぼす",meaning:"お思いになる。",group:"sonkei-omou",month:"fumizuki",type:"尊敬語"},
+{no:9,word:"おほとのごもる",meaning:"おやすみになる。",group:"sonkei-neru",month:"fumizuki",type:"尊敬語"},
+{no:10,word:"おほす",meaning:"お命じになる。おっしゃる。",group:"sonkei-iu",month:"fumizuki",type:"尊敬語"},
+{no:11,word:"のたまふ",meaning:"おっしゃる。",group:"sonkei-iu",month:"fumizuki",type:"尊敬語"},
+{no:12,word:"のたまはす",meaning:"おっしゃる。",group:"sonkei-iu",month:"fumizuki",type:"尊敬語"},
+{no:13,word:"きこしめす",meaning:"お聞きになる。召し上がる。承知なさる。治めなさる。",group:"sonkei-multi",month:"fumizuki",type:"尊敬語"},
+{no:14,word:"ごらんず",meaning:"ご覧になる。",group:"sonkei-miru",month:"fumizuki",type:"尊敬語"},
+{no:15,word:"しろしめす",meaning:"ご存じである。統治なさる。",group:"sonkei-shiru",month:"fumizuki",type:"尊敬語"},
+{no:16,word:"たまはす",meaning:"お与えになる。くださる。",group:"sonkei-ataeru",month:"fumizuki",type:"尊敬語"},
+{no:17,word:"たまふ（尊敬）",meaning:"お与えになる。（補助動詞で）〜なさる。",group:"sonkei-ataeru",month:"fumizuki",type:"尊敬語"},
+{no:18,word:"つかはす",meaning:"派遣なさる。お与えになる。",group:"sonkei-ataeru",month:"fumizuki",type:"尊敬語"},
+{no:19,word:"めす",meaning:"お呼びになる。召し上がる。お召しになる。お乗りになる。",group:"sonkei-multi",month:"fumizuki",type:"尊敬語"},
+{no:20,word:"うけたまはる",meaning:"お受けする。うかがう。",group:"kenjou-ukagau",month:"fumizuki",type:"謙譲語"},
+{no:21,word:"きこゆ",meaning:"申し上げる。",group:"kenjou-iu",month:"fumizuki",type:"謙譲語"},
+{no:22,word:"きこえさす",meaning:"申し上げる。",group:"kenjou-iu",month:"fumizuki",type:"謙譲語"},
+{no:23,word:"まうす",meaning:"申し上げる。",group:"kenjou-iu",month:"fumizuki",type:"謙譲語"},
+{no:24,word:"そうす",meaning:"申し上げる（天皇・上皇に）。",group:"kenjou-iu",month:"fumizuki",type:"謙譲語"},
+{no:25,word:"けいす",meaning:"申し上げる（中宮・東宮に）。",group:"kenjou-iu",month:"fumizuki",type:"謙譲語"},
+{no:26,word:"たてまつる",meaning:"差し上げる。お～申し上げる。",group:"kenjou-ataeru",month:"fumizuki",type:"謙譲語"},
+{no:27,word:"たまはる",meaning:"いただく。",group:"kenjou-ukeru",month:"fumizuki",type:"謙譲語"},
+{no:28,word:"つかうまつる",meaning:"お仕え申し上げる。",group:"kenjou-tsukaeru",month:"fumizuki",type:"謙譲語"},
+{no:29,word:"まゐらす",meaning:"差し上げる。",group:"kenjou-ataeru",month:"fumizuki",type:"謙譲語"},
+{no:30,word:"まかる",meaning:"退出する。",group:"kenjou-deru",month:"fumizuki",type:"謙譲語"},
+{no:31,word:"まかづ",meaning:"退出する。",group:"kenjou-deru",month:"fumizuki",type:"謙譲語"},
+{no:32,word:"まゐる",meaning:"参上する。（謙譲＋尊敬で）召し上がる・なさる。",group:"kenjou-sanjou",month:"fumizuki",type:"謙譲語"},
+{no:33,word:"まうづ",meaning:"参上する。参詣する。",group:"kenjou-sanjou",month:"fumizuki",type:"謙譲語"},
+{no:34,word:"たまふ（謙譲）",meaning:"（補助動詞で）〜ております。〜ます。",group:"kenjou-hojo",month:"fumizuki",type:"謙譲語"},
+{no:35,word:"はべり",meaning:"あります。お仕え申し上げる。",group:"teinei-kenjou",month:"fumizuki",type:"丁寧語"},
+{no:36,word:"さぶらふ",meaning:"あります。お仕え申し上げる。",group:"teinei-kenjou",month:"fumizuki",type:"丁寧語"},
+
+/* ---- 葉月：形容詞・形容動詞（31語） ---- */
+{no:37,word:"あさまし",meaning:"驚きあきれるほどだ。ひどい。意外だ。",group:"kei-odoroki",month:"hazuki",type:"形容詞"},
+{no:38,word:"いたし",meaning:"すばらしい。ひどい。（連用形「いたく」で）たいそう・激しく。",group:"kei-teido",month:"hazuki",type:"形容詞"},
+{no:39,word:"いみじ",meaning:"すばらしい。ひどい。（連用形「いみじく」で）とても・たいそう。",group:"kei-teido",month:"hazuki",type:"形容詞"},
+{no:40,word:"おぼつかなし",meaning:"はっきりしない。心もとない。気がかりだ。待ち遠しい。",group:"kei-fuan",month:"hazuki",type:"形容詞"},
+{no:41,word:"こころもとなし",meaning:"待ち遠しい。じれったい。不安だ。はっきりしない。",group:"kei-fuan",month:"hazuki",type:"形容詞"},
+{no:42,word:"ゆゆし",meaning:"不吉だ。重大だ。すばらしい。",group:"kei-multi",month:"hazuki",type:"形容詞"},
+{no:43,word:"あいなし",meaning:"つまらない。不都合だ。（連用形で）わけもなく。",group:"kei-tsumaranai",month:"hazuki",type:"形容詞"},
+{no:44,word:"あづきなし",meaning:"つまらない。どうにもならない。道理に反している。",group:"kei-tsumaranai",month:"hazuki",type:"形容詞"},
+{no:45,word:"あやし（怪し・奇し）",meaning:"不思議だ。不都合だ・よくない。",group:"kei-ayashi",month:"hazuki",type:"形容詞"},
+{no:46,word:"あやし（賤し）",meaning:"みすぼらしい・粗末だ。身分が低い。",group:"kei-mibun",month:"hazuki",type:"形容詞"},
+{no:47,word:"いふかひなし",meaning:"どうにもならない。たわいない。いやしい。身分が低い。",group:"kei-mibun",month:"hazuki",type:"形容詞"},
+{no:48,word:"いぶせし",meaning:"気がかりだ。不調和だ。気が晴れない。",group:"kei-fuan",month:"hazuki",type:"形容詞"},
+{no:49,word:"けし",meaning:"異様だ。怪しい。",group:"kei-ayashi",month:"hazuki",type:"形容詞"},
+{no:50,word:"こころづきなし",meaning:"気に入らない。心ひかれない。おもしろみがない。",group:"kei-kirai",month:"hazuki",type:"形容詞"},
+{no:51,word:"すさまじ",meaning:"興ざめだ。不調和だ。もの寂しい。がっかりだ。殺風景だ。",group:"kei-kyouzame",month:"hazuki",type:"形容詞"},
+{no:52,word:"よしなし",meaning:"つまらない。役に立たない。ゆかりがない。関係がない。",group:"kei-tsumaranai",month:"hazuki",type:"形容詞"},
+{no:53,word:"わりなし",meaning:"無理だ。理不尽だ。どうしようもない。（連用形で）ひどく。",group:"kei-muri",month:"hazuki",type:"形容詞"},
+{no:54,word:"あらはなり",meaning:"まる見えだ。はっきりしている。",group:"keidou-hakkiri",month:"hazuki",type:"形容動詞"},
+{no:55,word:"つれづれなり",meaning:"何もすることがなく、退屈だ。もの寂しい。",group:"keidou-taikutsu",month:"hazuki",type:"形容動詞"},
+{no:56,word:"おろかなり（愚かなり）",meaning:"思慮が浅い。劣っている。",group:"keidou-orokanari",month:"hazuki",type:"形容動詞"},
+{no:57,word:"おろかなり（疎かなり）",meaning:"いい加減だ。（〜とはおろかなりで）言い尽くせない。",group:"keidou-iikagen",month:"hazuki",type:"形容動詞"},
+{no:58,word:"なのめなり",meaning:"いい加減だ。不十分だ。平凡である。ありふれている。",group:"keidou-iikagen",month:"hazuki",type:"形容動詞"},
+{no:59,word:"あからさまなり",meaning:"あっという間に。ちょっと。（あからさまにも〜打消で）まったく〜ない。",group:"keidou-chotto",month:"hazuki",type:"形容動詞"},
+{no:60,word:"うちつけなり",meaning:"突然だ。軽率だ。露骨だ。ぶしつけだ。",group:"keidou-totsuzen",month:"hazuki",type:"形容動詞"},
+{no:61,word:"とみなり",meaning:"急ぎである。にわかなさま。",group:"keidou-totsuzen",month:"hazuki",type:"形容動詞"},
+{no:62,word:"かりそめなり",meaning:"一時的な状態である。はかない。いい加減である。",group:"keidou-ichiji",month:"hazuki",type:"形容動詞"},
+{no:63,word:"たまさかなり",meaning:"偶然だ。まれだ。万一。",group:"keidou-guuzen",month:"hazuki",type:"形容動詞"},
+{no:64,word:"あだなり",meaning:"浮気だ。まことがない。無駄だ。むなしい。",group:"keidou-muda",month:"hazuki",type:"形容動詞"},
+{no:65,word:"いたづらなり",meaning:"無駄だ。役に立たない。むなしい。",group:"keidou-muda",month:"hazuki",type:"形容動詞"},
+{no:66,word:"あながちなり",meaning:"強引だ。無理だ。度を超している。ひどい。",group:"keidou-gouin",month:"hazuki",type:"形容動詞"},
+{no:67,word:"おぼろけなり",meaning:"並々である。普通だ。（並大抵でないで）ひどく。",group:"keidou-futsuu",month:"hazuki",type:"形容動詞"},
+
+/* ---- 長月：形容詞・形容動詞（33語） ---- */
+{no:68,word:"あらまほし",meaning:"理想的だ。望ましい。すばらしい。",group:"kei-risou",month:"nagatsuki",type:"形容詞"},
+{no:69,word:"ありがたし",meaning:"めったにない。まれだ。（〜ないほど）すぐれている。",group:"kei-metta",month:"nagatsuki",type:"形容詞"},
+{no:70,word:"かしこし（畏し）",meaning:"恐れ多い。もったいない。",group:"kei-osore",month:"nagatsuki",type:"形容詞"},
+{no:71,word:"かしこし（賢し）",meaning:"すばらしい。立派だ。（連用形で）うまい具合に。",group:"kei-subarashii",month:"nagatsuki",type:"形容詞"},
+{no:72,word:"こころにくし",meaning:"奥ゆかしい。すばらしい。",group:"kei-subarashii",month:"nagatsuki",type:"形容詞"},
+{no:73,word:"さうなし（双無し）",meaning:"比べるものがない。並ぶものがない。",group:"kei-hikaku",month:"nagatsuki",type:"形容詞"},
+{no:74,word:"さうなし（左右無し）",meaning:"ためらわない。言うまでもない。",group:"kei-tamerawanai",month:"nagatsuki",type:"形容詞"},
+{no:75,word:"ゆかし",meaning:"見たい。聞きたい。知りたい。",group:"kei-shiritai",month:"nagatsuki",type:"形容詞"},
+{no:76,word:"をかし",meaning:"おもしろい。かわいらしい。美しい。上品だ。心ひかれる。優雅だ。",group:"kei-subarashii2",month:"nagatsuki",type:"形容詞"},
+{no:77,word:"いときなし",meaning:"幼い。あどけない。",group:"kei-osanai",month:"nagatsuki",type:"形容詞"},
+{no:78,word:"いはけなし",meaning:"幼い。あどけない。",group:"kei-osanai",month:"nagatsuki",type:"形容詞"},
+{no:79,word:"うつくし",meaning:"かわいらしい。",group:"kei-kawaii",month:"nagatsuki",type:"形容詞"},
+{no:80,word:"うるはし",meaning:"きちんとしている。整っている。美しい。",group:"kei-kichinto",month:"nagatsuki",type:"形容詞"},
+{no:81,word:"かなし（愛し）",meaning:"かわいい。いとおしい。",group:"kei-kawaii",month:"nagatsuki",type:"形容詞"},
+{no:82,word:"かなし（悲し）",meaning:"心が痛む。気の毒だ。悲しい。",group:"kei-kanashii",month:"nagatsuki",type:"形容詞"},
+{no:83,word:"らうたし",meaning:"かわいい。愛らしい。",group:"kei-kawaii",month:"nagatsuki",type:"形容詞"},
+{no:84,word:"あてなり",meaning:"上品だ。優雅だ。身分が高い。高貴である。",group:"keidou-jouhin",month:"nagatsuki",type:"形容動詞"},
+{no:85,word:"あはれなり",meaning:"しみじみと（心打たれるほど）すばらしい。美しい。気の毒だ。つらい。",group:"keidou-shimijimi",month:"nagatsuki",type:"形容動詞"},
+{no:86,word:"きよらなり",meaning:"美しい。これ以上美しいものはないと思われる、欠点の見つからない最高の美。",group:"keidou-utsukushii",month:"nagatsuki",type:"形容動詞"},
+{no:87,word:"こまやかなり",meaning:"心がこもっている。行き届いて丁寧である。",group:"keidou-teinei",month:"nagatsuki",type:"形容動詞"},
+{no:88,word:"あやにくなり",meaning:"都合が悪い。意にそぐわない。意地悪に感じられる。",group:"keidou-tsugou",month:"nagatsuki",type:"形容動詞"},
+{no:89,word:"かたくななり",meaning:"頑固だ。",group:"keidou-gankona",month:"nagatsuki",type:"形容動詞"},
+{no:90,word:"ねんごろなり",meaning:"熱心だ。丁寧だ。親切だ。親密だ。",group:"keidou-teinei",month:"nagatsuki",type:"形容動詞"},
+{no:91,word:"まめなり",meaning:"誠実である。まじめである。実用的である。",group:"keidou-majime",month:"nagatsuki",type:"形容動詞"},
+{no:92,word:"おいらかなり",meaning:"おっとりとしている。率直である。",group:"keidou-ottori",month:"nagatsuki",type:"形容動詞"},
+{no:93,word:"おほどかなり",meaning:"おっとりとしている。度を超して大きい。",group:"keidou-ottori",month:"nagatsuki",type:"形容動詞"},
+{no:94,word:"おほのかなり",meaning:"おっとりとしている。度を超して大きい。",group:"keidou-ottori",month:"nagatsuki",type:"形容動詞"},
+{no:95,word:"なほざりなり",meaning:"いい加減だ。あっさりしている。",group:"keidou-iikagen2",month:"nagatsuki",type:"形容動詞"},
+{no:96,word:"ひたぶるなり",meaning:"いちずだ。むやみに。思いのままに行動するさま。",group:"keidou-ichizu",month:"nagatsuki",type:"形容動詞"},
+{no:97,word:"むげなり",meaning:"まったくひどい。最悪だ。（連用形で）むやみに・ひどく。",group:"keidou-hidoi",month:"nagatsuki",type:"形容動詞"},
+{no:98,word:"おもはずなり",meaning:"意外である。思いがけない。",group:"keidou-igai",month:"nagatsuki",type:"形容動詞"},
+{no:99,word:"すずろなり",meaning:"あてもなく。わけもなく。（連用形で）思いがけない。",group:"keidou-atemonaku",month:"nagatsuki",type:"形容動詞"},
+{no:100,word:"そぞろなり",meaning:"あてもなく。わけもなく。（連用形で）思いがけない。",group:"keidou-atemonaku",month:"nagatsuki",type:"形容動詞"}
+];
+
+const MONTH_LABEL = {fumizuki:"文月", hazuki:"葉月", nagatsuki:"長月"};
+
+/* ================= 進捗データ（localStorage） ================= */
+const STORAGE_KEY = "kobunTangoProgress_v2";
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {stats:{}}; // stats[no] = {right:0, wrong:0}
+}
+function saveProgress(p){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){}
+}
+let progress = loadProgress();
+function getStat(no){
+  if(!progress.stats[no]) progress.stats[no] = {right:0, wrong:0};
+  return progress.stats[no];
+}
+function bumpStat(no, isRight){
+  const s = getStat(no);
+  if(isRight) s.right++; else s.wrong++;
+  saveProgress(progress);
+}
+function isWeak(no){
+  const s = getStat(no);
+  return s.wrong > s.right;
+}
+
+/* ================= タブ切り替え ================= */
+document.querySelectorAll(".tabbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("show"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("show");
+    if(btn.dataset.tab === "tabRank") renderRank();
+    if(btn.dataset.tab === "tabQuiz") newQuiz();
+  });
+});
+
+/* ================= フラッシュカード ================= */
+let studyMonth = "all";
+let studyMode = "all"; // all | weak
+let studyList = WORDS.slice();
+let studyIdx = 0;
+let revealed = false;
+
+function wordsForMonth(month){
+  return month === "all" ? WORDS.slice() : WORDS.filter(w=>w.month===month);
+}
+
+function refreshStudyList(){
+  const base = wordsForMonth(studyMonth);
+  studyList = studyMode === "weak" ? base.filter(w=>isWeak(w.no)) : base;
+  studyIdx = 0;
+  renderCard();
+}
+
+document.querySelectorAll("#studyMonthRow .modeChip").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    document.querySelectorAll("#studyMonthRow .modeChip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    studyMonth = chip.dataset.month;
+    refreshStudyList();
+  });
+});
+document.querySelectorAll("#tabStudy .modeRow:nth-of-type(2) .modeChip").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    document.querySelectorAll("#tabStudy .modeRow:nth-of-type(2) .modeChip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    studyMode = chip.dataset.mode;
+    refreshStudyList();
+  });
+});
+
+function renderCard(){
+  const total = studyList.length;
+  const progEl = document.getElementById("studyProgress");
+  if(total === 0){
+    document.getElementById("cardMonth").textContent = "";
+    document.getElementById("cardType").textContent = "";
+    document.getElementById("cardWord").textContent = "🎉";
+    document.getElementById("cardMeaning").textContent = "苦手な単語はありません";
+    document.getElementById("cardMeaning").classList.add("show");
+    document.getElementById("cardHint").textContent = "";
+    progEl.textContent = "0 / 0";
+    document.getElementById("judgeRow").classList.remove("show");
+    return;
+  }
+  if(studyIdx >= total) studyIdx = 0;
+  if(studyIdx < 0) studyIdx = total - 1;
+  const w = studyList[studyIdx];
+  progEl.textContent = (studyIdx+1) + " / " + total;
+  document.getElementById("cardMonth").textContent = MONTH_LABEL[w.month];
+  document.getElementById("cardType").textContent = w.type;
+  document.getElementById("cardWord").textContent = w.word;
+  document.getElementById("cardMeaning").textContent = w.meaning;
+  document.getElementById("cardMeaning").classList.remove("show");
+  document.getElementById("cardHint").textContent = "タップして意味を表示";
+  document.getElementById("judgeRow").classList.remove("show");
+  revealed = false;
+}
+
+document.getElementById("flashcard").addEventListener("click",(e)=>{
+  if(e.target.id === "speakBtn") return;
+  revealed = !revealed;
+  document.getElementById("cardMeaning").classList.toggle("show", revealed);
+  document.getElementById("cardHint").textContent = revealed ? "" : "タップして意味を表示";
+  document.getElementById("judgeRow").classList.toggle("show", revealed);
+});
+
+document.getElementById("nextBtn").addEventListener("click", ()=>{
+  studyIdx++;
+  renderCard();
+});
+document.getElementById("prevBtn").addEventListener("click", ()=>{
+  studyIdx--;
+  renderCard();
+});
+document.getElementById("markGood").addEventListener("click", ()=>{
+  const w = studyList[studyIdx];
+  if(w) bumpStat(w.no, true);
+  studyIdx++;
+  renderCard();
+});
+document.getElementById("markWrong").addEventListener("click", ()=>{
+  const w = studyList[studyIdx];
+  if(w) bumpStat(w.no, false);
+  studyIdx++;
+  renderCard();
+});
+
+document.getElementById("speakBtn").addEventListener("click",(e)=>{
+  e.stopPropagation();
+  const w = studyList[studyIdx];
+  if(!w) return;
+  speakJa(w.word.replace(/[（(].*?[）)]/g,""));
+});
+
+function speakJa(text){
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "ja-JP";
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ================= 4択問題 ================= */
+let quizMonth = "all";
+let quizCorrect = 0, quizTotal = 0;
+let currentQuizWord = null;
+
+document.querySelectorAll("#quizMonthRow .modeChip").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    document.querySelectorAll("#quizMonthRow .modeChip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    quizMonth = chip.dataset.month;
+    newQuiz();
+  });
+});
+
+function pickDistractors(word, pool){
+  const sameGroup = pool.filter(w=>w.no!==word.no && w.group===word.group);
+  const others = pool.filter(w=>w.no!==word.no && w.group!==word.group);
+  shuffle(sameGroup); shuffle(others);
+  const combined = sameGroup.concat(others);
+  return combined.slice(0,3);
+}
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function newQuiz(){
+  document.getElementById("quizFeedback").textContent = "";
+  document.getElementById("quizScore").textContent = "正解 " + quizCorrect + " / " + quizTotal;
+  const pool = wordsForMonth(quizMonth);
+  const w = pool[Math.floor(Math.random()*pool.length)];
+  currentQuizWord = w;
+  document.getElementById("quizWord").textContent = w.word;
+  document.getElementById("quizType").textContent = MONTH_LABEL[w.month] + "・" + w.type;
+  const distractors = pickDistractors(w, pool.length>3?pool:WORDS);
+  const choices = shuffle([w, ...distractors]);
+  const box = document.getElementById("quizChoices");
+  box.innerHTML = "";
+  choices.forEach(c=>{
+    const div = document.createElement("div");
+    div.className = "choice";
+    div.textContent = c.meaning;
+    div.addEventListener("click", ()=>handleAnswer(div, c, w));
+    box.appendChild(div);
+  });
+}
+
+function handleAnswer(el, chosen, correctWord){
+  if(el.classList.contains("correct") || el.classList.contains("wrong")) return; // 二重回答防止
+  const isRight = chosen.no === correctWord.no;
+  quizTotal++;
+  if(isRight){
+    quizCorrect++;
+    el.classList.add("correct");
+    document.getElementById("quizFeedback").textContent = "◯ 正解！";
+  }else{
+    el.classList.add("wrong");
+    document.getElementById("quizFeedback").textContent = "✗ 不正解。正解は「" + correctWord.meaning + "」";
+    document.querySelectorAll(".choice").forEach(c=>{
+      if(c.textContent === correctWord.meaning) c.classList.add("correct");
+    });
+  }
+  bumpStat(correctWord.no, isRight);
+  document.getElementById("quizScore").textContent = "正解 " + quizCorrect + " / " + quizTotal;
+}
+
+document.getElementById("quizNextBtn").addEventListener("click", newQuiz);
+
+/* ================= 苦手ランキング ================= */
+function renderRank(){
+  const list = WORDS
+    .map(w=>({w, s:getStat(w.no)}))
+    .filter(x=>x.s.wrong>0)
+    .sort((a,b)=> (b.s.wrong - b.s.right) - (a.s.wrong - a.s.right));
+  const box = document.getElementById("rankList");
+  box.innerHTML = "";
+  if(list.length === 0){
+    box.innerHTML = '<div class="emptyMsg">まだ間違えた単語はありません。<br>フラッシュカードや4択に挑戦してみましょう！</div>';
+    return;
+  }
+  list.forEach(x=>{
+    const div = document.createElement("div");
+    div.className = "rankItem";
+    div.innerHTML =
+      '<div><div class="w">'+x.w.word+'（'+MONTH_LABEL[x.w.month]+'・'+x.w.type+'）</div><div class="m">'+x.w.meaning+'</div></div>'+
+      '<div class="stat">正解'+x.s.right+' / 誤答'+x.s.wrong+'</div>';
+    box.appendChild(div);
+  });
+}
+
+/* ================= 初期化 ================= */
+renderCard();
+</script>
+</body>
+</html>
