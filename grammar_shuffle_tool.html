@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英文法 不定詞・動名詞・分詞・関係詞 シャッフル出題ツール</title>
+<style>
+  :root{
+    --green:#2e9e5b;
+    --green-dark:#1f7a44;
+    --bg:#f4f6f5;
+  }
+  * { box-sizing: border-box; }
+  body{
+    font-family: "Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background: var(--bg);
+    margin:0;
+    padding:16px;
+    color:#222;
+  }
+  h1{
+    font-size:1.3rem;
+    color:var(--green-dark);
+    margin-bottom:4px;
+  }
+  .sub{
+    color:#666;
+    font-size:0.85rem;
+    margin-bottom:16px;
+  }
+  .panel{
+    background:#fff;
+    border-radius:10px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  }
+  .panel h2{
+    font-size:1rem;
+    color:var(--green-dark);
+    margin:0 0 10px 0;
+    border-left:5px solid var(--green);
+    padding-left:8px;
+  }
+  .unit-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px,1fr));
+    gap:8px;
+  }
+  label.unit-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#f0f7f2;
+    border:1px solid #d7e8dc;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.92rem;
+    cursor:pointer;
+  }
+  label.unit-item input{ transform: scale(1.15); }
+  .btnrow{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    border:none;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:0.9rem;
+    cursor:pointer;
+    background:#e4e4e4;
+    color:#333;
+  }
+  .btn:hover{ filter:brightness(0.95); }
+  .btn.primary{
+    background:var(--green);
+    color:#fff;
+    font-weight:bold;
+    padding:10px 22px;
+    font-size:1rem;
+  }
+  .radio-group{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .radio-group label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.92rem;
+    cursor:pointer;
+  }
+  .radio-group input{ transform: scale(1.15); }
+  #output{
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  }
+  .unit-block{
+    margin-bottom:26px;
+  }
+  .unit-block-title{
+    background:var(--green);
+    color:#fff;
+    padding:6px 12px;
+    border-radius:6px;
+    font-weight:bold;
+    display:inline-block;
+    margin-bottom:10px;
+  }
+  .daimon{
+    border:1px solid #e0e0e0;
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:14px;
+    background:#fafafa;
+  }
+  .daimon-meta{
+    font-size:0.75rem;
+    color:#999;
+    margin-bottom:4px;
+  }
+  .daimon-instruction{
+    font-weight:bold;
+    margin-bottom:8px;
+    color:#1a1a1a;
+  }
+  .choices{
+    background:#eef6ef;
+    border-radius:6px;
+    padding:8px 10px;
+    margin-bottom:10px;
+    font-size:0.92rem;
+    line-height:1.7;
+  }
+  ol.items{
+    margin:0;
+    padding-left:1.4em;
+  }
+  ol.items li{
+    margin-bottom:10px;
+    line-height:1.7;
+  }
+  .jp{
+    color:#555;
+    font-size:0.92rem;
+    margin-bottom:2px;
+  }
+  .en{
+    font-size:1rem;
+  }
+  .note{
+    color:#0a7a3d;
+    font-weight:bold;
+  }
+  .empty-msg{
+    color:#888;
+    text-align:center;
+    padding:40px 0;
+  }
+  @media print{
+    .panel, .btnrow, #controls { display:none !important; }
+    body{ background:#fff; padding:0; }
+    #output{ box-shadow:none; padding:0; }
+    .daimon{ break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>不定詞・動名詞・分詞・関係詞 シャッフル出題ツール</h1>
+<div class="sub">対象範囲: p.36〜p.55（Lesson 12〜18・Plus5〜7）全10単元 Exercises</div>
+
+<div class="panel" id="controls">
+  <h2>① 出題する単元を選ぶ</h2>
+  <div class="btnrow">
+    <button class="btn" onclick="selectAll(true)">全て選択</button>
+    <button class="btn" onclick="selectAll(false)">全て解除</button>
+  </div>
+  <div class="unit-grid" id="unitGrid"></div>
+
+  <h2 style="margin-top:18px;">② シャッフル方式を選ぶ</h2>
+  <div class="radio-group">
+    <label><input type="radio" name="mode" value="all" checked> 全体でシャッフル（単元の枠を外して大問ごと混ぜる）</label>
+    <label><input type="radio" name="mode" value="unit"> 単元内でシャッフル（単元ごとにまとめたまま中身だけ混ぜる）</label>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn primary" onclick="generate()">決定（この内容で出題する）</button>
+    <button class="btn" onclick="window.print()">印刷する</button>
+  </div>
+</div>
+
+<div id="output"><div class="empty-msg">単元を選んで「決定」を押してください。</div></div>
+
+<script>
+// =====================================================================
+// データ本体（教科書 Exercises ページの文言・記号は原文のまま使用）
+// =====================================================================
+const UNITS = [
+{
+  id:"l12", title:"Lesson 12 不定詞1", page:"p.36-37",
+  daimon:[
+    { instruction:"各文の下線部の語句はS，O，Cのどの働きをするかを答えなさい。",
+      items:[
+        {en:"It is easy to get up early.", blank:"（　　）"},
+        {en:"His job is to teach English.", blank:"（　　）"},
+        {en:"I want to study abroad.", blank:"（　　）"},
+        {en:"They think it hard to climb that mountain.", blank:"（　　）"}
+      ]
+    },
+    { instruction:"各文の下線部に入る語句を下から選び，記号で答えなさい。",
+      choices:["(a) to call her last night","(b) to do today","(c) to help me","(d) to think about"],
+      items:[
+        {en:"I need someone ……………．", blank:"（　　）"},
+        {en:"I have no homework ……………．", blank:"（　　）"},
+        {en:"There are some problems ……………．", blank:"（　　）"},
+        {en:"I broke a promise ……………．", blank:"（　　）"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"彼女たちはその韓国の歌手に会うことを望んでいます。", en:"They hope（　　）（　　）the Korean singer."},
+        {jp:"私はギターを弾くことが好きです。", en:"I like（　　）（　　）the guitar."},
+        {jp:"洗うべきお皿はありますか。", en:"Are there any dishes（　　）（　　）？"},
+        {jp:"東京は住むのによい都市です。", en:"Tokyo is a good city（　　）live（　　）."},
+        {jp:"私たちには来週，九州を訪れる計画があります。", en:"We have a plan（　　）（　　）Kyushu next week."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"彼女の夢はドイツでサッカーをすることです。", en:"（ play / dream / to / soccer / is / her ）in Germany.", answerLine:"…………………………… in Germany."},
+        {jp:"ジムは，その問題に答えることが難しいとわかりました。", en:"（ found / to / it / Jim / answer / difficult ）the question.", answerLine:"…………………………… the question."},
+        {jp:"彼らは一緒に働く女の人を探しています。", en:"（ for / with / work / a woman / looking / to ）.", answerLine:"They are ……………………………"}
+      ]
+    }
+  ]
+},
+{
+  id:"l13", title:"Lesson 13 不定詞2", page:"p.38-39",
+  daimon:[
+    { instruction:"［　］内の動詞を不定詞にして，英文を完成させなさい。また，下線部がア〜エのどれを表すか記号で答えなさい。（ア　目的　イ　感情の原因　ウ　判断の根拠　エ　結果）",
+      items:[
+        {en:"I feel sad …………… that. ［know］", blank:"（　　）"},
+        {en:"They woke up …………… themselves on an island. ［find］", blank:"（　　）"},
+        {en:"We usually go to the café …………… books. ［read］", blank:"（　　）"},
+        {en:"This dog is clever …………… quietly. ［sit］", blank:"（　　）"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内から適切なほうを選びなさい。",
+      items:[
+        {jp:"あなたたちが英語を勉強するのは大切です。", en:"It is important（ for you / of you ）to study English."},
+        {jp:"私がそのことについて彼に言うとは愚かでした。", en:"It was stupid（ for me / of me ）to tell him about it."},
+        {jp:"トムが北海道に引っ越すことは悲しいことです。", en:"It is sad（ for Tom / of Tom ）to move to Hokkaido."},
+        {jp:"彼女が花びんを割ったとは不注意でした。", en:"It was careless（ for her / of her ）to break the vase."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"彼らはコアラを見るためにオーストラリアへ行きました。", en:"They went to Australia（　　）（　　）koalas."},
+        {jp:"私はあなたと話せてうれしいです。", en:"I'm happy（　　）（　　）with you."},
+        {jp:"お年寄りがこのコンピューターを使うことは簡単です。", en:"It's easy（　　）old people（　　）（　　）this computer."},
+        {jp:"彼女が私の質問にすぐに答えるとは，礼儀正しかったです。", en:"It was polite（　　）her（　　）（　　）my question at once."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"彼女を信じるなんて私は愚かでした。", en:"（ believe / to / was / her / foolish / I ）.", answerLine:"……………………………"},
+        {jp:"ジェーンは家に帰ると，誰もいないことがわかりました。", en:"（ Jane / home / find / to / came ）nobody was there.", answerLine:"…………………………… nobody was there."},
+        {jp:"あなたが彼に腹をたてるのは，当然です。", en:"（ to / is / it / for / angry / you / get / natural ）at him.", answerLine:"…………………………… at him."}
+      ]
+    }
+  ]
+},
+{
+  id:"l14", title:"Lesson 14 不定詞3", page:"p.40-41",
+  daimon:[
+    { instruction:"［　］内の語を適切な形にして必要な語を加えて英文を完成させなさい。",
+      items:[
+        {jp:"私はあなたにピアノを弾いてほしいです。", en:"I want …………………… the piano. ［play］"},
+        {jp:"兄は私が彼のコンピューターを使うことを許してくれました。", en:"My brother allowed …………………… his computer. ［use］"},
+        {jp:"先生はいつも私たちにもっと勉強するように言います。", en:"Our teacher always tells …………………… more. ［study］"},
+        {jp:"彼らは飲み過ぎないようにしました。", en:"They tried …………………… too much. ［drink］"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"大雪だったので私たちは家にいなければなりませんでした。", en:"A lot of snow（　　）us（　　）home."},
+        {jp:"私は親切な男の子にかばんを運んでもらいました。", en:"I（　　）a kind boy（　　）my bag."},
+        {jp:"ジェーンの母親は彼女がそのパーティーに行くことを許しました。", en:"Jane's mother（　　）her（　　）to the party."},
+        {jp:"私はジムがボールを投げるのを見ました。", en:"I（　　）Jim（　　）a ball."}
+      ]
+    },
+    { instruction:"不定詞を用いて，日本語に合うように英文を完成させなさい。",
+      items:[
+        {jp:"彼に何をすべきか教えてください。", en:"Tell him ……………………………．"},
+        {jp:"ケイトはいつ彼を訪ねるべきかを私に尋ねました。", en:"Kate asked me …………………………… him."},
+        {jp:"私たちはどこで野球をすべきかわかりません。", en:"We don't know …………………………… baseball."},
+        {jp:"あなたはその洗濯機の使い方を知っていますか。", en:"Do you know …………………………… the washing machine？"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"母はあなたに手伝ってもらいたがっています。", en:"（ her / wants / help / to / you / my mother ）.", answerLine:"……………………………"},
+        {jp:"先生は彼らにその本を読ませました。", en:"（ made / read / the book / them / the teacher ）.", answerLine:"……………………………"},
+        {jp:"夏休みにどこへ行くか話しましょう。", en:"（ about / to / let's / where / go / talk ）during summer vacation.", answerLine:"…………………………… during summer vacation."}
+      ]
+    }
+  ]
+},
+{
+  id:"plus5", title:"Plus 5 不定詞", page:"p.42-43",
+  daimon:[
+    { instruction:"日本語に合うように，（　）内から適切なほうを選びなさい。",
+      items:[
+        {jp:"タクは良い生徒であるようでした。", en:"Taku（ seems to be / seemed to be ）a good student."},
+        {jp:"その問題は彼らにとって難しかったようです。", en:"The question（ seemed to be / seems to have been ）difficult for them."},
+        {jp:"彼らはお祭りを楽しんだようでした。", en:"They（ seem to have enjoyed / seemed to have enjoyed ）the festival."},
+        {jp:"彼女は会議室でコンピューターを使っているようです。", en:"She（ seems to use / seems to be using ）a computer in the meeting room."}
+      ]
+    },
+    { instruction:"次の英語に合う日本語を完成しなさい。",
+      items:[
+        {en:"This gate is to open at seven o'clock in the morning.", jp:"この門は朝7時に……………………"},
+        {en:"Students are to get to school by eight thirty.", jp:"生徒たちは8時半までに……………………"},
+        {en:"Nobody was to be seen in the park after dark.", jp:"暗くなってからは，公園には誰も……………………"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"その歌手のコンサートのチケットは手に入れるのが難しいです。", en:"The ticket to the concert of the singer is（　　）（　　）get."},
+        {jp:"私は駅でたまたま父と会いました。", en:"I（　　）（　　）see my father at the station."},
+        {jp:"もし言いたくないのなら，私たちにその理由を言わなくてもいいです。", en:"You don't have to tell us the reason, if you don't（　　）（　　）."},
+        {jp:"トムは疲れすぎていて，宿題ができませんでした。", en:"Tom was（　　）tired（　　）do his homework."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"実を言うと，私は彼女のことが好きです。", en:"（ tell / the truth / to / you ）, I like her.", answerLine:"……………………………, I like her."},
+        {jp:"弟は一人ぼっちにされるのが好きではありません。", en:"（ like / alone / to / doesn't / left / be ）.", answerLine:"My brother ……………………………"},
+        {jp:"その本は小さな子どもたちが読むのに十分やさしいです。", en:"（ children / enough / to / little / easy / for ）read.", answerLine:"The book is …………………………… read."}
+      ]
+    }
+  ]
+},
+{
+  id:"l15", title:"Lesson 15 動名詞", page:"p.44-45",
+  daimon:[
+    { instruction:"各文の下線部の語句はア〜エのどの働きをするかを記号で答えなさい。（ア　主語　イ　補語　ウ　目的語　エ　前置詞の目的語）",
+      items:[
+        {en:"My mother's hobby is growing roses.", blank:"（　　）"},
+        {en:"Eddie is good at swimming.", blank:"（　　）"},
+        {en:"Practicing baseball is hard.", blank:"（　　）"},
+        {en:"We like watching TV.", blank:"（　　）"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"私たちは，トムが私たちの車を運転するのを心配しています。", en:"We worry about（　　）（　　）our car."},
+        {jp:"ジョンはお父さんが医者であることをうれしく思っています。", en:"John is glad of（　　）（　　）（　　）a doctor."},
+        {jp:"彼女は私たちがテレビゲームをするのが好きではありません。", en:"She doesn't like（　　）（　　）video games."},
+        {jp:"昨日あなたにメールを送らなくてすみません。", en:"I'm sorry for（　　）（　　）you an email yesterday."}
+      ]
+    },
+    { instruction:"（　）内から適切なほうを選びなさい。",
+      items:[
+        {en:"They finished（ to listen / listening ）to the CD."},
+        {en:"I decided（ to tell / telling ）my teacher about it."},
+        {en:"Kate enjoyed（ to dance / dancing ）at the festival."},
+        {en:"Remember（ to buy / buying ）some milk at the supermarket on your way back home."},
+        {en:"Would you mind（ to shut / shutting ）the window？"},
+        {en:"John refused（ to go / going ）to the dentist."},
+        {en:"We must learn（ to walk / walking ）before we can run."},
+        {en:"The singer avoided（ to answer / answering ）the question."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"公園までの道順を教えてくれてありがとうございます。", en:"（ you / telling / thank / the way / me / for ）to the park.", answerLine:"…………………………… to the park."},
+        {jp:"ジェーンはお父さんが料理人であることを誇りに思っています。", en:"（ her / a cook / being / father / proud of ）.", answerLine:"Jane is ……………………………"},
+        {jp:"彼らは雨のために野球をするのをやめました。", en:"（ playing / baseball / stopped / they ）because of rain.", answerLine:"…………………………… because of rain."}
+      ]
+    }
+  ]
+},
+{
+  id:"plus6", title:"Plus 6 動名詞", page:"p.46-47",
+  daimon:[
+    { instruction:"日本語に合うように，［　］内の語を使って英文を完成させなさい。",
+      items:[
+        {jp:"彼女はバスケットボール部のメンバーであることを誇りに思っています。", en:"She is proud of（　　）a member of the basketball team. ［be］"},
+        {jp:"マイクはその傘を壊したことを認めました。", en:"Mike admitted（　　）（　　）the umbrella. ［break］"},
+        {jp:"私は，母にそんなことを言ってしまったことを後悔しています。", en:"I regret（　　）（　　）such a thing to my mother. ［say］"},
+        {jp:"彼らは図書館でものを食べたことを否定しました。", en:"They denied（　　）（　　）something in the library. ［eat］"}
+      ]
+    },
+    { instruction:"各組の文がほぼ同じ意味になるように，（　）に適切な語を入れなさい。",
+      items:[
+        {en:"(a) Meg wants to play the piano.\n(b) Meg feels（　　）（　　）the piano."},
+        {en:"(a) My father is accustomed to taking care of dogs.\n(b) My father is used（　　）（　　）care of dogs."},
+        {en:"(a) It is impossible to understand the reason.\n(b) There is（　　）（　　）the reason."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内から適切なほうを選びなさい。",
+      items:[
+        {jp:"タカヒロはタックと呼ばれるのが好きです。", en:"Takahiro is fond of（ calling / being called ）Tak."},
+        {jp:"彼女に手紙を書いても無駄です。", en:"There is no use（ to write / writing ）a letter to her."},
+        {jp:"日本に着くとすぐに，ジムはタナカさんに会いました。", en:"On（ arrive / arriving ）in Japan, Jim met Ms. Tanaka."},
+        {jp:"彼らは来月，その寺を見るのを楽しみにしています。", en:"They are looking forward（ to see / to seeing ）the temple next month."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"あなたにうそをついたことをすまないと思っています。", en:"（ for / having / sorry / told / I'm ）a lie to you.", answerLine:"…………………………… a lie to you."},
+        {jp:"その都市は訪れる価値があります。", en:"（ worth / city / visiting / is / the ）.", answerLine:"……………………………"},
+        {jp:"勉強することがとても大変なのは言うまでもないことです。", en:"（ goes / that / without / saying / it ）studying is very hard.", answerLine:"…………………………… studying is very hard."}
+      ]
+    }
+  ]
+},
+{
+  id:"l16", title:"Lesson 16 分詞1", page:"p.48-49",
+  daimon:[
+    { instruction:"（　）内から適切なほうを選び，英文に合う日本語を完成させなさい。",
+      items:[
+        {en:"Who is that（ smiling / smiled ）boy？", jp:"……………………誰ですか。"},
+        {en:"Look at the（ breaking / broken ）vase.", jp:"……………………見てください。"},
+        {en:"Do you know the woman（ playing / played ）tennis over there？", jp:"……………………知っていますか。"},
+        {en:"This is a cat（ calling / called ）Tama.", jp:"……………………。"}
+      ]
+    },
+    { instruction:"日本語に合うように，［　］内の動詞を現在分詞または過去分詞にして，英文を完成させなさい。",
+      items:[
+        {jp:"その山頂は年中雪に覆われたままです。", en:"The mountain top remains（　　）with snow through the year. ［cover］"},
+        {jp:"ジョンは朝まで眠り続けました。", en:"John kept（　　）until morning. ［sleep］"},
+        {jp:"その男の人は犬を公園で走らせておきました。", en:"The man left his dog（　　）in the park. ［run］"},
+        {jp:"彼はその秘密を母親に隠していました。", en:"He kept the secrets（　　）from his mother. ［hide］"}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"妹はけがをした犬を見つけました。", en:"My sister found an（　　）（　　）."},
+        {jp:"私たちは向こうでサッカーをしている女の子を知りません。", en:"We don't know the（　　）（　　）soccer over there."},
+        {jp:"ジョンは子どもたちに囲まれて座っていました。", en:"John sat（　　）by the children."},
+        {jp:"水を出したままにしておいてください。", en:"Please（　　）the water（　　）."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"先生と話している女の人はアメリカ出身です。", en:"（ with / is / the woman / our teacher / from / talking ）the U.S.", answerLine:"…………………………… the U.S."},
+        {jp:"兄はたいていそれらの窓にかぎをかけておきます。", en:"（ the windows / keeps / usually / locked ）.", answerLine:"My brother ……………………………"}
+      ]
+    }
+  ]
+},
+{
+  id:"l17", title:"Lesson 17 分詞2", page:"p.50-51",
+  daimon:[
+    { instruction:"日本語に合うように，（　）内から適切なほうを選びなさい。",
+      items:[
+        {jp:"私たちは男の子が犬と一緒に走っているのを見ました。", en:"We saw a boy（ running / run ）with a dog."},
+        {jp:"彼女はその部屋から自分の名前が呼ばれるのを聞きました。", en:"She heard her name（ calling / called ）from the room."},
+        {jp:"その女性は車をきれいにしてもらいました。", en:"The lady had her car（ cleaning / cleaned ）."},
+        {jp:"マイクは昼食を部屋まで持ってきてもらいました。", en:"Mike got his lunch（ bringing / brought ）to his room."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"その女の子は大声で泣きながら，お母さんのところへ走っていきました。", en:"The girl ran to her mother（　　）loudly."},
+        {jp:"中国語で書かれているので，その手紙を理解するのは難しいです。", en:"（　　）in Chinese, the letter is difficult to understand."},
+        {jp:"図書館で勉強していた時，私はその背の高い男の子を見ました。", en:"（　　）in the library, I saw the tall boy."},
+        {jp:"何をすべきか分からなかったので，私は先生に助言を求めました。", en:"（　　）（　　）what to do, I asked my teacher for advice."}
+      ]
+    },
+    { instruction:"各組の文がほぼ同じ意味になるように，（　）に適切な語を入れなさい。",
+      items:[
+        {en:"(a) Because Jim likes the dog very much, he takes care of it every day.\n(b)（　　）the dog very much, Jim takes care of it every day."},
+        {en:"(a) When I saw the girl, I remembered her name.\n(b)（　　）the girl, I remembered her name."},
+        {en:"(a) They left Osaka at noon and arrived in Tokyo in the evening.\n(b) They left Osaka at noon,（　　）in Tokyo in the evening."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"私たちはドイツに行った時，言いたいことを伝えられませんでした。", en:"（ ourselves / we / understood / make / couldn't ）when we went to Germany.", answerLine:"…………………………… when we went to Germany."},
+        {jp:"その作家は，自分の本を多くの人に知ってもらいました。", en:"（ his book / the writer / to / known / got ）many people.", answerLine:"…………………………… many people."},
+        {jp:"鍵を持っていなかったので，兄は部屋に入れませんでした。", en:"（ my brother / couldn't / the key / having / enter / not / , ）the room.", answerLine:"…………………………… the room."}
+      ]
+    }
+  ]
+},
+{
+  id:"plus7", title:"Plus 7 分詞", page:"p.52-53",
+  daimon:[
+    { instruction:"下線部を分詞構文で表しなさい。",
+      items:[
+        {en:"(a) After she had finished dinner, she took a bath.", answerLine:"(b) ……………………, she took a bath."},
+        {en:"(a) Because I walked for a long time, I'm very tired now.", answerLine:"(b) ……………………, I'm very tired now."},
+        {en:"(a) Because it is winter, many people enjoy skiing.", answerLine:"(b) ……………………, many people enjoy skiing."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"その情報から判断すると，その歌手は近く来日するでしょう。", en:"（　　）（　　）the information, the singer will come to Japan soon."},
+        {jp:"彼の状況を考慮すれば，彼は一生懸命に勉強しなければなりません。", en:"（　　）his situation, he has to study very hard."},
+        {jp:"一般的に言えば，子どもたちは漫画本が好きです。", en:"（　　）（　　）, children like comic books."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な語を入れなさい。",
+      items:[
+        {jp:"弟は窓を閉めて音楽を聴いていました。", en:"My brother was listening to music（　　）the windows（　　）."},
+        {jp:"彼らは学園祭の準備に忙しいです。", en:"They are（　　）（　　）for the school festival."},
+        {jp:"ケンはよく海に釣りに行きます。", en:"Ken often（　　）（　　）in the sea."},
+        {jp:"スミスさんは1時間かけて部屋を掃除しました。", en:"Mr. Smith（　　）an hour（　　）his room."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"地図をなくしたので，私は駅への道を警官に尋ねました。", en:"（ lost / asked / I / having / a police officer / the map / , ）the way to the station.", answerLine:"…………………………… the way to the station."},
+        {jp:"その少年は腕組みをして立っていました。", en:"（ with / stood / his / crossed / arms ）.", answerLine:"The boy ……………………………"},
+        {jp:"体育館では数人の女の子たちがバスケットボールをしていました。", en:"（ basketball / girls / there / playing / some / were ）in the gym.", answerLine:"…………………………… in the gym."}
+      ]
+    }
+  ]
+},
+{
+  id:"l18", title:"Lesson 18 関係詞1", page:"p.54-55",
+  daimon:[
+    { instruction:"日本語に合うように，（　）内から適切なほうを選びなさい。",
+      items:[
+        {jp:"車のそばに立っている男の人を知っていますか。", en:"Do you know the man（ who / which ）is standing by the car？"},
+        {jp:"彼女は昨日，英語で書かれた手紙を受け取りました。", en:"She received a letter（ who / which ）was written in English yesterday."},
+        {jp:"私はこの歌を歌っているミュージシャンが好きです。", en:"I like the musician（ who / which ）sings this song."}
+      ]
+    },
+    { instruction:"各文の適切な位置に who，which，whom のいずれかを入れて，全文を書きなさい。",
+      items:[
+        {en:"I will show you a strange stone I picked up near the river."},
+        {en:"The boy is smiling on the bed is her son."},
+        {en:"The book that boy is reading is very difficult."},
+        {en:"The singer I like very much is going to come to Japan next month."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）に適切な関係代名詞を入れなさい。ただし，省略できる場合は×を書きなさい。",
+      items:[
+        {jp:"スピーチをしている男の人はキムラさんです。", en:"The man（　　）is making a speech is Mr. Kimura."},
+        {jp:"これが姉の使っているパソコンです。", en:"This is the computer（　　）my sister uses."},
+        {jp:"私がオーストラリアで会った人たちは親切でした。", en:"The people（　　）I met in Australia were kind."},
+        {jp:"これはタマという名前の猫です。", en:"This is the cat（　　）name is Tama."}
+      ]
+    },
+    { instruction:"日本語に合うように，（　）内の語句を並べかえて英文を完成させなさい。",
+      items:[
+        {jp:"これは20年前に建てられた家です。", en:"（ which / built / ago / a house / twenty years / was ）.", answerLine:"This is ……………………………"},
+        {jp:"彼女が手に持っている花はとても美しいです。", en:"（ her hands / which / in / has / the flowers / she ）.", answerLine:"…………………………… are very beautiful."},
+        {jp:"長い耳をした犬は私の犬です。", en:"（ long / ears / the dog / are / whose ）.", answerLine:"…………………………… is mine."}
+      ]
+    }
+  ]
+}
+];
+
+// =====================================================================
+// UI 初期化
+// =====================================================================
+const grid = document.getElementById("unitGrid");
+UNITS.forEach(u=>{
+  const label = document.createElement("label");
+  label.className = "unit-item";
+  label.innerHTML = `<input type="checkbox" value="${u.id}" checked> ${u.title}（${u.page}）`;
+  grid.appendChild(label);
+});
+
+function selectAll(flag){
+  document.querySelectorAll('#unitGrid input[type=checkbox]').forEach(cb=>cb.checked=flag);
+}
+
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function shuffleDaimon(daimon){
+  // 大問オブジェクトを複製し、中の items（小問）だけシャッフルする
+  return { ...daimon, items: shuffleArray(daimon.items) };
+}
+
+function renderDaimon(daimon, dNo){
+  let html = `<div class="daimon">`;
+  html += `<div class="daimon-meta">大問 ${dNo}</div>`;
+  html += `<div class="daimon-instruction">${daimon.instruction}</div>`;
+  if(daimon.choices){
+    html += `<div class="choices">${daimon.choices.join("　")}</div>`;
+  }
+  html += `<ol class="items">`;
+  daimon.items.forEach(it=>{
+    html += `<li>`;
+    if(it.jp) html += `<div class="jp">${it.jp}</div>`;
+    html += `<div class="en">${it.en}${it.blank ? "　"+it.blank : ""}</div>`;
+    if(it.answerLine) html += `<div class="en">${it.answerLine}</div>`;
+    html += `</li>`;
+  });
+  html += `</ol></div>`;
+  return html;
+}
+
+function generate(){
+  const selectedIds = Array.from(document.querySelectorAll('#unitGrid input:checked')).map(cb=>cb.value);
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  const output = document.getElementById("output");
+
+  if(selectedIds.length === 0){
+    output.innerHTML = `<div class="empty-msg">単元を1つ以上選んでください。</div>`;
+    return;
+  }
+
+  const selectedUnits = UNITS.filter(u=>selectedIds.includes(u.id));
+  let html = "";
+
+  if(mode === "all"){
+    // 全体でシャッフル：単元の枠を外して全大問をまとめてシャッフル
+    let allDaimon = [];
+    selectedUnits.forEach(u=>{
+      u.daimon.forEach(d=> allDaimon.push(shuffleDaimon(d)));
+    });
+    allDaimon = shuffleArray(allDaimon);
+    html += `<div class="unit-block">`;
+    allDaimon.forEach((d,i)=>{ html += renderDaimon(d, i+1); });
+    html += `</div>`;
+  } else {
+    // 単元内でシャッフル：単元ごとにまとめたまま、中の大問順・小問順だけシャッフル
+    selectedUnits.forEach(u=>{
+      const shuffledDaimon = shuffleArray(u.daimon.map(shuffleDaimon));
+      html += `<div class="unit-block">`;
+      html += `<div class="unit-block-title">${u.title}（${u.page}）</div>`;
+      shuffledDaimon.forEach((d,i)=>{ html += renderDaimon(d, i+1); });
+      html += `</div>`;
+    });
+  }
+
+  output.innerHTML = html;
+  output.scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
