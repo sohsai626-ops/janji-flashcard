@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>古文単語アプリ（重要古文単語315・第一章）</title>
+<style>
+  :root{
+    --main:#a6314a;
+    --main-dark:#7d2138;
+    --bg:#fdf6f2;
+    --card:#ffffff;
+    --accent:#e8b4b8;
+    --text:#3a2c2c;
+    --muted:#8a7a7a;
+    --good:#4a8c5f;
+    --bad:#c0432f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    background:var(--bg);color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    background:linear-gradient(135deg,var(--main),var(--main-dark));
+    color:#fff;padding:14px 10px 0;position:sticky;top:0;z-index:10;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+  }
+  header h1{margin:0 0 10px;font-size:17px;text-align:center;font-weight:600;letter-spacing:.05em;}
+  .tabs{display:flex;}
+  .tabbtn{
+    flex:1;text-align:center;padding:10px 4px;color:#ffe4e8;
+    font-size:13px;cursor:pointer;border-bottom:3px solid transparent;
+    transition:.2s;
+  }
+  .tabbtn.active{color:#fff;border-bottom:3px solid #fff;font-weight:700;}
+  .tab{display:none;padding:16px 14px 40px;max-width:520px;margin:0 auto;}
+  .tab.show{display:block;}
+
+  /* ===== フラッシュカード ===== */
+  .progressbar{font-size:12px;color:var(--muted);text-align:center;margin-bottom:8px;}
+  .card{
+    background:var(--card);border-radius:16px;padding:36px 20px;
+    min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);border:1px solid #f0dede;
+    position:relative;
+  }
+  .word{font-size:32px;font-weight:700;color:var(--main-dark);letter-spacing:.03em;text-align:center;}
+  .meaning{font-size:20px;margin-top:18px;color:var(--text);text-align:center;line-height:1.5;display:none;}
+  .meaning.show{display:block;}
+  .hint{font-size:12px;color:var(--muted);margin-top:20px;}
+  .speakBtn{
+    position:absolute;top:12px;right:12px;background:var(--accent);border:none;
+    border-radius:50%;width:38px;height:38px;font-size:16px;cursor:pointer;color:var(--main-dark);
+  }
+  .cardnav{display:flex;gap:10px;margin-top:16px;}
+  .btn{
+    flex:1;padding:13px 0;border-radius:10px;border:none;font-size:15px;font-weight:600;
+    cursor:pointer;color:#fff;
+  }
+  .btn.primary{background:var(--main);}
+  .btn.secondary{background:#c9a6a6;}
+  .btn.good{background:var(--good);}
+  .btn.bad{background:var(--bad);}
+  .judgerow{display:flex;gap:10px;margin-top:14px;}
+  .judgerow .btn{display:none;}
+  .judgerow.show .btn{display:block;}
+  .modeRow{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .modeChip{
+    padding:6px 12px;border-radius:16px;background:#fff;border:1px solid var(--accent);
+    font-size:12px;color:var(--main-dark);cursor:pointer;
+  }
+  .modeChip.active{background:var(--main);color:#fff;border-color:var(--main);}
+
+  /* ===== 4択 ===== */
+  .quizWord{font-size:28px;font-weight:700;text-align:center;color:var(--main-dark);margin:18px 0 22px;}
+  .choice{
+    background:var(--card);border:2px solid #eee;border-radius:12px;padding:14px 16px;
+    margin-bottom:10px;font-size:16px;cursor:pointer;transition:.15s;
+  }
+  .choice.correct{background:#e5f5e9;border-color:var(--good);}
+  .choice.wrong{background:#fbe9e7;border-color:var(--bad);}
+  .quizFeedback{text-align:center;font-size:14px;margin-top:10px;min-height:20px;color:var(--muted);}
+  .scoreBox{text-align:center;font-size:13px;color:var(--muted);margin-bottom:10px;}
+
+  /* ===== 苦手ランキング ===== */
+  .rankItem{
+    background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:center;border:1px solid #f0dede;
+  }
+  .rankItem .w{font-weight:700;color:var(--main-dark);}
+  .rankItem .m{font-size:13px;color:var(--muted);margin-top:2px;}
+  .rankItem .stat{font-size:12px;text-align:right;color:var(--bad);white-space:nowrap;}
+  .emptyMsg{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;}
+  select#rangeSelect{
+    width:100%;padding:10px;border-radius:8px;border:1px solid var(--accent);
+    font-size:14px;margin-bottom:14px;background:#fff;
+  }
+
+  /* ===== 単元選択 ===== */
+  .chapterItem{
+    display:flex;align-items:center;gap:10px;background:var(--card);
+    border:1px solid #f0dede;border-radius:10px;padding:12px 14px;margin-bottom:8px;
+  }
+  .chapterItem.disabled{opacity:.45;}
+  .chapterItem input[type=checkbox]{width:20px;height:20px;flex-shrink:0;}
+  .chapterItem label{font-size:14px;flex:1;}
+  .chapterItem .soon{font-size:11px;color:var(--bad);margin-left:6px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>古文単語アプリ（重要古文単語315）</h1>
+  <div class="tabs">
+    <div class="tabbtn active" data-tab="tabSelect">単元選択</div>
+    <div class="tabbtn" data-tab="tabStudy">フラッシュカード</div>
+    <div class="tabbtn" data-tab="tabQuiz">4択問題</div>
+    <div class="tabbtn" data-tab="tabRank">苦手ランキング</div>
+  </div>
+</header>
+
+<div id="tabSelect" class="tab show">
+  <div style="display:flex;gap:8px;margin-bottom:10px;">
+    <button class="btn secondary" id="selectAllBtn" style="flex:1;">すべて選択</button>
+    <button class="btn secondary" id="selectNoneBtn" style="flex:1;">すべて解除</button>
+  </div>
+  <div id="chapterList"></div>
+  <button class="btn primary" id="startBtn" style="width:100%;margin-top:16px;">この内容で学習を始める</button>
+  <div class="hint" id="selectHint" style="text-align:center;margin-top:10px;"></div>
+</div>
+
+<div id="tabStudy" class="tab">
+  <div class="modeRow">
+    <div class="modeChip active" data-mode="all">すべて(38語)</div>
+    <div class="modeChip" data-mode="weak">苦手のみ</div>
+  </div>
+  <div class="progressbar" id="studyProgress">1 / 65</div>
+  <div class="card" id="flashcard">
+    <button class="speakBtn" id="speakBtn" title="読み上げ">🔊</button>
+    <div class="word" id="cardWord">―</div>
+    <div class="meaning" id="cardMeaning">―</div>
+    <div class="hint" id="cardHint">タップして意味を表示</div>
+  </div>
+  <div class="judgerow" id="judgeRow">
+    <button class="btn bad" id="markWrong">✗ わからなかった</button>
+    <button class="btn good" id="markGood">◯ 覚えている</button>
+  </div>
+  <div class="cardnav">
+    <button class="btn secondary" id="prevBtn">← 前へ</button>
+    <button class="btn primary" id="nextBtn">次へ →</button>
+  </div>
+</div>
+
+<div id="tabQuiz" class="tab">
+  <div class="scoreBox" id="quizScore">正解 0 / 0</div>
+  <div class="quizWord" id="quizWord">―</div>
+  <div id="quizChoices"></div>
+  <div class="quizFeedback" id="quizFeedback"></div>
+  <button class="btn primary" id="quizNextBtn" style="margin-top:14px;">次の問題へ</button>
+</div>
+
+<div id="tabRank" class="tab">
+  <div id="rankList"></div>
+</div>
+
+<script>
+/* ================= データ（重要古文単語315・第一章最重要語 001〜038 / 38語） ================= */
+const WORDS = [{"no": 1, "word": "見る", "meaning": "①見る・会う　②思う・分かる　③（男女が）関係を結ぶ・結婚する　④面倒を見る・世話をする", "group": "see-relate", "ch": "ch1_verb"}, {"no": 2, "word": "見す（見す）", "meaning": "①（様子を）見せる　②結婚させる", "group": "see-relate", "ch": "ch1_verb"}, {"no": 3, "word": "見ゆ", "meaning": "①見える・思われる　②見られる・見せる　③（女性が）結婚する", "group": "see-relate", "ch": "ch1_verb"}, {"no": 4, "word": "かいまみる（垣間見る）", "meaning": "のぞき見る", "group": "see-relate", "ch": "ch1_verb"}, {"no": 5, "word": "よばふ（呼ばふ）", "meaning": "①呼び続ける・言い寄る　②求婚する", "group": "courtship", "ch": "ch1_verb"}, {"no": 6, "word": "好く", "meaning": "①風流を好む・色好みである　②恋愛ごとを好む・恋愛に熱中する", "group": "courtship", "ch": "ch1_verb"}, {"no": 7, "word": "わたる（渡る）", "meaning": "①行く・来る・通る　②（主に「移動する」を表す）　③（存在・状態を表して）〜し続ける　④一面に〜する", "group": "movement", "ch": "ch1_verb"}, {"no": 8, "word": "ありく（歩く）", "meaning": "歩き回る・動き回る", "group": "movement", "ch": "ch1_verb"}, {"no": 9, "word": "おこなふ（行ふ）", "meaning": "仏道修行をする・勤行する", "group": "buddhist", "ch": "ch1_verb"}, {"no": 10, "word": "なやむ（悩む）", "meaning": "①病気になる・病気で苦しむ　②苦労する・骨を折る", "group": "suffer", "ch": "ch1_verb"}, {"no": 11, "word": "おこたる（怠る）", "meaning": "病気が治る", "group": "recover", "ch": "ch1_verb"}, {"no": 12, "word": "おくる（後る・遅る）", "meaning": "①先立たれる・死に後れる　②後になる・残される・劣る", "group": "loss", "ch": "ch1_verb"}, {"no": 13, "word": "ながむ（眺む・詠む）", "meaning": "A（眺む）もの思いに沈む・もの思いしながらぼんやり見る　B（詠む）口ずさむ", "group": "melancholy", "ch": "ch1_verb"}, {"no": 14, "word": "なやむ", "meaning": "①病気になる・病気で苦しむ　②苦労する・骨を折る", "group": "suffer", "ch": "ch1_verb"}, {"no": 15, "word": "かしづく", "meaning": "大切に育てる・大切に世話をする", "group": "care", "ch": "ch1_verb"}, {"no": 16, "word": "めづ（愛づ）", "meaning": "愛する・好む・たたえる・感嘆する", "group": "admire", "ch": "ch1_verb"}, {"no": 17, "word": "おどろく（驚く）", "meaning": "①目を覚ます・起きる　②（はっと）気づく　③驚く（現代語と同じ）", "group": "notice", "ch": "ch1_verb"}, {"no": 18, "word": "ときめく（時めく）", "meaning": "①寵愛を受ける・特別に愛される　②時流に乗って栄える・もてはやされる", "group": "favor", "ch": "ch1_verb"}, {"no": 19, "word": "おぼゆ（覚ゆ）", "meaning": "①思われる　②思い出される　③似る・似ている", "group": "thought", "ch": "ch1_verb"}, {"no": 20, "word": "こうず（困ず）", "meaning": "①疲れる　②悩む・困る", "group": "suffer", "ch": "ch1_verb"}, {"no": 21, "word": "たのむ（頼む）", "meaning": "A（四段）あてにする・頼りにする・期待する　B（下二段）あてにさせる・頼りにさせる・期待させる", "group": "trust", "ch": "ch1_verb"}, {"no": 22, "word": "かづく（被く・潜く）", "meaning": "A（四段）かぶる・（貴人から褒美として）いただく　B（下二段）かぶらせる・与える", "group": "receive", "ch": "ch1_verb"}, {"no": 23, "word": "まもる・まぼる（守る）", "meaning": "見つめる・監視する", "group": "watch", "ch": "ch1_verb"}, {"no": 24, "word": "ののしる", "meaning": "①大声を出す・騒ぐ　②評判になる・噂が盛んである・羽振りをきかす", "group": "noise-fame", "ch": "ch1_verb"}, {"no": 25, "word": "やる（遣る）", "meaning": "①（人を）行かせる　②（物を）送る　③〈動詞連用形＋「やらず」の形で〉〜きれない・最後まで（〜し）ない", "group": "send", "ch": "ch1_verb"}, {"no": 26, "word": "いらふ（答ふ）", "meaning": "答える", "group": "answer", "ch": "ch1_verb"}, {"no": 27, "word": "あきらむ（明らむ）", "meaning": "明らかにする・はっきりさせる", "group": "clarify", "ch": "ch1_verb"}, {"no": 28, "word": "にほふ（匂ふ）", "meaning": "①美しく映える・美しく輝く　②香りがする（現代語と同じ）", "group": "shine-fragrant", "ch": "ch1_verb"}, {"no": 29, "word": "ねんず（念ず）", "meaning": "①我慢する　②（心の中で）祈る", "group": "endure-pray", "ch": "ch1_verb"}, {"no": 30, "word": "まうく（設く）", "meaning": "準備する・用意する", "group": "prepare", "ch": "ch1_verb"}, {"no": 31, "word": "ゐる（居る・率る）", "meaning": "A（居る）座る　B（率る）（人が）〔動詞の連用形について〕留まる・（鳥が）とまる　連れる・伴う", "group": "sit-lead", "ch": "ch1_verb"}, {"no": 32, "word": "具す", "meaning": "①伴う・連れる・添える　②〔下二段〕添わせる・比べる", "group": "accompany", "ch": "ch1_verb"}, {"no": 33, "word": "経（経）", "meaning": "①（時間が）経過する・経る　②（場所を）通る・経由する", "group": "time-place", "ch": "ch1_verb"}, {"no": 34, "word": "さる（避る・去る）", "meaning": "A（避る）避ける　B（去る）季節・時節が来る・その時になる（現代語と同じ）・立ち去る・過ぎ去る", "group": "avoid-time", "ch": "ch1_verb"}, {"no": 35, "word": "ものす（物す）", "meaning": "いろいろな動詞の代わりに用いられる（ある・いる・行く・来る・言う・書く など、文脈に応じた動詞の意味を表す代動詞）", "group": "substitute-verb", "ch": "ch1_verb"}, {"no": 36, "word": "ならふ（慣らふ・馴らふ）", "meaning": "①慣れる　②親しくなる・なじむ", "group": "familiar", "ch": "ch1_verb"}, {"no": 37, "word": "しのぶ（忍ぶ・偲ぶ）", "meaning": "A（忍ぶ）耐える・我慢する・人目につかないようにする　B（偲ぶ）思い出す・恋い慕う", "group": "endure-yearn", "ch": "ch1_verb"}, {"no": 38, "word": "わぶ（侘ぶ）", "meaning": "困る・嘆く・つらく思う〈動詞の連用形について〉〜することができない", "group": "trouble", "ch": "ch1_verb"}];
+
+const CHAPTERS = [
+  {id:"ch1_verb", label:"第一章 最重要語｜動詞（38語）"},
+  {id:"ch1_adj", label:"第一章 最重要語｜形容詞（準備中）"},
+  {id:"ch1_adjv", label:"第一章 最重要語｜形容動詞（準備中）"},
+  {id:"ch1_noun", label:"第一章 最重要語｜名詞（準備中）"},
+  {id:"ch1_adv", label:"第一章 最重要語｜副詞（準備中）"},
+  {id:"ch2", label:"第二章 重要語（準備中）"},
+  {id:"keigo", label:"敬語の章（準備中）"},
+  {id:"kanyoku", label:"慣用句の章（準備中）"},
+  {id:"joshiki", label:"古典常識の章（準備中）"},
+  {id:"furoku", label:"付録の章（準備中）"}
+];
+
+
+/* ================= 進捗データ（localStorage） ================= */
+const STORAGE_KEY = "kobunTangoProgress_v1";
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {stats:{}}; // stats[no] = {right:0, wrong:0}
+}
+function saveProgress(p){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){}
+}
+let progress = loadProgress();
+function getStat(no){
+  if(!progress.stats[no]) progress.stats[no] = {right:0, wrong:0};
+  return progress.stats[no];
+}
+function bumpStat(no, isRight){
+  const s = getStat(no);
+  if(isRight) s.right++; else s.wrong++;
+  saveProgress(progress);
+}
+function isWeak(no){
+  const s = getStat(no);
+  return s.wrong > s.right;
+}
+
+/* ================= タブ切り替え ================= */
+document.querySelectorAll(".tabbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("show"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("show");
+    if(btn.dataset.tab === "tabRank") renderRank();
+    if(btn.dataset.tab === "tabQuiz") newQuiz();
+  });
+});
+
+/* ================= 単元選択 ================= */
+let ACTIVE_WORDS = WORDS.slice(); // 選択中の単元に属する単語だけがここに入る
+
+function chapterWordCount(chId){
+  return WORDS.filter(w=>w.ch===chId).length;
+}
+
+function renderChapterList(){
+  const box = document.getElementById("chapterList");
+  box.innerHTML = "";
+  CHAPTERS.forEach(ch=>{
+    const count = chapterWordCount(ch.id);
+    const hasData = count > 0;
+    const item = document.createElement("div");
+    item.className = "chapterItem" + (hasData ? "" : " disabled");
+    item.innerHTML =
+      '<input type="checkbox" data-ch="'+ch.id+'" '+(hasData?"checked":"disabled")+'>'+
+      '<label>'+ch.label+(hasData?"":'<span class="soon">（データ未登録）</span>')+'</label>';
+    box.appendChild(item);
+  });
+}
+renderChapterList();
+
+document.getElementById("selectAllBtn").addEventListener("click", ()=>{
+  document.querySelectorAll('#chapterList input[type=checkbox]:not(:disabled)').forEach(cb=>cb.checked=true);
+});
+document.getElementById("selectNoneBtn").addEventListener("click", ()=>{
+  document.querySelectorAll('#chapterList input[type=checkbox]:not(:disabled)').forEach(cb=>cb.checked=false);
+});
+
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  const selected = Array.from(document.querySelectorAll('#chapterList input[type=checkbox]:checked')).map(cb=>cb.dataset.ch);
+  if(selected.length === 0){
+    document.getElementById("selectHint").textContent = "単元を1つ以上選択してください。";
+    return;
+  }
+  ACTIVE_WORDS = WORDS.filter(w=>selected.includes(w.ch));
+  document.getElementById("selectHint").textContent = "";
+  document.querySelectorAll(".modeChip[data-mode='all']").forEach(c=>{
+    c.textContent = "すべて(" + ACTIVE_WORDS.length + "語)";
+  });
+  studyMode = "all";
+  document.querySelectorAll(".modeChip").forEach(c=>c.classList.remove("active"));
+  document.querySelector(".modeChip[data-mode='all']").classList.add("active");
+  refreshStudyList();
+  newQuiz();
+  // フラッシュカードタブへ切り替え
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+  document.querySelector('.tabbtn[data-tab="tabStudy"]').classList.add("active");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("show"));
+  document.getElementById("tabStudy").classList.add("show");
+});
+
+/* ================= フラッシュカード ================= */
+let studyMode = "all"; // all | weak
+let studyList = ACTIVE_WORDS.slice();
+let studyIdx = 0;
+let revealed = false;
+
+function refreshStudyList(){
+  studyList = studyMode === "weak" ? ACTIVE_WORDS.filter(w=>isWeak(w.no)) : ACTIVE_WORDS.slice();
+  studyIdx = 0;
+  renderCard();
+}
+
+document.querySelectorAll(".modeChip").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    document.querySelectorAll(".modeChip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    studyMode = chip.dataset.mode;
+    refreshStudyList();
+  });
+});
+
+function renderCard(){
+  const total = studyList.length;
+  const progEl = document.getElementById("studyProgress");
+  if(total === 0){
+    document.getElementById("cardWord").textContent = "🎉";
+    document.getElementById("cardMeaning").textContent = "苦手な単語はありません";
+    document.getElementById("cardMeaning").classList.add("show");
+    document.getElementById("cardHint").textContent = "";
+    progEl.textContent = "0 / 0";
+    document.getElementById("judgeRow").classList.remove("show");
+    return;
+  }
+  if(studyIdx >= total) studyIdx = 0;
+  if(studyIdx < 0) studyIdx = total - 1;
+  const w = studyList[studyIdx];
+  progEl.textContent = (studyIdx+1) + " / " + total;
+  document.getElementById("cardWord").textContent = w.word;
+  document.getElementById("cardMeaning").textContent = w.meaning;
+  document.getElementById("cardMeaning").classList.remove("show");
+  document.getElementById("cardHint").textContent = "タップして意味を表示";
+  document.getElementById("judgeRow").classList.remove("show");
+  revealed = false;
+}
+
+document.getElementById("flashcard").addEventListener("click",(e)=>{
+  if(e.target.id === "speakBtn") return;
+  revealed = !revealed;
+  document.getElementById("cardMeaning").classList.toggle("show", revealed);
+  document.getElementById("cardHint").textContent = revealed ? "" : "タップして意味を表示";
+  document.getElementById("judgeRow").classList.toggle("show", revealed);
+});
+
+document.getElementById("nextBtn").addEventListener("click", ()=>{
+  studyIdx++;
+  renderCard();
+});
+document.getElementById("prevBtn").addEventListener("click", ()=>{
+  studyIdx--;
+  renderCard();
+});
+document.getElementById("markGood").addEventListener("click", ()=>{
+  const w = studyList[studyIdx];
+  if(w) bumpStat(w.no, true);
+  studyIdx++;
+  renderCard();
+});
+document.getElementById("markWrong").addEventListener("click", ()=>{
+  const w = studyList[studyIdx];
+  if(w) bumpStat(w.no, false);
+  studyIdx++;
+  renderCard();
+});
+
+document.getElementById("speakBtn").addEventListener("click",(e)=>{
+  e.stopPropagation();
+  const w = studyList[studyIdx];
+  if(!w) return;
+  speakJa(w.word.replace(/[（(].*?[）)]/g,""));
+});
+
+function speakJa(text){
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "ja-JP";
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ================= 4択問題 ================= */
+let quizCorrect = 0, quizTotal = 0;
+let currentQuizWord = null;
+
+function pickDistractors(word){
+  const sameGroup = ACTIVE_WORDS.filter(w=>w.no!==word.no && w.group===word.group);
+  const others = ACTIVE_WORDS.filter(w=>w.no!==word.no && w.group!==word.group);
+  shuffle(sameGroup); shuffle(others);
+  const pool = sameGroup.concat(others);
+  return pool.slice(0,3);
+}
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function newQuiz(){
+  document.getElementById("quizFeedback").textContent = "";
+  document.getElementById("quizScore").textContent = "正解 " + quizCorrect + " / " + quizTotal;
+  if(ACTIVE_WORDS.length===0) return;
+  const w = ACTIVE_WORDS[Math.floor(Math.random()*ACTIVE_WORDS.length)];
+  currentQuizWord = w;
+  document.getElementById("quizWord").textContent = w.word;
+  const distractors = pickDistractors(w);
+  const choices = shuffle([w, ...distractors]);
+  const box = document.getElementById("quizChoices");
+  box.innerHTML = "";
+  choices.forEach(c=>{
+    const div = document.createElement("div");
+    div.className = "choice";
+    div.textContent = c.meaning;
+    div.addEventListener("click", ()=>handleAnswer(div, c, w));
+    box.appendChild(div);
+  });
+}
+
+function handleAnswer(el, chosen, correctWord){
+  if(el.classList.contains("correct") || el.classList.contains("wrong")) return; // 二重回答防止
+  const isRight = chosen.no === correctWord.no;
+  quizTotal++;
+  if(isRight){
+    quizCorrect++;
+    el.classList.add("correct");
+    document.getElementById("quizFeedback").textContent = "◯ 正解！";
+  }else{
+    el.classList.add("wrong");
+    document.getElementById("quizFeedback").textContent = "✗ 不正解。正解は「" + correctWord.meaning + "」";
+    document.querySelectorAll(".choice").forEach(c=>{
+      if(c.textContent === correctWord.meaning) c.classList.add("correct");
+    });
+  }
+  bumpStat(correctWord.no, isRight);
+  document.getElementById("quizScore").textContent = "正解 " + quizCorrect + " / " + quizTotal;
+}
+
+document.getElementById("quizNextBtn").addEventListener("click", newQuiz);
+
+/* ================= 苦手ランキング ================= */
+function renderRank(){
+  const list = ACTIVE_WORDS
+    .map(w=>({w, s:getStat(w.no)}))
+    .filter(x=>x.s.wrong>0)
+    .sort((a,b)=> (b.s.wrong - b.s.right) - (a.s.wrong - a.s.right));
+  const box = document.getElementById("rankList");
+  box.innerHTML = "";
+  if(list.length === 0){
+    box.innerHTML = '<div class="emptyMsg">まだ間違えた単語はありません。<br>フラッシュカードや4択に挑戦してみましょう！</div>';
+    return;
+  }
+  list.forEach(x=>{
+    const div = document.createElement("div");
+    div.className = "rankItem";
+    div.innerHTML =
+      '<div><div class="w">'+x.w.word+'</div><div class="m">'+x.w.meaning+'</div></div>'+
+      '<div class="stat">正解'+x.s.right+' / 誤答'+x.s.wrong+'</div>';
+    box.appendChild(div);
+  });
+}
+
+/* ================= 初期化 ================= */
+renderCard();
+</script>
+</body>
+</html>
