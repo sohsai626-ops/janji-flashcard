@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>放物線の平行移動アニメ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=STIX+Two+Text:ital,wght@0,500;1,500&display=swap">
+<style>
+/* Layout: 方眼ノートの左に大きなグラフ、右に「式・説明・答え欄」の縦パネル。スマホでは縦積み */
+:root{
+  --paper:#f6f9fc; --card:#ffffff; --ink:#18232e; --muted:#7a8a99;
+  --grid:#d9e4ee; --axis:#5f7488; --curve:#1f5fbf; --ghost:#a3b1be;
+  --p:#cf4527; --q:#17865a; --line:#e3eaf1;
+  --jp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --math:"STIX Two Text","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11161c; --card:#19212a; --ink:#e5ecf2; --muted:#8a9aa9;
+  --grid:#232e39; --axis:#73879b; --curve:#72a9ff; --ghost:#5a6876;
+  --p:#ff7d5e; --q:#4fcf8e; --line:#26313c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11161c; --card:#19212a; --ink:#e5ecf2; --muted:#8a9aa9;
+  --grid:#232e39; --axis:#73879b; --curve:#72a9ff; --ghost:#5a6876;
+  --p:#ff7d5e; --q:#4fcf8e; --line:#26313c; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--jp);font-size:15px;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:18px 32px;display:flex;flex-direction:column;gap:14px}
+header h1{margin:0;font-size:1.35rem;font-weight:900;letter-spacing:.02em}
+header p{margin:2px 0 0;color:var(--muted);font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:700 .85rem var(--jp);min-width:2.4em;padding:.35em .55em;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--curve);border-color:var(--curve);color:var(--paper)}
+.chip.free{padding-inline:.8em}
+.chip:focus-visible,.btn:focus-visible{outline:2px solid var(--curve);outline-offset:2px}
+.main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.main{grid-template-columns:1fr}}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+canvas{display:block;width:100%;aspect-ratio:1/1;max-width:100%}
+.panel{display:flex;flex-direction:column;gap:14px;min-width:0}
+.q-title{font-size:.85rem;color:var(--muted);font-weight:700}
+.q-title b{color:var(--ink)}
+.formula{font-family:var(--math);font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.2;white-space:nowrap;overflow-x:auto;padding:.2em 0}
+.formula i{font-style:italic}
+.formula .opt{display:inline;transition:opacity .4s}
+.formula.collapsed .opt{display:none}
+.num{display:inline-block;min-width:.6em;text-align:center;border-radius:6px;padding:0 .08em;transition:background .25s}
+.num.p{color:var(--p)} .num.q{color:var(--q)}
+.num.zero{opacity:.45}
+.num.pulse{animation:pulse .55s}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.caption{min-height:4.8em;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.7em .9em;font-weight:700}
+.caption small{display:block;font-weight:500;color:var(--muted);margin-top:.2em}
+.caption .p{color:var(--p)} .caption .q{color:var(--q)}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:700 .95rem var(--jp);padding:.55em 1.1em;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--curve);border-color:var(--curve);color:var(--paper)}
+.btn[aria-pressed="true"]{border-color:var(--curve);color:var(--curve)}
+.ans{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.8em 1em;font-variant-numeric:tabular-nums}
+.ans dt{color:var(--muted);font-weight:700;font-size:.85rem;align-self:center}
+.ans dd{margin:0;font-family:var(--math);font-size:1.25rem}
+.ans dd .blank{color:var(--ghost)}
+.free-panel{display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.8em 1em}
+.free-panel label{display:grid;grid-template-columns:5.5em 1fr 2.5em;align-items:center;gap:8px;font-weight:700;font-size:.9rem}
+.free-panel output{font-family:var(--math);font-size:1.1rem;text-align:right;font-variant-numeric:tabular-nums}
+.free-panel input[type=range]{width:100%}
+.free-panel select{font:inherit;padding:.2em}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--muted);padding:4px 6px 0}
+.legend span::before{content:"";display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px;background:var(--c)}
+.legend .dash::before{background:repeating-linear-gradient(90deg,var(--c) 0 4px,transparent 4px 7px)}
+@media (prefers-reduced-motion:reduce){.num.pulse{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>放物線の平行移動</h1>
+    <p>式の中に p と q が「生まれる」と、グラフがそのぶん動く。1マスずつ見てみよう。</p>
+  </header>
+
+  <nav class="chips" id="chips" aria-label="問題を選ぶ"></nav>
+
+  <div class="main">
+    <div class="stage">
+      <canvas id="cv" aria-label="放物線のグラフ"></canvas>
+      <div class="legend">
+        <span class="dash" style="--c:var(--ghost)">もとの放物線</span>
+        <span style="--c:var(--curve)">移動後の放物線</span>
+        <span style="--c:var(--p)">x軸方向の移動</span>
+        <span style="--c:var(--q)">y軸方向の移動</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="q-title" id="qtitle"></div>
+      <div class="formula collapsed" id="formula" aria-live="polite">
+        <i>y</i> = <span id="fa"></span><span class="opt">(</span><i>x</i><span class="opt"> <span id="fps"></span> <span class="num p" id="fpn"></span>)</span>²<span class="opt"> <span id="fqs"></span> <span class="num q" id="fqn"></span></span>
+      </div>
+      <div class="caption" id="caption"></div>
+
+      <div class="controls" id="playControls">
+        <button class="btn primary" id="playBtn">▶ 再生</button>
+        <button class="btn" id="slowBtn" aria-pressed="false">ゆっくり</button>
+      </div>
+
+      <div class="free-panel" id="freePanel" hidden>
+        <label>a（開き方）<select id="sa"><option>2</option><option selected>1</option><option>0.5</option><option>-0.5</option><option>-1</option><option>-2</option></select><span></span></label>
+        <label><span>p（左右）</span><input type="range" id="sp" min="-5" max="5" step="1" value="0"><output id="op">0</output></label>
+        <label><span>q（上下）</span><input type="range" id="sq" min="-5" max="5" step="1" value="0"><output id="oq">0</output></label>
+      </div>
+
+      <dl class="ans" id="ans">
+        <dt>x軸方向</dt><dd id="a1"></dd>
+        <dt>y軸方向</dt><dd id="a2"></dd>
+        <dt>頂点</dt><dd id="a3"></dd>
+        <dt>軸</dt><dd id="a4"></dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROBS=[[1,2,1],[-1,-3,2],[2,1,-2],[-2,-2,-1],[.5,4,3],[-.5,-4,-2],[1,-1,4],[-1,3,-3],[2,-3,1],[-2,2,-2],
+[.5,-2,3],[-.5,1,-4],[1,4,-1],[1,0,3],[-2,0,-2],[.5,0,4],[-1,3,0],[2,-2,0],[-.5,4,0],[1,0,0]];
+const $=id=>document.getElementById(id);
+const M='−';
+const st={a:1,P:2,Q:1,cur:{p:0,q:0},dp:0,dq:0,axis:false,ans:false,free:false,idx:0};
+let token=0, slow=false;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function fA(a){return a===1?'':a===-1?M:(a<0?M:'')+Math.abs(a)}
+function signed(n){return n>0?'+'+n:n<0?M+Math.abs(n):'0'}
+function plain(n){return n<0?M+Math.abs(n):''+n}
+
+/* 式の表示 */
+function renderFormula(pulse){
+  $('fa').textContent=fA(st.a);
+  $('fps').textContent=st.dp<0?'+':M;
+  $('fpn').textContent=Math.abs(st.dp);
+  $('fqs').textContent=st.dq<0?M:'+';
+  $('fqn').textContent=Math.abs(st.dq);
+  $('fpn').classList.toggle('zero',st.dp===0);
+  $('fqn').classList.toggle('zero',st.dq===0);
+  if(pulse){const el=$(pulse);el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}
+}
+function renderAns(){
+  const b='<span class="blank">（　　）</span>';
+  const s=st.ans;
+  $('a1').innerHTML=s?signed(st.P)+(st.P? (st.P>0?'（右へ）':'（左へ）'):'（動かない）'):b;
+  $('a2').innerHTML=s?signed(st.Q)+(st.Q? (st.Q>0?'（上へ）':'（下へ）'):'（動かない）'):b;
+  $('a3').innerHTML=s?`( ${plain(st.P)} , ${plain(st.Q)} )`:b;
+  $('a4').innerHTML=s?`<i>x</i> = ${plain(st.P)}`:b;
+}
+function cap(html,sub){$('caption').innerHTML=html+(sub?`<small>${sub}</small>`:'')}
+
+/* グラフ描画 */
+const cv=$('cv'),ctx=cv.getContext('2d');
+function col(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function draw(){
+  const dpr=window.devicePixelRatio||1, size=cv.clientWidth;
+  if(!size)return;
+  if(cv.width!==Math.round(size*dpr)){cv.width=Math.round(size*dpr);cv.height=Math.round(size*dpr)}
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const R=8,s=size/(2*R),X=x=>size/2+x*s,Y=y=>size/2-y*s;
+  const C={card:col('--card'),grid:col('--grid'),axis:col('--axis'),curve:col('--curve'),ghost:col('--ghost'),p:col('--p'),q:col('--q'),ink:col('--ink'),muted:col('--muted')};
+  ctx.fillStyle=C.card;ctx.fillRect(0,0,size,size);
+  ctx.lineWidth=1;ctx.strokeStyle=C.grid;
+  for(let i=-R;i<=R;i++){ctx.beginPath();ctx.moveTo(X(i),0);ctx.lineTo(X(i),size);ctx.stroke();ctx.beginPath();ctx.moveTo(0,Y(i));ctx.lineTo(size,Y(i));ctx.stroke()}
+  ctx.strokeStyle=C.axis;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(0,Y(0));ctx.lineTo(size,Y(0));ctx.moveTo(X(0),0);ctx.lineTo(X(0),size);ctx.stroke();
+  const fs=Math.max(10,s*.42);
+  ctx.fillStyle=C.muted;ctx.font=`${fs}px "STIX Two Text",serif`;ctx.textAlign='center';ctx.textBaseline='top';
+  for(let i=-R+1;i<R;i++){if(i&&i%2===0){ctx.fillText(plain(i),X(i),Y(0)+3)}}
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let i=-R+1;i<R;i++){if(i&&i%2===0){ctx.fillText(plain(i),X(0)-4,Y(i))}}
+  ctx.font=`italic ${fs*1.2}px "STIX Two Text",serif`;ctx.fillStyle=C.ink;
+  ctx.textAlign='right';ctx.fillText('x',size-4,Y(0)-fs*.8);
+  ctx.textAlign='left';ctx.fillText('y',X(0)+5,fs*.7);
+  ctx.textAlign='right';ctx.fillText('O',X(0)-4,Y(0)+fs*.7);
+
+  const curve=(p,q,color,w,dash)=>{
+    ctx.save();ctx.beginPath();ctx.rect(0,0,size,size);ctx.clip();
+    ctx.strokeStyle=color;ctx.lineWidth=w;ctx.setLineDash(dash||[]);ctx.beginPath();
+    let first=true;
+    for(let x=-R-1;x<=R+1;x+=.05){const y=st.a*(x-p)**2+q;if(Math.abs(y)>R*3){first=true;continue}
+      if(first){ctx.moveTo(X(x),Y(y));first=false}else ctx.lineTo(X(x),Y(y))}
+    ctx.stroke();ctx.restore();
+  };
+  curve(0,0,C.ghost,2,[6,5]);
+  const {p,q}=st.cur;
+  if(st.axis){ctx.save();ctx.strokeStyle=C.curve;ctx.globalAlpha=.7;ctx.setLineDash([4,4]);ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(X(p),0);ctx.lineTo(X(p),size);ctx.stroke();ctx.restore();
+    ctx.fillStyle=C.curve;ctx.font=`700 ${fs*1.05}px "Zen Kaku Gothic New",sans-serif`;ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText('軸 x = '+plain(st.P),X(p)+5,6)}
+  curve(p,q,C.curve,3.2);
+  const arrow=(x1,y1,x2,y2,color)=>{
+    const len=Math.hypot(x2-x1,y2-y1)*s;if(len<4)return;
+    const ax=X(x1),ay=Y(y1),bx=X(x2),by=Y(y2),ang=Math.atan2(by-ay,bx-ax),h=Math.min(12,len*.6);
+    ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=3.5;ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx-Math.cos(ang)*h*.6,by-Math.sin(ang)*h*.6);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx-h*Math.cos(ang-.45),by-h*Math.sin(ang-.45));ctx.lineTo(bx-h*Math.cos(ang+.45),by-h*Math.sin(ang+.45));ctx.closePath();ctx.fill();
+  };
+  arrow(0,0,p,0,C.p);
+  arrow(p,0,p,q,C.q);
+  ctx.fillStyle=C.ghost;ctx.beginPath();ctx.arc(X(0),Y(0),4,0,7);ctx.fill();
+  ctx.fillStyle=C.card;ctx.beginPath();ctx.arc(X(p),Y(q),7.5,0,7);ctx.fill();
+  ctx.fillStyle=C.curve;ctx.beginPath();ctx.arc(X(p),Y(q),5.5,0,7);ctx.fill();
+  if(st.ans){ctx.fillStyle=C.ink;ctx.font=`700 ${fs*1.15}px "STIX Two Text",serif`;
+    ctx.textAlign=p>4?'right':'left';ctx.textBaseline=st.a>0?'top':'bottom';
+    ctx.fillText(`(${plain(st.P)}, ${plain(st.Q)})`,X(p)+(p>4?-10:10),Y(q)+(st.a>0?8:-8))}
+}
+
+/* アニメーション */
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+function tween(key,to,ms,tk){return new Promise(res=>{const from=st.cur[key],t0=performance.now();
+  ms=reduce?1:ms*(slow?1.8:1);
+  (function f(now){if(tk!==token)return res(false);const t=Math.min(1,(now-t0)/ms);st.cur[key]=from+(to-from)*ease(t);draw();t<1?requestAnimationFrame(f):res(true)})(t0)})}
+function wait(ms,tk){return new Promise(r=>setTimeout(()=>r(tk===token),reduce?Math.min(ms,500):ms*(slow?1.8:1)))}
+
+function setupProblem(i){
+  token++;st.free=false;st.idx=i;[st.a,st.P,st.Q]=PROBS[i];
+  st.cur={p:0,q:0};st.dp=0;st.dq=0;st.axis=false;st.ans=false;
+  $('formula').classList.add('collapsed');
+  $('freePanel').hidden=true;$('playControls').hidden=false;
+  $('qtitle').innerHTML=`問${i+1}　<b>y = ${fA(st.a)}x² → ${target()}</b>`;
+  cap('▶ 再生を押すと、もとの放物線から動きはじめます。','頂点が原点の「基本形」からスタート。');
+  $('playBtn').textContent='▶ 再生';
+  renderFormula();renderAns();draw();markChip();
+}
+function target(){
+  const a=fA(st.a);let s;
+  if(st.P===0)s=`y = ${a}x²`;else s=`y = ${a}(x ${st.P>0?M:'+'} ${Math.abs(st.P)})²`;
+  if(st.Q)s+=` ${st.Q>0?'+':M} ${Math.abs(st.Q)}`;
+  return s;
+}
+async function play(){
+  const tk=++token;
+  st.cur={p:0,q:0};st.dp=0;st.dq=0;st.axis=false;st.ans=false;
+  $('formula').classList.add('collapsed');renderFormula();renderAns();draw();
+  $('playBtn').textContent='↺ もう一度';
+  cap(`① もとの放物線　y = ${fA(st.a)}x²`,'頂点は原点 (0, 0)。ここからスタート。');
+  if(!await wait(1600,tk))return;
+  $('formula').classList.remove('collapsed');renderFormula();
+  cap('② 同じ式を、こう書き直せる','( ) の中の 0 と、うしろの 0。どちらも「0マス動いた」という意味。グラフはまだ同じ場所。');
+  if(!await wait(2600,tk))return;
+
+  // p
+  if(st.P===0){
+    cap('③ ( ) の中は 0 のまま','x軸方向には動きません。');
+    renderFormula('fpn');if(!await wait(1800,tk))return;
+  }else{
+    const d=Math.sign(st.P),word=d>0?'右':'左',sg=d>0?M:'+';
+    cap(`③ ( ) の中に数が生まれる：<span class="p">x ${sg} ●</span>`,`符号に注意！ ( ) の中が「${sg}」なら <b>${word}</b> へ動く。`);
+    if(!await wait(1500,tk))return;
+    for(let k=1;k<=Math.abs(st.P);k++){
+      st.dp=d*k;renderFormula('fpn');
+      cap(`③ <span class="p">x ${sg} ${k}</span> → ${word}へ <span class="p">${k}</span> マス`,`( ) の中が「${sg}」なら ${word}へ。`);
+      if(!await wait(350,tk))return;
+      if(!await tween('p',d*k,750,tk))return;
+      if(!await wait(300,tk))return;
+    }
+    if(!await wait(700,tk))return;
+  }
+
+  // q
+  if(st.Q===0){
+    cap('④ うしろの数は 0 のまま','y軸方向には動きません。');
+    renderFormula('fqn');if(!await wait(1800,tk))return;
+  }else{
+    const d=Math.sign(st.Q),word=d>0?'上':'下',sg=d>0?'+':M;
+    cap(`④ うしろに数が生まれる：<span class="q">${sg} ●</span>`,`こちらは見たまま。「${sg}」なら <b>${word}</b> へ動く。`);
+    if(!await wait(1500,tk))return;
+    for(let k=1;k<=Math.abs(st.Q);k++){
+      st.dq=d*k;renderFormula('fqn');
+      cap(`④ <span class="q">${sg} ${k}</span> → ${word}へ <span class="q">${k}</span> マス`,`うしろが「${sg}」なら ${word}へ。`);
+      if(!await wait(350,tk))return;
+      if(!await tween('q',d*k,750,tk))return;
+      if(!await wait(300,tk))return;
+    }
+    if(!await wait(700,tk))return;
+  }
+
+  st.axis=true;st.ans=true;renderAns();draw();
+  cap(`⑤ 完成！　頂点 ( ${plain(st.P)} , ${plain(st.Q)} )、軸 x = ${plain(st.P)}`,'形（開き方）は変わらず、場所だけが動いた。');
+}
+
+/* 自由モード */
+function freeMode(){
+  token++;st.free=true;
+  $('freePanel').hidden=false;$('playControls').hidden=true;
+  $('formula').classList.remove('collapsed');
+  $('qtitle').innerHTML='<b>自由に動かす</b>　スライダーで p と q を変えてみよう';
+  markChip();updateFree();
+}
+function updateFree(){
+  st.a=parseFloat($('sa').value);st.P=st.dp=parseInt($('sp').value);st.Q=st.dq=parseInt($('sq').value);
+  st.cur={p:st.P,q:st.Q};st.axis=true;st.ans=true;
+  $('op').textContent=plain(st.P);$('oq').textContent=plain(st.Q);
+  renderFormula();renderAns();draw();
+  const h=st.P?`${st.P>0?'右':'左'}へ <span class="p">${Math.abs(st.P)}</span>`:'左右には動かない';
+  const v=st.Q?`${st.Q>0?'上':'下'}へ <span class="q">${Math.abs(st.Q)}</span>`:'上下には動かない';
+  cap(`${h}、${v}`,`頂点 ( ${plain(st.P)} , ${plain(st.Q)} )　軸 x = ${plain(st.P)}`);
+}
+
+/* 問題ボタン */
+const chips=$('chips');
+PROBS.forEach((_,i)=>{const b=document.createElement('button');b.className='chip';b.textContent=i+1;b.setAttribute('aria-label','問'+(i+1));b.onclick=()=>setupProblem(i);chips.appendChild(b)});
+const fb=document.createElement('button');fb.className='chip free';fb.textContent='自由に動かす';fb.onclick=freeMode;chips.appendChild(fb);
+function markChip(){[...chips.children].forEach((c,i)=>c.setAttribute('aria-pressed',st.free?String(i===PROBS.length):String(i===st.idx)))}
+
+$('playBtn').onclick=play;
+$('slowBtn').onclick=()=>{slow=!slow;$('slowBtn').setAttribute('aria-pressed',String(slow))};
+['sa','sp','sq'].forEach(id=>$(id).addEventListener('input',updateFree));
+
+new ResizeObserver(draw).observe(cv);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+document.fonts&&document.fonts.ready.then(draw);
+setupProblem(0);
+</script>
+</body>
+</html>
