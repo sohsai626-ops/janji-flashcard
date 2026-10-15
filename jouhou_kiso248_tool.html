@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>情報処理 基礎用語248</title>
+<style>
+:root{--p:#6b46c1;--p2:#8b5cf6;--pl:#f3eefe;--bg:#faf8ff;--tx:#222;--mu:#666;--ok:#16a34a;--ng:#dc2626;--bd:#ddd6f3}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--tx);-webkit-text-size-adjust:100%}
+.top{position:sticky;top:0;z-index:10}
+header{background:var(--p);color:#fff;padding:12px 16px}
+header h1{font-size:17px;margin:0}
+.badge{font-size:11px;background:rgba(255,255,255,.22);padding:2px 7px;border-radius:9px;margin-left:6px;vertical-align:middle}
+nav{display:flex;background:#fff;border-bottom:1px solid var(--bd)}
+nav button{flex:1;border:0;background:none;padding:11px 4px;font-size:14px;color:var(--mu);border-bottom:3px solid transparent;font-weight:600}
+nav button.on{color:var(--p);border-bottom-color:var(--p)}
+.tab{display:none;padding:16px;max-width:720px;margin:0 auto}
+.tab.show{display:block}
+.sub{display:none}
+.sub.show{display:block}
+.card{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+.card h3{margin:0 0 10px;font-size:15px;color:var(--p)}
+.chk{display:flex;align-items:flex-start;gap:8px;padding:7px 2px;border-bottom:1px solid #f0edf8;font-size:14px}
+.chk:last-child{border-bottom:0}
+.chk input{width:18px;height:18px;margin-top:1px;accent-color:var(--p)}
+.chk small{color:var(--mu);margin-left:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.rad{display:flex;flex-wrap:wrap;gap:8px}
+.rad label{flex:1;min-width:100px;border:1px solid var(--bd);border-radius:10px;padding:9px;text-align:center;font-size:14px}
+.rad input{display:none}
+.rad label:has(input:checked){background:var(--p);color:#fff;border-color:var(--p)}
+button{font-family:inherit;cursor:pointer}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:700;background:var(--p);color:#fff;margin-top:8px}
+.btn.sub2{background:#fff;color:var(--p);border:2px solid var(--p)}
+.sm{border:1px solid var(--bd);background:#fff;border-radius:8px;padding:6px 12px;font-size:13px;color:var(--p)}
+.prog{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--mu);margin-bottom:10px}
+.bar{height:6px;background:#e9e4f7;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--p2)}
+.meta{font-size:12px;color:var(--mu);margin-bottom:8px}
+.q{font-size:18px;line-height:1.7;min-height:90px}
+.ans{font-size:24px;font-weight:800;color:var(--p);text-align:center;padding:14px 0 6px}
+.judge{display:flex;gap:10px}
+.judge button{flex:1;border:0;border-radius:12px;padding:15px;font-size:17px;font-weight:700;color:#fff}
+.bok{background:var(--ok)}.bng{background:var(--ng)}
+.ch{display:block;width:100%;text-align:left;border:2px solid var(--bd);background:#fff;border-radius:12px;padding:13px;font-size:16px;margin-bottom:8px}
+.ch.ok{border-color:var(--ok);background:#ecfdf3}
+.ch.ng{border-color:var(--ng);background:#fef2f2}
+.fb{text-align:center;font-weight:800;font-size:18px;margin:6px 0}
+.spk{border:0;background:var(--pl);border-radius:8px;padding:5px 10px;font-size:15px}
+.wl{list-style:none;padding:0;margin:0}
+.wl li{padding:9px 2px;border-bottom:1px solid #f0edf8;font-size:14px;line-height:1.5}
+.wl b{color:var(--p)}
+.wl small{color:var(--mu)}
+.score{font-size:40px;font-weight:800;text-align:center;color:var(--p)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;padding:40px 14px}
+.modal.show{display:block}
+.modal .card{max-height:80vh;overflow:auto}
+input[type=search],input[type=text],select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;font-size:16px;font-family:inherit}
+.ut{font-size:14px;font-weight:700;color:#fff;background:var(--p2);padding:6px 10px;border-radius:8px;margin:16px 0 6px}
+.note{font-size:12px;color:var(--mu);line-height:1.6}
+/* range picker */
+.rs{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rs .cnt{font-size:22px;font-weight:800;color:var(--p)}
+.rs .txt{font-size:12px;color:var(--mu);margin-top:2px;word-break:break-all}
+#rp{display:none;position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto;padding:0 0 90px}
+#rp.show{display:block}
+#rp .rph{position:sticky;top:0;background:var(--p);color:#fff;padding:12px 16px;z-index:2;display:flex;justify-content:space-between;align-items:center}
+#rp .rph b{font-size:16px}
+#rp .rpb{padding:14px 16px;max-width:720px;margin:0 auto}
+.uh{display:flex;justify-content:space-between;align-items:center;margin:18px 0 8px;font-weight:700;color:var(--p);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(5,1fr)}}
+.nb{border:2px solid var(--bd);background:#fff;border-radius:10px;padding:6px 4px;text-align:center;font-size:11px;color:var(--mu);line-height:1.3;min-height:52px}
+.nb b{display:block;font-size:17px;color:var(--tx)}
+.nb.on{background:var(--p);border-color:var(--p);color:#fff}
+.nb.on b{color:#fff}
+.rpf{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--bd);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:61;display:none}
+#rp.show + .rpf{display:block}
+.rpf .btn{margin:0;max-width:720px;margin:0 auto}
+/* print preview */
+#printArea{display:none;background:#fff;color:#000;max-width:720px;margin:0 auto 30px;padding:16px;border:1px solid var(--bd)}
+#printArea.show{display:block}
+.ph h2{font-size:17px;margin:0 0 4px}
+.ph .r{font-size:11px;margin-bottom:4px}
+.ph .nm{font-size:12px;text-align:right;margin-bottom:6px}
+table.pt{width:100%;border-collapse:collapse;font-size:12px}
+table.pt th,table.pt td{border:1px solid #555;padding:5px 6px;vertical-align:middle}
+table.pt th{background:#eee}
+table.pt td.n{width:30px;text-align:center}
+table.pt td.a{width:34%}
+table.pt tr{page-break-inside:avoid}
+.key{margin-top:24px}
+.key h3{font-size:15px;margin:0 0 6px}
+.kl{columns:3;font-size:11px;line-height:1.7}
+.kl div{break-inside:avoid}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;border:0;padding:0;max-width:none;margin:0}
+  .key{page-break-before:always;margin-top:0}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <header><h1>情報処理 基礎用語248<span class="badge">全商 v1.1</span></h1></header>
+  <nav>
+    <button data-t="tQuiz" class="on">出題</button>
+    <button data-t="tPrint">プリント</button>
+    <button data-t="tWeak">苦手</button>
+    <button data-t="tList">一覧</button>
+  </nav>
+</div>
+
+<!-- ===== 出題タブ ===== -->
+<div id="tQuiz" class="tab show">
+
+  <div id="qSet" class="sub show">
+    <div class="card">
+      <h3>出題範囲</h3>
+      <div class="rs"><div><div class="cnt"><span class="selCnt">248</span>語</div><div class="txt selTxt"></div></div>
+      <button class="sm" onclick="openRP()" style="font-size:15px;padding:10px 14px">範囲を選ぶ</button></div>
+    </div>
+    <div class="card">
+      <h3>出題順</h3>
+      <div class="rad">
+        <label><input type="radio" name="qord" value="shuffle" checked>全体シャッフル</label>
+        <label><input type="radio" name="qord" value="unit">単元内シャッフル</label>
+        <label><input type="radio" name="qord" value="seq">番号順</label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>答え方</h3>
+      <div class="rad">
+        <label><input type="radio" name="qmode" value="flip" checked>めくって自己採点</label>
+        <label><input type="radio" name="qmode" value="choice">4択</label>
+      </div>
+      <label class="chk" style="margin-top:8px"><input type="checkbox" id="autoSpk"><span>問題を自動で読み上げる</span></label>
+    </div>
+    <div class="card">
+      <h3>問題数</h3>
+      <select id="qCount">
+        <option value="0">選んだ範囲すべて</option>
+        <option value="10">10問</option>
+        <option value="20" selected>20問</option>
+        <option value="30">30問</option>
+        <option value="50">50問</option>
+      </select>
+    </div>
+    <button class="btn" id="qStart">スタート</button>
+  </div>
+
+  <div id="qPlay" class="sub">
+    <div class="prog">
+      <span id="pNum"></span>
+      <span>
+        <button class="sm" id="pWrong">間違い 0</button>
+        <button class="sm" id="pQuit">中断</button>
+      </span>
+    </div>
+    <div class="bar"><i id="pBar"></i></div>
+    <div class="card">
+      <div class="meta" id="pMeta"></div>
+      <div class="q" id="pQ"></div>
+      <div style="text-align:right"><button class="spk" id="pSpk">🔊 読み上げ</button></div>
+    </div>
+    <div id="pArea"></div>
+  </div>
+
+  <div id="qRes" class="sub">
+    <div class="card">
+      <div class="score" id="rScore"></div>
+      <div style="text-align:center;color:var(--mu)" id="rSub"></div>
+    </div>
+    <div class="card" id="rWrongCard">
+      <h3>間違えた用語</h3>
+      <ul class="wl" id="rWrong"></ul>
+    </div>
+    <button class="btn" id="rRetry">間違いだけもう一度</button>
+    <button class="btn sub2" id="rBack">設定に戻る</button>
+  </div>
+
+</div>
+
+<!-- ===== プリントタブ ===== -->
+<div id="tPrint" class="tab">
+  <div class="card">
+      <h3>出題範囲</h3>
+      <div class="rs"><div><div class="cnt"><span class="selCnt">248</span>語</div><div class="txt selTxt"></div></div>
+      <button class="sm" onclick="openRP()" style="font-size:15px;padding:10px 14px">範囲を選ぶ</button></div>
+    </div>
+  <div class="card">
+    <h3>出題順</h3>
+    <div class="rad">
+      <label><input type="radio" name="pord" value="shuffle" checked>全体シャッフル</label>
+      <label><input type="radio" name="pord" value="unit">単元内シャッフル</label>
+      <label><input type="radio" name="pord" value="seq">番号順</label>
+    </div>
+  </div>
+  <div class="card">
+    <h3>問題数・設定</h3>
+    <select id="pCount">
+      <option value="0">選んだ範囲すべて</option>
+      <option value="10">10問</option>
+      <option value="20" selected>20問</option>
+      <option value="30">30問</option>
+      <option value="40">40問</option>
+      <option value="50">50問</option>
+    </select>
+    <div style="height:8px"></div>
+    <input type="text" id="pTitle" value="情報処理 基礎用語テスト">
+    <label class="chk" style="margin-top:6px"><input type="checkbox" id="pKey" checked><span>解答ページを付ける（2枚目）</span></label>
+  </div>
+  <button class="btn" id="pMake">プリントを作る（シャッフル）</button>
+  <button class="btn sub2" id="pDo">印刷する</button>
+  <p class="note">「プリントを作る」を押すたびに問題が並び替わります。下のプレビューを確認してから「印刷する」を押してください。</p>
+</div>
+
+<!-- ===== 苦手タブ ===== -->
+<div id="tWeak" class="tab">
+  <div class="card">
+    <h3>苦手ランキング</h3>
+    <p class="note">出題モードで間違えた回数の多い順です（この端末に保存されます）。</p>
+    <ul class="wl" id="wList"></ul>
+  </div>
+  <button class="btn" id="wStart">苦手上位から出題（最大20問）</button>
+  <button class="btn sub2" id="wReset">ランキングをリセット</button>
+</div>
+
+<!-- ===== 一覧タブ ===== -->
+<div id="tList" class="tab">
+  <input type="search" id="lSearch" placeholder="用語・説明文で検索">
+  <div id="lBody"></div>
+</div>
+
+<!-- 間違いリスト（途中確認用） -->
+<div class="modal" id="mWrong">
+  <div class="card">
+    <h3>今回の間違い</h3>
+    <ul class="wl" id="mList"></ul>
+    <button class="btn" id="mClose">閉じる</button>
+  </div>
+</div>
+
+<!-- 範囲選択画面 -->
+<div id="rp">
+  <div class="rph"><b>範囲を選ぶ</b><span>選択中 <b id="rpCnt">0</b>語</span></div>
+  <div class="rpb">
+    <div class="card">
+      <h3>番号を入力して選ぶ</h3>
+      <input type="text" id="rpIn" placeholder="例：1-30, 45, 100-120" inputmode="text">
+      <div class="row" style="margin-top:8px">
+        <button class="sm" id="rpSet">この番号だけにする</button>
+        <button class="sm" id="rpAdd">追加する</button>
+      </div>
+      <div class="row" style="margin:4px 0 0">
+        <button class="sm" id="rpAll">全部選ぶ</button>
+        <button class="sm" id="rpNone">全部はずす</button>
+      </div>
+      <p class="note">下の番号をタップしても1つずつ選べます（もう一度タップで解除）。</p>
+    </div>
+    <div id="rpGrid"></div>
+  </div>
+</div>
+<div class="rpf"><button class="btn" id="rpOk">決定</button></div>
+
+<div id="printArea"></div>
+
+<script>
+const RAW = `
+1|データ|事実や事象を記録し、文字や数値などのまとまりとして表現したもの。
+2|情報|事実の内容や様子を示し、行動や意思決定の判断材料となるもの。文字・図・画像・音声・映像などで表現される。
+3|情報処理|データを集め、整理・計算などの加工を行い、必要な新しい情報を得る手続き。
+4|情報通信技術（ICT）|コンピュータなどの電子機器を使い、情報を処理・伝達する技術の総称。
+5|高度情報通信社会|情報技術の発展によって、経済発展と社会課題の解決を両立させ、人間中心の安心・安全で持続可能な社会。
+6|情報システム|コンピュータや通信機器など、複数の機器や機能が連係して情報処理を行う仕組み。
+7|サーバ|他のコンピュータなどからの要求に対して、サービスを提供するコンピュータ。
+8|データベース|大量のデータを一元的に管理し、利用しやすい形に整理・統合したデータの集まり。
+9|ビッグデータ|従来のデータベースソフトウェアなどでは記録・保管・解析が難しいほど、多様で大量なデータの集合。
+10|クラウドコンピューティング|インターネットなどを通じて、サーバやソフトウェアなどの機能を必要に応じて利用できるサービス形態。
+11|機械学習|コンピュータに学習データを与え、データから規則性やパターンを自動的に学習させる手法。
+12|人工知能（AI）|人間の知的な働きをコンピュータで実現するための技術。機械学習や深層学習などを利用する。
+13|データマイニング|蓄積された大量のデータをAIや統計学などで分析し、新たな規則性や傾向、未知の知見を得ること。
+14|バーコード|横方向に並んだ直線の太さや間隔によってデータを表したもの。
+15|非接触型IC|ICチップとアンテナを内蔵し、電波を利用してデータを送受信するICカードなどの技術。
+16|GPS|人工衛星からの電波を受信し、地球上の位置（経度・緯度・高度）を測定できるシステム。
+17|インターネットバンキング|パソコンやスマートフォンなどから、インターネット経由で銀行などの金融サービスを利用すること。
+18|オンラインショッピング|インターネット上のショッピングサイトで商品を注文・購入する仕組み。
+19|電子発注システム（EOS）|企業間の受発注業務を、オンラインで接続されたコンピュータを用いて効率的に行うシステム。
+20|電子商取引（EC）|インターネットなどの電子的なネットワークを利用して、商品やサービスを売買する仕組み。
+21|仮想現実（VR）|CGや音響技術などを利用し、人工的な空間や物体を現実のように体験させる技術。
+22|拡張現実（AR）|現実の風景にCGなどのデジタル情報を重ね合わせ、現実の認識を拡張する技術。
+23|複合現実（MR）|仮想世界と現実世界を組み合わせて融合させ、相互に作用させる技術。
+24|IoT|さまざまな物をインターネットに接続し、情報をやり取りする仕組み。
+25|SNS|インターネットを利用して会員同士が交流し、社会的なつながりを構築するサービス。
+26|ユーザインタフェース|アイコンやボタンなど、利用者がコンピュータなどを操作するための接点。CUIやGUIがある。
+27|ユニバーサルデザイン|年齢・性別・国籍・障がいの有無などに関係なく、すべての人が使いやすい製品や環境を設計すること。
+28|ユーザビリティ|機器・ソフトウェア・Webページなどの使いやすさや使い勝手を表す概念。
+29|アクセシビリティ|障がいのある人や高齢者なども含め、誰もが情報やサービスを問題なく利用できる度合い。
+30|ピクトグラム|情報や指示、案内などを単純化した絵や図形で表したもの。
+31|可読性|文章の読みやすさ。素早く正確に読み取れるか、長文でも疲れにくいかなどが重要となる。
+32|視認性|文字や図形を見たとき、瞬時に認識できるか、見やすいかを表す性質。
+33|判読性|文字や文章の意味が正確に伝わり、他の文字と区別しやすく、誤読が少ない性質。
+34|フォント|文字の書体やデザインのこと。
+35|ポイント|文字の大きさを表す単位。一般に「pt」を用いる。
+36|色相|赤・青・黄など、色合いの種類の違い。
+37|明度|色の明るさの度合い。
+38|彩度|色の鮮やかさの度合い。
+39|色彩|色や色合い、彩りのこと。
+40|色相環|代表的な色相を円環状に並べたもの。
+41|補色|色相環で正反対に位置する色の組み合わせ。
+42|ドット|プリンタやイメージスキャナなどで画像を表現する、色の情報を持たないデジタルデータの最小単位の点。
+43|画素（ピクセル）|ディスプレイで画像などを表示する、色の情報を持ったデジタルデータの最小単位の点。
+44|dpi|1インチ当たりのドット数を表す解像度の単位。
+45|ppi|1インチ当たりのピクセル数を表す解像度の単位。
+46|光の三原色|ディスプレイなどで光を発して表現する色の基本となる、R（赤）・G（緑）・B（青）の3色。
+47|色の三原色|印刷物などで用いられる、C（シアン）・M（マゼンタ）・Y（イエロー）の3色。
+48|情報モラル|情報社会で情報を扱う人が守るべき正しい行動の基準や考え方、態度。
+49|情報化社会の光と影|情報化によって利便性やつながりが拡大する一方、リスクや負担も増えること。
+50|フィッシング詐欺|偽のメールやWebサイトを使い、カード番号や暗証番号などの個人情報を不正に入手する詐欺行為。
+51|ワンクリック詐欺|広告やURLを一度クリックしただけで、利用していないサービスの料金などを不当に請求する詐欺行為。
+52|有害サイト|青少年の健全な育成を妨げる情報や、犯罪につながる情報などを掲載したWebサイト。
+53|ユーザID|コンピュータシステムなどで利用者を識別するための番号や文字列。
+54|パスワード|システムなどを利用する際、本人確認のために入力する秘密の文字列など。
+55|なりすまし|他人のパスワードなどを不正に利用して侵入し、その人のふりをして活動すること。
+56|不正アクセス禁止法|権限のない者が他人のIDやパスワードなどを不正に利用し、コンピュータにアクセスする行為などを禁止する法律。
+57|プライバシー|私生活をみだりに他人に知られたり、干渉・侵害されたりせず、安心して暮らす権利。
+58|肖像権|自分の容姿の写真や映像などを、無断で撮影・公表・利用されないよう主張できる権利。
+59|個人情報保護法|個人情報を扱う事業者などに適切な管理を求め、個人の権利や利益を保護するための法律。
+60|個人識別符号|特定の個人を識別できる符号。一定の身体的特徴を変換した符号や、マイナンバーなどの公的番号が該当する。
+61|オプトイン|許可・承諾・加入・参加などの意思を相手に示すこと。
+62|オプトアウト|解除・脱退・拒否などの意思を示し、サービスの利用や情報の取り扱いを拒否すること。
+63|知的財産権|人間の創造的活動によって生み出された著作物や発明など、価値ある知的財産を保護する権利。
+64|著作権|小説・音楽・美術・映画などの創作物に対して、原則として創作と同時に自動的に発生する権利。
+65|著作権法|著作者の権利や権利の存続期間などを定め、著作物の保護を図る法律。
+66|クリエイティブ・コモンズ|著作者が自分の著作物の再利用条件を示し、適正な再利用を促進するための国際的な仕組みや活動。
+67|ハードウェア|コンピュータを構成する装置や部品のこと。
+68|入力装置|プログラムやデータをコンピュータに入力する装置。
+69|制御装置|記憶装置から命令を取り出して解読し、各装置に指示を与える装置。
+70|記憶装置|プログラムやデータを保存しておく装置。
+71|演算装置|データの四則計算や比較・判断を行う装置。
+72|出力装置|データの処理結果を画面に表示したり、印刷したりする装置。
+73|中央処理装置（CPU）|プログラムを解読して計算処理などを行い、各装置を制御するコンピュータの中心部分。
+74|主記憶装置|CPUから直接データを読み書きできる、コンピュータ本体に組み込まれた記憶装置。メモリとも呼ばれる。
+75|補助記憶装置|データやプログラムを長期間保存する記憶装置。通常、電源を切っても内容は消えない。
+76|ハードディスク装置（HDD）|磁性体を塗った円盤を高速回転させ、磁気ヘッドでデータを読み書きする装置。
+77|SSD|半導体メモリを利用した補助記憶装置。高速で、駆動部分がなく、小型・軽量で衝撃にも強い。
+78|光学ドライブ|レーザー光を使い、CD・DVD・BDなどの光ディスクにデータを読み書きする装置。
+79|USBメモリ|フラッシュメモリを内蔵した小型の補助記憶装置。
+80|SDメモリカード|電源を切っても記憶内容が消えない半導体メモリを用いた、カード型の補助記憶媒体。
+81|プロジェクタ|パソコンの画面やDVDの映像などをスクリーンや壁などに投影する装置。
+82|解像度|プリンタの印刷性能やディスプレイの表示能力などの、きめ細かさや画質の滑らかさを表す尺度で、dpiとppiの2つの指標がある。
+83|デジタルカメラ|おもに静止画像を撮影し、デジタルデータに変換して記録するカメラ。動画の撮影も可能である。
+84|スマートデバイス|既存のコンピュータ製品以外で、インターネット接続やコンピュータ機能を搭載し、ソフトウェアによる高度な情報処理を実現できる多機能端末の総称。
+85|インターフェース|各周辺装置とバスと呼ばれる伝送路を接続する部分（規格）のことで、二つの異なるものをつなぐシステムや機能である。
+86|RFID|ICタグを用い無線通信により人や物を管理するしくみ。
+87|Bluetooth|電波を利用して、数mから数十m程度の近距離間でデータ交換に利用されるインターフェース規格。
+88|HDMI|ディジタル家電やAV機器で使われる映像や音声の入出力のインターフェースの規格。
+89|USB|1つの受け口で最大127台までの周辺機器を接続できるインターフェース規格。
+90|集積回路（IC）|複数の電子回路をまとめて1つの部品として構成したもの。
+91|RAM|データの読み出しと書き込みができ、電源を切ると記憶内容が消えるメモリ。
+92|ROM|データの読み出し専用で、電源を切っても記憶内容が消えないメモリ。
+93|ビデオボード|ディスプレイに映像を出力するための機能を、拡張ボードとしてマザーボードから独立させた装置。
+94|VRAM|ビデオボードのGPUに搭載されている映像処理専用のメモリ。
+95|フラッシュメモリ|電源を切っても記憶内容が消えない不揮発性の半導体を用いて読み書きする補助記憶装置。
+96|デジタル|連続して変化する量を、一定の間隔で区切った数字や段階的な数値（離散値）で表現する概念のこと。
+97|アナログ|連続して変化する量を、時計の針の位置や音の波形などのように連続した量（連続値）で表現する概念のこと。
+98|ビット|2進数の1桁で表される情報の最小単位。
+99|バイト|2進数の8桁で表される情報の基本単位。
+100|2進数|数値を「0」と「1」の2種類の数字のみで表現したもの。
+101|基数変換|ある進数（2進数や10進数など）で表記された数値を、別の進数での表記に変換すること。
+102|ms|処理速度の単位で、1,000（千）分の1秒。
+103|μs|処理速度の単位で、1,000,000（百万）分の1秒。
+104|ns|処理速度の単位で、1,000,000,000（十億）分の1秒。
+105|ps|処理速度の単位で、1,000,000,000,000（一兆）分の1秒。
+106|fs|処理速度の単位で、1,000,000,000,000,000（千兆）分の1秒。
+107|KB|記憶容量の単位で、約1,000（千）バイト（B）。
+108|MB|記憶容量の単位で、約1,000,000（百万）バイト（B）。
+109|GB|記憶容量の単位で、約1,000,000,000（十億）バイト（B）。
+110|TB|記憶容量の単位で、約1,000,000,000,000（一兆）バイト（B）。
+111|PB|記憶容量の単位で、約1,000,000,000,000,000（千兆）バイト（B）。
+112|標本化|アナログデータをデジタルデータに変換するため、連続した値を一定の時間間隔に分割し、量として取り出すこと。
+113|量子化|標本化で取り出した量を、最も近い段階値にそろえて数値化すること。
+114|符号化|量子化した値を、2進数の「0」と「1」の組み合わせに置き換えること。
+115|ソフトウェア|プログラムやデータ、コンピュータを効率よく働かせるための操作方法などの総称。
+116|アイコン|コンピュータを操作するためのディスプレイ上の小さな絵文字。
+117|OS|ハードウェアとアプリケーションソフトウェアの間で動作し、それぞれを管理、制御するソフトウェア。
+118|アプリケーションソフトウェア|表計算ソフトウェアやワープロソフトウェアのように、特定の目的に利用するためのソフトウェア。
+119|アンインストール|コンピュータからソフトウェアを削除して、導入前の状態に戻すこと。
+120|インストール|コンピュータにソフトウェアを追加して、使用可能な状態にすること。セットアップともいう。
+121|OSS|ソフトウェアのプログラムコードを、無償で公開し、誰でもそのソフトウェアの利用、改良、再配布などが行えるソフトウェア。
+122|フリーウェア|作成者の著作権は保護されているが、使用期間に関係なく、無料で使用できるソフトウェア。
+123|シェアウェア|一定の期間は無料で試用できるが、その後も継続して使用する場合は料金を支払い、使用権を取得して利用できるソフトウェア。
+124|サイトライセンス|学校や企業といった特定の場所において、1つのソフトウェアを複数のコンピュータで使用するために一括購入する際の契約方法。
+125|デバイスドライバ|コンピュータの周辺機器を、OSが制御するためのソフトウェア。
+126|バグ|ソフトウェアのプログラムの中に、誤りや欠陥、不具合があること。
+127|パッチ|バグ（虫）の修正や小規模な更新のためのプログラム。「つぎ当て（する）」「当て布（を貼る）」などの意味を持つ英単語である。
+128|ファイル|プログラムや文書データ、画像データなどコンピュータで扱うデータのまとまり。
+129|ファイル名|データを記憶媒体に保存する際に付ける名前。
+130|テキストファイル|文字データのみで構成された文書ファイルのことで、コンピュータの機種や使用環境に関係なく利用することができる。
+131|バイナリファイル|画像や動画、音声を記録したファイルや、実行可能形式のプログラムを収めたファイルなど、テキストファイル以外のファイルのこと。
+132|フォーマット|初期化ともいい、記憶媒体を利用できるようにするための作業。
+133|フォルダ|記憶媒体にファイルを分類、整理するために作られる保管場所。
+134|拡張子|ファイルの種類を識別するために付ける、ファイル名の最後に「.」（ピリオド）で区切って表示する文字列。
+135|情報通信ネットワーク|データを伝送するために、通信回線などを利用して接続された網状のシステム。小規模なLAN、大規模なWAN、世界中をつなぎ合わせたインターネットまで、さまざまな規模と種類がある。
+136|データ通信|複数のコンピュータや周辺装置を通信ケーブルなどの有線や無線で接続し、データ処理を行うこと。
+137|アナログ回線|音声やデータを連続性のある信号でやり取りする通信回線。
+138|デジタル回線|文字や音声、画像などのデータを「ON」と「OFF」のように、2種類の電気信号の0と1で表し、データの送受信を行う通信回線。
+139|LAN|企業や学校などの建物や敷地など、特定の限られた範囲におけるネットワーク。
+140|無線LAN|通信ケーブルを使わずに、赤外線・電波・光などの無線通信を利用してデータの送受信を行うLAN。
+141|有線LAN|コンピュータやプリンタなどを、通信ケーブルで接続したLAN。セキュリティが高く、通信は安定している。
+142|WAN|地理的に遠く離れているため、移動に費用と時間がかかる地点間を結ぶ広域的な通信ネットワーク。
+143|光ファイバ|光信号を利用してデータ通信を行うための、プラスチックやガラスなどで作られた光学繊維。
+144|Wi-Fi|無線LANの一種で、国際標準規格であるIEEE802.11にもとづいて通信を行う技術。
+145|アクセスポイント|無線で端末を接続するための電波中継機器。無線LANルータを経由して、いつでもインターネットに接続することが可能になる。
+146|インターネット|世界中の企業や大学などのネットワークを、光ファイバケーブルやルータなどで接続した世界規模のネットワーク。パケット交換による障害に強い通信システム。
+147|WWW|インターネット上で提供されているハイパーテキストシステム。
+148|プロバイダ|インターネットの各種サービスを提供する接続業者。
+149|サーバ名|ホスト名とも呼ばれ、ネットワーク上におけるコンピュータの識別に使われる文字列。ドメイン名の前に記述される「www」の部分にあたる。
+150|ドメイン名|URLや電子メールアドレスの組織・団体などの所属を表す部分。
+151|IPアドレス|TCP/IPプロトコルを用いたネットワーク上で、コンピュータやルータなど、ネットワークに接続する機器に対して、それぞれが識別できるように割り当てる固有の番号。
+152|DNS|インターネット上でのコンピュータの名前にあたるドメイン名と、住所にあたるIPアドレスを互いに変換するためのしくみ。
+153|Webページ|インターネットで公開されているWebサーバ上にあり、ブラウザで閲覧可能な文書のまとまり。
+154|ブラウザ|Webページを閲覧するためのソフトウェア。
+155|URL|インターネットにおいて、HTML文書や画像などのファイルの保存場所を示すアドレス。
+156|Webサーバ|Webページを保存しておき、ブラウザからの要求に応じて通信するコンピュータ。
+157|ハイパーリンク|Webページ間を関連づけ、指定した文字や画像をクリックすると関連したWebページに移動する機能のこと。
+158|HTML|Webページの文章や画像などの構造を記述するための言語。
+159|電子メール|インターネットなどを利用して、相手と文字や画像、ファイルなどを送受信する仕組み。
+160|HTMLメール|HTMLを利用し、文字の色や大きさ、画像などを使って装飾できる電子メール。
+161|Webメール|専用のメールソフトを使わず、Webブラウザからメールを送受信する仕組み。
+162|メールサーバ|電子メールの送信・受信・保存などを行うコンピュータ。
+163|メールボックス|メールサーバ上で、利用者ごとの電子メールを保存する場所。
+164|プロトコル|コンピュータ同士が正しく通信するために定められた規則や手順。通信規約ともいう。
+165|アップロード|自分のコンピュータなどにあるデータを、ネットワークを通じてサーバなどに送ること。
+166|ダウンロード|サーバなどにあるデータを、ネットワークを通じて自分の端末に受け取ること。
+167|検索エンジン|インターネット上の情報をキーワードなどで検索するための仕組み。
+168|コンテンツフィルタリング|インターネット上の有害な情報や不適切なサイトへのアクセスを制限する技術。
+169|ブラックリスト方式|問題のあるサイトなどを登録し、それらへのアクセスを禁止する方式。
+170|ホワイトリスト方式|安全と判断したサイトなどを登録し、登録されたものだけへのアクセスを許可する方式。
+171|メーリングリスト|登録された複数の人に、電子メールを一斉に配信する仕組み。
+172|TO|電子メールの主な送信相手を指定する宛先欄。
+173|CC|メールの内容を共有したい相手に写しを送る機能。宛先は他の受信者にも表示される。
+174|BCC|他の受信者にメールアドレスを知らせずに、メールの写しを送る機能。
+175|添付ファイル|電子メールの本文と一緒に送信する画像・文書・音声などのファイル。
+176|圧縮|データの内容を保ちながら、一定の方法でデータ量を小さくすること。
+177|解凍|圧縮されたデータを元の状態に戻すこと。展開ともいう。
+178|サイバー攻撃|ネットワークを通じて、システムの破壊や停止、情報の盗難・改ざんなどを狙う不正な行為。
+179|マルウェア|コンピュータや利用者に被害を与える目的で作られた悪意あるソフトウェアの総称。
+180|コンピュータウイルス|他のプログラムやファイルなどに感染し、増殖したり不正な動作を引き起こしたりするマルウェア。
+181|セキュリティホール|ソフトウェアなどの設計ミスや不具合によって生じた、セキュリティ上の弱点。
+182|インシデント|情報システムの運用やセキュリティに関して発生した事故や問題となる出来事。
+183|迷惑メール|受信者が望んでいないのに、一方的に送られてくる不快・不要な電子メール。
+184|スパムメール|不特定多数の相手に、大量に送信される広告や勧誘などの迷惑メール。
+185|スパイウェア|利用者の操作履歴や個人情報などを、本人に気づかれず収集・送信するソフトウェア。
+186|トロイの木馬|正常なソフトウェアなどを装って侵入し、内部で不正な処理を行うマルウェア。
+187|ワーム|他のファイルに寄生せず、自分自身を複製してネットワークなどを通じて広がるマルウェア。
+188|ランサムウェア|ファイルを暗号化するなどして利用できなくし、復旧と引き換えに金銭を要求するマルウェア。
+189|アドウェア|広告を表示するソフトウェア。中には不正な広告表示や情報収集を行う悪質なものもある。
+190|情報セキュリティ|情報の機密性・完全性・可用性を維持し、情報を安全に利用できる状態を守ること。
+191|情報の機密性|許可された人だけが情報にアクセスでき、無関係な人には情報を知られないこと。
+192|情報の完全性|情報が不正に変更・破壊されず、正確で信頼できる状態に保たれていること。
+193|情報の可用性|必要なときに、許可された利用者が情報やシステムを利用できること。
+194|バックアップ|データの消失や破損に備えて、データの複製を別の場所や媒体に保存しておくこと。
+195|ウイルス対策ソフトウェア|コンピュータウイルスなどのマルウェアを検出・隔離・削除するためのソフトウェア。
+196|パターンファイル|既知のマルウェアの特徴を記録し、検出に利用するためのファイル。
+197|アップデート|ソフトウェアなどを新しい状態に更新し、機能の改善や不具合の修正を行うこと。
+198|セキュリティパッチ|ソフトウェアに発見されたセキュリティ上の弱点を修正するための更新プログラム。
+199|認証|パスワードや生体情報などを用いて、利用者が本人であるかを確認すること。
+200|ログイン|認証を受けて、コンピュータやネットワークサービスの利用を開始する操作。
+201|ログアウト|利用中のサービスなどから退出し、認証された利用状態を終了する操作。
+202|ワンタイムパスワード|一度限り、または短時間だけ有効な使い捨てのパスワード。
+203|アクセス権|ファイルや情報システムなどを閲覧・変更・利用できる範囲を定めた権限。
+204|暗号化|情報を第三者に読み取られないよう、一定の規則に従って変換すること。
+205|復号|暗号化された情報を、元の読み取れる状態に戻すこと。
+206|暗号文|暗号化によって変換され、そのままでは内容を読み取りにくくなったデータ。
+207|統計分析|データを収集・整理・分析し、傾向や関係性を明らかにして、予測や意思決定に役立てること。
+208|量的データ（定量的データ）|身長・売上金額・人数など、数値で量や大きさを表すデータ。
+209|質的データ（定性的データ）|血液型・商品の種類・都道府県名など、分類や属性を表すデータ。
+210|尺度水準|データをどのような基準で測定・分類するかを示す考え方。名義尺度・順序尺度・間隔尺度・比例尺度がある。
+211|全数調査|調査対象となる集団のすべてを調べること。
+212|標本調査|調査対象となる集団の一部を取り出して調べ、全体の特徴を推測すること。
+213|母集団|統計調査で調べたい対象全体の集まり。
+214|標本|母集団から取り出し、実際に調査する一部の対象。
+215|標本誤差|母集団の一部だけを調べることで、調査結果と母集団の真の値との間に生じる誤差。
+216|外れ値|他のデータと比べて、極端に大きい、または小さい値。
+217|欠損値|データの未入力や記録漏れなどによって、値が存在しない状態。
+218|代表値|データ全体の特徴を一つの数値で表すもの。平均値・中央値・最頻値などがある。
+219|偏差|個々のデータの値から平均値を引いた値。平均からどれだけ離れているかを表す。
+220|分散|各データの偏差を2乗して平均した値。データのばらつきの大きさを表す。
+221|標準偏差|分散の平方根。データが平均値からどの程度ばらついているかを表す。
+222|度数分布表|データをいくつかの階級に分け、各階級に含まれるデータの個数をまとめた表。
+223|ヒストグラム|データを階級ごとに分け、その度数を隣り合う長方形で表したグラフ。
+224|箱ひげ図|最小値・第1四分位数・中央値・第3四分位数・最大値などを使い、データの分布を表す図。
+225|散布図|2つの数量の関係を、横軸と縦軸に対応する点を打って表したグラフ。
+226|相関|2つの変数が互いにどのように関係して変化するかを示す概念。
+227|ABC分析|売上高などの重要度に応じて商品をA・B・Cの3段階に分類し、効率的な管理に役立てる分析方法。
+228|時系列分析|時間の経過に沿って集めたデータを分析し、変化の傾向や周期性などを調べる方法。
+229|棒グラフ|項目ごとの数量を棒の長さで表し、大きさを比較するグラフ。
+230|円グラフ|円を割合に応じて分割し、全体に占める各項目の比率を表すグラフ。
+231|折れ線グラフ|各時点のデータを点で示し、線で結んで時間による変化を表すグラフ。
+232|複合グラフ|棒グラフと折れ線グラフなど、異なる種類のグラフを組み合わせて複数のデータを比較するグラフ。
+233|レーダーチャート|複数の項目を放射状の軸に配置し、項目間のバランスや特徴を表すグラフ。
+234|Zグラフ|月ごとの実績値・累計値・移動合計値の3つを組み合わせ、売上などの長期的な傾向を把握するグラフ。
+235|ロジカルシンキング|物事を感覚だけで判断せず、根拠を整理して筋道を立て、矛盾のない結論を導く考え方。
+236|ロジックツリー|問題や課題を枝分かれする形で細かく分解し、原因や解決策を体系的に整理する手法。
+237|MECE|情報を「漏れなく、重複なく」分類・整理する考え方。
+238|デシジョンテーブル|複数の条件と、それぞれの条件に対応する処理や行動を表形式にまとめたもの。
+239|ガントチャート|作業内容や担当者を縦軸、日付や期間を横軸に配置し、作業予定や進捗を横棒で示す表。
+240|SWOT分析|強み・弱み・機会・脅威の4要素から、自社の内部環境と外部環境を分析する手法。
+241|特性要因図|問題となる結果と、その原因の関係を魚の骨のような形に整理して表す図。
+242|PDCA|Plan（計画）・Do（実行）・Check（評価）・Act（改善）を繰り返し、業務を継続的に改善する手法。
+243|ブレーンストーミング|グループで批判を避けながら自由に意見を出し合い、多くのアイデアを生み出す発想法。
+244|KJ法|多くの意見や情報をカードに書き出し、似た内容をグループ化して整理し、全体の関係をまとめる方法。
+245|PPM分析|市場成長率と相対的市場占有率によって、事業や製品を4つに分類し、経営資源の配分を考える手法。
+246|シミュレーション|現実の状況をコンピュータなどで仮想的に再現し、結果の予測や分析を行う手法。
+247|モデル化|複雑な事象や仕組みから重要な要素を取り出して単純化し、理解・分析しやすい形に表すこと。
+248|動的モデル|時間の経過によって状態が変化する仕組みや現象を表すモデル。
+`;
+
+const UNITS = [
+  {n:'情報・ICTの基礎', s:1, e:25},
+  {n:'ユーザインタフェース・色彩', s:26, e:47},
+  {n:'情報モラル・法律', s:48, e:66},
+  {n:'ハードウェア', s:67, e:95},
+  {n:'デジタル表現・単位', s:96, e:114},
+  {n:'ソフトウェア・ファイル', s:115, e:134},
+  {n:'ネットワーク・インターネット', s:135, e:157},
+  {n:'Web・電子メール', s:158, e:177},
+  {n:'情報セキュリティ', s:178, e:206},
+  {n:'統計・データ分析', s:207, e:234},
+  {n:'問題解決・モデル化', s:235, e:248}
+];
+const PAGES = [[1,25,411],[26,47,412],[48,66,413],[67,80,414],[158,164,415],[165,177,416],[178,206,417],[207,228,418],[229,234,419],[235,248,420]];
+
+const D = {};
+RAW.trim().split('\n').forEach(line=>{
+  const [no,t,d] = line.split('|');
+  const n = +no;
+  const u = UNITS.findIndex(x=>n>=x.s && n<=x.e);
+  const pg = PAGES.find(x=>n>=x[0] && n<=x[1]);
+  D[n] = {no:n, t:t, d:d, u:u, p:pg?pg[2]:''};
+});
+const ALL = Object.keys(D).map(Number).sort((a,b)=>a-b);
+
+/* ---------- 共通 ---------- */
+const $ = id=>document.getElementById(id);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function radio(name){return document.querySelector('input[name='+name+']:checked').value;}
+function metaText(it){return 'No.'+it.no+'　'+UNITS[it.u].n+(it.p?'　（p.'+it.p+'）':'');}
+function speak(text){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='ja-JP'; u.rate=1.0; speechSynthesis.speak(u);}catch(e){}
+}
+function buildList(nums, order, count){
+  let list=[];
+  if(order==='unit'){
+    UNITS.forEach((u,ui)=>{ list=list.concat(shuffle(nums.filter(n=>D[n].u===ui))); });
+  }else{
+    list = nums.slice();
+    if(order==='shuffle') list=shuffle(list);
+  }
+  if(count>0 && list.length>count){
+    if(order==='shuffle'){ list=list.slice(0,count); }
+    else{
+      const pick=new Set(shuffle(list).slice(0,count));
+      list=list.filter(n=>pick.has(n));
+    }
+  }
+  return list;
+}
+/* ---------- 出題範囲（番号選択） ---------- */
+const SK='jouhou_kiso248_sel';
+let SEL=new Set(ALL);
+try{const v=JSON.parse(localStorage.getItem(SK)||'null'); if(Array.isArray(v)&&v.length) SEL=new Set(v.filter(n=>D[n]));}catch(e){}
+function saveSel(){try{localStorage.setItem(SK,JSON.stringify([...SEL]));}catch(e){}}
+function selList(){return ALL.filter(n=>SEL.has(n));}
+function rangeText(arr){
+  if(arr.length===ALL.length) return '全範囲（No.1–248）';
+  const out=[];let i=0;
+  while(i<arr.length){let j=i;while(j+1<arr.length&&arr[j+1]===arr[j]+1)j++;out.push(i===j?''+arr[i]:arr[i]+'–'+arr[j]);i=j+1;}
+  return 'No.'+out.join(', ');
+}
+function parseNums(str){
+  const res=[];
+  str.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[〜～ー－−—–]/g,'-')
+   .split(/[,、，\s]+/).forEach(tok=>{
+    if(!tok)return;
+    const m=tok.match(/^(\d+)-(\d+)$/);
+    if(m){let a=+m[1],b=+m[2];if(a>b)[a,b]=[b,a];for(let k=a;k<=b;k++)if(D[k])res.push(k);}
+    else if(/^\d+$/.test(tok)&&D[+tok]) res.push(+tok);
+  });
+  return res;
+}
+function updSummary(){
+  const arr=selList();
+  document.querySelectorAll('.selCnt').forEach(e=>e.textContent=arr.length);
+  document.querySelectorAll('.selTxt').forEach(e=>e.textContent=arr.length?rangeText(arr):'まだ選ばれていません');
+}
+function buildGrid(){
+  $('rpGrid').innerHTML=UNITS.map((u,i)=>'<div class="uh"><span>'+(i+1)+'. '+u.n+'</span><button class="sm" data-u="'+i+'">この単元を全部</button></div><div class="grid">'+
+    ALL.filter(n=>D[n].u===i).map(n=>'<button class="nb" data-n="'+n+'"><b>'+n+'</b>'+esc(D[n].t)+'</button>').join('')+'</div>').join('');
+  $('rpGrid').querySelectorAll('.nb').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;SEL.has(n)?SEL.delete(n):SEL.add(n);paintGrid();});
+  $('rpGrid').querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{
+    const ns=ALL.filter(n=>D[n].u===+b.dataset.u), all=ns.every(n=>SEL.has(n));
+    ns.forEach(n=>all?SEL.delete(n):SEL.add(n));paintGrid();
+  });
+}
+function paintGrid(){
+  $('rpGrid').querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',SEL.has(+b.dataset.n)));
+  $('rpGrid').querySelectorAll('[data-u]').forEach(b=>{
+    const ns=ALL.filter(n=>D[n].u===+b.dataset.u);
+    b.textContent=ns.every(n=>SEL.has(n))?'この単元をはずす':'この単元を全部';
+  });
+  $('rpCnt').textContent=SEL.size;
+}
+function openRP(){paintGrid();$('rp').classList.add('show');$('rp').scrollTop=0;}
+$('rpSet').onclick=()=>{const a=parseNums($('rpIn').value);if(!a.length){alert('番号が読み取れませんでした（例：1-30, 45）');return;}SEL=new Set(a);paintGrid();};
+$('rpAdd').onclick=()=>{const a=parseNums($('rpIn').value);if(!a.length){alert('番号が読み取れませんでした（例：1-30, 45）');return;}a.forEach(n=>SEL.add(n));paintGrid();};
+$('rpAll').onclick=()=>{SEL=new Set(ALL);paintGrid();};
+$('rpNone').onclick=()=>{SEL=new Set();paintGrid();};
+$('rpOk').onclick=()=>{saveSel();updSummary();$('rp').classList.remove('show');window.scrollTo(0,0);};
+buildGrid();updSummary();
+
+/* ---------- 苦手記録 ---------- */
+const WK='jouhou_kiso248_weak';
+function loadW(){try{return JSON.parse(localStorage.getItem(WK)||'{}')||{};}catch(e){return {};}}
+function saveW(w){try{localStorage.setItem(WK,JSON.stringify(w));}catch(e){}}
+function addWeak(no){const w=loadW();w[no]=(w[no]||0)+1;saveW(w);}
+
+/* ---------- タブ ---------- */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+    $('printArea').classList.toggle('show', b.dataset.t==='tPrint' && $('printArea').innerHTML!=='');
+    if(b.dataset.t==='tWeak') renderWeak();
+    window.scrollTo(0,0);
+  };
+});
+function showSub(id){document.querySelectorAll('#tQuiz .sub').forEach(s=>s.classList.toggle('show',s.id===id));window.scrollTo(0,0);}
+
+/* ---------- 出題 ---------- */
+let S=null;
+function startQuiz(list){
+  if(!list.length){alert('出題範囲を選んでください（「範囲を選ぶ」から）');return;}
+  S={list:list, idx:0, ok:0, wrong:[], mode:radio('qmode'), done:false};
+  showSub('qPlay'); render();
+}
+$('qStart').onclick=()=>startQuiz(buildList(selList(), radio('qord'), +$('qCount').value));
+
+function render(){
+  const no=S.list[S.idx], it=D[no];
+  S.done=false;
+  $('pNum').textContent=(S.idx+1)+' / '+S.list.length+'　正解 '+S.ok;
+  $('pWrong').textContent='間違い '+S.wrong.length;
+  $('pBar').style.width=(S.idx/S.list.length*100)+'%';
+  $('pMeta').textContent=metaText(it);
+  $('pQ').textContent=it.d;
+  const A=$('pArea');
+  if(S.mode==='flip'){
+    A.innerHTML='<button class="btn" id="fShow">答えを見る</button>';
+    $('fShow').onclick=()=>{
+      A.innerHTML='<div class="card"><div class="ans">'+esc(it.t)+'</div></div>'+
+        '<div class="judge"><button class="bok" id="jOk">○ 覚えてた</button><button class="bng" id="jNg">× まだ</button></div>';
+      if($('autoSpk').checked) speak(it.t);
+      $('jOk').onclick=()=>judge(true);
+      $('jNg').onclick=()=>judge(false);
+    };
+  }else{
+    let pool=shuffle(ALL.filter(n=>n!==no && D[n].u===it.u));
+    const opts=[no];
+    for(const n of pool){ if(opts.length>=4)break; if(!opts.some(o=>D[o].t===D[n].t)) opts.push(n); }
+    for(const n of shuffle(ALL)){ if(opts.length>=4)break; if(!opts.includes(n)) opts.push(n); }
+    const ch=shuffle(opts);
+    A.innerHTML=ch.map(n=>'<button class="ch" data-n="'+n+'">'+esc(D[n].t)+'</button>').join('')+'<div id="cFb"></div>';
+    A.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{
+      if(S.done)return;
+      const pick=+b.dataset.n, ok=pick===no;
+      A.querySelectorAll('.ch').forEach(x=>{ if(+x.dataset.n===no)x.classList.add('ok'); });
+      if(!ok) b.classList.add('ng');
+      $('cFb').innerHTML='<div class="fb" style="color:'+(ok?'var(--ok)':'var(--ng)')+'">'+(ok?'正解！':'残念…')+'</div><button class="btn" id="cNext">次へ</button>';
+      record(ok);
+      $('cNext').onclick=next;
+    });
+  }
+  if($('autoSpk').checked) speak(it.d);
+}
+function record(ok){
+  S.done=true;
+  const no=S.list[S.idx];
+  if(ok) S.ok++; else { S.wrong.push(no); addWeak(no); }
+  $('pNum').textContent=(S.idx+1)+' / '+S.list.length+'　正解 '+S.ok;
+  $('pWrong').textContent='間違い '+S.wrong.length;
+}
+function judge(ok){ if(S.done)return; record(ok); next(); }
+function next(){ S.idx++; if(S.idx>=S.list.length) result(); else render(); }
+$('pSpk').onclick=()=>{ if(S) speak(D[S.list[S.idx]].d); };
+$('pQuit').onclick=()=>{ if(confirm('中断して結果を表示しますか？')) result(); };
+
+function wrongHTML(arr){
+  return arr.length? arr.map(n=>'<li><b>'+esc(D[n].t)+'</b>　<small>No.'+n+'</small><br>'+esc(D[n].d)+'</li>').join('') : '<li>まだありません</li>';
+}
+$('pWrong').onclick=()=>{ $('mList').innerHTML=wrongHTML(S?S.wrong:[]); $('mWrong').classList.add('show'); };
+$('mClose').onclick=()=>$('mWrong').classList.remove('show');
+$('mWrong').onclick=e=>{ if(e.target.id==='mWrong') $('mWrong').classList.remove('show'); };
+
+function result(){
+  try{speechSynthesis.cancel();}catch(e){}
+  const answered=S.ok+S.wrong.length;
+  $('rScore').textContent=S.ok+' / '+answered;
+  $('rSub').textContent= answered? '正答率 '+Math.round(S.ok/answered*100)+'%' : '';
+  $('rWrong').innerHTML=wrongHTML(S.wrong);
+  $('rRetry').style.display=S.wrong.length?'block':'none';
+  showSub('qRes');
+}
+$('rRetry').onclick=()=>startQuiz(shuffle(S.wrong));
+$('rBack').onclick=()=>showSub('qSet');
+
+/* ---------- 苦手 ---------- */
+function weakSorted(){const w=loadW();return Object.keys(w).map(Number).filter(n=>D[n]&&w[n]>0).sort((a,b)=>w[b]-w[a]||a-b);}
+function renderWeak(){
+  const w=loadW(), arr=weakSorted();
+  $('wList').innerHTML = arr.length ? arr.slice(0,50).map((n,i)=>'<li>'+(i+1)+'位　<b>'+esc(D[n].t)+'</b>　<small>×'+w[n]+'回・No.'+n+'</small></li>').join('') : '<li>まだ記録がありません</li>';
+}
+$('wStart').onclick=()=>{
+  const arr=weakSorted().slice(0,20);
+  if(!arr.length){alert('苦手の記録がまだありません');return;}
+  document.querySelector('nav button[data-t=tQuiz]').click();
+  startQuiz(shuffle(arr));
+};
+$('wReset').onclick=()=>{ if(confirm('苦手ランキングを消去しますか？')){ saveW({}); renderWeak(); } };
+
+/* ---------- 一覧 ---------- */
+function renderList(){
+  const q=$('lSearch').value.trim();
+  let h='';
+  UNITS.forEach((u,i)=>{
+    const items=ALL.filter(n=>D[n].u===i && (!q || D[n].t.includes(q) || D[n].d.includes(q)));
+    if(!items.length)return;
+    h+='<div class="ut">'+(i+1)+'. '+u.n+'</div><ul class="wl">'+items.map(n=>'<li><b>'+n+'　'+esc(D[n].t)+'</b>'+(D[n].p?'　<small>p.'+D[n].p+'</small>':'')+'<br>'+esc(D[n].d)+'</li>').join('')+'</ul>';
+  });
+  $('lBody').innerHTML=h||'<p class="note">見つかりませんでした</p>';
+}
+$('lSearch').oninput=renderList;
+renderList();
+
+/* ---------- プリント ---------- */
+function makePrint(){
+  const nums=selList();
+  if(!nums.length){alert('出題範囲を選んでください（「範囲を選ぶ」から）');return false;}
+  const list=buildList(nums, radio('pord'), +$('pCount').value);
+  const range=rangeText(nums);
+  let h='<div class="ph"><h2>'+esc($('pTitle').value||'情報処理 基礎用語テスト')+'</h2>'+
+    '<div class="r">範囲：'+esc(range)+'　／　'+list.length+'問</div>'+
+    '<div class="nm">　　月　　日　　名前＿＿＿＿＿＿＿＿＿＿　　得点　　　／'+list.length+'</div></div>'+
+    '<table class="pt"><thead><tr><th>#</th><th>説明文にあてはまる用語を答えなさい</th><th>解答</th></tr></thead><tbody>'+
+    list.map((n,i)=>'<tr><td class="n">'+(i+1)+'</td><td>'+esc(D[n].d)+'</td><td class="a"></td></tr>').join('')+
+    '</tbody></table>';
+  if($('pKey').checked){
+    h+='<div class="key"><h3>解答　'+esc($('pTitle').value||'')+'</h3><div class="kl">'+
+      list.map((n,i)=>'<div>'+(i+1)+'. '+esc(D[n].t)+'</div>').join('')+'</div></div>';
+  }
+  $('printArea').innerHTML=h;
+  $('printArea').classList.add('show');
+  return true;
+}
+$('pMake').onclick=()=>{ if(makePrint()) $('printArea').scrollIntoView({behavior:'smooth'}); };
+$('pDo').onclick=()=>{ if($('printArea').innerHTML==='' && !makePrint()) return; window.print(); };
+</script>
+</body>
+</html>
