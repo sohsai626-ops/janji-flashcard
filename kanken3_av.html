@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>漢検3級 見て聞いて覚える</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--ink:#222;--sub:#777;--line:#e2ddd0;--tai:#2e6fd8;--rui:#1f9d6b;--yoji:#8a4fd0;--gold:#f5b041;--ok:#1f9d6b;--ng:#d8452e;--soft:#faf9f5}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+button{font-family:inherit;color:var(--ink);cursor:pointer}
+.screen{display:none;max-width:560px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
+.screen.show{display:block}
+h1{font-size:22px;margin:6px 0 4px}
+h2{font-size:18px;margin:4px 0 10px}
+.lead{color:var(--sub);font-size:13px;margin:0 0 14px;line-height:1.6}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.lbl{font-size:13px;color:var(--sub);margin-bottom:7px;font-weight:700}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 auto;min-width:60px;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:9px 6px;font-size:14px}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+select{width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--soft);color:var(--ink)}
+.big{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:18px;font-weight:700;background:var(--ink);color:#fff;margin-top:6px}
+.big:disabled{opacity:.35}
+.ghost{display:block;width:100%;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px;font-size:15px;margin-top:8px}
+.row2{display:flex;gap:8px;margin-top:10px}
+.row2 button{flex:1;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:13px 6px;font-size:14px;font-weight:600}
+.note{font-size:12px;color:var(--sub);line-height:1.7;margin-top:14px}
+.count{text-align:center;font-size:13px;color:var(--sub);margin-top:8px}
+/* quiz */
+.top{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.xbtn{border:0;background:none;font-size:15px;padding:6px 4px;color:var(--sub)}
+.prog{flex:1;font-size:14px;font-weight:700;text-align:center}
+.star{border:0;background:none;font-size:26px;color:#ccc;padding:0 4px;line-height:1}
+.star.on{color:var(--gold)}
+.wbtn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 8px;font-size:12px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.card{background:var(--card);border-radius:18px;border:1px solid var(--line);padding:16px 10px 18px;text-align:center;min-height:330px}
+.kind{display:inline-block;color:#fff;font-weight:700;font-size:14px;padding:5px 14px;border-radius:20px}
+.src{font-size:12px;color:var(--sub);margin:8px 0 4px}
+.rep{display:inline-block;font-size:11px;background:#fff1c2;color:#8a5d00;border-radius:8px;padding:2px 7px;margin-left:6px;font-weight:700}
+.pair{display:flex;align-items:center;justify-content:center;gap:6px;margin:16px 0 4px}
+.word{display:flex;gap:4px}
+.cell{display:inline-flex;width:clamp(50px,15vw,64px);height:clamp(58px,17vw,72px);align-items:center;justify-content:center;border-radius:10px;font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:clamp(38px,11vw,50px);font-weight:700;background:var(--soft)}
+.tai .w1 .cell{color:var(--tai)}
+.tai .w2 .cell{color:#c0392b}
+.rui .w1 .cell,.rui .w2 .cell{color:var(--rui)}
+.cell.blank{border:3px dashed #c8c2b3;color:#c8c2b3 !important;background:#fff;font-size:30px}
+.sym{font-size:30px;font-weight:800;width:34px}
+.tai .sym{color:#c0392b}.rui .sym{color:var(--rui)}
+.sym.go{animation:pulse .9s ease 2}
+.yomi{font-size:16px;color:var(--sub);margin-top:6px;letter-spacing:.05em}
+.yomi b{color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0 4px}
+.chip{border:1px solid var(--line);background:var(--soft);border-radius:20px;padding:9px 13px;font-size:16px}
+.chip.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.chip.ng{background:var(--ng);color:#fff;border-color:var(--ng)}
+.hint{font-size:12px;color:var(--sub);margin-top:6px}
+.sent{font-size:19px;line-height:1.9;margin:16px 6px 8px;text-align:left}
+.hl{background:#efe4fb;border-radius:6px;padding:1px 3px;font-weight:700}
+.hl u{text-decoration:none;color:var(--yoji);border-bottom:3px solid var(--yoji)}
+.hl.done{background:#fff1c2;color:#c0392b}
+.tiles{display:flex;justify-content:center;gap:5px;margin:14px 0 4px}
+.tile{display:inline-flex;width:clamp(56px,17vw,72px);height:clamp(64px,19vw,80px);align-items:center;justify-content:center;border-radius:12px;background:var(--soft);font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:clamp(40px,12vw,54px);font-weight:700;color:var(--yoji)}
+.tile.blank{border:3px dashed #c8c2b3;color:#c8c2b3;background:#fff;font-size:30px}
+.fill{animation:pop .65s cubic-bezier(.2,1.4,.4,1) both;background:#fff6d6 !important;color:#c0392b !important;border:3px solid var(--gold) !important;box-shadow:0 0 18px rgba(245,176,65,.75);font-size:inherit}
+.tile.fill{font-size:clamp(40px,12vw,54px)}
+.cell.fill{font-size:clamp(38px,11vw,50px)}
+.ans{font-size:20px;font-weight:700;margin-top:8px;color:#c0392b;min-height:28px}
+.hide{visibility:hidden}
+@keyframes pop{0%{transform:scale(.2) rotateY(90deg);opacity:0}100%{transform:scale(1) rotateY(0);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+.ctrl{margin-top:12px}
+.grade{display:flex;gap:8px}
+.grade button{flex:1;border:0;border-radius:14px;padding:16px 6px;font-size:18px;font-weight:700;color:#fff}
+.grade .g-ok{background:var(--ok)}.grade .g-ng{background:var(--ng)}
+.cd{text-align:center;font-size:40px;font-weight:800;color:var(--gold);height:52px}
+.autonote{text-align:center;font-size:13px;color:var(--sub)}
+/* lists */
+.item{display:flex;align-items:center;gap:8px;padding:10px 4px;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item .no{font-size:12px;color:var(--sub);width:46px;flex:none}
+.item .tx{flex:1;font-size:16px}
+.item .tx small{display:block;font-size:12px;color:var(--sub)}
+.item .st{font-size:12px;color:var(--ng);font-weight:700;flex:none}
+.tag{display:inline-block;font-size:11px;color:#fff;border-radius:6px;padding:1px 6px;margin-right:4px;vertical-align:2px}
+.score{font-size:44px;font-weight:800;text-align:center;margin:10px 0 2px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.modal.show{display:flex}
+.sheet{background:var(--card);width:100%;max-width:560px;max-height:75vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom))}
+</style>
+</head>
+<body>
+
+<!-- ホーム -->
+<div class="screen show" id="home">
+  <h1>漢検3級 見て聞いて覚える</h1>
+  <p class="lead">対義語・類義語／四字熟語　問題集13回分＋公式過去問（計280問）</p>
+
+  <div class="box"><div class="lbl">範囲</div>
+    <select id="selRound"></select></div>
+
+  <div class="box"><div class="lbl">分野</div>
+    <div class="seg" data-k="field">
+      <button data-v="both">両方</button><button data-v="6">対義語・類義語</button><button data-v="8">四字熟語</button></div></div>
+
+  <div class="box"><div class="lbl">出す問題</div>
+    <div class="seg" data-k="filter">
+      <button data-v="all">すべて</button><button data-v="rep">何度も出る言葉</button><button data-v="star">★重点</button><button data-v="weak">苦手（×あり）</button></div></div>
+
+  <div class="box"><div class="lbl">順番</div>
+    <div class="seg" data-k="order">
+      <button data-v="book">問題集の順</button><button data-v="shuf">シャッフル</button></div></div>
+
+  <div class="box"><div class="lbl">進め方</div>
+    <div class="seg" data-k="mode">
+      <button data-v="self">自分で答える</button><button data-v="auto">オート再生（見て聞くだけ）</button></div>
+    <div class="lbl" style="margin-top:12px">考える時間</div>
+    <div class="seg" data-k="think">
+      <button data-v="3">3秒</button><button data-v="5">5秒</button><button data-v="8">8秒</button><button data-v="0">自分で開く</button></div></div>
+
+  <div class="box"><div class="lbl">音声</div>
+    <div class="seg" data-k="voice"><button data-v="on">ON</button><button data-v="off">OFF</button></div>
+    <div class="lbl" style="margin-top:12px">読む速さ</div>
+    <div class="seg" data-k="rate"><button data-v="0.8">ゆっくり</button><button data-v="1">ふつう</button><button data-v="1.2">はやい</button></div></div>
+
+  <button class="big" id="startBtn" onclick="startFromHome()">スタート</button>
+  <div class="count" id="countTx"></div>
+
+  <div class="row2">
+    <button onclick="openList()">📋 一覧・★登録</button>
+    <button onclick="openRank()">📉 苦手ランキング</button>
+  </div>
+
+  <p class="note">
+    ・「考える時間」は、オート再生のときと、自分で答えるときの両方で使います（「自分で開く」は時間制限なし）。<br>
+    ・LINEから開いて音が出ないときは、右上のメニューから「Safariで開く」（Androidは「デフォルトのブラウザで開く」）を選んでください。<br>
+    ・iPhoneのマナーモード（消音）だと音が出ないことがあります。
+  </p>
+</div>
+
+<!-- 出題 -->
+<div class="screen" id="quiz">
+  <div class="top">
+    <button class="xbtn" onclick="quitQuiz()">✕ やめる</button>
+    <div class="prog" id="prog"></div>
+    <button class="star" id="qStar" onclick="toggleStarCur()">★</button>
+    <button class="wbtn" onclick="openWrong()">× <span id="wcount">0</span></button>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="card" id="card"></div>
+  <div class="ctrl" id="ctrl"></div>
+</div>
+
+<!-- 結果 -->
+<div class="screen" id="result">
+  <h2 id="resTitle">おつかれさま！</h2>
+  <div class="score" id="resScore"></div>
+  <div class="count" id="resSub"></div>
+  <div class="box" id="resList" style="margin-top:14px"></div>
+  <button class="big" id="retryBtn" onclick="retryWrong()">間違えた問題だけもう一度</button>
+  <button class="ghost" onclick="go('home')">ホームへ</button>
+</div>
+
+<!-- 一覧 -->
+<div class="screen" id="list">
+  <div class="top"><button class="xbtn" onclick="go('home')">← ホーム</button><div class="prog">一覧・★重点の登録</div><span style="width:50px"></span></div>
+  <p class="lead">★を付けた問題は、ホームの「★重点」で集中して出題できます。問題集の紫の印（2回目の間違い）を★にしておくのがおすすめです。</p>
+  <div class="box"><select id="selList" onchange="renderList()"></select></div>
+  <div class="box" id="listBox"></div>
+  <button class="ghost" onclick="clearStars()">★をすべて外す</button>
+</div>
+
+<!-- ランキング -->
+<div class="screen" id="rank">
+  <div class="top"><button class="xbtn" onclick="go('home')">← ホーム</button><div class="prog">苦手ランキング</div><span style="width:50px"></span></div>
+  <p class="lead">「自分で答える」で×になった回数が多い順です。</p>
+  <div class="box" id="rankBox"></div>
+  <button class="big" onclick="startRank()">ランキング上位20問を出題</button>
+  <button class="ghost" onclick="resetStats()">記録をリセット</button>
+</div>
+
+<!-- 間違いリスト（途中で確認） -->
+<div class="modal" id="wModal" onclick="if(event.target===this)closeWrong()">
+  <div class="sheet"><h2>今回まちがえた問題</h2><div id="wBox"></div><button class="ghost" onclick="closeWrong()">閉じる</button></div>
+</div>
+
+<script>
+/* ===== データ =====
+ 六（対義語・類義語）: 種類,問題語,読み,答え語,読み,□の位置(0=上/1=下),□の読み
+ 八（四字熟語）: 例文|四字熟語|前半の読み|後半の読み|問う側(0=前半/1=後半)
+*/
+const ROUNDS=[
+{n:'第1回',s:[
+"対,精密,せいみつ,粗雑,そざつ,1,ざつ","対,興奮,こうふん,鎮静,ちんせい,1,せい","対,繁栄,はんえい,没落,ぼつらく,0,ぼつ","対,浪費,ろうひ,節約,せつやく,0,せつ","対,郊外,こうがい,都心,としん,0,と",
+"類,潤沢,じゅんたく,豊富,ほうふ,1,ふ","類,架空,かくう,虚構,きょこう,0,きょ","類,手柄,てがら,功績,こうせき,1,せき","類,我慢,がまん,辛抱,しんぼう,0,しん","類,征伐,せいばつ,退治,たいじ,1,じ"],
+y:["ココン東西の文学に通じている。|古今東西|ここん|とうざい|0","問いただされてリロ整然と弁明した。|理路整然|りろ|せいぜん|0","ムミ乾燥な業務日誌を読む。|無味乾燥|むみ|かんそう|0","新記録が出てハガン一笑した。|破顔一笑|はがん|いっしょう|0","チョクジョウ径行な性格の男だった。|直情径行|ちょくじょう|けいこう|0",
+"当選の報に狂喜ランブした。|狂喜乱舞|きょうき|らんぶ|1","主張が終始イッカンしていない。|終始一貫|しゅうし|いっかん|1","新型車の完成まで試行サクゴが続いた。|試行錯誤|しこう|さくご|1","空前ゼツゴの大逆転劇だった。|空前絶後|くうぜん|ぜつご|1","神社の故事ライレキを調べる。|故事来歴|こじ|らいれき|1"]},
+{n:'第2回',s:[
+"対,実像,じつぞう,虚像,きょぞう,0,きょ","対,丁重,ていちょう,粗略,そりゃく,1,りゃく","対,希薄,きはく,濃密,のうみつ,0,のう","対,郊外,こうがい,都心,としん,0,と","対,愛護,あいご,虐待,ぎゃくたい,1,たい",
+"類,怠慢,たいまん,横着,おうちゃく,0,おう","類,名残,なごり,余情,よじょう,0,よ","類,形見,かたみ,遺品,いひん,0,い","類,重体,じゅうたい,危篤,きとく,0,き","類,阻害,そがい,邪魔,じゃま,0,じゃ"],
+y:["ゼンジン未到の偉業を達成した。|前人未到|ぜんじん|みとう|0","キョウテン動地の大事故が起きた。|驚天動地|きょうてん|どうち|0","党内がシブン五裂の状態になった。|四分五裂|しぶん|ごれつ|0","コウシ混同の発言を慎む。|公私混同|こうし|こんどう|0","メイロウ快活な人柄に好感を抱く。|明朗快活|めいろう|かいかつ|0",
+"活殺ジザイに部下を動かす。|活殺自在|かっさつ|じざい|1","政党の離合シュウサンが著しい。|離合集散|りごう|しゅうさん|1","試合に臨む選手を鼓舞ゲキレイする。|鼓舞激励|こぶ|げきれい|1","一挙リョウトクをもくろんでいた。|一挙両得|いっきょ|りょうとく|1","天下ムソウの剣客として世に知られる。|天下無双|てんか|むそう|1"]},
+{n:'第3回',s:[
+"対,乾燥,かんそう,湿潤,しつじゅん,1,じゅん","対,促進,そくしん,抑制,よくせい,1,せい","対,模倣,もほう,独創,どくそう,0,どく","対,統一,とういつ,分裂,ぶんれつ,1,れつ","対,率先,そっせん,追随,ついずい,0,つい",
+"類,出納,すいとう,収支,しゅうし,0,しゅう","類,我慢,がまん,辛抱,しんぼう,0,しん","類,解雇,かいこ,免職,めんしょく,0,めん","類,勘定,かんじょう,計算,けいさん,1,さん","類,熱中,ねっちゅう,没頭,ぼっとう,1,とう"],
+y:["決戦を前にキエン万丈だ。|気炎万丈|きえん|ばんじょう|0","タイキ晩成の典型だった。|大器晩成|たいき|ばんせい|0","デンコウ石火の早業に息をのんだ。|電光石火|でんこう|せっか|0","見るからにヒンコウ方正な青年だ。|品行方正|ひんこう|ほうせい|0","試合をイッキ一憂しながら観戦する。|一喜一憂|いっき|いちゆう|0",
+"本末テントウした議論が続いた。|本末転倒|ほんまつ|てんとう|1","社の内情は複雑カイキだった。|複雑怪奇|ふくざつ|かいき|1","旧友と再会して感慨ムリョウだった。|感慨無量|かんがい|むりょう|1","己の優柔フダンを悔いる。|優柔不断|ゆうじゅう|ふだん|1","二人は以心デンシンの仲である。|以心伝心|いしん|でんしん|1"]},
+{n:'第4回',s:[
+"対,抑制,よくせい,促進,そくしん,1,しん","対,愛護,あいご,虐待,ぎゃくたい,1,たい","対,保守,ほしゅ,革新,かくしん,0,かく","対,辞退,じたい,承諾,しょうだく,1,だく","対,偶然,ぐうぜん,必然,ひつぜん,0,ひつ",
+"類,名残,なごり,余情,よじょう,0,よ","類,露見,ろけん,発覚,はっかく,0,はっ","類,重体,じゅうたい,危篤,きとく,0,き","類,計算,けいさん,勘定,かんじょう,0,かん","類,吉報,きっぽう,朗報,ろうほう,0,ろう"],
+y:["めったにキド哀楽を表さない。|喜怒哀楽|きど|あいらく|0","だれもがイク同音に反対を唱えた。|異口同音|いく|どうおん|0","キシ回生の一手にかける。|起死回生|きし|かいせい|0","ココン東西の名詩を鑑賞する。|古今東西|ここん|とうざい|0","世俗を逃れてシンザン幽谷に住む。|深山幽谷|しんざん|ゆうこく|0",
+"目撃した一部シジュウを語る。|一部始終|いちぶ|しじゅう|1","出会ってたちまち意気トウゴウした。|意気投合|いき|とうごう|1","利害トクシツを考えずに行動した。|利害得失|りがい|とくしつ|1","現代の暖衣ホウショクに警鐘を鳴らす。|暖衣飽食|だんい|ほうしょく|1","相手に二者タクイツを迫る。|二者択一|にしゃ|たくいつ|1"]},
+{n:'第5回',s:[
+"対,地獄,じごく,極楽,ごくらく,0,ごく","対,自供,じきょう,黙秘,もくひ,1,ひ","対,過激,かげき,穏健,おんけん,1,けん","対,冗長,じょうちょう,簡潔,かんけつ,1,けつ","対,釈放,しゃくほう,逮捕,たいほ,0,たい",
+"類,了承,りょうしょう,許諾,きょだく,0,きょ","類,両者,りょうしゃ,双方,そうほう,0,そう","類,肝心,かんじん,大切,たいせつ,1,せつ","類,期待,きたい,嘱望,しょくぼう,1,ぼう","類,辛抱,しんぼう,我慢,がまん,0,が"],
+y:["ヨウイ周到に計画を立てる。|用意周到|ようい|しゅうとう|0","ドウショウ異夢の連立政権が船出した。|同床異夢|どうしょう|いむ|0","新型車はシコウ錯誤の末に完成した。|試行錯誤|しこう|さくご|0","メイジツ一体の大横綱だった。|名実一体|めいじつ|いったい|0","カンコン葬祭の作法を身につける。|冠婚葬祭|かんこん|そうさい|0",
+"どんな時でも油断タイテキだ。|油断大敵|ゆだん|たいてき|1","難攻フラクで知られた城だった。|難攻不落|なんこう|ふらく|1","蔵書を二束サンモンで売り払う。|二束三文|にそく|さんもん|1","空前ゼツゴのベストセラーとなった。|空前絶後|くうぜん|ぜつご|1","集まった資料を取捨センタクする。|取捨選択|しゅしゃ|せんたく|1"]},
+{n:'第6回',s:[
+"対,地獄,じごく,極楽,ごくらく,0,ごく","対,侵害,しんがい,擁護,ようご,1,ご","対,賢明,けんめい,暗愚,あんぐ,1,ぐ","対,興奮,こうふん,鎮静,ちんせい,1,せい","対,往路,おうろ,復路,ふくろ,0,ふく",
+"類,朗報,ろうほう,吉報,きっぽう,0,きっ","類,独自,どくじ,特有,とくゆう,0,とく","類,漂泊,ひょうはく,放浪,ほうろう,0,ほう","類,携帯,けいたい,所持,しょじ,1,じ","類,案内,あんない,誘導,ゆうどう,1,どう"],
+y:["商品にソウイ工夫が凝らされていた。|創意工夫|そうい|くふう|0","シンキ一転して家業に精を出す。|心機一転|しんき|いってん|0","タンジュン明快な説明だった。|単純明快|たんじゅん|めいかい|0","人跡まれなシンザン幽谷で修行する。|深山幽谷|しんざん|ゆうこく|0","ゲイイン馬食して体を壊した。|鯨飲馬食|げいいん|ばしょく|0",
+"奇想テンガイなアイディアに驚いた。|奇想天外|きそう|てんがい|1","ついに器用ビンボウの域を出なかった。|器用貧乏|きよう|びんぼう|1","友人と二人サンキャクで事業を進める。|二人三脚|ににん|さんきゃく|1","退職後は晴耕ウドクの生活を送った。|晴耕雨読|せいこう|うどく|1","騒動はようやく一件ラクチャクした。|一件落着|いっけん|らくちゃく|1"]},
+{n:'第7回',s:[
+"対,倹約,けんやく,浪費,ろうひ,1,ひ","対,妨害,ぼうがい,協力,きょうりょく,0,きょう","対,抑制,よくせい,促進,そくしん,1,しん","対,開始,かいし,終了,しゅうりょう,1,りょう","対,難解,なんかい,平易,へいい,1,い",
+"類,追憶,ついおく,回顧,かいこ,0,かい","類,魂胆,こんたん,意図,いと,1,と","類,展示,てんじ,陳列,ちんれつ,0,ちん","類,幽閉,ゆうへい,監禁,かんきん,1,きん","類,肝要,かんよう,大切,たいせつ,1,せつ"],
+y:["大株主にセイサツ与奪の権を握られる。|生殺与奪|せいさつ|よだつ|0","選手たちのリキセン奮闘をたたえる。|力戦奮闘|りきせん|ふんとう|0","将来に絶望してジボウ自棄になった。|自暴自棄|じぼう|じき|0","イットウ両断の処置を講じた。|一刀両断|いっとう|りょうだん|0","今までの悩みがウンサン霧消した。|雲散霧消|うんさん|むしょう|0",
+"古今ムソウの剣士だった。|古今無双|ここん|むそう|1","夜中の騒音は迷惑センバンだ。|迷惑千万|めいわく|せんばん|1","疑心アンキになって皆が敵に見えた。|疑心暗鬼|ぎしん|あんき|1","三人の子を粒々シンクして育て上げた。|粒々辛苦|りゅうりゅう|しんく|1","古典を読んで温故チシンを実感する。|温故知新|おんこ|ちしん|1"]},
+{n:'第8回',s:[
+"対,冗漫,じょうまん,簡潔,かんけつ,0,かん","対,実在,じつざい,架空,かくう,0,か","対,穏和,おんわ,粗暴,そぼう,1,ぼう","対,妨害,ぼうがい,協力,きょうりょく,0,きょう","対,解放,かいほう,束縛,そくばく,0,そく",
+"類,我慢,がまん,辛抱,しんぼう,0,しん","類,陳列,ちんれつ,展示,てんじ,0,てん","類,潤沢,じゅんたく,豊富,ほうふ,1,ふ","類,明白,めいはく,歴然,れきぜん,0,れき","類,肝要,かんよう,大切,たいせつ,1,せつ"],
+y:["事業はジュンプウ満帆だった。|順風満帆|じゅんぷう|まんぱん|0","料理の腕前をジガ自賛する。|自画自賛|じが|じさん|0","人々の考え方はセンサ万別だ。|千差万別|せんさ|ばんべつ|0","シンケン勝負にいどむ気概を持つ。|真剣勝負|しんけん|しょうぶ|0","ビジ麗句を連ねただけのスピーチだ。|美辞麗句|びじ|れいく|0",
+"うわさを針小ボウダイにいいふらす。|針小棒大|しんしょう|ぼうだい|1","試合の経過に一喜イチユウする。|一喜一憂|いっき|いちゆう|1","神社にもうでて無病ソクサイを祈る。|無病息災|むびょう|そくさい|1","困苦ケツボウの生活に耐える。|困苦欠乏|こんく|けつぼう|1","空前ゼツゴの大記録を樹立した。|空前絶後|くうぜん|ぜつご|1"]},
+{n:'第9回',s:[
+"対,強情,ごうじょう,従順,じゅうじゅん,1,じゅん","対,模倣,もほう,独創,どくそう,1,そう","対,遠隔,えんかく,近接,きんせつ,1,せつ","対,辛勝,しんしょう,惜敗,せきはい,0,せき","対,地獄,じごく,極楽,ごくらく,1,らく",
+"類,案内,あんない,誘導,ゆうどう,0,ゆう","類,無視,むし,黙殺,もくさつ,1,さつ","類,平定,へいてい,鎮圧,ちんあつ,1,あつ","類,措置,そち,処置,しょち,0,しょ","類,解雇,かいこ,免職,めんしょく,1,しょく"],
+y:["投稿作品はギョクセキ混交だった。|玉石混交|ぎょくせき|こんこう|0","悪友のシタサキ三寸に乗せられた。|舌先三寸|したさき|さんずん|0","話はそれほどタンジュン明快ではない。|単純明快|たんじゅん|めいかい|0","ものごとをイットウ両断に裁く。|一刀両断|いっとう|りょうだん|0","メイジツ一体の巨匠だった。|名実一体|めいじつ|いったい|0",
+"本末テントウした議論が続いた。|本末転倒|ほんまつ|てんとう|1","失望ラクタンした友を励ます。|失望落胆|しつぼう|らくたん|1","景気が暗雲テイメイの状態を脱した。|暗雲低迷|あんうん|ていめい|1","最後まで清廉ケッパクを貫いた。|清廉潔白|せいれん|けっぱく|1","追及されて支離メツレツな答弁をした。|支離滅裂|しり|めつれつ|1"]},
+{n:'第10回',s:[
+"対,一般,いっぱん,特殊,とくしゅ,0,とく","対,歓喜,かんき,悲哀,ひあい,1,あい","対,怠慢,たいまん,勤勉,きんべん,0,きん","対,強固,きょうこ,柔弱,にゅうじゃく,1,じゃく","対,虐待,ぎゃくたい,愛護,あいご,1,ご",
+"類,外見,がいけん,体裁,ていさい,1,さい","類,屈服,くっぷく,降参,こうさん,1,さん","類,交通,こうつう,往来,おうらい,0,おう","類,展示,てんじ,陳列,ちんれつ,1,れつ","類,了承,りょうしょう,承諾,しょうだく,1,だく"],
+y:["ココン東西の怪談を集める。|古今東西|ここん|とうざい|0","テンイ無縫な作風で知られている。|天衣無縫|てんい|むほう|0","党はシブン五裂の状態にあった。|四分五裂|しぶん|ごれつ|0","カチョウ風月を和歌の題材にする。|花鳥風月|かちょう|ふうげつ|0","リンキ応変の処置をとる。|臨機応変|りんき|おうへん|0",
+"部下を活殺ジザイに動かす。|活殺自在|かっさつ|じざい|1","言語ドウダンの振る舞いにあきれる。|言語道断|ごんご|どうだん|1","すでに用意バンタン整っている。|用意万端|ようい|ばんたん|1","完成まで試行サクゴを繰り返した。|試行錯誤|しこう|さくご|1","姿勢が首尾イッカンしている。|首尾一貫|しゅび|いっかん|1"]},
+{n:'第11回',s:[
+"対,鎮静,ちんせい,興奮,こうふん,1,ふん","対,緩慢,かんまん,敏速,びんそく,1,そく","対,支配,しはい,従属,じゅうぞく,0,じゅう","対,公開,こうかい,秘匿,ひとく,1,とく","対,賢明,けんめい,暗愚,あんぐ,0,あん",
+"類,図書,としょ,書籍,しょせき,1,せき","類,卑俗,ひぞく,下品,げひん,1,ひん","類,重荷,おもに,負担,ふたん,1,たん","類,屈服,くっぷく,降参,こうさん,1,さん","類,精励,せいれい,勤勉,きんべん,1,べん"],
+y:["社長のドクダン専行が目に余る。|独断専行|どくだん|せんこう|0","金メダルを手にイキ揚々と帰国した。|意気揚々|いき|ようよう|0","苦労が報われずシツボウ落胆した。|失望落胆|しつぼう|らくたん|0","開店早々センキャク万来だ。|千客万来|せんきゃく|ばんらい|0","タイキ晩成の書家として知られる。|大器晩成|たいき|ばんせい|0",
+"起死カイセイの妙策が浮かんだ。|起死回生|きし|かいせい|1","キャプテンとして率先スイハンする。|率先垂範|そっせん|すいはん|1","時代サクゴの考え方だと笑われる。|時代錯誤|じだい|さくご|1","小説の完成に全身ゼンレイを傾けた。|全身全霊|ぜんしん|ぜんれい|1","離合シュウサンは世の習いである。|離合集散|りごう|しゅうさん|1"]},
+{n:'第12回',s:[
+"対,抑制,よくせい,促進,そくしん,1,しん","対,歓喜,かんき,悲哀,ひあい,0,ひ","対,繁栄,はんえい,没落,ぼつらく,1,らく","対,解放,かいほう,束縛,そくばく,1,ばく","対,賞賛,しょうさん,非難,ひなん,1,なん",
+"類,阻害,そがい,邪魔,じゃま,1,ま","類,精励,せいれい,勤勉,きんべん,1,べん","類,下品,げひん,野卑,やひ,0,や","類,計算,けいさん,勘定,かんじょう,1,じょう","類,技量,ぎりょう,手腕,しゅわん,1,わん"],
+y:["復旧作業がフミン不休で続けられる。|不眠不休|ふみん|ふきゅう|0","デンコウ石火の早業に驚嘆する。|電光石火|でんこう|せっか|0","事業に失敗してジボウ自棄になった。|自暴自棄|じぼう|じき|0","ダイタン不敵にも正面から攻め入った。|大胆不敵|だいたん|ふてき|0","厳にコウシ混同を慎む。|公私混同|こうし|こんどう|0",
+"奇想テンガイな物語だった。|奇想天外|きそう|てんがい|1","再会を一日センシュウの思いで待つ。|一日千秋|いちじつ|せんしゅう|1","老成エンジュクの境地に達している。|老成円熟|ろうせい|えんじゅく|1","終盤に起死カイセイの一打を放った。|起死回生|きし|かいせい|1","ついに器用ビンボウの域を出なかった。|器用貧乏|きよう|びんぼう|1"]},
+{n:'第13回',s:[
+"対,追加,ついか,削減,さくげん,0,さく","対,倹約,けんやく,浪費,ろうひ,1,ひ","対,軽率,けいそつ,慎重,しんちょう,1,ちょう","対,大綱,たいこう,細目,さいもく,0,さい","対,郊外,こうがい,都心,としん,0,と",
+"類,賢明,けんめい,利口,りこう,0,り","類,用心,ようじん,警戒,けいかい,1,かい","類,展示,てんじ,陳列,ちんれつ,0,ちん","類,薄情,はくじょう,冷淡,れいたん,0,れい","類,強硬,きょうこう,強引,ごういん,1,いん"],
+y:["ホンマツ転倒もはなはだしい。|本末転倒|ほんまつ|てんとう|0","記者がタントウ直入に質問する。|単刀直入|たんとう|ちょくにゅう|0","姉妹共にサイショク兼備で知られた。|才色兼備|さいしょく|けんび|0","フクザツ怪奇な事件だった。|複雑怪奇|ふくざつ|かいき|0","帝国はキキュウ存亡のときを迎えた。|危急存亡|ききゅう|そんぼう|0",
+"一日センシュウの思いで再会を待つ。|一日千秋|いちじつ|せんしゅう|1","祖母の気質が隔世イデンしたようだ。|隔世遺伝|かくせい|いでん|1","力戦フントウした選手をたたえる。|力戦奮闘|りきせん|ふんとう|1","昔から人は不老チョウジュを願った。|不老長寿|ふろう|ちょうじゅ|1","刻苦ベンレイして志を果たした。|刻苦勉励|こっく|べんれい|1"]},
+{n:'公式2026',s:[
+"対,非難,ひなん,賞賛,しょうさん,1,さん","対,膨張,ぼうちょう,収縮,しゅうしゅく,0,しゅう","対,丁重,ていちょう,粗略,そりゃく,1,りゃく","対,拘禁,こうきん,釈放,しゃくほう,0,しゃく","対,栄誉,えいよ,恥辱,ちじょく,1,じょく",
+"類,虚構,きょこう,架空,かくう,0,か","類,幼稚,ようち,未熟,みじゅく,1,じゅく","類,繁栄,はんえい,隆盛,りゅうせい,0,りゅう","類,携帯,けいたい,所持,しょじ,1,じ","類,卓越,たくえつ,抜群,ばつぐん,1,ぐん"],
+y:["センキャク万来で目が回るほど忙しい。|千客万来|せんきゃく|ばんらい|0","上司のドクダン専行に悩まされる。|独断専行|どくだん|せんこう|0","デンコウ石火の早業に驚嘆した。|電光石火|でんこう|せっか|0","ジダイ錯誤の社則を改める。|時代錯誤|じだい|さくご|0","二人はイタイ同心の夫婦だった。|異体同心|いたい|どうしん|0",
+"免許カイデンの腕前をご覧にいれよう。|免許皆伝|めんきょ|かいでん|1","無我ムチュウで外に飛び出した。|無我夢中|むが|むちゅう|1","宿敵に勇猛カカンにいどむ。|勇猛果敢|ゆうもう|かかん|1","神出キボツの怪人が世を騒がした。|神出鬼没|しんしゅつ|きぼつ|1","思慮フンベツに欠ける行為だった。|思慮分別|しりょ|ふんべつ|1"]}
+];
+
+/* ===== 準備 ===== */
+const ITEMS=[];
+ROUNDS.forEach((r,ri)=>{
+  r.kana=r.s.map(l=>l.split(',')[6]).sort((a,b)=>a.localeCompare(b,'ja'));
+  r.s.forEach((l,i)=>{const[t,q,qy,a,ay,b,y]=l.split(',');ITEMS.push({id:ri+'-6-'+i,ty:'6',ri,no:i+1,t,q,qy,a,ay,b:+b,y,key:[q,a].sort().join('/')})});
+  r.y.forEach((l,i)=>{const[s,k,y1,y2,p]=l.split('|');ITEMS.push({id:ri+'-8-'+i,ty:'8',ri,no:i+1,s,k,y1,y2,p:+p,key:k})});
+});
+const CNT={};ITEMS.forEach(it=>CNT[it.key]=(CNT[it.key]||0)+1);
+const BYID={};ITEMS.forEach(it=>BYID[it.id]=it);
+
+const $=s=>document.querySelector(s);
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let stats=LS.get('kk3_stats',{}),stars=LS.get('kk3_stars',{});
+const opt=Object.assign({round:'all',field:'both',filter:'all',order:'book',mode:'self',think:'5',voice:'on',rate:'1'},LS.get('kk3_opt',{}));
+const toKata=s=>s.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function go(id){document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('show',e.id===id));window.scrollTo(0,0)}
+
+/* ===== 音声 ===== */
+let jaVoice=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang));jaVoice=vs.find(v=>/Kyoko|O-ren|Otoya|Google/.test(v.name))||vs[0]||null}catch(e){}}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(text){return new Promise(res=>{
+  if(opt.voice!=='on'||!('speechSynthesis' in window)){res();return}
+  let done=false;const fin=()=>{if(!done){done=true;res()}};
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';if(jaVoice)u.voice=jaVoice;u.rate=+opt.rate;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);setTimeout(fin,2500+text.length*330/(+opt.rate))}catch(e){fin()}
+})}
+function stopSpeak(){try{speechSynthesis.cancel()}catch(e){}}
+
+/* ===== ホーム ===== */
+function initHome(){
+  const sel=$('#selRound'),sl=$('#selList');
+  sel.innerHTML='<option value="all">全部（13回＋公式）</option>'+ROUNDS.map((r,i)=>`<option value="${i}">${r.n}</option>`).join('');
+  sl.innerHTML=ROUNDS.map((r,i)=>`<option value="${i}">${r.n}</option>`).join('');
+  sel.value=opt.round;sel.onchange=()=>{opt.round=sel.value;saveOpt()};
+  document.querySelectorAll('.seg').forEach(seg=>{
+    const k=seg.dataset.k;
+    seg.querySelectorAll('button').forEach(b=>{
+      b.classList.toggle('on',b.dataset.v===String(opt[k]));
+      b.onclick=()=>{opt[k]=b.dataset.v;seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));saveOpt()}
+    })
+  });
+  updCount();
+}
+function saveOpt(){LS.set('kk3_opt',opt);updCount()}
+function pool(){
+  let a=ITEMS.filter(it=>(opt.round==='all'||+opt.round===it.ri)&&(opt.field==='both'||opt.field===it.ty));
+  if(opt.filter==='rep')a=a.filter(it=>CNT[it.key]>=2);
+  if(opt.filter==='star')a=a.filter(it=>stars[it.id]);
+  if(opt.filter==='weak')a=a.filter(it=>stats[it.id]&&stats[it.id].w>0);
+  return opt.order==='shuf'?shuffle(a.slice()):a;
+}
+function updCount(){const n=pool().length;$('#countTx').textContent=n?`${n}問`:'該当する問題がありません';$('#startBtn').disabled=!n}
+function startFromHome(){const l=pool();if(l.length)startQuiz(l)}
+
+/* ===== 出題 ===== */
+let Q=null;
+function startQuiz(list){Q={list,i:0,okN:0,done:0,wrong:[],run:Date.now()};go('quiz');showQ()}
+function cur(){return Q.list[Q.i]}
+function repTag(it){return CNT[it.key]>=2?`<span class="rep">全${CNT[it.key]}回出題</span>`:''}
+function otherHalf(it){return it.p===0?{k:it.k.slice(2),y:it.y2}:{k:it.k.slice(0,2),y:it.y1}}
+function qText(it){
+  if(it.ty==='6')return `${it.qy}の、${it.t==='対'?'対義語':'類義語'}は？`;
+  const o=otherHalf(it);return it.s.replace(o.k,o.y);
+}
+function aText(it){return it.ty==='6'?`${it.qy}、${it.ay}`:`${it.y1}${it.y2}`}
+
+function html6(it){
+  const tai=it.t==='対',r=ROUNDS[it.ri];
+  const cells=[0,1].map(j=>j===it.b?`<span class="cell blank" id="blank">？</span>`:`<span class="cell">${it.a[j]}</span>`).join('');
+  return `<div class="kind" style="background:var(${tai?'--tai':'--rui'})">${tai?'対義語（反対の意味）':'類義語（似た意味）'}</div>
+  <div class="src">${r.n}　六－${it.no}${repTag(it)}</div>
+  <div class="pair ${tai?'tai':'rui'}"><div class="word w1"><span class="cell">${it.q[0]}</span><span class="cell">${it.q[1]}</span></div><div class="sym" id="sym">${tai?'⇔':'＝'}</div><div class="word w2">${cells}</div></div>
+  <div class="yomi"><b>${it.qy}</b>　<span id="ay" class="hide">${it.ay}</span></div>
+  <div class="chips" id="chips">${r.kana.map(k=>`<button class="chip" data-v="${k}" onclick="pickChip(this)">${k}</button>`).join('')}</div>
+  <div class="hint">□に入る漢字の「読み」をえらぼう</div>`;
+}
+function html8(it){
+  const kata=toKata(it.p===0?it.y1:it.y2),o=otherHalf(it);
+  const seg=it.p===0?kata+o.k:o.k+kata;
+  const inner=it.p===0?`<u>${kata}</u>${o.k}`:`${o.k}<u>${kata}</u>`;
+  const sent=it.s.includes(seg)?it.s.replace(seg,`<span class="hl" id="hl">${inner}</span>`):it.s;
+  const tiles=[0,1,2,3].map(j=>((j<2?0:1)===it.p)?`<span class="tile blank" data-c="${it.k[j]}">？</span>`:`<span class="tile">${it.k[j]}</span>`).join('');
+  return `<div class="kind" style="background:var(--yoji)">四字熟語</div>
+  <div class="src">${ROUNDS[it.ri].n}　八－${it.no}${repTag(it)}</div>
+  <div class="sent">${sent}</div>
+  <div class="tiles">${tiles}</div>
+  <div class="yomi">「<b>${kata}</b>」を漢字で書くと？</div>
+  <div class="ans hide" id="ay">${it.k}（${it.y1}${it.y2}）</div>`;
+}
+function showQ(){
+  const it=cur();Q.revealed=false;Q.answered=false;Q.run=Date.now();const run=Q.run;
+  $('#prog').textContent=`${Q.i+1} / ${Q.list.length}`;
+  $('#bar').style.width=(Q.i/Q.list.length*100)+'%';
+  $('#wcount').textContent=Q.wrong.length;updStar();
+  $('#card').innerHTML=it.ty==='6'?html6(it):html8(it);
+  if(opt.mode==='auto'){
+    $('#ctrl').innerHTML=`<div class="cd" id="cd"></div><div class="autonote">オート再生中</div><button class="ghost" onclick="pauseAuto()">⏸ 一時停止</button>`;
+    autoFlow(it,run);
+  }else{
+    $('#ctrl').innerHTML=`<div class="cd" id="cd"></div><button class="big" onclick="reveal(true)">答えを見る</button><button class="ghost" onclick="speak(qText(cur()))">🔊 もう一度聞く</button>`;
+    selfFlow(it,run);
+  }
+}
+async function countdown(run){
+  const t=+opt.think;if(!t)return true;
+  for(let s=t;s>0;s--){if(run!==Q.run)return false;const c=$('#cd');if(c)c.textContent=s;await sleep(1000)}
+  const c=$('#cd');if(c)c.textContent='';return run===Q.run;
+}
+async function selfFlow(it,run){
+  await speak(qText(it));if(run!==Q.run||Q.revealed)return;
+  if(+opt.think>0){const ok=await countdown(run);if(ok&&!Q.revealed)reveal(true)}
+}
+async function autoFlow(it,run){
+  await speak(qText(it));if(run!==Q.run)return;
+  const t=+opt.think||5;
+  for(let s=t;s>0;s--){if(run!==Q.run)return;const c=$('#cd');if(c)c.textContent=s;await sleep(1000)}
+  if(run!==Q.run)return;$('#cd').textContent='';
+  reveal(false);await speak(aText(it));if(run!==Q.run)return;
+  await sleep(1800);if(run!==Q.run)return;
+  Q.done++;next();
+}
+function pauseAuto(){Q.run=0;stopSpeak();$('#ctrl').innerHTML=`<button class="big" onclick="showQ()">▶ 再開</button>`}
+
+function reveal(withVoice){
+  if(Q.revealed)return;Q.revealed=true;const it=cur();
+  const cd=$('#cd');if(cd)cd.textContent='';
+  if(it.ty==='6'){
+    const b=$('#blank');b.textContent=it.a[it.b];b.classList.remove('blank');b.classList.add('fill');
+    $('#sym').classList.add('go');$('#ay').classList.remove('hide');
+    document.querySelectorAll('#chips .chip').forEach(c=>{if(c.dataset.v===it.y)c.classList.add('ok')});
+  }else{
+    document.querySelectorAll('.tile.blank').forEach((t,i)=>{t.textContent=t.dataset.c;t.classList.remove('blank');t.classList.add('fill');t.style.animationDelay=(i*0.25)+'s'});
+    const hl=$('#hl');if(hl){hl.textContent=it.k;hl.classList.add('done')}
+    $('#ay').classList.remove('hide');
+  }
+  if(opt.mode==='auto')return;
+  if(withVoice)speak(aText(it));
+  if(Q.answered){$('#ctrl').innerHTML=nextHtml()}
+  else $('#ctrl').innerHTML=`<div class="grade"><button class="g-ok" onclick="grade(true)">○ できた</button><button class="g-ng" onclick="grade(false)">× まちがえた</button></div><button class="ghost" onclick="speak(aText(cur()))">🔊 もう一度聞く</button>`;
+}
+function nextHtml(){return `<button class="big" onclick="next()">次へ ▶</button><button class="ghost" onclick="speak(aText(cur()))">🔊 もう一度聞く</button>`}
+function pickChip(btn){
+  if(opt.mode==='auto'||Q.revealed)return;
+  const it=cur(),ok=btn.dataset.v===it.y;
+  if(!ok)btn.classList.add('ng');
+  Q.answered=true;record(it,ok);Q.run=Date.now();reveal(true);
+}
+function grade(ok){record(cur(),ok);next()}
+function record(it,ok){
+  const s=stats[it.id]||{w:0,c:0};ok?s.c++:s.w++;stats[it.id]=s;LS.set('kk3_stats',stats);
+  Q.done++;if(ok)Q.okN++;else if(!Q.wrong.includes(it))Q.wrong.push(it);
+  $('#wcount').textContent=Q.wrong.length;
+}
+function next(){Q.i++;if(Q.i>=Q.list.length)finish();else showQ()}
+function quitQuiz(){Q.run=0;stopSpeak();if(Q.done>0&&opt.mode!=='auto')finish();else go('home')}
+function finish(){
+  Q.run=0;stopSpeak();go('result');
+  if(opt.mode==='auto'){
+    $('#resTitle').textContent='おつかれさま！';$('#resScore').textContent=`${Q.done}問`;$('#resSub').textContent='見て・聞いて覚えました';
+    $('#resList').style.display='none';$('#retryBtn').style.display='none';return;
+  }
+  $('#resTitle').textContent=Q.wrong.length?'おつかれさま！':'全問正解！すばらしい！';
+  $('#resScore').textContent=`${Q.okN} / ${Q.done}`;$('#resSub').textContent='○の数 / 答えた数';
+  $('#resList').style.display=Q.wrong.length?'block':'none';
+  $('#resList').innerHTML='<div class="lbl">まちがえた問題</div>'+Q.wrong.map(itemRow).join('');
+  $('#retryBtn').style.display=Q.wrong.length?'block':'none';
+}
+function retryWrong(){if(Q&&Q.wrong.length)startQuiz(Q.wrong.slice())}
+
+/* ===== ★・一覧 ===== */
+function label(it){return it.ty==='6'?`${it.q} ${it.t==='対'?'⇔':'＝'} ${it.a}`:it.k}
+function yomiOf(it){return it.ty==='6'?`${it.qy} ／ ${it.ay}`:it.y1+it.y2}
+function tagOf(it){return it.ty==='6'?`<span class="tag" style="background:var(${it.t==='対'?'--tai':'--rui'})">${it.t}</span>`:`<span class="tag" style="background:var(--yoji)">四字</span>`}
+function itemRow(it,extra){
+  return `<div class="item"><div class="no">${ROUNDS[it.ri].n}<br>${it.ty==='6'?'六':'八'}－${it.no}</div><div class="tx">${tagOf(it)}${label(it)}${repTag(it)}<small>${yomiOf(it)}</small></div>${extra||''}<button class="star ${stars[it.id]?'on':''}" onclick="toggleStar('${it.id}',this)">★</button></div>`;
+}
+function toggleStar(id,btn){if(stars[id])delete stars[id];else stars[id]=1;LS.set('kk3_stars',stars);if(btn)btn.classList.toggle('on',!!stars[id]);updStar();updCount()}
+function toggleStarCur(){toggleStar(cur().id)}
+function updStar(){if(Q&&Q.list[Q.i])$('#qStar').classList.toggle('on',!!stars[cur().id])}
+function openList(){go('list');renderList()}
+function renderList(){const ri=+$('#selList').value;$('#listBox').innerHTML=ITEMS.filter(it=>it.ri===ri).map(it=>itemRow(it)).join('')}
+function clearStars(){if(confirm('★をすべて外しますか？')){stars={};LS.set('kk3_stars',stars);renderList();updCount()}}
+function rankList(){return ITEMS.filter(it=>stats[it.id]&&stats[it.id].w>0).sort((a,b)=>stats[b.id].w-stats[a.id].w||stats[a.id].c-stats[b.id].c)}
+function openRank(){go('rank');const l=rankList();$('#rankBox').innerHTML=l.length?l.map(it=>itemRow(it,`<div class="st">×${stats[it.id].w}<br><span style="color:var(--ok)">○${stats[it.id].c}</span></div>`)).join(''):'<div class="lead" style="margin:6px 0">まだ記録がありません。</div>'}
+function startRank(){const l=rankList().slice(0,20);if(l.length)startQuiz(l)}
+function resetStats(){if(confirm('○×の記録をすべて消しますか？')){stats={};LS.set('kk3_stats',stats);openRank();updCount()}}
+function openWrong(){$('#wBox').innerHTML=Q&&Q.wrong.length?Q.wrong.map(itemRow).join(''):'<div class="lead">まだありません。</div>';$('#wModal').classList.add('show')}
+function closeWrong(){$('#wModal').classList.remove('show')}
+
+initHome();
+</script>
+</body>
+</html>
