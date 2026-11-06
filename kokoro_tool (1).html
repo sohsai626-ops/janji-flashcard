@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>こころ 語句・考査対策ツール</title>
+<style>
+:root{--main:#2c3e6b;--accent:#b8423a;--bg:#f5f2ea;--card:#fff;--ok:#2e8b57;--ng:#c0392b;--line:#d9d2c3}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;background:var(--bg);color:#222;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{background:var(--main);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:8px}
+header h1{font-size:18px;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+header small{font-size:11px;opacity:.8}
+.ver{margin-left:auto;font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:8px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1;border:0;background:none;padding:8px 0 6px;font-size:11px;color:#777;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:20px;font-weight:normal}
+nav button.on{color:var(--main);font-weight:bold}
+.tab{display:none;padding:14px;max-width:640px;margin:0 auto}
+.tab.show{display:block}
+h2{font-size:16px;color:var(--main);margin:6px 0 10px}
+h3{font-size:14px;color:#555;margin:14px 0 6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.seg button{border:1.5px solid var(--main);background:#fff;color:var(--main);border-radius:18px;padding:7px 12px;font-size:13px}
+.seg button.on{background:var(--main);color:#fff}
+.big{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:bold;padding:14px;border-radius:12px;margin-top:14px}
+.sub{display:block;width:100%;border:1.5px solid var(--main);background:#fff;color:var(--main);font-size:14px;padding:11px;border-radius:12px;margin-top:8px}
+.note{font-size:12px;color:#777;line-height:1.6}
+/* quiz */
+#quiz{display:none}
+.bar{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;margin-bottom:8px}
+.bar .prog{flex:1;height:6px;background:#e5dfd2;border-radius:3px;overflow:hidden}
+.bar .prog i{display:block;height:100%;background:var(--accent)}
+.bar button{border:1px solid #bbb;background:#fff;border-radius:12px;padding:4px 9px;font-size:12px}
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 16px;min-height:170px}
+.tag{display:inline-block;font-size:11px;color:#fff;background:var(--main);padding:2px 8px;border-radius:8px;margin-bottom:10px}
+.q{font-size:20px;line-height:1.7;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;white-space:pre-wrap}
+.q.long{font-size:16px}
+.ans{display:none;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:17px;line-height:1.7;color:var(--accent);font-weight:bold;white-space:pre-wrap}
+.ans .pt{display:block;margin-top:8px;font-size:13px;color:#555;font-weight:normal;background:#f7f4ec;padding:8px;border-radius:8px}
+.choices{display:grid;gap:8px;margin-top:12px}
+.choices button{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px;font-size:15px;line-height:1.5;color:#222}
+.choices button.right{border-color:var(--ok);background:#e8f5ee}
+.choices button.wrong{border-color:var(--ng);background:#fbeaea}
+.judge{display:flex;gap:10px;margin-top:12px}
+.judge button{flex:1;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:bold;color:#fff}
+.judge .o{background:var(--ok)}.judge .x{background:var(--ng)}
+.tts{float:right;border:0;background:#eee;border-radius:50%;width:34px;height:34px;font-size:16px}
+/* list */
+.item{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:14px;line-height:1.6}
+.item b{color:var(--main)}
+.item .c{float:right;color:var(--ng);font-weight:bold}
+.flow{background:#fff;border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:14px;line-height:1.75}
+.flow b{display:block;color:var(--accent);margin-bottom:2px}
+.flow .pg{font-size:11px;color:#999}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:40px 14px}
+.modal .in{background:#fff;border-radius:14px;max-width:600px;margin:0 auto;max-height:80vh;overflow:auto;padding:14px}
+input[type=number]{width:70px;font-size:15px;padding:5px;border:1px solid #bbb;border-radius:6px}
+label.ck{display:block;font-size:14px;padding:6px 0}
+/* print */
+#printArea{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  header,nav,.tab,.modal{display:none!important}
+  #printArea{display:block!important;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:#000}
+  .pp{page-break-after:always;padding:8mm}
+  .pp:last-child{page-break-after:auto}
+  .pp h1{font-size:16pt;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm}
+  .pp .nm{float:right;font-size:11pt;font-weight:normal}
+  .pp ol{padding-left:8mm;font-size:11pt;line-height:1.6}
+  .pp li{margin-bottom:3mm;break-inside:avoid}
+  .pp .blank{display:block;border-bottom:1px solid #888;height:7mm}
+  .pp .blank2{display:block;border-bottom:1px solid #888;height:7mm}
+  .pp .ka{color:#000;font-weight:bold}
+}
+@page{size:A4;margin:10mm}
+</style>
+</head>
+<body>
+<header><div><h1>こころ　語句・考査対策</h1><small>夏目漱石　教科書 p.74〜99</small></div><span class="ver">v2</span></header>
+
+<!-- 語句 -->
+<section class="tab show" id="t-goku">
+  <h2>📖 重要語句</h2>
+  <h3>出題のしかた</h3>
+  <div class="seg" id="g-dir">
+    <button data-v="wm" class="on">語 → 意味</button>
+    <button data-v="mw">意味 → 語</button>
+    <button data-v="yomi">読み</button>
+  </div>
+  <h3>答え方</h3>
+  <div class="seg" id="g-style">
+    <button data-v="card" class="on">カード（自己採点）</button>
+    <button data-v="four">4択</button>
+  </div>
+  <h3>ページ</h3>
+  <div class="seg" id="g-pg"><button data-v="all" class="on">全部（p.74〜99）</button><button data-v="a">前半 p.74〜83</button><button data-v="b">後半 p.84〜99</button></div>
+  <h3>範囲</h3>
+  <div class="seg" id="g-src">
+    <button data-v="all" class="on">全部</button>
+    <button data-v="教">教科書の〈 〉＊語句</button>
+    <button data-v="本">本文の重要語</button>
+  </div>
+  <button class="big" onclick="startGoku()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="showList()">語句の一覧を見る</button>
+</section>
+
+<!-- 考査 -->
+<section class="tab" id="t-kousa">
+  <h2>📝 定期考査対策</h2>
+  <h3>ページ</h3>
+  <div class="seg" id="k-pg"><button data-v="all" class="on">全部（p.74〜99）</button><button data-v="a">前半 p.74〜83</button><button data-v="b">後半 p.84〜99</button></div>
+  <h3>種類</h3>
+  <div class="seg" id="k-cat">
+    <button data-v="all" class="on">全部</button>
+    <button data-v="問">教科書の問い■1〜16・理解</button>
+    <button data-v="内">内容の一問一答</button>
+    <button data-v="表">表現・心情</button>
+  </div>
+  <p class="note">問題を見て、自分で答えを考えてから「答えを見る」を押そう。記述問題は、模範解答の<b>ポイント</b>が入っていれば○にしてOK。</p>
+  <button class="big" onclick="startKousa()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="startKousa(true)">▶ 本文の順番どおりに出題</button>
+</section>
+
+<!-- 流れ -->
+<section class="tab" id="t-flow">
+  <h2>🗺 場面の流れ</h2>
+  <div class="item"><b>登場人物</b><br>私（「先生」）…遺書の書き手。お嬢さんを愛している。<br>K…私の同郷の友人。寺の次男。強い意志をもつ無口な男。<br>奥さん…下宿の主人（軍人の未亡人）。<br>お嬢さん…奥さんの娘。私もKも心をひかれている。</div>
+  <div id="flowList"></div>
+</section>
+
+<!-- 苦手 -->
+<section class="tab" id="t-nigate">
+  <h2>📊 苦手ランキング</h2>
+  <p class="note">×にした回数が多い順。このスマホのブラウザに記録されます。</p>
+  <button class="big" onclick="startNigate()">▶ 苦手な問題だけ出題</button>
+  <div id="rankList" style="margin-top:12px"></div>
+  <button class="sub" onclick="resetRank()">記録をリセット</button>
+</section>
+
+<!-- 印刷 -->
+<section class="tab" id="t-print">
+  <h2>🖨 プリント作成</h2>
+  <p class="note">選んだ問題をシャッフルして、問題用紙と解答用紙を作ります。</p>
+  <h3>入れる問題</h3>
+  <label class="ck"><input type="checkbox" id="p-wm" checked> 語句：語 → 意味</label>
+  <label class="ck"><input type="checkbox" id="p-mw" checked> 語句：意味 → 語</label>
+  <label class="ck"><input type="checkbox" id="p-yomi"> 語句：読み</label>
+  <label class="ck"><input type="checkbox" id="p-nai" checked> 内容の一問一答</label>
+  <label class="ck"><input type="checkbox" id="p-mon"> 教科書の問い・理解・表現（記述）</label>
+  <h3>問題数</h3>
+  <p><input type="number" id="p-num" value="30" min="5" max="120"> 問（足りない時はある分だけ）</p>
+  <button class="big" onclick="makePrint()">🖨 プリントを作って印刷</button>
+  <p class="note" style="margin-top:8px">iPhoneは印刷画面で「PDFとして保存」や共有も選べます。</p>
+</section>
+
+<!-- クイズ画面 -->
+<section class="tab" id="quiz">
+  <div class="bar"><button onclick="quitQuiz()">✕ やめる</button><span id="qNo"></span><div class="prog"><i id="qBar"></i></div><button onclick="showWrongNow()">×一覧</button></div>
+  <div class="card" id="qCard">
+    <button class="tts" onclick="speak()">🔊</button>
+    <span class="tag" id="qTag"></span>
+    <div class="q" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <div class="ans" id="qAns"></div>
+  </div>
+  <div id="qBtns"></div>
+</section>
+
+<nav>
+  <button class="on" data-t="t-goku"><b>📖</b>語句</button>
+  <button data-t="t-kousa"><b>📝</b>考査対策</button>
+  <button data-t="t-flow"><b>🗺</b>流れ</button>
+  <button data-t="t-nigate"><b>📊</b>苦手</button>
+  <button data-t="t-print"><b>🖨</b>プリント</button>
+</nav>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.style.display='none'"><div class="in" id="modalIn"></div></div>
+<div id="printArea"></div>
+
+<script>
+// ===== データ =====
+// 語句：w=語, r=読み, m=意味, s=出典(教=教科書の〈〉＊語句, 本=本文の重要語), p=ページ
+const VOCAB=[
+ {w:"口を破る",r:"くちをやぶる",m:"黙っていた人が、ついに話し出す。",s:"教",p:75},
+ {w:"容貌",r:"ようぼう",m:"顔かたち。顔つき。",s:"教",p:78},
+ {w:"寡言",r:"かげん",m:"口数が少ないこと。",s:"教",p:78},
+ {w:"やむを得ず",r:"やむをえず",m:"しかたなく。ほかにどうしようもなく。",s:"教",p:79},
+ {w:"手抜かり",r:"てぬかり",m:"やり方に不注意な点があること。落ち度。",s:"教",p:76},
+ {w:"談話",r:"だんわ",m:"話をすること。会話。",s:"教",p:80},
+ {w:"生返事",r:"なまへんじ",m:"気のない、いいかげんな返事。",s:"教",p:80},
+ {w:"挙動",r:"きょどう",m:"立ち居振る舞い。動作や態度。",s:"教",p:80},
+ {w:"明瞭",r:"めいりょう",m:"はっきりしていて明らかなこと。",s:"教",p:81},
+ {w:"肉薄",r:"にくはく",m:"相手のすぐそばまで迫ること。鋭く問い詰めること。",s:"教",p:81},
+ {w:"横着",r:"おうちゃく",m:"ずうずうしいこと。図太いこと。",s:"教",p:81},
+ {w:"所作",r:"しょさ",m:"振る舞い。しぐさ。",s:"教",p:82},
+ {g:3,w:"胸に一物がある",r:"むねにいちもつがある",m:"心の中にひそかな考え（たくらみ）を持っている。",s:"教",p:82},
+ {w:"談判",r:"だんぱん",m:"物事を決めるために相手と話し合うこと。かけ合い。",s:"教",p:82},
+ {w:"漠然",r:"ばくぜん",m:"ぼんやりしていて、はっきりしない様子。",s:"教",p:83},
+ {w:"慈雨",r:"じう",m:"日照り続きの時に降る、恵みの雨。",s:"教",p:83},
+ {w:"平生",r:"へいぜい",m:"ふだん。日ごろ。",s:"本",p:75},
+ {w:"予覚",r:"よかく",m:"前もって感じ取ること。予感。",s:"本",p:75},
+ {w:"分別",r:"ふんべつ",m:"物事の道理をわきまえて判断すること。",s:"本",p:75},
+ {w:"得策",r:"とくさく",m:"うまいやり方。有利な方法。",s:"本",p:76},
+ {w:"時機",r:"じき",m:"何かをするのにちょうどよい時。",s:"本",p:76},
+ {w:"悔恨",r:"かいこん",m:"自分のしたことを、後で悔やむこと。",s:"本",p:77},
+ {g:3,w:"下心",r:"したごころ",m:"心の中にひそかに持っている考え。たくらみ。",s:"本",p:77},
+ {w:"咀嚼",r:"そしゃく",m:"（食べ物をかみくだくことから）物事をよく考えて味わうこと。",s:"本",p:77},
+ {w:"祟る",r:"たたる",m:"神仏や霊などがとりついて災いを与える。",s:"本",p:78},
+ {w:"俥",r:"くるま",m:"人力車。",s:"本",p:78},
+ {w:"追窮",r:"ついきゅう",m:"どこまでも問い詰めること。",s:"本",p:79},
+ {g:1,w:"気色",r:"けしき",m:"表情や態度に表れた様子。そぶり。",s:"本",p:80},
+ {g:1,w:"素振り",r:"そぶり",m:"表情や動作に表れる様子。",s:"本",p:80},
+ {w:"差違",r:"さい",m:"ちがい。",s:"本",p:80},
+ {w:"往来",r:"おうらい",m:"人や車が行き来する道。道路。",s:"本",p:81},
+ {w:"悄然",r:"しょうぜん",m:"元気がなく、しょんぼりしている様子。",s:"本",p:83}
+];
+
+// 考査：c=分類(問/内/表), q=問題, a=答え, pt=ポイント, p=ページ
+const KOUSA=[
+ {c:"問",p:75,q:"■1「不思議の感に打たれ」たのはなぜか。",a:"以前「私」が奥さんとお嬢さんを話題にして話しかけた時とは調子が変わって、Kが今日に限って二人のことを、「私」も答えられないような立ち入ったことまで熱心に聞いてきたから。",pt:"ポイント：①ふだん（以前）のKとの違い　②立ち入ったことまで聞く"},
+ {c:"内",p:75,q:"Kが重い口から「私」に打ち明けたことは何か。",a:"お嬢さんに対する切ない恋。"},
+ {c:"内",p:75,q:"Kの話し方の癖は何か。",a:"何か言おうとすると、言う前に口のあたりをもぐもぐさせる癖。"},
+ {c:"表",p:75,q:"Kの告白を聞いた「私」の様子を、Kの「何」のために「化石された」とたとえているか。",a:"魔法棒（のために一度に化石されたようなもの）"},
+ {c:"表",p:75,q:"告白を聞いた時の「私」は、何の「塊」だったと言っているか（二つ）。",a:"恐ろしさの塊、苦しさの塊。",pt:"「石か鉄のように頭から足の先までが急に堅くなった」とも表現している。"},
+ {c:"内",p:75,q:"人間らしい気分を取り戻した「私」が、すぐに思ったことは何か。",a:"「しまった」「先を越された」と思った。",pt:"お嬢さんへの恋を、Kに先に打ち明けられてしまったということ。"},
+ {c:"表",p:76,q:"「私」は、自分の苦しさが顔の上に何のように貼り付けられていたろうと言っているか。",a:"大きな広告のように（はっきりした字で貼り付けられていた）。"},
+ {c:"内",p:76,q:"Kが「私」の表情に気がつかなかったのはなぜか。",a:"自分のことに一切を集中していたから。"},
+ {c:"内",p:76,q:"Kの自白の調子を聞くうちに、「私」にきざし始めた恐怖の念とはどのようなものか。",a:"相手（K）は自分より強いのだという恐怖。"},
+ {c:"内",p:76,q:"Kの話が済んだ時、「私」が何も言わなかったのはなぜか。",a:"打ち明けるか黙っているかの利害を考えたのではなく、ただ何事も言えなかった（言う気にもならなかった）から。"},
+ {c:"内",p:76,q:"「私」が「非常な手抜かり」のように思ったのは何か。",a:"Kの言葉を遮って、こっちから逆襲しなかったこと。"},
+ {c:"表",p:77,q:"「私の頭は（　　）に揺られてぐらぐらしました。」空欄に入る語は何か。",a:"悔恨"},
+ {c:"問",p:77,q:"■2「仕切りの襖」の描写にはどのような効果があるか。",a:"襖一枚をへだてて、互いに黙り合うKと「私」の心の隔たりや緊張感を表し、Kの心の内が見えないことへの「私」の不安やいらだちを強く印象づける効果。",pt:"ポイント：①二人の心の隔たり・緊張　②相手が見えない「私」の不安・焦り"},
+ {c:"内",p:77,q:"部屋にいる「私」は、Kが何をしてくれればいいと思ったか。",a:"Kが再び仕切りの襖を開けて、向こうから突進してきてくれればいいと思った。"},
+ {c:"内",p:77,q:"「私」がこっちから襖を開けられず、向こうから働きかけられるのを待つしかなかったのはなぜか。",a:"いったん言いそびれてしまったから。"},
+ {c:"表",p:77,q:"正月の町を歩き回る「私」は、Kのことをどうしていたと言っているか。",a:"Kを振るい落とすのではなく、むしろ自分から進んで彼の姿を咀嚼しながらうろついていた。"},
+ {c:"内",p:78,q:"「私」が、Kについて「解しにくい」と感じた問題を三つ答えよ。",a:"①なぜあんなことを突然私に打ち明けたのか　②なぜ打ち明けずにいられないほど恋が募ってきたのか　③平生の彼はどこに吹き飛ばされてしまったのか"},
+ {c:"問",p:78,q:"■3「魔物のように思えた」のはなぜか。",a:"いくら町を歩いて考えても、強い意志をもつKを動かす（恋をあきらめさせる）ことはとうていできないと感じ、Kが自分の力の及ばない、不気味で恐ろしい存在に思えたから。",pt:"ポイント：①Kを動かすことはできない　②不気味さ・恐ろしさ"},
+ {c:"内",p:78,q:"「私」がうちに帰ると間もなく聞こえた俥の音は、何を意味しているか。",a:"奥さんとお嬢さんが、外出先から帰ってきたこと。"},
+ {c:"内",p:78,q:"夕食の時、奥さんに「どうかしたのか」と聞かれ、「私」は何と答えたか。",a:"少し心持ちが悪い。"},
+ {c:"内",p:78,q:"お嬢さんに同じことを聞かれ、Kは何と答えたか。",a:"ただ口がききたくないからだ。"},
+ {c:"内",p:79,q:"お嬢さんに「何かむずかしいことを考えているのだろう」と言われた時、Kの顔はどうなったか。",a:"心持ち薄赤くなった。"},
+ {c:"内",p:79,q:"その晩、奥さんが「私」に持ってきてくれたものは何か。",a:"蕎麦湯"},
+ {c:"内",p:79,q:"夜中に「私」が時刻を尋ねると、Kは何時だと答えたか。",a:"一時二十分"},
+ {c:"内",p:80,q:"「もっと詳しい話をしたいが、都合はどうだ」と切り出した「私」に、Kはどう応じたか。",a:"今度は応じず、「そうだなあ」と低い声で渋った。"},
+ {c:"問",p:80,q:"■4「はっと思わせられ」たのはなぜか。",a:"二度の「おい」に素直に答えたKなら、話し合いの申し出にもすぐ返事をすると思っていたのに、Kが「そうだなあ」と渋ったことで、Kが簡単には心の内を明かさない（恋を軽く考えていない）と気づかされたから。",pt:"ポイント：①即座に返事が得られると思っていた　②Kが渋ったことへの驚き"},
+ {c:"内",p:80,q:"奥さんとお嬢さんの様子を観察して、「私」はどう判断し、どんな気持ちになったか。",a:"Kの自白は「私」だけに限られていて、お嬢さんにも奥さんにもまだ通じていないと判断し、少し安心した。"},
+ {c:"表",p:80,q:"「私」は、例の問題をそっとしておくと決めるまでの心の経過を、何と同じようだとたとえているか。",a:"潮の満ち干（と同じように、いろいろの高低があった）。"},
+ {c:"問",p:81,q:"■5「盤上の数字を指し得るものだろうか」とはどのようなことか。",a:"人間の心は、時計の針が文字盤の数字を正確に指すように、本心をそのまま偽りなく言葉や動作に表すものだろうか（いや、そうとは限らない）ということ。",pt:"ポイント：奥さんとお嬢さんの言語動作が、本心どおりなのかを疑っている。"},
+ {c:"内",p:81,q:"往来でKに肉薄した「私」が、第一に聞いたことは何か。",a:"この間の自白が「私」だけに限られているか、奥さんやお嬢さんにも通じているか。"},
+ {c:"内",p:81,q:"Kの答えを聞いて、「私」が内心うれしがったのはなぜか。",a:"Kが他の人にはまだ誰にも打ち明けていないと明言し、事情が自分の推察どおりだったから。"},
+ {c:"内",p:81,q:"「私」がKの答えを疑わなかった理由として挙げている、Kの過去の出来事は何か。",a:"学資のことで養家を三年も欺いていたが、「私」に対する信用は少しも損なわれていなかったこと。"},
+ {c:"内",p:81,q:"「私」は、Kの恋について何を尋ねたか。",a:"恋をどう取り扱うつもりか。単なる自白に過ぎないのか、実際的の効果をも収める気なのか。"},
+ {c:"問",p:82,q:"■6「思ったとおりを話してくれと頼」んだのはなぜか。",a:"Kが恋を打ち明けただけなのか、実際にお嬢さんに働きかけるつもりなのかを知ったうえで、自分の取るべき態度を決めようとしたから。",pt:"ポイント：Kの本心（恋をどうするつもりか）を知り、それに対応しようとした。"},
+ {c:"問",p:82,q:"■7「一種変な心持ちがし」たのはなぜか。",a:"図書館で小声で話しかけるKの所作は誰でもする普通のことだが、Kの告白以来Kを強く意識していた「私」には、Kが何か胸に一物を持って談判に来たように思えたから。",pt:"ポイント：①行為自体は普通　②告白以来Kを警戒している「私」"},
+ {c:"内",p:82,q:"Kと「私」が散歩した道筋を答えよ。",a:"（図書館を出て）竜岡町から池の端へ出て、上野の公園の中へ入った。"},
+ {c:"内",p:83,q:"上野の公園でKが「私」に求めたものは何か。",a:"恋愛の淵に陥った現在の自分についての、「私」の批判（批評）。",pt:"Kは「どう思う」と漠然と尋ねた。"},
+ {c:"内",p:83,q:"「私」が知っているKの天性とはどのようなものか。",a:"他の思わくをはばかるほど弱くはなく、こうと信じたら一人でどんどん進んでゆくだけの度胸も勇気もある。"},
+ {c:"内",p:83,q:"Kは何に迷っていると説明したか。",a:"進んでいいか、退いていいか。"},
+ {c:"内",p:83,q:"「退こうと思えば退けるのか」と聞かれたKは、どう答えたか。",a:"言葉が行き詰まり、ただ「苦しい」と言った。"},
+ {c:"表",p:83,q:"Kの顔を「渇き切った顔」とし、「私」が返事を何のように注いでやったかもしれないと言っているか。",a:"慈雨のごとく",pt:"相手がお嬢さんでなかったら、Kに都合のいい返事を与えてやっただろうということ。"},
+ {c:"表",p:83,q:"「彼はいつもにも似ない（　　）とした口調で、自分の弱い人間であるのが実際恥ずかしいと言いました。」空欄に入る語は何か。",a:"悄然（しょうぜん）"}
+];
+
+const FLOW=[
+ {t:"① Kの告白",p:"p.75",d:"正月、奥さんとお嬢さんの外出中、Kはいつになく二人のことを聞き、ついにお嬢さんへの恋を打ち明ける。「私」は化石のように固まり、「先を越された」と思う。"},
+ {t:"② 何も言えない「私」",p:"p.76",d:"Kの自白を聞きながら、「私」は苦しさと「相手は自分より強い」という恐怖を感じる。自分の気持ちを打ち明けられず、黙って昼飯をすませる。"},
+ {t:"③ 襖越しの悔恨",p:"p.76〜77",d:"自分も打ち明けるべきだったと悔やむ。仕切りの襖の向こうのKが気になってたまらず、家を出て正月の町を歩き回る。"},
+ {t:"④ 魔物のようなK",p:"p.78",d:"Kが理解できず、いくら歩いても彼を動かせないと感じ、Kが魔物のように思える。"},
+ {t:"⑤ 夕食と夜の会話",p:"p.78〜80",d:"奥さんとお嬢さんが帰宅。夕食で二人とも口数が少ない。夜、襖越しに「おい」と呼び合うが、話をしたいと言う「私」にKは「そうだなあ」と渋る。"},
+ {t:"⑥ 様子をうかがう日々",p:"p.80〜81",d:"Kの生返事が続く。奥さんとお嬢さんの様子は変わらず、Kの自白は「私」だけにとどまっていると判断して少し安心する。往来でKに肉薄し、誰にも打ち明けていないことを確かめる。"},
+ {t:"⑦ 図書館から上野公園へ",p:"p.82〜83",d:"図書館でKに散歩に誘われる。上野公園でKは「どう思う」と私の批判を求め、「進んでいいか退いていいか迷う」「苦しい」と言う。相手がお嬢さんなので、「私」は都合のいい返事をしてやれない。"}
+];
+
+VOCAB.push(
+ {w:"厳粛",r:"げんしゅく",m:"おごそかで、心が引きしまる様子。",s:"教",p:85},
+ {w:"滑稽",r:"こっけい",m:"おどけていて、おかしいこと。ばかばかしいこと。",s:"教",p:85},
+ {w:"残酷",r:"ざんこく",m:"むごたらしいこと。思いやりがなく、ひどいこと。",s:"教",p:85},
+ {w:"宗旨",r:"しゅうし",m:"その宗派の教えの中心となる考え。",s:"教",p:85},
+ {w:"精進",r:"しょうじん",m:"一心に努力して、修行に励むこと。",s:"教",p:85},
+ {g:2,w:"侮蔑",r:"ぶべつ",m:"相手を見下して、ばかにすること。",s:"教",p:85},
+ {g:5,w:"刹那",r:"せつな",m:"きわめて短い時間。瞬間。",s:"教",p:87},
+ {w:"喉笛",r:"のどぶえ",m:"のどの、息の通る部分。急所。",s:"教",p:87},
+ {w:"萎縮",r:"いしゅく",m:"気持ちがしぼんで、縮こまること。",s:"教",p:87},
+ {g:6,w:"卒然",r:"そつぜん",m:"突然。にわかに。",s:"教",p:87},
+ {w:"目がくらむ",r:"めがくらむ",m:"（欲などに）心を奪われて、正しい判断ができなくなる。",s:"教",p:87},
+ {w:"覚醒",r:"かくせい",m:"迷いから覚めて、自分の誤りに気づくこと。",s:"教",p:89},
+ {w:"猛進",r:"もうしん",m:"激しい勢いで突き進むこと。",s:"教",p:89},
+ {w:"熟睡",r:"じゅくすい",m:"ぐっすり眠ること。",s:"教",p:89},
+ {w:"果断",r:"かだん",m:"思い切りよく決断すること。",s:"教",p:91},
+ {w:"催促",r:"さいそく",m:"早くするように求めること。",s:"教",p:91},
+ {w:"屈託",r:"くったく",m:"一つのことを気にして、くよくよすること。",s:"教",p:91},
+ {w:"色を失う",r:"いろをうしなう",m:"（本文では）勢いや輝きがなくなる。もとは、驚きや恐れで顔色が青ざめること。",s:"教",p:91},
+ {w:"頓着",r:"とんちゃく",m:"気にかけること。こだわること。",s:"教",p:93},
+ {w:"境遇",r:"きょうぐう",m:"その人が置かれている環境や立場。",s:"教",p:93},
+ {w:"拘泥",r:"こうでい",m:"必要以上にこだわること。",s:"教",p:93},
+ {w:"手ずれのした",r:"てずれのした",m:"何度も手で触れられて、すれて傷んだ。",s:"教",p:93},
+ {w:"時分",r:"じぶん",m:"ころ。時期。",s:"教",p:95},
+ {w:"回顧",r:"かいこ",m:"過去を振り返ること。",s:"教",p:95},
+ {w:"書見",r:"しょけん",m:"書物を読むこと。読書。",s:"教",p:95},
+ {w:"我知らず",r:"われしらず",m:"自分でも気づかないうちに。思わず。",s:"教",p:95},
+ {w:"面目",r:"めんぼく",m:"世間に対する体面。名誉。",s:"教",p:97},
+ {w:"詰問",r:"きつもん",m:"厳しく問い詰めること。",s:"教",p:97},
+ {w:"窮境",r:"きゅうきょう",m:"苦しく追い詰められた立場。",s:"教",p:97},
+ {w:"疾風",r:"しっぷう",m:"激しく速く吹く風。",s:"教",p:99},
+ {w:"血潮",r:"ちしお",m:"体の中を流れる血。",s:"教",p:99},
+ {w:"他流試合",r:"たりゅうじあい",m:"自分と違う流派の相手と行う試合。",s:"本",p:84},
+ {w:"復讐",r:"ふくしゅう",m:"仕返しをすること。",s:"本",p:84},
+ {w:"彷徨",r:"ほうこう",m:"あてもなくさまよい歩くこと。",s:"本",p:84},
+ {w:"無論",r:"むろん",m:"言うまでもなく。もちろん。",s:"本",p:84},
+ {w:"策略",r:"さくりゃく",m:"相手をおとしいれるための計略。はかりごと。",s:"本",p:84},
+ {w:"利己心",r:"りこしん",m:"自分の利益だけを考える心。",s:"本",p:85},
+ {g:4,w:"煩悶",r:"はんもん",m:"いろいろと思い悩み、苦しむこと。",s:"本",p:90},
+ {g:4,w:"懊悩",r:"おうのう",m:"悩みもだえること。",s:"本",p:90},
+ {w:"仮病",r:"けびょう",m:"病気のふりをすること。",s:"本",p:90},
+ {w:"曠野",r:"こうや",m:"人けのない、広々とした野原。",s:"本",p:94},
+ {w:"至難",r:"しなん",m:"このうえなく難しいこと。",s:"本",p:96},
+ {w:"狡猾",r:"こうかつ",m:"ずるくて悪賢いこと。",s:"本",p:96},
+ {w:"超然",r:"ちょうぜん",m:"世間の物事にとらわれず、平然としている様子。",s:"本",p:97},
+ {w:"敬服",r:"けいふく",m:"深く感心して、尊敬すること。",s:"本",p:97},
+ {g:2,w:"軽蔑",r:"けいべつ",m:"人を見下して、ばかにすること。",s:"本",p:97},
+ {w:"因縁",r:"いんねん",m:"前から定まっている運命。めぐりあわせ。",s:"本",p:97},
+ {w:"世間体",r:"せけんてい",m:"世の中の人に対する体裁・見え。",s:"本",p:98},
+ {w:"薄志弱行",r:"はくしじゃっこう",m:"意志が弱く、物事を実行する力に乏しいこと。",s:"本",p:98}
+);
+
+KOUSA.push(
+ {c:"問",p:85,q:"■8「要塞の地図」ということばから、「私」のどのような気持ちがうかがえるか。",a:"Kが自分から恋を打ち明けたことで、Kの弱点を手に入れたと考え、Kを攻め落とすべき敵とみなして、優位に立って冷静に攻撃しようとする気持ち。",pt:"ポイント：①Kを「敵」として見ている　②弱点を握って優位に立っている"},
+ {c:"問",p:87,q:"■9「平生の主張」とはどのようなものか。",a:"道のためにはすべてを犠牲にすべきだ（禁欲・摂欲はもちろん、欲を離れた恋さえ道の妨げになる）という主張。",pt:"「精神的に向上心のないものは馬鹿だ」という言葉に表れている考え。"},
+ {c:"問",p:89,q:"■10「この双方の点」とは何をさすか。",a:"Kが持っている、現代人の持たない「強情」と「我慢」。"},
+ {c:"問",p:89,q:"■11「妙な力で私の頭を抑え始めた」とはどのようなことか。",a:"Kの言った「覚悟」という言葉が急に気になり出し、その二字が頭から離れず、「私」の考えを強く支配するようになったということ。"},
+ {c:"問",p:91,q:"■12「Kが近頃何か言いはしなかったか」と聞いたのはなぜか。",a:"Kが「私」より先に、お嬢さんへの恋を奥さんに打ち明けていないかを確かめたかったから。"},
+ {c:"問",p:93,q:"■13「本人が不承知のところへ、私があの子をやるはずがありませんから。」という発言から何が想像できるか。",a:"奥さんがすでにお嬢さんの気持ちを知っていて、お嬢さんも「私」との結婚を承知している（好意を持っている）だろうということ。"},
+ {c:"問",p:95,q:"■14「私の自然」とは何か。",a:"良心の命令に従って、その場でKに謝罪しようとする「私」の素直な気持ち（衝動）。",pt:"「奥には人がいます」→謝罪の衝動はそこで食い止められた。"},
+ {c:"問",p:97,q:"■15「倫理的に弱点を持っている」とはどのようなことか。",a:"Kを出し抜いて、Kに無断でお嬢さんとの結婚を申し込んだという、道徳的にやましい（卑怯な）ことをしているということ。"},
+ {c:"問",p:99,q:"■16「私はついに私を忘れることができませんでした」とはどのようなことか。",a:"Kの自殺という大事に直面しても、まず遺書に自分のことが書かれていないかを気にし、自分の名誉や世間体を守ろうとする自己本位の心から離れられなかったということ。"},
+ {c:"問",p:99,q:"【理解(1)】「精神的に向上心のないものは馬鹿だ。」という発言には「私」の「K」に対するどのような思いが表れているか。",a:"かつてKが「私」に言った言葉をそのまま投げ返し、Kの平生の主張を思い出させることで、Kにお嬢さんへの恋をあきらめさせ、恋の行く手をふさごうとする思い。自分の利害と衝突するのを恐れた利己心の表れでもある。",pt:"「復讐以上に残酷な意味」を持っていた、と「私」自身が言っている。"},
+ {c:"問",p:99,q:"【理解(2)】「覚悟、――覚悟ならないこともない。」という発言をめぐって、「私」の考えはどのように変化していったか。",a:"初めはKが恋については優柔で決断できないと考えて得意になっていたが、「覚悟」の二字を考えるうちに不安になり、Kが一切を解決する最後の手段を胸に秘めているのではと一瞬疑った。しかし結局は、Kがお嬢さんに向かって果断に進んでゆく覚悟だと解釈し、自分がKより先に事を運ばねばならないと決意した。",pt:"「私はめっかちでした」＝覚悟の意味を一方的に誤解した。"},
+ {c:"問",p:99,q:"【理解(3)】「仕切りの襖が、この間の晩と同じくらい開いてい」たのはなぜか、考えなさい。",a:"（解答例）Kが自殺する前に、「私」の様子をうかがったり、「私」に声をかけて最後の別れを告げようとしたりしたからだと考えられる。",pt:"「この間の晩」＝Kが襖を開けて「もう寝たか」と「私」の名を呼んだ晩。"},
+ {c:"問",p:99,q:"【理解(4)】「もっと早く死ぬべきだのになぜ今まで生きていたのだろう」ということばには、「K」のどのような気持ちが込められているか。",a:"（解答例）道のためにすべてを犠牲にするという理想を貫けず恋に迷った自分の弱さへの恥と自己否定、そして生きる意味を見失った深い孤独と絶望。",pt:"遺書には「自分は薄志弱行で到底行く先の望みがない」とある。"},
+ {c:"内",p:84,q:"「私」がKに言い放った言葉は何か。",a:"「精神的に向上心のないものは馬鹿だ。」"},
+ {c:"内",p:84,q:"「精神的に向上心のないものは馬鹿だ」は、もともと誰がどこで使った言葉か。",a:"二人で房州を旅行している際に、Kが「私」に向かって使った言葉。"},
+ {c:"内",p:84,q:"「私」は、この言葉を投げ返したことについて、何ではないと言っているか。",a:"復讐ではない（復讐以上に残酷な意味を持っていた）。"},
+ {c:"内",p:84,q:"「私」はこの一言で何をしようとしたか。",a:"Kの前に横たわる恋の行く手を塞ごうとした。"},
+ {c:"内",p:84,q:"Kが生まれた家はどこか。",a:"真宗寺"},
+ {c:"内",p:84,q:"Kは「精進」という言葉の中に、どのような意味がこもっていると「私」は解釈していたか。",a:"禁欲という意味。（実際には、それよりもっと厳重な意味が含まれていた）"},
+ {c:"内",p:85,q:"「精神的に向上心のないものは馬鹿だ」という言葉は、Kにとってどうだったか。",a:"痛いに違いなかった。"},
+ {c:"表",p:85,q:"「私」は「私の言葉」を何の発現だったと言っているか。",a:"単なる利己心の発現"},
+ {c:"内",p:86,q:"「私」の言葉に、Kは何と答えたか。",a:"「馬鹿だ。」「僕は馬鹿だ。」"},
+ {c:"表",p:86,q:"Kの声がいかにも力に乏しいことを、「私」は何のようだと感じたか。",a:"居直り強盗のごとく感ぜられた。"},
+ {c:"表",p:86,q:"「私」がKに向けた心を、何にたとえているか。",a:"狼のごとき心を罪のない羊に向けた。"},
+ {c:"内",p:86,q:"Kが「私」に頼むように言い直した言葉は何か。",a:"「やめてくれ。」"},
+ {c:"内",p:87,q:"「いったい君は君の平生の主張をどうするつもりなのか」と問われ、Kは何と答えたか。",a:"「覚悟、――覚悟ならないこともない。」"},
+ {c:"内",p:87,q:"上野からの帰り道、二人はどこを通ったか。",a:"本郷台を急ぎ足で通り抜けて、小石川の谷へ下りた。"},
+ {c:"内",p:88,q:"上野から帰った晩、「私」はKの部屋で何をしたか。",a:"Kと一つ火鉢に手をかざし、わざと世間話を仕向けた。",pt:"Kに対して勝利の色を見せていた。"},
+ {c:"内",p:88,q:"その夜、「私」が目を覚ますと、どうなっていたか。",a:"間の襖が二尺ばかり開いて、そこにKの黒い影が立っていた。"},
+ {c:"内",p:89,q:"夜中に「私」の名を呼んだ理由を、Kは何と答えたか。",a:"大した用でもない、ただもう寝たか、まだ起きているかと思って、便所へ行ったついでに聞いてみただけだ。"},
+ {c:"内",p:89,q:"翌朝、Kは前夜のことを聞かれて何と答えたか。",a:"確かに襖を開けて「私」の名を呼んだと言った。なぜそんなことをしたのかと尋ねると、はっきりした返事をしなかった。"},
+ {c:"内",p:89,q:"上野でのことを追窮した「私」に、Kはどう答えたか。",a:"「その話はもうやめよう。」と強い調子で言い切った。（昨日上野で言ったではないかと注意するように）"},
+ {c:"内",p:90,q:"「私」が「得意」になっていたのは、Kの性格のどのような点をつかまえたつもりだったからか。",a:"果断に富んだKも、この事件（恋）についてのみ優柔であるという「例外の場合」。"},
+ {c:"内",p:90,q:"「覚悟」という言葉を咀嚼するうちに、「私」はKが何を胸の中に畳み込んでいるのではないかと疑い始めたか。",a:"すべての疑惑、煩悶、懊悩を一度に解決する最後の手段。"},
+ {c:"表",p:90,q:"覚悟の内容を公平に見回せなかった自分を、「私」は何と言っているか。",a:"「めっかちでした」"},
+ {c:"内",p:90,q:"「私」は最後に、Kの「覚悟」をどう解釈したか。",a:"Kがお嬢さんに対して進んでゆくという意味（果断に富んだ性格が恋の方面に発揮されること）。"},
+ {c:"内",p:90,q:"「私」は何をする覚悟を決めたか。",a:"Kより先に、しかもKの知らない間に、事を運ばなくてはならないという覚悟。"},
+ {c:"内",p:90,q:"Kと奥さん・お嬢さんが留守にならない中、「私」は一週間後にどうしたか。",a:"とうとう堪え切れなくなって仮病を遣った。"},
+ {c:"内",p:91,q:"奥さんに何の話がしたいのかと聞かれた「私」は、何と言ったか（p.92）。",a:"「奥さん、お嬢さんを私にください。」"},
+ {c:"内",p:92,q:"「私」の申し込みに、奥さんはどう答えたか。",a:"「よござんす、さしあげましょう。」"},
+ {c:"内",p:92,q:"奥さんが親類に相談する必要もないと言ったのはなぜか。",a:"本人（お嬢さん）の意向さえ確かめれば十分だから（親類には後から断ればそれでよいから）。"},
+ {c:"内",p:93,q:"その後、「私」が向かった古本屋街はどこか。",a:"猿楽町から神保町の通り（小川町のほう）。"},
+ {c:"内",p:94,q:"散歩の間、「私」がほとんど考えなかったのは誰のことか。",a:"Kのこと。"},
+ {c:"内",p:94,q:"「私」の良心が復活したのはどんな瞬間か。",a:"うちの格子を開けて玄関から座敷へ通る時（Kの部屋を抜けようとした時）。"},
+ {c:"内",p:94,q:"Kに「病気はもういいのか、医者へでも行ったのか」と聞かれた時、「私」はどんな気持ちになったか。",a:"Kの前に手を突いて謝りたくなった。"},
+ {c:"内",p:94,q:"その場で謝罪できなかったのはなぜか。",a:"奥に人（奥さん・お嬢さん）がいたから。"},
+ {c:"内",p:95,q:"「私」がKに何も説明できないうちに、二、三日の間「私」の胸を重くしていたものは何か。",a:"Kに対する絶えざる不安。"},
+ {c:"内",p:96,q:"五、六日たった後、奥さんは「私」に何を聞いたか。",a:"Kにあのこと（結婚の話）を話したかどうか。"},
+ {c:"内",p:96,q:"「私」がまだ話さないと答えると、奥さんはどうしたか。",a:"なぜ話さないのかと「私」をなじった。"},
+ {c:"内",p:97,q:"奥さんから結婚の話を聞いたKの様子はどうだったか。",a:"最初は「そうですか」とただ一口言っただけだった。奥さんが「あなたも喜んでください」と言うと、初めて奥さんの顔を見て微笑を漏らし、「おめでとうございます」と言って席を立った。"},
+ {c:"内",p:97,q:"Kの態度を知った「私」は、Kと自分をどう比べたか。",a:"Kの超然とした態度はたとい外観だけにもせよ敬服に値すべきだと考え、Kのほうがはるかに立派に見えた。"},
+ {c:"内",p:97,q:"「おれは策略で勝っても人間としては負けたのだ。」と思った時、「私」はどうなったか。",a:"一人で顔を赤らめた。"},
+ {c:"内",p:97,q:"Kが自殺したのはいつか。",a:"「私」が進もうか止そうか考えて、ともかくも明くる日まで待とうと決心した土曜の晩。"},
+ {c:"内",p:98,q:"Kの部屋をのぞいた「私」が、最初に受けた感じは何と同じだったか。",a:"Kから突然恋の自白を聞かされた時の感じとほぼ同じだった。"},
+ {c:"内",p:98,q:"「私」が第一に感じた、取り返しのつかないことは何か。",a:"もう取り返しがつかないという黒い光が、自分の未来を貫いて、一瞬間に自分の前に横たわる全生涯をものすごく照らした。"},
+ {c:"内",p:98,q:"手紙を読んで「私」が「まず助かった」と思ったのはなぜか。",a:"手紙に、「私」にとってつらい文句（お嬢さんやKへの裏切り）が何も書かれていなかったから。",pt:"「私」にとっては世間体の上だけで助かったのであり、それが非常な重大事件に見えた。"},
+ {c:"内",p:98,q:"Kの手紙に書かれていた、自殺する理由は何か。",a:"自分は薄志弱行でとうてい行く先の望みがないから、自殺する。"},
+ {c:"内",p:99,q:"「私」が最も痛切に感じたのは、手紙のどの部分か。",a:"最後に墨の余りで書き添えたらしい、「もっと早く死ぬべきだのになぜ今まで生きていたのだろう」という意味の文句。"},
+ {c:"内",p:99,q:"Kの手紙の中で、お嬢さんの名前はどう扱われていたか。",a:"どこにも見えなかった（Kがわざと回避したのだと「私」は気づいた）。"},
+ {c:"表",p:99,q:"Kの部屋の襖にほとばしっていたものは何か。",a:"血潮"}
+);
+
+FLOW.push(
+ {t:"⑧「精神的に向上心のないものは馬鹿だ」",p:"p.84〜85",d:"「私」は房州旅行でKが言った言葉を投げ返し、Kの恋の行く手を塞ごうとする。Kの弱点（要塞の地図）を握り、他流試合のように身構えていた。"},
+ {t:"⑨「覚悟ならないこともない」",p:"p.86〜87",d:"Kは「僕は馬鹿だ」と答え、「もうその話はやめよう」と頼む。「私」が平生の主張をどうするのかと迫ると、Kは「覚悟ならないこともない」と答える。"},
+ {t:"⑩ 夜中の襖",p:"p.88〜89",d:"その夜、襖が二尺ほど開いて、Kが「もう寝たか」と「私」を呼ぶ。翌朝聞いても、Kははっきり答えない。"},
+ {t:"⑪「覚悟」の誤解",p:"p.89〜90",d:"「私」は「覚悟」の意味を考え、一度は最後の手段かと疑うが、結局Kがお嬢さんに進む覚悟だと思い込む（めっかち）。Kより先に事を運ぼうと決意する。"},
+ {t:"⑫ 仮病と申し込み",p:"p.90〜93",d:"一週間後、仮病を使って奥さんと二人になり、「お嬢さんを私にください」と申し込む。奥さんはあっさり承諾する。"},
+ {t:"⑬ 散歩と良心",p:"p.93〜95",d:"「私」は神保町などを長く散歩するが、Kのことはほとんど考えなかった。帰宅してKに声をかけられ、謝りたくなるが、奥に人がいて「私の自然」は食い止められる。"},
+ {t:"⑭ 奥さんがKに話す",p:"p.95〜97",d:"「私」が話せないうちに、奥さんがKに結婚のことを話してしまう。Kは「おめでとうございます」と言っただけだった。「私」は「策略で勝っても人間としては負けた」と恥じる。"},
+ {t:"⑮ Kの自殺",p:"p.97〜99",d:"土曜の晩、Kは自殺する。「私」は遺書に自分のことが書かれていないことに「まず助かった」と思う。最後の「もっと早く死ぬべきだのに…」という一文を最も痛切に感じる。"}
+);
+
+// ===== 共通 =====
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const opt={};
+document.querySelectorAll('.seg').forEach(g=>{opt[g.id]=g.querySelector('.on').dataset.v;
+ g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');opt[g.id]=b.dataset.v;})});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{showTab(b.dataset.t)});
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#'+id).classList.add('show');
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===id));if(id==='t-nigate')drawRank();window.scrollTo(0,0)}
+
+// 記録
+let REC={};try{REC=JSON.parse(localStorage.getItem('kokoro_p74_rec')||'{}')}catch(e){}
+function saveRec(){try{localStorage.setItem('kokoro_p74_rec',JSON.stringify(REC))}catch(e){}}
+
+// 問題の作成
+function vocabItem(v,dir){
+ const id=dir+':'+v.w;
+ if(dir==='wm')return{id,tag:'語 → 意味（p.'+v.p+'）',q:v.w+'\n（'+v.r+'）',a:v.m,v,dir};
+ if(dir==='mw')return{id,tag:'意味 → 語（p.'+v.p+'）',q:v.m,a:v.w+'（'+v.r+'）',v,dir};
+ return{id,tag:'読み（p.'+v.p+'）',q:v.w,a:v.r,v,dir};
+}
+function kousaItem(k,i){return{id:'k:'+i,c:k.c,tag:({問:'教科書の問い',内:'内容',表:'表現・心情'})[k.c]+'（p.'+k.p+'）',q:k.q,a:k.a,pt:k.pt,long:true}}
+function findItem(id){
+ if(id.startsWith('k:'))return kousaItem(KOUSA[+id.slice(2)],+id.slice(2));
+ const [dir,w]=[id.split(':')[0],id.slice(id.indexOf(':')+1)];const v=VOCAB.find(x=>x.w===w);return v?vocabItem(v,dir):null;
+}
+
+// ===== クイズ =====
+let deck=[],idx=0,style='card',wrongNow=[],okCount=0,backTab='t-goku',answered=false;
+function startGoku(){
+ const list=VOCAB.filter(v=>(opt['g-src']==='all'||v.s===opt['g-src'])&&inPg(v.p,opt['g-pg']));
+ run(shuffle(list).map(v=>vocabItem(v,opt['g-dir'])),opt['g-style'],'t-goku');
+}
+function startKousa(inOrder){
+ const list=KOUSA.map((k,i)=>({k,i})).filter(o=>(opt['k-cat']==='all'||o.k.c===opt['k-cat'])&&inPg(o.k.p,opt['k-pg'])).map(o=>kousaItem(o.k,o.i));
+ run(inOrder?list:shuffle(list),'card','t-kousa');
+}
+function startNigate(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0).sort((a,b)=>REC[b]-REC[a]);
+ if(!ids.length){alertBox('まだ苦手な問題はありません。');return}
+ run(shuffle(ids.map(findItem).filter(Boolean)),'card','t-nigate');
+}
+function run(d,st,back){
+ if(!d.length)return;deck=d;idx=0;style=st;wrongNow=[];okCount=0;backTab=back;
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#quiz').classList.add('show');$('#quiz').style.display='block';draw();
+}
+function draw(){
+ const it=deck[idx];answered=false;
+ $('#qNo').textContent=(idx+1)+' / '+deck.length;$('#qBar').style.width=(idx/deck.length*100)+'%';
+ $('#qTag').textContent=it.tag;$('#qText').textContent=it.q;$('#qText').className='q'+(it.long||it.q.length>24?' long':'');
+ const ans=$('#qAns');ans.style.display='none';ans.innerHTML=esc(it.a)+(it.pt?'<span class="pt">'+esc(it.pt)+'</span>':'');
+ const ch=$('#qChoices');ch.innerHTML='';
+ if(style==='four'&&it.v){
+  const key=it.dir==='wm'?'m':it.dir==='mw'?'w':'r';
+  const others=shuffle(VOCAB.filter(x=>x!==it.v&&x[key]!==it.v[key]&&!(x.g&&x.g===it.v.g))).slice(0,3).map(x=>x[key]);
+  const correct=it.v[key];
+  shuffle([correct,...others]).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{
+    if(answered)return;answered=true;const ok=t===correct;
+    ch.querySelectorAll('button').forEach(x=>{if(x.textContent===correct)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+    mark(ok);ans.style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>';};ch.appendChild(b)});
+  $('#qBtns').innerHTML='';
+ }else{
+  $('#qBtns').innerHTML='<button class="big" onclick="reveal()">答えを見る</button>';
+ }
+}
+function reveal(){$('#qAns').style.display='block';$('#qBtns').innerHTML='<div class="judge"><button class="o" onclick="mark(true);next()">○ わかった</button><button class="x" onclick="mark(false);next()">× まだ</button></div>'}
+function mark(ok){const it=deck[idx];if(ok){okCount++;if(REC[it.id])REC[it.id]=Math.max(0,REC[it.id]-1)}else{wrongNow.push(it);REC[it.id]=(REC[it.id]||0)+1}saveRec()}
+function next(){idx++;if(idx>=deck.length)finish();else{draw();window.scrollTo(0,0)}}
+function finish(){
+ $('#qBar').style.width='100%';
+ $('#qTag').textContent='おつかれさま！';$('#qText').className='q';$('#qText').textContent=deck.length+'問中 '+okCount+'問 ○';
+ $('#qChoices').innerHTML='';$('#qAns').style.display='block';
+ $('#qAns').innerHTML=wrongNow.length?'<span style="color:#333;font-size:14px">×の問題：'+wrongNow.length+'問</span>':'全問正解！🎉';
+ $('#qBtns').innerHTML=(wrongNow.length?'<button class="big" onclick="retryWrong()">×の問題だけもう一度</button><button class="sub" onclick="showWrongNow()">×の一覧を見る</button>':'')+'<button class="sub" onclick="quitQuiz()">メニューにもどる</button>';
+}
+function retryWrong(){run(shuffle(wrongNow),style,backTab)}
+function quitQuiz(){$('#quiz').style.display='';showTab(backTab)}
+function showWrongNow(){
+ const h=wrongNow.length?wrongNow.map(it=>'<div class="item"><b>'+esc(it.q)+'</b><br>→ '+esc(it.a)+'</div>').join(''):'<p class="note">まだ×の問題はありません。</p>';
+ openModal('<h2>今回の×一覧</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function showList(){
+ const h=['教','本'].map(s=>'<h3>'+(s==='教'?'教科書の〈 〉＊語句':'本文の重要語')+'</h3>'+VOCAB.filter(v=>v.s===s).map(v=>'<div class="item"><b>'+v.w+'</b>（'+v.r+'）p.'+v.p+'<br>'+v.m+'</div>').join('')).join('');
+ openModal('<h2>語句一覧（'+VOCAB.length+'語）</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function drawRank(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0).sort((a,b)=>REC[b]-REC[a]);
+ $('#rankList').innerHTML=ids.length?ids.map((id,i)=>{const it=findItem(id);return it?'<div class="item"><span class="c">×'+REC[id]+'</span><b>'+(i+1)+'.</b> '+esc(it.q).replace(/\n/g,' ')+'<br><span class="note">→ '+esc(it.a)+'</span></div>':''}).join(''):'<p class="note">まだ記録がありません。</p>';
+}
+function resetRank(){openModal('<p>苦手の記録をすべて消しますか？</p><div class="judge"><button class="x" onclick="REC={};saveRec();drawRank();closeModal()">消す</button><button class="o" onclick="closeModal()">やめる</button></div>')}
+function alertBox(t){openModal('<p>'+t+'</p><button class="sub" onclick="closeModal()">OK</button>')}
+function openModal(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
+function closeModal(){$('#modal').style.display='none'}
+function inPg(p,v){return v==='all'||(v==='a'?p<84:p>=84)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c])}
+function speak(){try{const it=deck[idx];if(!it)return;speechSynthesis.cancel();const t=$('#qAns').style.display==='block'?it.a:it.q;const u=new SpeechSynthesisUtterance(t.replace(/[■①-⑨]/g,''));u.lang='ja-JP';u.rate=.95;speechSynthesis.speak(u)}catch(e){}}
+
+// 流れ
+$('#flowList').innerHTML=FLOW.map(f=>'<div class="flow"><b>'+f.t+' <span class="pg">'+f.p+'</span></b>'+f.d+'</div>').join('');
+
+// ===== プリント =====
+function makePrint(){
+ let pool=[];
+ if($('#p-wm').checked)pool.push(...VOCAB.map(v=>vocabItem(v,'wm')));
+ if($('#p-mw').checked)pool.push(...VOCAB.map(v=>vocabItem(v,'mw')));
+ if($('#p-yomi').checked)pool.push(...VOCAB.map(v=>vocabItem(v,'yomi')));
+ if($('#p-nai').checked)pool.push(...KOUSA.map((k,i)=>({k,i})).filter(o=>o.k.c==='内').map(o=>kousaItem(o.k,o.i)));
+ if($('#p-mon').checked)pool.push(...KOUSA.map((k,i)=>({k,i})).filter(o=>o.k.c!=='内').map(o=>kousaItem(o.k,o.i)));
+ if(!pool.length){alertBox('入れる問題を選んでください。');return}
+ const n=Math.max(1,parseInt($('#p-num').value)||30);
+ const qs=shuffle(pool).slice(0,n);
+ const label=it=>it.dir==='wm'?'意味を書け。':it.dir==='mw'?'この意味の語を漢字で書け。':it.dir==='yomi'?'読みを書け。':'';
+ const head=t=>'<h1>こころ（p.74〜99）'+t+'<span class="nm">　年　組　名前（　　　　　　　）</span></h1>';
+ const qHtml=qs.map(it=>'<li>'+(label(it)?'<small>【'+label(it)+'】</small> ':'')+esc(it.q).replace(/\n/g,' ')+'<span class="'+(it.long?'blank2':'blank')+'"></span>'+(it.long&&it.c!=='内'&&/■|なぜ|どのよう/.test(it.q)?'<span class="blank2"></span>':'')+'</li>').join('');
+ const aHtml=qs.map(it=>'<li>'+esc(it.q).replace(/\n/g,' ')+'<br><span class="ka">→ '+esc(it.a)+'</span></li>').join('');
+ $('#printArea').innerHTML='<div class="pp">'+head('確認テスト')+'<ol>'+qHtml+'</ol></div><div class="pp">'+head('解答')+'<ol>'+aHtml+'</ol></div>';
+ setTimeout(()=>window.print(),200);
+}
+</script>
+</body>
+</html>
