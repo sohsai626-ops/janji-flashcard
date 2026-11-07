@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>故事成語マスター（28語）</title>
+<style>
+:root{--main:#7a3e9d;--accent:#e2731f;--bg:#f7f3fa;--ok:#2e8b57;--ng:#c0392b;--line:#e1d6ea}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;background:var(--bg);color:#222;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+header{background:var(--main);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:8px}
+header h1{font-size:19px}
+header small{font-size:11px;opacity:.85}
+.ver{margin-left:auto;font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:8px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1;border:0;background:none;padding:8px 0 6px;font-size:12px;color:#777;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:22px;font-weight:normal}
+nav button.on{color:var(--main);font-weight:bold}
+.tab{display:none;padding:14px;max-width:640px;margin:0 auto}
+.tab.show{display:block}
+h2{font-size:17px;color:var(--main);margin:6px 0 10px}
+h3{font-size:14px;color:#555;margin:14px 0 6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.seg button{border:1.5px solid var(--main);background:#fff;color:var(--main);border-radius:18px;padding:8px 12px;font-size:14px}
+.seg button.on{background:var(--main);color:#fff}
+.big{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-size:17px;font-weight:bold;padding:15px;border-radius:12px;margin-top:14px}
+.sub{display:block;width:100%;border:1.5px solid var(--main);background:#fff;color:var(--main);font-size:15px;padding:11px;border-radius:12px;margin-top:8px}
+.note{font-size:12.5px;color:#777;line-height:1.6}
+/* おぼえる */
+.kc{background:#fff;border-radius:12px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.kc .hd{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer}
+.kc .no{background:var(--main);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.kc ruby{font-size:22px;font-weight:bold;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+.kc rt{font-size:11px;font-weight:normal;color:#7a3e9d}
+.kc .ar{margin-left:auto;color:#aaa}
+.kc .bd{display:none;padding:0 14px 14px;font-size:14.5px;line-height:1.75}
+.kc.open .bd{display:block}
+.lb{display:inline-block;font-size:11px;color:#fff;border-radius:6px;padding:1px 7px;margin:8px 0 3px}
+.lb.m{background:#c0392b}.lb.s{background:#2e7d9a}.lb.e{background:#e2731f}
+.kc .src{font-size:12px;color:#999}
+.kc.playing{outline:3px solid var(--accent)}
+.hidem .kc .bd{display:none!important}
+/* クイズ */
+#quiz{display:none}
+.bar{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;margin-bottom:8px}
+.bar .prog{flex:1;height:6px;background:#e7dcef;border-radius:3px;overflow:hidden}
+.bar .prog i{display:block;height:100%;background:var(--accent)}
+.bar button{border:1px solid #bbb;background:#fff;border-radius:12px;padding:4px 9px;font-size:12px}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 16px;min-height:160px}
+.tag{display:inline-block;font-size:12px;color:#fff;background:var(--main);padding:2px 9px;border-radius:8px;margin-bottom:10px}
+.q{font-size:18px;line-height:1.75;white-space:pre-wrap}
+.q.w{font-size:28px;font-weight:bold;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;text-align:center;padding:10px 0}
+.choices{display:grid;gap:8px;margin-top:14px}
+.choices button{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:13px;font-size:16px;line-height:1.5;color:#222}
+.choices button.wd{font-size:19px;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;text-align:center}
+.choices button.right{border-color:var(--ok);background:#e8f5ee}
+.choices button.wrong{border-color:var(--ng);background:#fbeaea}
+.ans{display:none;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:15px;line-height:1.7}
+.ans .aw{font-size:22px;font-weight:bold;color:var(--accent);font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+.ans .ar{font-size:13px;color:#7a3e9d}
+.res{font-size:20px;font-weight:bold;margin-bottom:4px}
+.res.ok{color:var(--ok)}.res.ng{color:var(--ng)}
+.judge{display:flex;gap:10px;margin-top:12px}
+.judge button{flex:1;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:bold;color:#fff}
+.judge .o{background:var(--ok)}.judge .x{background:var(--ng)}
+.tts{float:right;border:0;background:#eee;border-radius:50%;width:36px;height:36px;font-size:17px}
+.item{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:14px;line-height:1.6}
+.item b{color:var(--main);font-size:16px}
+.item .c{float:right;color:var(--ng);font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:40px 14px}
+.modal .in{background:#fff;border-radius:14px;max-width:600px;margin:0 auto;max-height:80vh;overflow:auto;padding:14px}
+input[type=number]{width:70px;font-size:15px;padding:5px;border:1px solid #bbb;border-radius:6px}
+label.ck{display:block;font-size:15px;padding:6px 0}
+#printArea{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  header,nav,.tab,.modal{display:none!important}
+  #printArea{display:block!important;color:#000}
+  .pp{page-break-after:always;padding:6mm}
+  .pp:last-child{page-break-after:auto}
+  .pp h1{font-size:15pt;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm}
+  .pp .nm{float:right;font-size:11pt;font-weight:normal}
+  .pp .gun{border:1px solid #000;padding:2mm 3mm;font-size:10.5pt;line-height:1.7;margin-bottom:3mm}
+  .pp ol{padding-left:8mm;font-size:11.5pt;line-height:1.6}
+  .pp li{margin-bottom:3.5mm;break-inside:avoid}
+  .pp .blank{display:block;border-bottom:1px solid #888;height:8mm}
+  .pp .ka{font-weight:bold}
+}
+@page{size:A4;margin:10mm}
+</style>
+</head>
+<body>
+<header><div><h1>故事成語マスター</h1><small>全28語　中学1年　🔊音声つき</small></div><span class="ver">v1.1</span></header>
+
+<section class="tab show" id="t-learn">
+  <h2>📚 おぼえる</h2>
+  <p class="note">タップすると「意味」「もとになったお話」「例文」が出ます。🔊で読み上げを聞けます。<br>※LINEから開いたときは、右下のメニューから「Safariで開く」を選ぶと音が出ます。</p>
+  <div class="seg" id="l-view" style="margin-top:8px"><button data-v="close" class="on">ぜんぶ閉じる</button><button data-v="open">ぜんぶ開く</button></div>
+  <div class="seg" id="l-voice"><button data-v="full" class="on">🔊 読み＋意味＋お話</button><button data-v="short">🔊 読み＋意味だけ</button></div>
+  <button class="big" id="playAllBtn" onclick="togglePlayAll()">▶ 28語を順番に聞く（聞き流し）</button>
+  <div id="learnList" style="margin-top:12px"></div>
+</section>
+
+<section class="tab" id="t-quiz">
+  <h2>✏️ クイズ</h2>
+  <h3>問題の種類</h3>
+  <div class="seg" id="q-mode">
+    <button data-v="mw" class="on">意味 → 故事成語</button>
+    <button data-v="wm">故事成語 → 意味</button>
+    <button data-v="st">お話 → 故事成語</button>
+    <button data-v="ex">例文の＿＿</button>
+    <button data-v="yomi">読み方</button>
+    <button data-v="kaki">漢字で書く</button>
+    <button data-v="mix">ぜんぶまぜる</button>
+  </div>
+  <h3>答え方</h3>
+  <div class="seg" id="q-style"><button data-v="four" class="on">4択</button><button data-v="card">カード（自分で○×）</button></div>
+  <h3>問題の数</h3>
+  <div class="seg" id="q-num"><button data-v="10" class="on">10問</button><button data-v="20">20問</button><button data-v="all">全部（28問）</button></div>
+  <h3>音声</h3>
+  <div class="seg" id="q-voice"><button data-v="on" class="on">🔊 自動で読み上げる</button><button data-v="off">読み上げない</button></div>
+  <p class="note">「漢字で書く」は、紙に書いてから答えを見て○×をつけよう（カードで出題します）。</p>
+  <button class="big" onclick="startQuiz()">▶ スタート</button>
+</section>
+
+<section class="tab" id="t-nigate">
+  <h2>📊 にがてリスト</h2>
+  <p class="note">まちがえた回数が多い順です。このスマホのブラウザに記録されます。</p>
+  <button class="big" onclick="startNigate()">▶ にがてな問題だけ出題</button>
+  <div id="rankList" style="margin-top:12px"></div>
+  <button class="sub" onclick="resetRank()">記録をリセット</button>
+</section>
+
+<section class="tab" id="t-print">
+  <h2>🖨 プリント作成</h2>
+  <h3>入れる問題</h3>
+  <label class="ck"><input type="checkbox" id="p-yomi" checked> 読み方を書く</label>
+  <label class="ck"><input type="checkbox" id="p-kaki" checked> 漢字で書く（読みを見て）</label>
+  <label class="ck"><input type="checkbox" id="p-mw" checked> 意味に合う故事成語を書く</label>
+  <label class="ck"><input type="checkbox" id="p-ex"> 例文の＿＿に入る故事成語を書く</label>
+  <label class="ck"><input type="checkbox" id="p-gun" checked> ヒントの語群をつける</label>
+  <h3>問題数</h3>
+  <p><input type="number" id="p-num" value="20" min="5" max="112"> 問</p>
+  <button class="big" onclick="makePrint()">🖨 プリントを作って印刷</button>
+  <p class="note" style="margin-top:8px">iPhoneは印刷画面で「PDFとして保存」や共有も選べます。</p>
+</section>
+
+<section class="tab" id="quiz">
+  <div class="bar"><button onclick="quitQuiz()">✕ やめる</button><span id="qNo"></span><div class="prog"><i id="qBar"></i></div><button onclick="showWrongNow()">×一覧</button></div>
+  <div class="card">
+    <button class="tts" onclick="speak()">🔊</button>
+    <span class="tag" id="qTag"></span>
+    <div class="q" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <div class="ans" id="qAns"></div>
+  </div>
+  <div id="qBtns"></div>
+</section>
+
+<nav>
+  <button class="on" data-t="t-learn"><b>📚</b>おぼえる</button>
+  <button data-t="t-quiz"><b>✏️</b>クイズ</button>
+  <button data-t="t-nigate"><b>📊</b>にがて</button>
+  <button data-t="t-print"><b>🖨</b>プリント</button>
+</nav>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.style.display='none'"><div class="in" id="modalIn"></div></div>
+<div id="printArea"></div>
+
+<script>
+// w=故事成語 r=読み m=意味 st=もとになったお話 src=出典 ex=例文（＿＿に入る） exa=例文の答え（形が変わる場合） g=似ている意味のグループ（4択で同時に出さない）
+const KOJI=[
+{w:"漁夫の利",r:"ぎょふのり",m:"二人が争っているすきに、関係のない人が利益を横取りすること。",st:"シギ（鳥）とハマグリが言い争って、どちらも相手をはなさずにいたら、通りかかった漁師（漁夫）が両方ともつかまえてしまった。",src:"戦国策",ex:"兄と姉がケーキの取り合いをしている間に、弟が食べてしまった。まさに＿＿だ。"},
+{w:"五十歩百歩",r:"ごじっぽひゃっぽ",m:"少しの違いはあっても、たいした差はなく、本当は同じであること。",st:"戦いで五十歩逃げた兵士が、百歩逃げた兵士を「おくびょう者」と笑った。しかし、逃げたことはどちらも同じである。",src:"孟子",ex:"テストで30点の人が32点の人を笑っても、＿＿だ。",g:1},
+{w:"守株（株を守る）",r:"しゅしゅ（かぶをまもる）",m:"古いやり方にこだわって、進歩がないこと。一度の幸運をあてにし続けること。",st:"農夫の畑の切り株に、走ってきたウサギがぶつかって死んだ。農夫は畑仕事をやめて切り株を見張り続けたが、ウサギは二度と手に入らず、国中の笑い者になった。",src:"韓非子",ex:"前に一度うまくいったからといって、同じやり方ばかり続けるのは＿＿ようなものだ。",exa:"株を守る",g:2},
+{w:"一炊の夢",r:"いっすいのゆめ",m:"人の一生や、出世・ぜいたくは、はかないものだということ。",st:"盧生という若者が、旅先で不思議な枕を借りて眠り、出世して大金持ちになる一生の夢を見た。目が覚めると、眠る前に炊き始めたご飯（あわ）がまだ炊き上がっていなかった。",src:"枕中記",ex:"大スターとしての成功も、ふり返れば＿＿のようなものだった。"},
+{w:"臥薪嘗胆",r:"がしんしょうたん",m:"目的を果たすために、長い間つらいことにたえて努力すること。",st:"呉の王・夫差は、薪の上に寝て、父のかたきをうつことを忘れなかった。負けた越の王・勾践は、苦い胆をなめて、負けたくやしさを忘れなかった。",src:"十八史略",ex:"去年の大会で負けてから＿＿、ついに優勝した。",g:3},
+{w:"牛耳を執る",r:"ぎゅうじをとる",m:"グループの中心になって、思いどおりに動かすこと。（「牛耳る」の元の言葉）",st:"昔の中国で、国どうしが約束（同盟）を結ぶとき、リーダーが牛の耳を切って、その血をみんなですすって誓い合った。",src:"春秋左氏伝",ex:"彼は生徒会の＿＿人物だ。",exa:"牛耳を執る"},
+{w:"玉石混交（淆）",r:"ぎょくせきこんこう",m:"すぐれたものと、つまらないものが入りまじっていること。",st:"宝石（玉）と、ただの石がまじり合っているようすから。",src:"抱朴子",ex:"インターネットの情報は＿＿なので、よく見きわめよう。"},
+{w:"蛍雪の功",r:"けいせつのこう",m:"苦労して勉強をした成果。",st:"車胤という人は、貧しくて明かりの油が買えなかったので、蛍を集めてその光で本を読んだ。孫康という人は、雪の明かりで本を読んだ。二人とも出世した。",src:"晋書",ex:"毎晩おそくまで勉強した＿＿で、第一志望の高校に合格した。",g:3},
+{w:"鼎の軽重を問う",r:"かなえのけいちょうをとう",m:"上に立つ人の実力を疑い、その地位をうばおうとすること。人の能力を疑うこと。",st:"楚の荘王が、周の王の使いに、周の国の宝である鼎（三本足の大きな器）の大きさや重さをたずねた。周の国を軽く見て、宝をうばおうとしたのである。",src:"春秋左氏伝",ex:"新しいキャプテンとして、最初の試合で＿＿れることになる。",exa:"鼎の軽重を問わ"},
+{w:"画竜点睛",r:"がりょうてんせい",m:"物事を完成させるための、最後の大切な仕上げ。（「画竜点睛を欠く」＝最後の仕上げが足りない）",st:"絵の名人が、寺のかべに竜をかき、最後にひとみ（睛）をかき入れたところ、竜が本物になって天にのぼっていった。",src:"歴代名画記",ex:"よい発表だったが、最後のまとめがなく、＿＿を欠いた。"},
+{w:"杞憂",r:"きゆう",m:"心配しなくてもよいことを、あれこれ心配すること。とりこし苦労。",st:"杞の国の人が、「天が落ちてきたらどうしよう」「地面がくずれたらどうしよう」と心配して、夜も眠れず、ご飯も食べられなくなった。",src:"列子",ex:"雨で遠足が中止になるかと心配したが、＿＿に終わった。"},
+{w:"捲土重来",r:"けんどちょうらい",m:"一度負けた者が、勢いを取りもどして、もう一度やって来ること。",st:"戦いに負けた項羽という武将を思って、詩人の杜牧が「土けむりをまき上げる勢いでもう一度攻めてきていたら、どうなっていたかわからない」と詩によんだ。",src:"杜牧「烏江亭に題す」",ex:"今年は一回戦で負けたが、来年こそ＿＿を果たすぞ。"},
+{w:"呉越同舟",r:"ごえつどうしゅう",m:"仲の悪い者どうしが、同じ場所にいること。また、同じ目的のために協力すること。",st:"呉の国と越の国は、とても仲が悪かった。しかし、その国の人どうしでも、同じ舟に乗って嵐にあえば、左手と右手のように助け合う。",src:"孫子",ex:"ライバル校の選手どうしが、同じ選抜チームになった。まさに＿＿だ。"},
+{w:"五里霧中",r:"ごりむちゅう",m:"手がかりがなく、どうしたらよいかわからないこと。",st:"張楷という人が、不思議な術で五里（とても広い範囲）にわたる霧を起こした。その霧の中では、まわりが何も見えなくなった。",src:"後漢書",ex:"犯人の手がかりが見つからず、捜査は＿＿だ。"},
+{w:"助長",r:"じょちょう",m:"よけいな手助けをして、かえって悪い結果にすること。（今では、ある傾向をさらに強めること）",st:"宋の国の人が、苗が早くのびるようにと、苗を一本ずつ引っぱった。家に帰って「苗の成長を助けてきた」と言ったので、息子が見に行くと、苗はみんな枯れていた。",src:"孟子",ex:"何でも買ってあげると、子どものわがままを＿＿することになる。"},
+{w:"蛇足",r:"だそく",m:"よけいなもの。つけ加えなくてもよいもの。",st:"何人かで「いちばん早く蛇の絵をかいた人がお酒を飲める」と競争した。いちばんに書き終えた人が、調子に乗って足までかき足したので、「蛇に足はない」と言われ、お酒を飲めなかった。",src:"戦国策",ex:"話はもう十分わかったので、その説明は＿＿だよ。"},
+{w:"矛盾",r:"むじゅん",m:"前と後ろの話が合わないこと。つじつまが合わないこと。",st:"楚の国の商人が、「この盾はどんな矛でも防げる」「この矛はどんな盾でも突き通す」と自慢した。ある人に「その矛でその盾を突いたらどうなるのか」と聞かれて、答えられなかった。",src:"韓非子",ex:"「早く寝なさい」と言いながら夜中まで話しかけてくるなんて、＿＿している。"},
+{w:"塞翁が馬",r:"さいおうがうま",m:"人生の幸せと不幸は、予想できないということ。（「人間万事塞翁が馬」）",st:"国境のとりで（塞）の近くに住む老人（翁）の馬が逃げたが、やがて名馬を連れて帰ってきた。その馬から息子が落ちて足をけがしたが、そのおかげで戦争に行かずにすみ、命が助かった。",src:"淮南子",ex:"けがで試合に出られなかったが、その間に勉強して成績が上がった。人間万事＿＿だ。"},
+{w:"切磋琢磨",r:"せっさたくま",m:"仲間どうしで、はげまし合い、競い合って、おたがいを高めること。",st:"骨や象牙を切ってみがき、玉や石を打ってみがいて、美しく仕上げるようすから。",src:"詩経",ex:"部活の仲間と＿＿して、二人とも県大会に出場できた。",g:3},
+{w:"朝三暮四",r:"ちょうさんぼし",m:"目の前の違いにとらわれて、結局は同じだと気づかないこと。言葉たくみに人をだますこと。",st:"猿を飼っていた人が、えさの木の実を「朝に三つ、夕方に四つにする」と言うと、猿たちは怒った。そこで「朝に四つ、夕方に三つにする」と言うと、猿たちは大喜びした。",src:"列子",ex:"値段は同じなのに、言い方を変えただけで喜ぶなんて、＿＿だ。",g:1},
+{w:"登竜門",r:"とうりゅうもん",m:"出世や成功するために通らなければならない、むずかしい関門。",st:"黄河の上流にある「竜門」という急な流れを登りきった鯉は、竜になるといわれていた。",src:"後漢書",ex:"このコンクールは、若い音楽家の＿＿といわれている。"},
+{w:"虎の威を借る狐",r:"とらのいをかるきつね",m:"強い人の力をたよりにして、いばる人のたとえ。",st:"虎につかまった狐が、「私は神様から動物の王に選ばれた。うそだと思うなら、私の後ろについて来てごらん」と言った。いっしょに歩くと、動物たちはみんな逃げた。本当は虎をこわがって逃げたのに、虎は狐をこわがったのだと思いこんだ。",src:"戦国策",ex:"先輩がいるときだけいばる彼は、＿＿だ。"},
+{w:"推敲",r:"すいこう",m:"詩や文章を、何度も考えて練り直すこと。",st:"唐の詩人・賈島は、「僧は推す月下の門」という詩の「推す（おす）」を「敲く（たたく）」にしようか、ロバに乗りながら悩んだ。えらい役人の韓愈の行列にぶつかってしまったが、韓愈は「『敲く』がよい」と教えてくれた。",src:"唐詩紀事",ex:"作文を提出する前に、何度も＿＿を重ねた。"},
+{w:"他山の石",r:"たざんのいし",m:"他人のよくない言動も、自分をみがく手本（反面教師）になること。",st:"よその山から出たつまらない石でも、自分の宝石をみがくのに役に立つ。",src:"詩経",ex:"友だちの忘れ物の失敗を＿＿として、前の日に準備するようにした。",pt:"目上の人のよい行いを手本にする意味では使わないので注意。"},
+{w:"大器晩成",r:"たいきばんせい",m:"大人物は、ふつうの人より遅れて、年をとってから成功すること。",st:"大きな器は、できあがるまでに長い時間がかかることから。",src:"老子",ex:"今は目立たないけれど、彼は＿＿の人だと思う。"},
+{w:"背水の陣",r:"はいすいのじん",m:"失敗したらあとがない状況で、全力でとり組むこと。",st:"漢の将軍・韓信は、わざと川を背にして陣をしいた。逃げ場がなくなった兵士たちは必死に戦い、大勝利をおさめた。",src:"史記",ex:"もう後がない。次の試合は＿＿でのぞむ。"},
+{w:"舟に刻みて剣を求む",r:"ふねにきざみてけんをもとむ",m:"時代や状況の変化に気づかず、古いやり方にこだわるおろかさのたとえ。",st:"楚の人が、川をわたる舟から剣を水の中に落とした。その人は舟べりに印を刻み、舟が止まってから、その印の下の水にもぐって剣をさがした。しかし舟は動いているので、見つかるはずがない。",src:"呂氏春秋",ex:"時代が変わったのに昔のやり方を続けるのは、＿＿ようなものだ。",exa:"舟に刻みて剣を求む",g:2},
+{w:"竜頭蛇尾",r:"りゅうとうだび",m:"初めは勢いがよいが、終わりは勢いがなくなること。",st:"頭は竜のようにりっぱなのに、しっぽは蛇のように細くて弱々しいようすから。",src:"碧巌録",ex:"最初は毎日日記を書いていたが、三日で終わってしまった。＿＿だ。"}
+];
+
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+KOJI.forEach((k,i)=>k.i=i);
+const opt={};
+document.querySelectorAll('.seg').forEach(g=>{opt[g.id]=g.querySelector('.on').dataset.v;
+ g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');opt[g.id]=b.dataset.v;
+ if(g.id==='l-view')document.querySelectorAll('.kc').forEach(c=>c.classList.toggle('open',b.dataset.v==='open'));})});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+function showTab(id){stopAll();$('#quiz').style.display='';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#'+id).classList.add('show');
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===id));if(id==='t-nigate')drawRank();window.scrollTo(0,0)}
+let REC={};try{REC=JSON.parse(localStorage.getItem('koji28_rec')||'{}')}catch(e){}
+function saveRec(){try{localStorage.setItem('koji28_rec',JSON.stringify(REC))}catch(e){}}
+const ruby=k=>'<ruby>'+esc(k.w)+'<rt>'+esc(k.r)+'</rt></ruby>';
+const exText=k=>k.ex.replace('＿＿','（　　　）');
+const exFull=k=>k.ex.replace('＿＿','【'+(k.exa||k.w)+'】');
+
+// おぼえる
+$('#learnList').innerHTML=KOJI.map((k,i)=>'<div class="kc" id="kc'+i+'"><div class="hd" onclick="this.parentNode.classList.toggle(\'open\')"><span class="no">'+(i+1)+'</span>'+ruby(k)+'<button class="tts" style="margin-left:auto" onclick="event.stopPropagation();sayCard('+i+')">🔊</button><span class="ar">▼</span></div><div class="bd"><span class="lb m">意味</span><br>'+esc(k.m)+'<br><span class="lb s">もとになったお話</span><br>'+esc(k.st)+' <span class="src">（『'+esc(k.src)+'』）</span><br><span class="lb e">例文</span><br>'+esc(exFull(k))+(k.pt?'<br><span class="note">⚠ '+esc(k.pt)+'</span>':'')+'</div></div>').join('');
+
+// 問題
+const MODE={mw:'意味 → 故事成語',wm:'故事成語 → 意味',st:'お話 → 故事成語',ex:'例文の（　）に入る言葉',yomi:'読み方',kaki:'漢字で書く'};
+function makeItem(k,mode){
+ const it={id:mode+':'+k.i,k,mode,tag:MODE[mode]};
+ if(mode==='mw'){it.q=k.m;it.key='w'}
+ else if(mode==='wm'){it.q=k.w;it.big=true;it.key='m'}
+ else if(mode==='st'){it.q=k.st+'\n\n→ このお話からできた故事成語は？';it.key='w'}
+ else if(mode==='ex'){it.q=exText(k);it.key='exw'}
+ else if(mode==='yomi'){it.q=k.w;it.big=true;it.key='r'}
+ else {it.q='「'+k.r+'」\n\nを漢字で書こう。';it.key='w';it.card=true}
+ return it;
+}
+const val=(k,key)=>key==='exw'?(k.exa||k.w):k[key];
+function findItem(id){const [m,i]=id.split(':');return KOJI[+i]?makeItem(KOJI[+i],m):null}
+
+let deck=[],idx=0,style='four',wrongNow=[],okCount=0,backTab='t-quiz',answered=false;
+function startQuiz(){
+ const n=opt['q-num']==='all'?KOJI.length:+opt['q-num'];
+ const modes=['mw','wm','st','ex','yomi'];
+ const list=shuffle(KOJI).slice(0,n).map(k=>makeItem(k,opt['q-mode']==='mix'?modes[Math.floor(Math.random()*modes.length)]:opt['q-mode']));
+ run(list,opt['q-style'],'t-quiz');
+}
+function startNigate(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0);
+ if(!ids.length){alertBox('まだにがてな問題はありません。');return}
+ run(shuffle(ids.map(findItem).filter(Boolean)),'four','t-nigate');
+}
+function run(d,st,back){deck=d;idx=0;style=st;wrongNow=[];okCount=0;backTab=back;
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#quiz').classList.add('show');$('#quiz').style.display='block';draw()}
+function ansHtml(it,res){
+ const k=it.k;
+ return (res?'<div class="res '+(res==='ok'?'ok':'ng')+'">'+(res==='ok'?'⭕ 正解！':'❌ ざんねん…')+'</div>':'')+
+ '<div class="aw">'+esc(it.mode==='ex'?(k.exa||k.w):k.w)+'</div><div class="ar">読み：'+esc(k.r)+'</div>'+
+ '<div style="margin-top:6px"><b>意味：</b>'+esc(k.m)+'</div>'+(it.mode==='ex'?'<div class="note" style="margin-top:4px">'+esc(exFull(k))+'</div>':'');
+}
+function draw(){
+ const it=deck[idx];answered=false;
+ $('#qNo').textContent=(idx+1)+' / '+deck.length;$('#qBar').style.width=(idx/deck.length*100)+'%';
+ $('#qTag').textContent=it.tag;$('#qText').textContent=it.q;$('#qText').className='q'+(it.big?' w':'');
+ $('#qAns').style.display='none';$('#qChoices').innerHTML='';if(autoV())setTimeout(()=>say(qSpeech(it)),250);
+ if(style==='card'||it.card){$('#qAns').innerHTML=ansHtml(it);$('#qBtns').innerHTML='<button class="big" onclick="reveal()">答えを見る</button>';return}
+ const correct=val(it.k,it.key);
+ const others=shuffle(KOJI.filter(x=>x!==it.k&&!(x.g&&x.g===it.k.g))).slice(0,3).map(x=>val(x,it.key));
+ const ch=$('#qChoices');
+ shuffle([correct,...others]).forEach(t=>{const b=document.createElement('button');b.textContent=t;if(it.key!=='m')b.className='wd';
+  b.onclick=()=>{if(answered)return;answered=true;const ok=t===correct;
+   ch.querySelectorAll('button').forEach(x=>{if(x.textContent===correct)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+   mark(ok);if(autoV())say((ok?'正解。':'ざんねん。答えは、')+aSpeech(it));$('#qAns').innerHTML=ansHtml(it,ok?'ok':'ng');$('#qAns').style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>';};ch.appendChild(b)});
+ $('#qBtns').innerHTML='';
+}
+function reveal(){if(autoV())say('答えは、'+aSpeech(deck[idx]));$('#qAns').style.display='block';$('#qBtns').innerHTML='<div class="judge"><button class="o" onclick="mark(true);next()">○ できた</button><button class="x" onclick="mark(false);next()">× まだ</button></div>'}
+function mark(ok){const it=deck[idx];if(ok){okCount++;if(REC[it.id])REC[it.id]=Math.max(0,REC[it.id]-1)}else{wrongNow.push(it);REC[it.id]=(REC[it.id]||0)+1}saveRec()}
+function next(){idx++;if(idx>=deck.length)finish();else{draw();window.scrollTo(0,0)}}
+function finish(){
+ $('#qBar').style.width='100%';
+ const pct=Math.round(okCount/deck.length*100);
+ $('#qTag').textContent='おつかれさま！';$('#qText').className='q w';$('#qText').textContent=deck.length+'問中 '+okCount+'問 正解';
+ $('#qChoices').innerHTML='';$('#qAns').style.display='block';
+ $('#qAns').innerHTML='<div style="text-align:center;font-size:18px">'+(pct===100?'🎉 全問正解！すごい！':pct>=80?'👍 よくできました！':pct>=50?'💪 あと少し！':'📚 「おぼえる」で見直そう！')+'</div>';
+ $('#qBtns').innerHTML=(wrongNow.length?'<button class="big" onclick="retryWrong()">まちがえた問題だけもう一度</button><button class="sub" onclick="showWrongNow()">まちがえた問題を見る</button>':'')+'<button class="sub" onclick="quitQuiz()">メニューにもどる</button>';
+}
+function retryWrong(){run(shuffle(wrongNow),style,backTab)}
+function quitQuiz(){showTab(backTab)}
+function showWrongNow(){
+ const h=wrongNow.length?wrongNow.map(it=>'<div class="item"><b>'+esc(it.k.w)+'</b>（'+esc(it.k.r)+'）<br>'+esc(it.k.m)+'</div>').join(''):'<p class="note">まだまちがえた問題はありません。</p>';
+ openModal('<h2>まちがえた問題</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function drawRank(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0).sort((a,b)=>REC[b]-REC[a]);
+ $('#rankList').innerHTML=ids.length?ids.map((id,i)=>{const it=findItem(id);return it?'<div class="item"><span class="c">×'+REC[id]+'</span>'+(i+1)+'. <b>'+esc(it.k.w)+'</b>（'+esc(it.k.r)+'）<br><span class="note">'+esc(it.tag)+'</span><br>'+esc(it.k.m)+'</div>':''}).join(''):'<p class="note">まだ記録がありません。</p>';
+}
+function resetRank(){openModal('<p>記録をすべて消しますか？</p><div class="judge"><button class="x" onclick="REC={};saveRec();drawRank();closeModal()">消す</button><button class="o" onclick="closeModal()">やめる</button></div>')}
+function alertBox(t){openModal('<p>'+t+'</p><button class="sub" onclick="closeModal()">OK</button>')}
+function openModal(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
+function closeModal(){$('#modal').style.display='none'}
+// ===== 音声 =====
+const YOMI={"盧生":"ろせい","夫差":"ふさ","勾践":"こうせん","胆":"きも","車胤":"しゃいん","孫康":"そんこう","荘王":"そうおう","鼎":"かなえ","睛":"ひとみ","杞":"き","項羽":"こうう","杜牧":"とぼく","呉の":"ごの","越の":"えつの","張楷":"ちょうかい","五里":"ごり","楚の国の":"そという国の","楚の":"そという国の","軽重":"けいちょう","牛耳":"ぎゅうじ","塞":"とりで","翁":"おきな","象牙":"ぞうげ","宋の国の":"そうという国の","宋の":"そうという国の","黄河":"こうが","竜門":"りゅうもん","賈島":"かとう","韓愈":"かんゆ","推す":"おす","敲く":"たたく","韓信":"かんしん","舟べり":"ふなべり","薪":"たきぎ","漁夫":"ぎょふ","狐":"きつね","鯉":"こい","周の":"しゅうの","唐の":"とうの","晋":"しん","漢の":"かんの","陣":"じん","盾":"たて","矛":"ほこ","粟":"あわ","苗":"なえ"};
+function yomi(t){Object.keys(YOMI).sort((a,b)=>b.length-a.length).forEach(k=>{t=t.split(k).join(YOMI[k])});return t.replace(/[（）「」『』]/g,'、')}
+const rd=k=>k.r.replace(/（(.*)）/,'、$1');
+let speakQueue=[];
+function sayList(list,onDone){try{speechSynthesis.cancel();let n=0;const go=()=>{if(n>=list.length){onDone&&onDone();return}const u=new SpeechSynthesisUtterance(list[n++]);u.lang='ja-JP';u.rate=.95;u.onend=go;u.onerror=()=>{};speechSynthesis.speak(u)};go()}catch(e){}}
+function say(t,onDone){sayList([t],onDone)}
+function cardTexts(k){const a=[rd(k)+'。','意味。'+yomi(k.m)];if(opt['l-voice']==='full'){a.push('もとになったお話。'+yomi(k.st));a.push('例文。'+yomi(k.ex.replace('＿＿',(k.exa||k.w)===k.w?k.r.replace(/（.*/,''):(k.exa||k.w))))}return a}
+function sayCard(i){stopAll();sayList(cardTexts(KOJI[i]))}
+let playing=false,playIdx=0;
+function togglePlayAll(){if(playing){stopAll();return}playing=true;playIdx=0;$('#playAllBtn').textContent='■ 止める';playNext()}
+function playNext(){if(!playing)return;if(playIdx>=KOJI.length){stopAll();return}
+ document.querySelectorAll('.kc').forEach(c=>c.classList.remove('playing'));
+ const c=$('#kc'+playIdx);c.classList.add('open','playing');c.scrollIntoView({behavior:'smooth',block:'center'});
+ sayList(cardTexts(KOJI[playIdx]),()=>{playIdx++;setTimeout(playNext,700)})}
+function stopAll(){playing=false;try{speechSynthesis.cancel()}catch(e){}const b=$('#playAllBtn');if(b)b.textContent='▶ 28語を順番に聞く（聞き流し）';document.querySelectorAll('.kc').forEach(c=>c.classList.remove('playing'))}
+function qSpeech(it){
+ if(it.mode==='mw')return '意味。'+yomi(it.k.m)+'。この意味の故事成語は？';
+ if(it.mode==='wm')return rd(it.k)+'。意味は？';
+ if(it.mode==='st')return yomi(it.k.st)+'。このお話からできた故事成語は？';
+ if(it.mode==='ex')return yomi(it.k.ex.replace('＿＿','、まる、'))+'。まるに入る言葉は？';
+ if(it.mode==='yomi')return '読み方は？';
+ return rd(it.k)+'。漢字で書いてみよう。';
+}
+const aSpeech=it=>(it.mode==='ex'&&it.k.exa&&it.k.exa!==it.k.w?yomi(it.k.exa):rd(it.k))+'。'+yomi(it.k.m);
+function speak(){const it=deck[idx];if(!it)return;const showing=$('#qAns').style.display==='block';say(showing?aSpeech(it):qSpeech(it))}
+const autoV=()=>opt['q-voice']==='on';
+// プリント
+function makePrint(){
+ let pool=[];
+ KOJI.forEach(k=>{
+  if($('#p-yomi').checked)pool.push({t:'yomi',ins:'読み方をひらがなで書こう。',q:k.w,a:k.r});
+  if($('#p-kaki').checked)pool.push({t:'kaki',ins:'漢字で書こう。',q:k.r,a:k.w});
+  if($('#p-mw').checked)pool.push({t:'mw',ins:'意味に合う故事成語を書こう。',q:k.m,a:k.w});
+  if($('#p-ex').checked)pool.push({t:'ex',ins:'（　）に入る故事成語を書こう。',q:exText(k),a:k.exa||k.w});
+ });
+ if(!pool.length){alertBox('入れる問題を選んでください。');return}
+ const n=Math.max(1,parseInt($('#p-num').value)||20);
+ const qs=shuffle(pool).slice(0,n);
+ const head=t=>'<h1>故事成語　'+t+'<span class="nm">　年　組　名前（　　　　　　　）</span></h1>';
+ const needGun=$('#p-gun').checked&&qs.some(q=>q.t==='mw'||q.t==='ex');
+ const gun=needGun?'<div class="gun"><b>【語群】</b> '+shuffle(KOJI).map(k=>k.w).join('・')+'</div>':'';
+ const qHtml=qs.map(it=>'<li><small>【'+it.ins+'】</small><br>'+esc(it.q)+'<span class="blank"></span></li>').join('');
+ const aHtml=qs.map(it=>'<li>'+esc(it.q)+'<br><span class="ka">→ '+esc(it.a)+'</span></li>').join('');
+ $('#printArea').innerHTML='<div class="pp">'+head('確認テスト')+gun+'<ol>'+qHtml+'</ol></div><div class="pp">'+head('解答')+'<ol>'+aHtml+'</ol></div>';
+ setTimeout(()=>window.print(),200);
+}
+</script>
+</body>
+</html>
