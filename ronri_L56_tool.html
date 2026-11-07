@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>論理表現 Lesson 5・6 考査対策ツール</title>
+<style>
+:root{--main:#23527c;--accent:#d9822b;--bg:#f2f5f8;--card:#fff;--ok:#2e8b57;--ng:#c0392b;--line:#d3dbe3}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;background:var(--bg);color:#222;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{background:var(--main);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:8px}
+header h1{font-size:17px}
+header small{font-size:11px;opacity:.85}
+.ver{margin-left:auto;font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:8px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1;border:0;background:none;padding:8px 0 6px;font-size:10.5px;color:#777;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:19px;font-weight:normal}
+nav button.on{color:var(--main);font-weight:bold}
+.tab{display:none;padding:14px;max-width:640px;margin:0 auto}
+.tab.show{display:block}
+h2{font-size:16px;color:var(--main);margin:6px 0 10px}
+h3{font-size:14px;color:#555;margin:14px 0 6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.seg button{border:1.5px solid var(--main);background:#fff;color:var(--main);border-radius:18px;padding:7px 12px;font-size:13px}
+.seg button.on{background:var(--main);color:#fff}
+.big{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:bold;padding:14px;border-radius:12px;margin-top:14px}
+.sub{display:block;width:100%;border:1.5px solid var(--main);background:#fff;color:var(--main);font-size:14px;padding:11px;border-radius:12px;margin-top:8px}
+.note{font-size:12px;color:#777;line-height:1.6}
+#quiz{display:none}
+.bar{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;margin-bottom:8px}
+.bar .prog{flex:1;height:6px;background:#dde4ea;border-radius:3px;overflow:hidden}
+.bar .prog i{display:block;height:100%;background:var(--accent)}
+.bar button{border:1px solid #bbb;background:#fff;border-radius:12px;padding:4px 9px;font-size:12px}
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 16px;min-height:170px}
+.tag{display:inline-block;font-size:11px;color:#fff;background:var(--main);padding:2px 8px;border-radius:8px;margin-bottom:10px}
+.q{font-size:19px;line-height:1.7;white-space:pre-wrap}
+.q.long{font-size:16px}
+.q.en{font-family:Georgia,"Times New Roman",serif}
+.ans{display:none;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:16px;line-height:1.7;color:var(--accent);font-weight:bold;white-space:pre-wrap}
+.ans .pt{display:block;margin-top:8px;font-size:13px;color:#555;font-weight:normal;background:#f3f6f9;padding:8px;border-radius:8px}
+.chk{width:100%;border-collapse:collapse;font-size:14px;font-weight:normal;color:#222;margin-top:4px}
+.chk td{border-bottom:1px solid #eee;padding:5px 4px;vertical-align:top;line-height:1.5}
+.chk td.e{font-family:Georgia,serif;width:52%}
+.choices{display:grid;gap:8px;margin-top:12px}
+.choices button{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px;font-size:15px;line-height:1.5;color:#222}
+.choices button.right{border-color:var(--ok);background:#e8f5ee}
+.choices button.wrong{border-color:var(--ng);background:#fbeaea}
+.judge{display:flex;gap:10px;margin-top:12px}
+.judge button{flex:1;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:bold;color:#fff}
+.judge .o{background:var(--ok)}.judge .x{background:var(--ng)}
+.tts{float:right;border:0;background:#eee;border-radius:50%;width:34px;height:34px;font-size:16px}
+/* 並べ替え */
+.slot{min-height:54px;border:2px dashed var(--line);border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;background:#fafcfd}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pc{border:1.5px solid var(--main);background:#fff;color:#123;border-radius:8px;padding:7px 10px;font-size:15px;font-family:Georgia,serif;line-height:1.3}
+.slot .pc{background:#e9f1f8}
+.slot.ok{border-color:var(--ok);background:#e8f5ee}.slot.ng{border-color:var(--ng);background:#fbeaea}
+.item{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:14px;line-height:1.6}
+.item b{color:var(--main)}
+.item .c{float:right;color:var(--ng);font-weight:bold}
+.flow{background:#fff;border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:14px;line-height:1.75}
+.flow b{display:block;color:var(--accent);margin-bottom:2px}
+.txt{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.txt .pn{font-size:12px;color:#fff;background:var(--accent);display:inline-block;padding:1px 8px;border-radius:8px;margin-bottom:6px}
+.txt p{margin-bottom:8px;line-height:1.6}
+.txt .e{font-family:Georgia,serif;font-size:15px}
+.txt .j{font-size:13px;color:#555}
+.hidej .txt .j{display:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:40px 14px}
+.modal .in{background:#fff;border-radius:14px;max-width:600px;margin:0 auto;max-height:80vh;overflow:auto;padding:14px}
+input[type=number]{width:70px;font-size:15px;padding:5px;border:1px solid #bbb;border-radius:6px}
+label.ck{display:block;font-size:14px;padding:6px 0}
+#printArea{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  header,nav,.tab,.modal{display:none!important}
+  #printArea{display:block!important;color:#000}
+  .pp{page-break-after:always;padding:6mm}
+  .pp:last-child{page-break-after:auto}
+  .pp h1{font-size:15pt;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm}
+  .pp .nm{float:right;font-size:11pt;font-weight:normal}
+  .pp ol{padding-left:8mm;font-size:11pt;line-height:1.6}
+  .pp li{margin-bottom:3mm;break-inside:avoid}
+  .pp .en{font-family:Georgia,serif}
+  .pp .blank{display:block;border-bottom:1px solid #888;height:7mm}
+  .pp .ka{font-weight:bold}
+}
+@page{size:A4;margin:10mm}
+</style>
+</head>
+<body>
+<header><div><h1>論理表現　Lesson 5・6</h1><small>定期考査対策ツール</small></div><span class="ver">v1</span></header>
+
+<section class="tab show" id="t-bun">
+  <h2>🔤 英文（本文の訳・並べ替え）</h2>
+  <h3>Lesson</h3>
+  <div class="seg" id="b-L"><button data-v="all" class="on">全部</button><button data-v="5">Lesson 5</button><button data-v="6">Lesson 6</button></div>
+  <h3>出題のしかた</h3>
+  <div class="seg" id="b-mode"><button data-v="ej" class="on">英 → 和</button><button data-v="je">和 → 英</button><button data-v="ord">並べ替え</button></div>
+  <h3>順番</h3>
+  <div class="seg" id="b-order"><button data-v="sh" class="on">シャッフル</button><button data-v="seq">本文の順</button></div>
+  <p class="note">英→和・和→英は、答えを見てチャンク（区切り）ごとに確認し、○×をつけよう。並べ替えは、長い文はチャンク単位、短い文は単語単位です。</p>
+  <button class="big" onclick="startBun()">▶ スタート</button>
+</section>
+
+<section class="tab" id="t-goku">
+  <h2>📖 語句</h2>
+  <h3>Lesson</h3>
+  <div class="seg" id="g-L"><button data-v="all" class="on">全部</button><button data-v="5">Lesson 5</button><button data-v="6">Lesson 6</button></div>
+  <h3>出題のしかた</h3>
+  <div class="seg" id="g-dir"><button data-v="em" class="on">英語 → 意味</button><button data-v="me">意味 → 英語</button></div>
+  <h3>答え方</h3>
+  <div class="seg" id="g-style"><button data-v="card" class="on">カード（自己採点）</button><button data-v="four">4択</button></div>
+  <button class="big" onclick="startGoku()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="showList()">語句の一覧を見る</button>
+</section>
+
+<section class="tab" id="t-kousa">
+  <h2>📝 考査対策</h2>
+  <h3>Lesson</h3>
+  <div class="seg" id="k-L"><button data-v="all" class="on">全部</button><button data-v="5">Lesson 5</button><button data-v="6">Lesson 6</button></div>
+  <h3>種類</h3>
+  <div class="seg" id="k-cat"><button data-v="all" class="on">全部</button><button data-v="内">内容理解</button><button data-v="文">文法・構文</button><button data-v="補">空所補充</button></div>
+  <button class="big" onclick="startKousa()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="startKousa(true)">▶ 本文の順番どおりに出題</button>
+</section>
+
+<section class="tab" id="t-hon">
+  <h2>📄 本文と構成</h2>
+  <div class="seg" id="h-L"><button data-v="5" class="on">Lesson 5</button><button data-v="6">Lesson 6</button></div>
+  <div class="seg" id="h-view"><button data-v="flow" class="on">段落の要約</button><button data-v="text">本文＋和訳</button><button data-v="texte">本文のみ</button></div>
+  <div id="honBody"></div>
+</section>
+
+<section class="tab" id="t-nigate">
+  <h2>📊 苦手ランキング</h2>
+  <p class="note">×にした回数が多い順。このスマホのブラウザに記録されます。</p>
+  <button class="big" onclick="startNigate()">▶ 苦手な問題だけ出題</button>
+  <div id="rankList" style="margin-top:12px"></div>
+  <button class="sub" onclick="resetRank()">記録をリセット</button>
+</section>
+
+<section class="tab" id="t-print">
+  <h2>🖨 プリント作成</h2>
+  <h3>Lesson</h3>
+  <div class="seg" id="p-L"><button data-v="all" class="on">全部</button><button data-v="5">Lesson 5</button><button data-v="6">Lesson 6</button></div>
+  <h3>入れる問題</h3>
+  <label class="ck"><input type="checkbox" id="p-ej" checked> 英文 → 和訳</label>
+  <label class="ck"><input type="checkbox" id="p-je"> 和訳 → 英文</label>
+  <label class="ck"><input type="checkbox" id="p-em" checked> 語句：英語 → 意味</label>
+  <label class="ck"><input type="checkbox" id="p-me" checked> 語句：意味 → 英語</label>
+  <label class="ck"><input type="checkbox" id="p-nai"> 内容理解</label>
+  <label class="ck"><input type="checkbox" id="p-bun"> 文法・構文</label>
+  <label class="ck"><input type="checkbox" id="p-ho" checked> 空所補充</label>
+  <h3>問題数</h3>
+  <p><input type="number" id="p-num" value="30" min="5" max="200"> 問（足りない時はある分だけ）</p>
+  <button class="big" onclick="makePrint()">🖨 プリントを作って印刷</button>
+  <p class="note" style="margin-top:8px">iPhoneは印刷画面で「PDFとして保存」や共有も選べます。</p>
+</section>
+
+<section class="tab" id="quiz">
+  <div class="bar"><button onclick="quitQuiz()">✕ やめる</button><span id="qNo"></span><div class="prog"><i id="qBar"></i></div><button onclick="showWrongNow()">×一覧</button></div>
+  <div class="card">
+    <button class="tts" onclick="speak()">🔊</button>
+    <span class="tag" id="qTag"></span>
+    <div class="q" id="qText"></div>
+    <div id="qOrder"></div>
+    <div class="choices" id="qChoices"></div>
+    <div class="ans" id="qAns"></div>
+  </div>
+  <div id="qBtns"></div>
+</section>
+
+<nav>
+  <button class="on" data-t="t-bun"><b>🔤</b>英文</button>
+  <button data-t="t-goku"><b>📖</b>語句</button>
+  <button data-t="t-kousa"><b>📝</b>考査</button>
+  <button data-t="t-hon"><b>📄</b>本文</button>
+  <button data-t="t-nigate"><b>📊</b>苦手</button>
+  <button data-t="t-print"><b>🖨</b>印刷</button>
+</nav>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.style.display='none'"><div class="in" id="modalIn"></div></div>
+<div id="printArea"></div>
+
+<script>
+const SENTS=[{"L": 5, "p": 1, "c": [["Imagine you are standing", "立っていると想像しよう"], ["in front of a painting in a museum.", "美術館で1枚の絵の前に"]]}, {"L": 5, "p": 1, "c": [["How would you appreciate it?", "あなたならその絵をどのように鑑賞するだろうか"]]}, {"L": 5, "p": 1, "c": [["Most people may well be satisfied", "ほとんどの人はおそらく満足するだろう"], ["with viewing the painting", "絵を見て"], ["and reading the commentary by a curator.", "そして学芸員による解説文を読んで"]]}, {"L": 5, "p": 1, "c": [["However,", "しかし"], ["one day a boy saw one of Claude Monet's paintings", "ある日、男の子がクロード・モネの絵の1つを見て"], ["entitled Water Lilies (Picture A)", "《睡蓮》という題名の（写真A）"], ["and announced that he could see a frog in it.", "その中にカエルが見えると言った"]]}, {"L": 5, "p": 1, "c": [["A curator, who knew a lot about Monet,", "学芸員は、モネについてよく知っていたのだが"], ["was surprised and asked him", "驚いて彼に尋ねた"], ["where the frog was.", "どこにカエルがいるのかを"]]}, {"L": 5, "p": 1, "c": [["Even though there was no frog in the painting,", "絵の中にカエルはいなかったが"], ["the boy had appreciated it", "男の子はそれ［その作品］を鑑賞していたのだった"], ["from his own unique perspective.", "自分だけの独特な観点で"]]}, {"L": 5, "p": 2, "c": [["As we grow older,", "大人になるにつれ"], ["many of us lose the ability", "私たちの多くは力を失ってしまう"], ["to find the \"invisible frog.\"", "「見えないカエル」を見つける（力を）"]]}, {"L": 5, "p": 2, "c": [["This is because society has emphasized", "なぜなら社会は強調してきたからだ"], ["there is only one correct answer to a question.", "1つの問いに対して正解は1つだけだと"]]}, {"L": 5, "p": 2, "c": [["However,", "しかし"], ["in this increasingly complex world,", "このますます複雑化する世界においては"], ["people have various ways of thinking", "人々はさまざまな考え方をもっている"], ["and different sets of values.", "そして異なる価値観（をもっている）"]]}, {"L": 5, "p": 2, "c": [["Today,", "今日"], ["it is no longer possible", "もはや不可能だ"], ["to find one widely accepted answer.", "幅広く受け入れられる1つの答えを見つけることは"]]}, {"L": 5, "p": 2, "c": [["Recently,", "最近"], ["the concept of \"art thinking,\"", "「アート思考」という概念が"], ["considering problems from original and creative perspectives,", "独創的で創造的な観点で問題を考察することである"], ["has been attracting attention.", "注目を集めている"]]}, {"L": 5, "p": 3, "c": [["To understand what art thinking is,", "アート思考とは何かを理解するために"], ["let's think of art", "アートについて考えてみよう"], ["by comparing it to a plant.", "それを植物にたとえて"]]}, {"L": 5, "p": 3, "c": [["Art consists of three important elements:", "アートは3つの重要な要素から成る"], ["a \"flower\" of expression,", "表現の「花」"], ["a \"seed\" of interest,", "興味の「タネ」"], ["and a \"root\" of inquiry.", "そして探求の「根」である"]]}, {"L": 5, "p": 3, "c": [["The flower of expression", "表現の花は"], ["represents the visible aspect of the artwork.", "アート作品の目に見える部分を表す"]]}, {"L": 5, "p": 3, "c": [["The work is beautiful", "作品は美しい"], ["when it is accomplished artistically.", "精巧に仕上げられていると"]]}, {"L": 5, "p": 3, "c": [["However,", "しかし"], ["such a flower will easily wither", "そのような花は簡単にしおれてしまうだろう"], ["if its roots are not strong.", "もし根が強くなければ"]]}, {"L": 5, "p": 4, "c": [["Artists sow seeds of interest", "アーティストは興味のタネをまく"], ["from their curiosity.", "彼ら自身の好奇心から"]]}, {"L": 5, "p": 4, "c": [["Roots of inquiry take hold and grow from those seeds", "それらのタネから探求が根をおろし、成長していく"], ["as artists explore their questions.", "アーティストが疑問を探求するにつれて"]]}, {"L": 5, "p": 4, "c": [["After a lot of time and effort,", "多くの時間と努力の後に"], ["flowers of expression suddenly bloom", "表現の花は突然開花する"], ["in unexpected ways.", "予期せぬ方法で"]]}, {"L": 5, "p": 4, "c": [["In other words,", "言い換えれば"], ["genuine art is nourished", "本物のアートは育まれる"], ["by those seeds of interest and roots of inquiry,", "それらの興味のタネや探求の根によって"], ["which represent what art thinking is.", "それ［そのタネと根］がアート思考とは何かを表しているのだ"]]}, {"L": 5, "p": 5, "c": [["Now,", "では"], ["let's consider examples of art thinking", "アート思考の例について考えてみよう"], ["from 20th-century artworks.", "20世紀のアート作品から"]]}, {"L": 5, "p": 5, "c": [["Picture B,", "写真Bは"], ["unveiled by Henri Matisse in 1905,", "1905年にアンリ・マティスによって発表されたもので"], ["is a portrait of his wife.", "彼の妻の肖像画である"]]}, {"L": 5, "p": 5, "c": [["His peculiar way of painting the portrait", "彼の肖像画の独特な描き方は"], ["may be surprising.", "驚くべきものかもしれない"]]}, {"L": 5, "p": 5, "c": [["Why did Matisse paint it", "マティスはなぜ描いたのだろうか"], ["in that way?", "そのような手法で"]]}, {"L": 5, "p": 5, "c": [["Until the 20th century,", "20世紀まで"], ["artists could rarely express themselves freely.", "アーティストは自由に自分自身を表現することはめったにできなかった"]]}, {"L": 5, "p": 5, "c": [["They were required to follow", "彼らは従わなければならなかった"], ["the demands of their patrons.", "支援者からの要求に"]]}, {"L": 5, "p": 5, "c": [["At that time,", "その当時"], ["the only correct answer to art", "アートに対する唯一の正解は"], ["was depicting things realistically.", "ものを写実的に描くことであった"]]}, {"L": 5, "p": 6, "c": [["However,", "しかし"], ["art lost that role with the invention of photography,", "写真技術の発明とともにアートはその役割を失った"], ["as cameras could capture a subject", "カメラは被写体を捉えることができるので"], ["as it was.", "ありのままに"]]}, {"L": 5, "p": 6, "c": [["During this transition in art,", "このアートの変遷期に"], ["Matisse tried to answer his own question", "マティスは彼自身の疑問に答えようとした"], ["about the genuine role of art.", "アートの真の役割に関する（疑問に）"]]}, {"L": 5, "p": 6, "c": [["Finally,", "最終的に"], ["Matisse's root of inquiry", "マティスの探求の根は"], ["led him to focus on the natural properties of colors", "彼に色彩のもつ本来の性質に焦点を当てるようにさせたのだ"], ["rather than depicting the subject accurately.", "被写体を正確に描くことよりも"]]}, {"L": 5, "p": 6, "c": [["The artist successfully released art", "そのアーティストはアートを解放することに成功したのだ"], ["from the strict traditions", "厳格な伝統から"], ["that had been practiced until that time.", "その時まで行われてきた"]]}, {"L": 5, "p": 7, "c": [["Let's look at another example:", "別の例を見てみよう"], ["Fountain by Marcel Duchamp", "マルセル・デュシャンの《泉》"], ["exhibited in 1917 (Picture C).", "1917年に発表された（写真C）"]]}, {"L": 5, "p": 7, "c": [["This work is known as a masterpiece of the 20th century,", "この作品は20世紀の傑作として知られている"], ["but you may certainly wonder why.", "しかし、あなたはきっとその理由がわからないだろう"]]}, {"L": 5, "p": 7, "c": [["In fact,", "実際に"], ["this is just an upside-down urinal", "これはただの上下逆さまの小便器なのである"], ["with the artist's signature on it.", "そのアーティストのサインの入った"]]}, {"L": 5, "p": 7, "c": [["Duchamp submitted it to an exhibition", "デュシャンはそれをある展覧会に出展した"], ["under the pseudonym R. Mutt.", "R. Muttという偽名で"]]}, {"L": 5, "p": 7, "c": [["In that exhibition,", "その展覧会では"], ["all entries were supposed to be accepted,", "すべての出展物は受け入れられることになっていた"], ["but Duchamp's entry was rejected.", "しかしデュシャンの出展物は却下された"]]}, {"L": 5, "p": 7, "c": [["This was because the committee judged", "それは、委員会が判断したからである"], ["that it was just a urinal,", "これはただの小便器であり"], ["not a piece of art.", "アート作品ではないと"]]}, {"L": 5, "p": 7, "c": [["Later,", "その後"], ["Duchamp contributed a photograph of his work", "デュシャンは彼の作品の写真を寄稿した"], ["to an art magazine.", "あるアート雑誌に"]]}, {"L": 5, "p": 7, "c": [["This article caused a great debate", "この記事は大きな議論を巻き起こした"], ["among the public:", "世の中に"], ["\"Is this really art?\"", "「これは本当にアートなのか」と"]]}, {"L": 5, "p": 8, "c": [["What was Duchamp trying to say", "デュシャンは何を伝えようとしたのだろうか"], ["through this piece?", "この作品を通して"]]}, {"L": 5, "p": 8, "c": [["Until then,", "それまで"], ["it had been assumed", "〜とみなされてきた"], ["that art should be visually beautiful.", "アートは視覚的に美しくあるべきだと"]]}, {"L": 5, "p": 8, "c": [["However,", "しかし"], ["Duchamp questioned this assumption,", "デュシャンはこの前提に疑問を抱いた"], ["namely the pursuit of beauty in art.", "つまりアートにおける美の追求に"]]}, {"L": 5, "p": 8, "c": [["This led him to take away the visual elements", "このことから彼は視覚的な要素を取り除いた"], ["that generally satisfied viewers' appreciation.", "一般的に見る者の鑑賞を満足させるような"]]}, {"L": 5, "p": 8, "c": [["Instead,", "代わりに"], ["he tried to stimulate viewers", "彼は見る者を刺激しようとしたのだった"], ["to actually think about art.", "アートについて真に考えるように"]]}, {"L": 5, "p": 8, "c": [["By challenging the public's expectations,", "世間の期待に異議を唱えることで"], ["Duchamp succeeded in shifting art", "デュシャンはアートを変化させることに成功した"], ["from the realm of viewing", "視覚の領域から"], ["to that of thinking.", "思考の領域へと"]]}, {"L": 5, "p": 9, "c": [["Both Matisse and Duchamp", "マティスとデュシャンのいずれも"], ["posed challenges to the public", "世間に課題を投げかけた"], ["by offering their own answers regarding art.", "アートに関する自分自身の答えを提唱することによって"]]}, {"L": 5, "p": 9, "c": [["Their artworks show", "彼らのアート作品は示している"], ["the importance of having original perspectives.", "独創的な観点をもつことの重要性を"]]}, {"L": 5, "p": 9, "c": [["In today's complex society,", "今日の複雑な社会において"], ["sticking to conventional wisdom", "世間一般の通念にしがみつくことは"], ["may no longer work.", "もはや機能しないかもしれない"]]}, {"L": 5, "p": 9, "c": [["Use the strategy of art thinking", "アート思考の方策を用いてみよう"], ["to ask questions about life's many challenges", "人生の多くの課題に対して疑問を投げかけるために"], ["and discover your own answers.", "そして自分自身の答えを見つける（ために）"]]}, {"L": 6, "p": 1, "c": [["Which animal do you think", "どの動物が〜だと思うだろうか"], ["has the best sense of smell?", "最も優れた嗅覚を持っている"]]}, {"L": 6, "p": 1, "c": [["Most people would probably think of dogs.", "おそらく大半の人たちが犬を思い浮かべるだろう"]]}, {"L": 6, "p": 1, "c": [["Using their highly developed noses,", "その高度に発達した嗅覚を使って"], ["dogs have long been helping us look for missing people", "犬たちは長きにわたって行方不明者の捜索に役立っている"], ["in various search and rescue operations.", "さまざまな捜索・救助活動において"]]}, {"L": 6, "p": 1, "c": [["They are also seen working with police in public", "それら（犬たち）が、公共の場で警察に協力するのも見られる"], ["and searching for evidence at crime scenes.", "そして犯罪現場で証拠を捜す"]]}, {"L": 6, "p": 1, "c": [["Furthermore,", "さらに"], ["at international airports,", "国際空港では"], ["they check passengers' baggage", "それら（犬たち）は乗客の手荷物を検査する"], ["for prohibited food, plants, or drugs.", "禁止されている食品や植物、薬物を捜して"]]}, {"L": 6, "p": 1, "c": [["These dogs have undergone special training sessions", "これらの犬たちは特別な訓練期間を経てきている"], ["in order to successfully carry out their duties.", "任務をうまく遂行するために"]]}, {"L": 6, "p": 2, "c": [["Dogs' highly evolved noses", "犬の高度に進化した嗅覚は"], ["have advantages in medical fields as well.", "医療の分野においても利点がある"]]}, {"L": 6, "p": 2, "c": [["Research has shown", "研究は示している"], ["that some diseases or bacteria", "病気や細菌の中には〜なものがあることを"], ["have their own unique odors,", "それ特有の臭気を持つ"], ["for instance, cancer.", "例えば、がん"]]}, {"L": 6, "p": 2, "c": [["Dogs can be trained", "犬は教え込まれることができる"], ["to detect this common and dreaded disease.", "このよくある恐ろしい病気を探知するように"]]}, {"L": 6, "p": 2, "c": [["Cancer detection dogs screen samples of breath or urine", "がん探知犬は、呼気や尿のサンプルから検査する"], ["for this disease.", "この病気を"]]}, {"L": 6, "p": 2, "c": [["Surprisingly,", "驚くべきことに"], ["they can find cancer", "それら（犬たち）はがんを見つけることができる"], ["with a very high degree of accuracy,", "非常に高い精度で"], ["even in its early stages.", "初期のステージであっても"]]}, {"L": 6, "p": 2, "c": [["Such research began in the 1990s in the US,", "このような研究は1990年代にアメリカで始まった"], ["and now there is an institution", "そして現在、施設がある"], ["to train cancer detection dogs in Japan.", "日本に、がん探知犬を訓練する"]]}, {"L": 6, "p": 2, "c": [["However,", "しかし"], ["this training is very expensive", "この訓練は非常に高額な費用がかかる"], ["because dogs are high-maintenance.", "犬は世話に手がかかるため"]]}, {"L": 6, "p": 2, "c": [["Another problem is", "もう一つの問題は〜だ"], ["that dogs can concentrate", "犬は集中できるということ"], ["only for a short period of time.", "ごく短時間しか〜ない"]]}, {"L": 6, "p": 3, "c": [["In contrast,", "対照的に"], ["there is a low-maintenance species", "世話に手がかからない種がいる"], ["that can detect cancer more efficiently.", "より効率よくがんを探知できる"]]}, {"L": 6, "p": 3, "c": [["Nematodes, underground worms,", "地中に生息する虫である線虫は"], ["are natural super sniffers.", "生まれつき並外れた嗅覚を持つ生き物だ"]]}, {"L": 6, "p": 3, "c": [["These creatures' sense of smell", "この生き物の嗅覚は"], ["is said to be 1.5 times greater than that of dogs.", "犬の嗅覚の1.5倍優れていると言われている"]]}, {"L": 6, "p": 3, "c": [["Research has shown", "研究は示している"], ["that urine containing cancer markers", "がんマーカーを含む尿は〜だと"], ["attracts nematodes.", "線虫を引き寄せる"]]}, {"L": 6, "p": 3, "c": [["When they are exposed to urine samples,", "尿のサンプルに晒されると"], ["the worms are drawn to those", "その虫は〜ものへと引き寄せられる"], ["where cancer markers are present.", "がんマーカーがある"]]}, {"L": 6, "p": 3, "c": [["The advantage of using nematodes is", "線虫を使用することの利点は〜だ"], ["that they are easier and less expensive to look after.", "それら（線虫）は世話をするのが簡単であまり費用がかからないこと"]]}, {"L": 6, "p": 3, "c": [["Furthermore,", "さらに"], ["unlike dogs,", "犬とは違って"], ["they obviously do not need", "それら（線虫）は必要としないことが明白だ"], ["to be trained or given breaks.", "訓練を受けることや、休憩を与えられることも"]]}, {"L": 6, "p": 4, "c": [["Let's look at another animal", "他の動物を見てみよう"], ["that can detect a serious disease.", "ある深刻な病気を探知する"]]}, {"L": 6, "p": 4, "c": [["Fortunately,", "幸いなことに"], ["tuberculosis is now a curable disease", "結核は今や完治できる病気だ"], ["as long as it is diagnosed early and treated properly.", "早期に診断を受け、適切に治療さえすれば"]]}, {"L": 6, "p": 4, "c": [["However,", "しかし"], ["in some regions of Africa and Asia,", "アフリカやアジアの一部の地域では"], ["this disease still leads to the death of too many people.", "この病気がいまだに多くの人々を死に至らしめている"]]}, {"L": 6, "p": 4, "c": [["In recent years,", "近年"], ["African giant pouched rats", "アフリカオニネズミは"], ["have been used to address this problem", "この問題に対処するのに用いられている"], ["because they can detect mycobacterium tuberculosis.", "結核菌を探知することができるので"]]}, {"L": 6, "p": 4, "c": [["When this rat is used", "このネズミが用いられると"], ["to test 100 saliva samples,", "100の唾液のサンプルをテストするのに"], ["detection only takes twenty minutes.", "探知にたった20分しかかからない"]]}, {"L": 6, "p": 4, "c": [["On the other hand,", "一方"], ["microscopic examination by a technician", "検査技師による顕微鏡検査は"], ["takes up to four days.", "最長4日を要する"]]}, {"L": 6, "p": 4, "c": [["This small animal may help us", "この小さな動物は手助けとなるかもしれない"], ["accomplish one target of the SDGs:", "SDGsのターゲットのひとつを達成する"], ["ending the tuberculosis epidemic by 2030.", "2030年までに結核の流行を終わらせる"]]}, {"L": 6, "p": 5, "c": [["These rats' heightened sense of smell", "このネズミの優れた嗅覚は"], ["has contributed greatly", "大いに貢献している"], ["in a different field as well.", "他の分野でも"]]}, {"L": 6, "p": 5, "c": [["They can be trained", "それら（ネズミ）は教え込まれることができる"], ["to respond to the smell of chemicals used in landmines,", "地雷に使用される化学物質の匂いに反応するように"], ["explosive devices concealed underground.", "地中に隠された爆破装置"]]}, {"L": 6, "p": 5, "c": [["Once stepped on,", "踏まれるとすぐに"], ["they explode and cause severe injury or death.", "それら（地雷）は爆発し大けがや死をもたらす"]]}, {"L": 6, "p": 5, "c": [["Since these rats weigh about one kilogram each,", "このネズミは一匹あたりの体重がおよそ1キロほどなので"], ["they can sniff out landmines", "地雷を嗅ぎ当てることができる"], ["without any danger of causing an explosion.", "爆発を引き起こす危険なく"]]}, {"L": 6, "p": 5, "c": [["In contrast,", "対照的に"], ["mine detection by human operators", "人間の操作者による地雷探知は"], ["always involves great danger.", "常に大きな危険が伴う"]]}, {"L": 6, "p": 5, "c": [["Moreover,", "さらに"], ["it takes many hours for humans", "人間は長時間を要する"], ["to clear a suspected minefield", "地雷原の疑いのある場所から地雷を除去するのに"], ["with a metal detector.", "金属探知機を用いて"]]}, {"L": 6, "p": 5, "c": [["This is because it responds", "これはそれ（金属探知機）が反応するからである"], ["not only to landmines", "地雷だけにでなく"], ["but also to other metal objects", "その他の金属にも"], ["such as bullets, wire, or scrap.", "弾丸やワイヤー、鉄くずなどの"]]}, {"L": 6, "p": 5, "c": [["So,", "だから"], ["human detection takes four days", "人間による探知は4日かかる"], ["to cover a field the size of a tennis court,", "テニスコートほどの広さの区画を探知するのに"], ["while a rat only needs about 30 minutes.", "それに対し、ネズミはおよそ30分しか要さない"]]}, {"L": 6, "p": 5, "c": [["These little sniffers have already detected", "この小さな嗅覚の持ち主はすでに探知している"], ["more than 100,000 landmines", "10万個以上の地雷を"], ["in former conflict zones", "かつての紛争地帯で"], ["in Africa and Asia.", "アフリカやアジアの"]]}, {"L": 6, "p": 6, "c": [["As we have seen,", "見てきたように"], ["the sophisticated smelling abilities of some animals", "いくつかの動物たちの高度な嗅覚は"], ["can function as highly effective sensors", "非常に有効な検知器の役割を果たすことができる"], ["in various fields.", "さまざまな分野において"]]}, {"L": 6, "p": 6, "c": [["Ongoing research is looking for ways", "進行中の調査は方法を模索している"], ["to expand the use of their extraordinary noses.", "動物たちの並外れた嗅覚の用途を拡大する"]]}, {"L": 6, "p": 6, "c": [["In fact,", "実際"], ["animal detection methods are now being investigated", "動物による探知手法は現在、調査がなされている"], ["to help diagnose recent diseases", "最近の病気を診断するのに役立てるため"], ["such as COVID-19,", "新型コロナウイルス感染症といった"], ["which have had devastating effects on the whole world.", "世界全体に壊滅的な影響をもたらしている"]]}, {"L": 6, "p": 6, "c": [["Humans are extremely lucky", "人類は極めて幸運だ"], ["that animals' innate sense of smell", "動物たちの生まれ持った嗅覚が〜なので"], ["may help them avert", "回避するのを助けてくれるかもしれない"], ["a range of potential global threats.", "さまざまな潜在的な地球規模の脅威を"]]}];
+
+const VOCAB=[
+// Lesson 5
+{w:"appreciate",m:"〜を鑑賞する、〜の良さを味わう",L:5,p:1},
+{w:"may well do",m:"おそらく〜するだろう",L:5,p:1},
+{w:"be satisfied with ~",m:"〜に満足する",L:5,p:1},
+{w:"commentary",m:"解説（文）",L:5,p:1},
+{w:"curator",m:"学芸員",L:5,p:1},
+{w:"entitled ~",m:"〜という題名の",L:5,p:1},
+{w:"announce",m:"〜と（はっきり）言う、発表する",L:5,p:1},
+{w:"perspective",m:"観点、見方",L:5,p:1},
+{w:"emphasize",m:"〜を強調する",L:5,p:2},
+{w:"increasingly",m:"ますます",L:5,p:2},
+{w:"complex",m:"複雑な",L:5,p:2},
+{w:"values",m:"価値観",L:5,p:2},
+{w:"no longer",m:"もはや〜ない",L:5,p:2},
+{w:"widely accepted",m:"幅広く受け入れられた",L:5,p:2},
+{w:"concept",m:"概念",L:5,p:2},
+{w:"original",m:"独創的な",L:5,p:2},
+{w:"creative",m:"創造的な",L:5,p:2},
+{w:"attract attention",m:"注目を集める",L:5,p:2},
+{w:"compare A to B",m:"AをBにたとえる",L:5,p:3},
+{w:"consist of ~",m:"〜から成る",L:5,p:3},
+{w:"element",m:"要素",L:5,p:3},
+{w:"expression",m:"表現",L:5,p:3},
+{w:"inquiry",m:"探求",L:5,p:3},
+{w:"represent",m:"〜を表す",L:5,p:3},
+{w:"visible",m:"目に見える",L:5,p:3},
+{w:"aspect",m:"面、部分",L:5,p:3},
+{w:"accomplish",m:"〜を成し遂げる、仕上げる",L:5,p:3},
+{w:"wither",m:"しおれる、枯れる",L:5,p:3},
+{w:"sow",m:"（種）をまく",L:5,p:4},
+{w:"curiosity",m:"好奇心",L:5,p:4},
+{w:"take hold",m:"根づく、定着する",L:5,p:4},
+{w:"explore",m:"〜を探求する",L:5,p:4},
+{w:"bloom",m:"（花が）咲く",L:5,p:4},
+{w:"unexpected",m:"予期せぬ",L:5,p:4},
+{w:"in other words",m:"言い換えれば",L:5,p:4},
+{w:"genuine",m:"本物の、真の",L:5,p:4},
+{w:"nourish",m:"〜を育む、養う",L:5,p:4},
+{w:"unveil",m:"〜を発表する、公開する",L:5,p:5},
+{w:"portrait",m:"肖像画",L:5,p:5},
+{w:"peculiar",m:"独特な、風変わりな",L:5,p:5},
+{w:"rarely",m:"めったに〜ない",L:5,p:5},
+{w:"be required to do",m:"〜しなければならない、〜することを求められる",L:5,p:5},
+{w:"demand",m:"要求",L:5,p:5},
+{w:"patron",m:"支援者、パトロン",L:5,p:5},
+{w:"depict",m:"〜を描く",L:5,p:5},
+{w:"realistically",m:"写実的に、現実的に",L:5,p:5},
+{w:"invention",m:"発明",L:5,p:6},
+{w:"capture",m:"〜を捉える",L:5,p:6},
+{w:"subject",m:"被写体",L:5,p:6},
+{w:"as it was",m:"ありのままに",L:5,p:6},
+{w:"transition",m:"変遷、移り変わり",L:5,p:6},
+{w:"lead O to do",m:"Oに〜させる（Oを〜するように導く）",L:5,p:6},
+{w:"focus on ~",m:"〜に焦点を当てる",L:5,p:6},
+{w:"property",m:"性質",L:5,p:6},
+{w:"rather than ~",m:"〜よりもむしろ",L:5,p:6},
+{w:"accurately",m:"正確に",L:5,p:6},
+{w:"release A from B",m:"AをBから解放する",L:5,p:6},
+{w:"strict",m:"厳格な",L:5,p:6},
+{w:"tradition",m:"伝統",L:5,p:6},
+{w:"exhibit",m:"〜を展示する、発表する",L:5,p:7},
+{w:"masterpiece",m:"傑作",L:5,p:7},
+{w:"upside-down",m:"上下逆さまの",L:5,p:7},
+{w:"signature",m:"署名、サイン",L:5,p:7},
+{w:"submit",m:"〜を提出する、出展する",L:5,p:7},
+{w:"exhibition",m:"展覧会",L:5,p:7},
+{w:"pseudonym",m:"偽名、ペンネーム",L:5,p:7},
+{w:"entry",m:"出展物、応募作品",L:5,p:7},
+{w:"be supposed to do",m:"〜することになっている",L:5,p:7},
+{w:"reject",m:"〜を拒否する、却下する",L:5,p:7},
+{w:"committee",m:"委員会",L:5,p:7},
+{w:"contribute A to B",m:"AをBに寄稿する（寄付する）",L:5,p:7},
+{w:"debate",m:"議論",L:5,p:7},
+{w:"assume",m:"〜だと思い込む、みなす",L:5,p:8},
+{w:"assumption",m:"前提、思い込み",L:5,p:8},
+{w:"namely",m:"つまり、すなわち",L:5,p:8},
+{w:"pursuit",m:"追求",L:5,p:8},
+{w:"stimulate O to do",m:"Oを刺激して〜させる",L:5,p:8},
+{w:"challenge",m:"〜に異議を唱える／課題",L:5,p:8},
+{w:"expectation",m:"期待",L:5,p:8},
+{w:"succeed in doing",m:"〜することに成功する",L:5,p:8},
+{w:"shift A from B to C",m:"AをBからCへ変化させる",L:5,p:8},
+{w:"realm",m:"領域",L:5,p:8},
+{w:"pose a challenge to ~",m:"〜に課題を投げかける",L:5,p:9},
+{w:"regarding ~",m:"〜に関して",L:5,p:9},
+{w:"stick to ~",m:"〜にしがみつく、固執する",L:5,p:9},
+{w:"conventional wisdom",m:"世間一般の通念、常識",L:5,p:9},
+{w:"strategy",m:"方策、戦略",L:5,p:9},
+// Lesson 6
+{w:"sense of smell",m:"嗅覚",L:6,p:1},
+{w:"highly developed",m:"高度に発達した",L:6,p:1},
+{w:"missing",m:"行方不明の",L:6,p:1},
+{w:"search and rescue operation",m:"捜索・救助活動",L:6,p:1},
+{w:"in public",m:"公共の場で、人前で",L:6,p:1},
+{w:"evidence",m:"証拠",L:6,p:1},
+{w:"crime scene",m:"犯罪現場",L:6,p:1},
+{w:"furthermore",m:"さらに",L:6,p:1},
+{w:"baggage",m:"手荷物",L:6,p:1},
+{w:"prohibited",m:"禁止された",L:6,p:1},
+{w:"undergo",m:"〜を経験する、受ける",L:6,p:1},
+{w:"carry out",m:"〜を遂行する、実行する",L:6,p:1},
+{w:"duty",m:"任務、義務",L:6,p:1},
+{w:"evolved",m:"進化した",L:6,p:2},
+{w:"advantage",m:"利点",L:6,p:2},
+{w:"medical field",m:"医療の分野",L:6,p:2},
+{w:"bacteria",m:"細菌",L:6,p:2},
+{w:"odor",m:"におい、臭気",L:6,p:2},
+{w:"detect",m:"〜を探知する、見つける",L:6,p:2},
+{w:"dreaded",m:"恐ろしい",L:6,p:2},
+{w:"screen A for B",m:"Bがないかを調べるためにAを検査する",L:6,p:2},
+{w:"breath",m:"呼気、息",L:6,p:2},
+{w:"urine",m:"尿",L:6,p:2},
+{w:"accuracy",m:"正確さ、精度",L:6,p:2},
+{w:"institution",m:"施設、機関",L:6,p:2},
+{w:"high-maintenance",m:"手がかかる、世話が大変な",L:6,p:2},
+{w:"concentrate",m:"集中する",L:6,p:2},
+{w:"in contrast",m:"対照的に",L:6,p:3},
+{w:"low-maintenance",m:"手がかからない",L:6,p:3},
+{w:"species",m:"（生物の）種",L:6,p:3},
+{w:"efficiently",m:"効率よく",L:6,p:3},
+{w:"nematode",m:"線虫",L:6,p:3},
+{w:"sniffer",m:"においを嗅ぐもの",L:6,p:3},
+{w:"creature",m:"生き物",L:6,p:3},
+{w:"contain",m:"〜を含む",L:6,p:3},
+{w:"attract",m:"〜を引き寄せる",L:6,p:3},
+{w:"be exposed to ~",m:"〜にさらされる",L:6,p:3},
+{w:"be drawn to ~",m:"〜に引き寄せられる",L:6,p:3},
+{w:"present",m:"存在している",L:6,p:3},
+{w:"look after ~",m:"〜の世話をする",L:6,p:3},
+{w:"unlike ~",m:"〜と違って",L:6,p:3},
+{w:"obviously",m:"明らかに",L:6,p:3},
+{w:"tuberculosis",m:"結核",L:6,p:4},
+{w:"curable",m:"治療できる",L:6,p:4},
+{w:"as long as ~",m:"〜しさえすれば、〜する限り",L:6,p:4},
+{w:"diagnose",m:"〜を診断する",L:6,p:4},
+{w:"treat",m:"〜を治療する",L:6,p:4},
+{w:"region",m:"地域",L:6,p:4},
+{w:"lead to ~",m:"〜につながる、〜を引き起こす",L:6,p:4},
+{w:"address",m:"（問題）に対処する、取り組む",L:6,p:4},
+{w:"saliva",m:"唾液",L:6,p:4},
+{w:"on the other hand",m:"一方",L:6,p:4},
+{w:"microscopic",m:"顕微鏡の",L:6,p:4},
+{w:"examination",m:"検査",L:6,p:4},
+{w:"technician",m:"技師、技術者",L:6,p:4},
+{w:"up to ~",m:"最大〜まで",L:6,p:4},
+{w:"epidemic",m:"流行（病）",L:6,p:4},
+{w:"heightened",m:"高められた、優れた",L:6,p:5},
+{w:"contribute",m:"貢献する",L:6,p:5},
+{w:"respond to ~",m:"〜に反応する",L:6,p:5},
+{w:"chemical",m:"化学物質",L:6,p:5},
+{w:"landmine",m:"地雷",L:6,p:5},
+{w:"explosive",m:"爆発性の",L:6,p:5},
+{w:"device",m:"装置",L:6,p:5},
+{w:"conceal",m:"〜を隠す",L:6,p:5},
+{w:"step on ~",m:"〜を踏む",L:6,p:5},
+{w:"explode",m:"爆発する",L:6,p:5},
+{w:"severe",m:"深刻な、重い",L:6,p:5},
+{w:"injury",m:"けが",L:6,p:5},
+{w:"weigh",m:"重さが〜ある",L:6,p:5},
+{w:"sniff out ~",m:"〜を嗅ぎ当てる",L:6,p:5},
+{w:"explosion",m:"爆発",L:6,p:5},
+{w:"operator",m:"操作者",L:6,p:5},
+{w:"involve",m:"〜を伴う",L:6,p:5},
+{w:"moreover",m:"さらに",L:6,p:5},
+{w:"clear A",m:"（場所）から障害物を取り除く",L:6,p:5},
+{w:"suspected",m:"疑いのある",L:6,p:5},
+{w:"minefield",m:"地雷原",L:6,p:5},
+{w:"metal detector",m:"金属探知機",L:6,p:5},
+{w:"not only A but also B",m:"AだけでなくBも",L:6,p:5},
+{w:"bullet",m:"弾丸",L:6,p:5},
+{w:"scrap",m:"鉄くず、くず",L:6,p:5},
+{w:"cover",m:"（範囲）を調べる、カバーする",L:6,p:5},
+{w:"former",m:"以前の、かつての",L:6,p:5},
+{w:"conflict zone",m:"紛争地帯",L:6,p:5},
+{w:"sophisticated",m:"高度な、洗練された",L:6,p:6},
+{w:"function as ~",m:"〜として機能する",L:6,p:6},
+{w:"effective",m:"有効な、効果的な",L:6,p:6},
+{w:"sensor",m:"検知器、センサー",L:6,p:6},
+{w:"ongoing",m:"進行中の",L:6,p:6},
+{w:"expand",m:"〜を拡大する",L:6,p:6},
+{w:"extraordinary",m:"並外れた",L:6,p:6},
+{w:"method",m:"方法、手法",L:6,p:6},
+{w:"investigate",m:"〜を調査する",L:6,p:6},
+{w:"devastating",m:"壊滅的な",L:6,p:6},
+{w:"extremely",m:"極めて",L:6,p:6},
+{w:"innate",m:"生まれつきの",L:6,p:6},
+{w:"avert",m:"〜を回避する、防ぐ",L:6,p:6},
+{w:"a range of ~",m:"さまざまな〜",L:6,p:6},
+{w:"potential",m:"潜在的な",L:6,p:6},
+{w:"threat",m:"脅威",L:6,p:6}
+];
+
+// 考査：c=内(内容理解) 文(文法・構文) 補(空所補充・英作文)
+const KOUSA=[
+// ---- Lesson 5 内容
+{L:5,p:1,c:"内",q:"モネの《睡蓮》を見た男の子は、何と言ったか。",a:"絵の中にカエルが見えると言った。"},
+{L:5,p:1,c:"内",q:"絵の中にカエルはいなかったのに、筆者が男の子について評価していることは何か。",a:"男の子は自分だけの独特な観点で作品を鑑賞していたということ。"},
+{L:5,p:2,c:"内",q:"大人になるにつれて、多くの人が「見えないカエル」を見つける力を失うのはなぜか。",a:"社会が「1つの問いに対して正解は1つだけだ」と強調してきたから。"},
+{L:5,p:2,c:"内",q:"今日、幅広く受け入れられる1つの答えを見つけることが不可能なのはなぜか。",a:"ますます複雑化する世界で、人々はさまざまな考え方や異なる価値観をもっているから。"},
+{L:5,p:2,c:"内",q:"「アート思考」とはどのような考え方か。",a:"独創的で創造的な観点で問題を考察すること。"},
+{L:5,p:3,c:"内",q:"アートを植物にたとえたとき、アートを構成する3つの要素は何か。",a:"表現の「花」、興味の「タネ」、探求の「根」。"},
+{L:5,p:3,c:"内",q:"「表現の花」は何を表しているか。",a:"アート作品の目に見える部分。"},
+{L:5,p:3,c:"内",q:"表現の花が簡単にしおれてしまうのは、どのような場合か。",a:"根（探求の根）が強くない場合。"},
+{L:5,p:4,c:"内",q:"アーティストは、何から興味のタネをまくか。",a:"自分自身の好奇心から。"},
+{L:5,p:4,c:"内",q:"本物のアートを育むもので、アート思考とは何かを表しているものは何か。",a:"興味のタネと探求の根。"},
+{L:5,p:5,c:"内",q:"写真Bはどのような作品か。",a:"1905年にアンリ・マティスが発表した、彼の妻の肖像画。"},
+{L:5,p:5,c:"内",q:"20世紀まで、アーティストが自由に自分を表現できなかったのはなぜか。",a:"支援者（パトロン）からの要求に従わなければならなかったから。"},
+{L:5,p:5,c:"内",q:"20世紀以前、アートに対する唯一の正解は何だったか。",a:"ものを写実的に描くこと。"},
+{L:5,p:6,c:"内",q:"アートがその役割を失ったのはなぜか。",a:"写真技術が発明され、カメラが被写体をありのままに捉えられるようになったから。"},
+{L:5,p:6,c:"内",q:"マティスの探求の根は、彼を何に焦点を当てるように導いたか。",a:"被写体を正確に描くことよりも、色彩のもつ本来の性質に焦点を当てるように導いた。"},
+{L:5,p:6,c:"内",q:"マティスは、アートを何から解放することに成功したか。",a:"その時まで行われてきた厳格な伝統から。"},
+{L:5,p:7,c:"内",q:"デュシャンの《泉》とは、実際にはどのようなものか。",a:"作者のサインが入った、ただの上下逆さまの小便器。"},
+{L:5,p:7,c:"内",q:"デュシャンは《泉》をどのように展覧会に出展したか。",a:"R. Muttという偽名で出展した。"},
+{L:5,p:7,c:"内",q:"すべての出展物が受け入れられるはずの展覧会で、《泉》が却下されたのはなぜか。",a:"委員会が、それはただの小便器でありアート作品ではないと判断したから。"},
+{L:5,p:7,c:"内",q:"デュシャンがアート雑誌に作品の写真を寄稿したことで、どのような議論が起きたか。",a:"「これは本当にアートなのか」という大きな議論が世の中に起きた。"},
+{L:5,p:8,c:"内",q:"それまでアートはどうあるべきだとみなされてきたか。",a:"視覚的に美しくあるべきだとみなされてきた。"},
+{L:5,p:8,c:"内",q:"デュシャンが疑問を抱いた「この前提」とは何か。",a:"アートにおける美の追求（アートは視覚的に美しくあるべきだという前提）。"},
+{L:5,p:8,c:"内",q:"デュシャンは見る者に何をさせようとしたか。",a:"アートについて真に考えるように刺激しようとした。"},
+{L:5,p:8,c:"内",q:"デュシャンはアートをどのように変化させたか。",a:"視覚の領域から思考の領域へと変化させた。"},
+{L:5,p:9,c:"内",q:"マティスとデュシャンの作品が示しているのは何の重要性か。",a:"独創的な観点をもつことの重要性。"},
+{L:5,p:9,c:"内",q:"筆者は最後に、読者に何をするよう勧めているか。",a:"アート思考の方策を用いて、人生の多くの課題に疑問を投げかけ、自分自身の答えを見つけること。"},
+// ---- Lesson 5 文法
+{L:5,p:1,c:"文",q:"Most people may well be satisfied ... の may well の意味は？",a:"おそらく〜するだろう",pt:"may well do＝「おそらく〜だろう」「〜するのももっともだ」。"},
+{L:5,p:1,c:"文",q:"A curator, who knew a lot about Monet, ... のように、関係代名詞の前にコンマがある用法を何というか。",a:"非制限用法（継続用法）",pt:"先行詞に補足説明を加える。「学芸員は、モネについてよく知っていたのだが」。"},
+{L:5,p:1,c:"文",q:"the boy had appreciated it の had appreciated は何形か。また、なぜこの形なのか。",a:"過去完了形。学芸員が尋ねた時（過去）よりも前に、男の子が鑑賞していたことを表すため。"},
+{L:5,p:2,c:"文",q:"As we grow older, の as の意味は？",a:"〜するにつれて",pt:"比較級（older）と一緒に使われると「比例」の意味になることが多い。"},
+{L:5,p:2,c:"文",q:"it is no longer possible to find one widely accepted answer. の it は何を指すか。",a:"to find one widely accepted answer（形式主語の it）"},
+{L:5,p:2,c:"文",q:"the concept has been attracting attention の時制を何というか。",a:"現在完了進行形（ずっと〜し続けている）"},
+{L:5,p:3,c:"文",q:"To understand what art thinking is, の不定詞の用法は？",a:"副詞的用法（目的）「〜するために」"},
+{L:5,p:4,c:"文",q:"..., which represent what art thinking is. の which の先行詞は何か。",a:"those seeds of interest and roots of inquiry（興味のタネと探求の根）"},
+{L:5,p:5,c:"文",q:"Picture B, unveiled by Henri Matisse in 1905, is ... の unveiled は何の働きをしているか。",a:"過去分詞で Picture B を後ろから修飾し、「マティスによって発表された」と補足している。"},
+{L:5,p:5,c:"文",q:"the only correct answer to art was depicting things realistically. の depicting は何か。",a:"動名詞（補語）「描くこと」"},
+{L:5,p:6,c:"文",q:"as cameras could capture a subject as it was. の2つの as の意味をそれぞれ答えよ。",a:"1つ目：〜なので（理由）　2つ目：〜のままに（様態）",pt:"as it was＝ありのままに"},
+{L:5,p:6,c:"文",q:"Matisse's root of inquiry led him to focus on ... の構文と意味は？",a:"lead O to do「Oに〜させる（Oを〜するように導く）」→マティスの探求の根は、彼に〜に焦点を当てさせた。",pt:"無生物主語の構文。「〜によって彼は…した」と訳すと自然。"},
+{L:5,p:6,c:"文",q:"the strict traditions that had been practiced until that time の had been practiced は何形か。",a:"過去完了の受動態（その時まで行われてきた）"},
+{L:5,p:7,c:"文",q:"all entries were supposed to be accepted の be supposed to do の意味は？",a:"〜することになっている"},
+{L:5,p:7,c:"文",q:"This was because ~ の意味は？",a:"それは〜だからである（前の文の理由を述べる）"},
+{L:5,p:8,c:"文",q:"it had been assumed that art should be visually beautiful. の it は何を指すか。",a:"that 以下（that art should be visually beautiful）を指す形式主語。"},
+{L:5,p:8,c:"文",q:"Duchamp questioned this assumption, namely the pursuit of beauty in art. の namely の意味と働きは？",a:"「つまり、すなわち」。this assumption の内容を言い換えている。"},
+{L:5,p:8,c:"文",q:"from the realm of viewing to that of thinking の that は何を指すか。",a:"the realm（領域）",pt:"同じ名詞のくり返しを避ける that。L6の that of dogs も同じ。"},
+{L:5,p:9,c:"文",q:"sticking to conventional wisdom may no longer work. の主語は何か。",a:"sticking to conventional wisdom（動名詞句）"},
+// ---- Lesson 5 補充
+{L:5,p:2,c:"補",q:"（　）に入る語は？\nThis is (　　) society has emphasized there is only one correct answer to a question.",a:"because"},
+{L:5,p:3,c:"補",q:"（　）に入る語は？\nArt (　　) of three important elements.",a:"consists"},
+{L:5,p:3,c:"補",q:"（　）に入る語は？\nlet's think of art by (　　) it to a plant.",a:"comparing"},
+{L:5,p:4,c:"補",q:"（　）に入る語句は？\n(　　)(　　)(　　), genuine art is nourished by those seeds of interest and roots of inquiry.",a:"In other words"},
+{L:5,p:5,c:"補",q:"（　）に入る語は？\nThey were (　　) to follow the demands of their patrons.",a:"required"},
+{L:5,p:6,c:"補",q:"（　）に入る語は？\nMatisse focused on the natural properties of colors (　　) than depicting the subject accurately.",a:"rather"},
+{L:5,p:6,c:"補",q:"（　）に入る語は？\nThe artist successfully released art (　　) the strict traditions.",a:"from"},
+{L:5,p:7,c:"補",q:"（　）に入る語は？\nall entries were (　　) to be accepted, but Duchamp's entry was rejected.",a:"supposed"},
+{L:5,p:8,c:"補",q:"（　）に入る語は？\nDuchamp succeeded (　　) shifting art from the realm of viewing to that of thinking.",a:"in"},
+{L:5,p:9,c:"補",q:"（　）に入る語は？\nIn today's complex society, (　　) to conventional wisdom may no longer work.",a:"sticking"},
+// ---- Lesson 6 内容
+{L:6,p:1,c:"内",q:"犬が高度に発達した嗅覚で役立っている例を3つ挙げよ。",a:"①捜索・救助活動で行方不明者を捜す　②公共の場で警察に協力し、犯罪現場で証拠を捜す　③国際空港で、禁止されている食品・植物・薬物がないか乗客の手荷物を検査する"},
+{L:6,p:1,c:"内",q:"これらの犬たちは、任務をうまく遂行するために何を経てきているか。",a:"特別な訓練期間。"},
+{L:6,p:2,c:"内",q:"研究によって、医療の分野で明らかになったことは何か。",a:"病気や細菌の中には、がんのように、それ特有の臭気をもつものがあること。"},
+{L:6,p:2,c:"内",q:"がん探知犬は何を調べてがんを見つけるか。",a:"呼気や尿のサンプル。"},
+{L:6,p:2,c:"内",q:"がん探知犬の驚くべき点は何か。",a:"初期の段階であっても、非常に高い精度でがんを見つけられること。"},
+{L:6,p:2,c:"内",q:"がん探知犬の研究はいつ、どこで始まったか。",a:"1990年代にアメリカで始まった。"},
+{L:6,p:2,c:"内",q:"がん探知犬の問題点を2つ答えよ。",a:"①犬は世話に手がかかるため、訓練に非常に高額な費用がかかる。②犬は短時間しか集中できない。"},
+{L:6,p:3,c:"内",q:"線虫の嗅覚は、犬と比べてどれくらい優れていると言われているか。",a:"犬の1.5倍。"},
+{L:6,p:3,c:"内",q:"線虫は、尿のサンプルにさらされるとどうなるか。",a:"がんマーカーがある尿のほうへ引き寄せられる。"},
+{L:6,p:3,c:"内",q:"線虫を使うことの利点を答えよ。",a:"世話が簡単で費用があまりかからないこと。また、犬と違って訓練も休憩も必要ないこと。"},
+{L:6,p:4,c:"内",q:"結核はどのような条件で完治できる病気か。",a:"早期に診断を受け、適切に治療すれば完治できる。"},
+{L:6,p:4,c:"内",q:"アフリカオニネズミが結核の問題に対処するのに用いられているのはなぜか。",a:"結核菌を探知することができるから。"},
+{L:6,p:4,c:"内",q:"100の唾液サンプルを調べるのに、ネズミと検査技師ではそれぞれどれくらいかかるか。",a:"ネズミ：たった20分。検査技師による顕微鏡検査：最長4日。"},
+{L:6,p:4,c:"内",q:"このネズミが達成を手助けするかもしれない SDGs のターゲットは何か。",a:"2030年までに結核の流行を終わらせること。"},
+{L:6,p:5,c:"内",q:"ネズミは、医療以外にどの分野で貢献しているか。",a:"地雷の探知（地雷除去）の分野。"},
+{L:6,p:5,c:"内",q:"ネズミが爆発を引き起こす危険なく地雷を嗅ぎ当てられるのはなぜか。",a:"体重が1匹あたりおよそ1キロしかないから。"},
+{L:6,p:5,c:"内",q:"金属探知機を使った人間の地雷除去に長時間かかるのはなぜか。",a:"金属探知機が地雷だけでなく、弾丸・ワイヤー・鉄くずなど他の金属にも反応するから。"},
+{L:6,p:5,c:"内",q:"テニスコートほどの広さを調べるのに、人間とネズミではそれぞれどれくらいかかるか。",a:"人間：4日。ネズミ：およそ30分。"},
+{L:6,p:5,c:"内",q:"このネズミたちは、これまでにどれくらいの地雷を探知したか。",a:"アフリカやアジアのかつての紛争地帯で、10万個以上。"},
+{L:6,p:6,c:"内",q:"動物による探知手法は現在、何のために調査されているか。",a:"新型コロナウイルス感染症のような最近の病気を診断するのに役立てるため。"},
+{L:6,p:6,c:"内",q:"筆者が「人類は極めて幸運だ」と述べているのはなぜか。",a:"動物の生まれ持った嗅覚が、さまざまな潜在的な地球規模の脅威を回避する助けになるかもしれないから。"},
+// ---- Lesson 6 文法
+{L:6,p:1,c:"文",q:"Which animal do you think has the best sense of smell? の構文は？",a:"疑問詞＋do you think＋（主語が抜けた）動詞 …？「どの動物が〜だと思うか」",pt:"do you think は疑問詞のすぐ後ろに入る（間接疑問の応用）。"},
+{L:6,p:1,c:"文",q:"Using their highly developed noses, dogs ... の Using は何という構文か。",a:"分詞構文（〜を使って）"},
+{L:6,p:1,c:"文",q:"dogs have long been helping us look for missing people の構文を2つ答えよ。",a:"①現在完了進行形（長い間ずっと〜している）　②help O do「Oが〜するのを助ける」"},
+{L:6,p:1,c:"文",q:"They are also seen working with police の構文は？",a:"see O doing の受動態（be seen doing「〜しているのが見られる」）"},
+{L:6,p:1,c:"文",q:"in order to successfully carry out their duties の in order to の意味は？",a:"〜するために（目的）"},
+{L:6,p:2,c:"文",q:"Dogs can be trained to detect this disease. の構文は？",a:"train O to do（Oに〜するよう訓練する）の受動態"},
+{L:6,p:2,c:"文",q:"there is an institution to train cancer detection dogs の to train は何用法か。",a:"不定詞の形容詞的用法（がん探知犬を訓練する施設）"},
+{L:6,p:3,c:"文",q:"These creatures' sense of smell is said to be 1.5 times greater than that of dogs. の構文を2つ答えよ。",a:"①be said to be「〜だと言われている」　②倍数表現 X times＋比較級＋than",pt:"that of dogs の that＝the sense of smell"},
+{L:6,p:3,c:"文",q:"urine containing cancer markers の containing は何の働きか。",a:"現在分詞で urine を後ろから修飾（がんマーカーを含む尿）"},
+{L:6,p:3,c:"文",q:"the worms are drawn to those where cancer markers are present. の those と where を説明せよ。",a:"those＝the urine samples（尿のサンプル）。where は関係副詞で、those を修飾している。"},
+{L:6,p:3,c:"文",q:"they are easier and less expensive to look after の構文は？",a:"形容詞＋to do（〜するのが…だ）。they（線虫）は look after の意味上の目的語。"},
+{L:6,p:4,c:"文",q:"as long as it is diagnosed early and treated properly の as long as の意味は？",a:"〜しさえすれば、〜する限り（条件）"},
+{L:6,p:4,c:"文",q:"African giant pouched rats have been used to address this problem の時制・態は？",a:"現在完了の受動態（ずっと用いられてきている）"},
+{L:6,p:4,c:"文",q:"This small animal may help us accomplish one target of the SDGs: ending the tuberculosis epidemic by 2030. のコロン（:）の働きは？",a:"one target の内容を具体的に説明する（言い換え）。"},
+{L:6,p:5,c:"文",q:"chemicals used in landmines の used は何の働きか。",a:"過去分詞で chemicals を後ろから修飾（地雷に使用される化学物質）"},
+{L:6,p:5,c:"文",q:"landmines, explosive devices concealed underground の部分は何という関係か。",a:"同格（landmines を言い換えて説明している）"},
+{L:6,p:5,c:"文",q:"Once stepped on, they explode ... の Once の意味と、省略されている語句は？",a:"Once＝いったん〜すると。Once (they are) stepped on の they are が省略されている。"},
+{L:6,p:5,c:"文",q:"Since these rats weigh about one kilogram each の Since の意味は？",a:"〜なので（理由）"},
+{L:6,p:5,c:"文",q:"it takes many hours for humans to clear a suspected minefield の構文は？",a:"It takes 時間 for 人 to do「人が〜するのに（時間が）かかる」"},
+{L:6,p:5,c:"文",q:"human detection takes four days ..., while a rat only needs about 30 minutes. の while の意味は？",a:"〜する一方で、それに対し（対比）"},
+{L:6,p:6,c:"文",q:"animal detection methods are now being investigated の時制・態は？",a:"現在進行形の受動態（今、調査されている）"},
+{L:6,p:6,c:"文",q:"recent diseases such as COVID-19, which have had devastating effects ... の which の用法は？",a:"関係代名詞の非制限用法（先行詞は recent diseases such as COVID-19）"},
+{L:6,p:6,c:"文",q:"Humans are extremely lucky that ... の that 節は何を表しているか。",a:"幸運である理由（〜なので）"},
+// ---- Lesson 6 補充
+{L:6,p:1,c:"補",q:"（　）に入る語は？\nThese dogs have (　　) special training sessions.",a:"undergone"},
+{L:6,p:1,c:"補",q:"（　）に入る語は？\nThey check passengers' baggage (　　) prohibited food, plants, or drugs.",a:"for"},
+{L:6,p:2,c:"補",q:"（　）に入る語は？\nthey can find cancer with a very high (　　) of accuracy.",a:"degree"},
+{L:6,p:2,c:"補",q:"（　）に入る語は？\nAnother problem is that dogs can (　　) only for a short period of time.",a:"concentrate"},
+{L:6,p:3,c:"補",q:"（　）に入る語は？\nWhen they are (　　) to urine samples, the worms are drawn to those where cancer markers are present.",a:"exposed"},
+{L:6,p:3,c:"補",q:"（　）に入る語は？\n(　　) dogs, they obviously do not need to be trained or given breaks.",a:"Unlike"},
+{L:6,p:4,c:"補",q:"（　）に入る語句は？\ntuberculosis is now a curable disease (　　)(　　)(　　) it is diagnosed early.",a:"as long as"},
+{L:6,p:4,c:"補",q:"（　）に入る語は？\nmicroscopic examination by a technician takes (　　) to four days.",a:"up"},
+{L:6,p:5,c:"補",q:"（　）に入る語は？\nThey can be trained to (　　) to the smell of chemicals used in landmines.",a:"respond"},
+{L:6,p:5,c:"補",q:"（　）に入る語は？\nit responds not only to landmines (　　)(　　) to other metal objects.",a:"but also"},
+{L:6,p:5,c:"補",q:"（　）に入る語は？\nIt (　　) many hours for humans to clear a suspected minefield.",a:"takes"},
+{L:6,p:6,c:"補",q:"（　）に入る語は？\nthe sophisticated smelling abilities of some animals can (　　) as highly effective sensors.",a:"function"},
+{L:6,p:6,c:"補",q:"（　）に入る語は？\nanimals' innate sense of smell may help them (　　) a range of potential global threats.",a:"avert"}
+];
+
+const FLOW={
+5:{title:"Lesson 5　アート思考（Art Thinking）",paras:[
+ ["第1段落","美術館で絵を見るとき、ほとんどの人は絵を見て解説文を読んで満足する。しかし、モネの《睡蓮》を見た男の子は「カエルが見える」と言った。カエルはいなかったが、彼は自分だけの独特な観点で作品を鑑賞していた。"],
+ ["第2段落","大人になると「見えないカエル」を見つける力を失う。社会が「正解は1つだけ」と強調してきたからだ。しかし複雑化する世界では価値観がさまざまで、1つの答えは見つからない。そこで「アート思考」が注目されている。"],
+ ["第3段落","アートを植物にたとえると、表現の「花」、興味の「タネ」、探求の「根」の3要素から成る。花は目に見える部分だが、根が強くなければ簡単にしおれる。"],
+ ["第4段落","アーティストは好奇心から興味のタネをまき、探求の根を育てる。時間と努力の後、表現の花が予期せぬ形で咲く。タネと根こそがアート思考を表している。"],
+ ["第5段落","マティスが1905年に発表した妻の肖像画（写真B）は独特な描き方をしている。20世紀まで、アーティストは支援者の要求に従う必要があり、正解は「写実的に描くこと」だった。"],
+ ["第6段落","写真の発明でアートはその役割を失った。マティスはアートの真の役割を探求し、被写体を正確に描くよりも色彩本来の性質に焦点を当て、アートを厳格な伝統から解放した。"],
+ ["第7段落","デュシャンの《泉》（1917年、写真C）は、サイン入りの上下逆さまの小便器にすぎない。偽名で出展したが「アートではない」と却下され、写真を雑誌に寄稿すると「これは本当にアートなのか」と大議論になった。"],
+ ["第8段落","それまでアートは「視覚的に美しくあるべき」とされていた。デュシャンはこの前提（美の追求）に疑問を抱き、視覚的要素を取り除いて見る者に考えさせ、アートを視覚の領域から思考の領域へと変えた。"],
+ ["第9段落","マティスもデュシャンも、自分自身の答えを示して世間に課題を投げかけた。複雑な社会では通念にしがみつくことはもう機能しない。アート思考を使って疑問を投げかけ、自分の答えを見つけよう。"]
+]},
+6:{title:"Lesson 6　動物の嗅覚（Super Sniffers）",paras:[
+ ["第1段落","犬は高度に発達した嗅覚で、捜索・救助、警察での証拠探し、空港での手荷物検査などに役立っている。特別な訓練を経て任務を遂行している。"],
+ ["第2段落","医療の分野でも、がん特有のにおいを嗅ぎ分けるがん探知犬が、初期のがんも高い精度で見つける。しかし、訓練の費用が高いことと、短時間しか集中できないことが問題である。"],
+ ["第3段落","対照的に、線虫は世話に手がかからず、犬の1.5倍の嗅覚をもつ。がんマーカーを含む尿に引き寄せられる。世話が簡単で安く、訓練も休憩も不要である。"],
+ ["第4段落","結核は早期診断・適切な治療で治るが、アフリカやアジアでは今も多くの人が亡くなる。アフリカオニネズミは結核菌を探知でき、100サンプルを20分で調べる（技師なら最長4日）。SDGsの目標達成に役立つかもしれない。"],
+ ["第5段落","このネズミは地雷探知でも活躍する。体重約1キロなので爆発させずに地雷を嗅ぎ当てられる。金属探知機は他の金属にも反応するため、人間はテニスコート大の区画に4日かかるが、ネズミは約30分。すでに10万個以上の地雷を探知した。"],
+ ["第6段落","動物の高度な嗅覚はさまざまな分野で有効な検知器になる。新型コロナなどの病気の診断にも研究が進んでいる。動物の生まれ持った嗅覚が地球規模の脅威を防ぐ助けになるかもしれず、人類は幸運である。"]
+]}
+};
+
+
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const inL=(L,v)=>v==='all'||String(L)===v;
+SENTS.forEach((s,i)=>{s.i=i;s.en=s.c.map(x=>x[0]).join(' ');s.ja=s.c.map(x=>x[1]).join(' / ')});
+// 段落ごとの文番号
+(function(){const k={};SENTS.forEach(s=>{const key=s.L+'-'+s.p;k[key]=(k[key]||0)+1;s.n=k[key]})})();
+
+const opt={};
+document.querySelectorAll('.seg').forEach(g=>{opt[g.id]=g.querySelector('.on').dataset.v;
+ g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');opt[g.id]=b.dataset.v;if(g.id.startsWith('h-'))drawHon();})});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+function showTab(id){$('#quiz').style.display='';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#'+id).classList.add('show');
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===id));if(id==='t-nigate')drawRank();if(id==='t-hon')drawHon();window.scrollTo(0,0)}
+
+let REC={};try{REC=JSON.parse(localStorage.getItem('ronri_L56_rec')||'{}')}catch(e){}
+function saveRec(){try{localStorage.setItem('ronri_L56_rec',JSON.stringify(REC))}catch(e){}}
+
+// ===== 問題オブジェクト =====
+const tagS=s=>'L'+s.L+' 第'+s.p+'段落 '+s.n+'文目';
+function sentItem(s,mode){
+ const id='s'+mode+':'+s.i;
+ if(mode==='ej')return{id,kind:'s',mode,s,tag:'英 → 和（'+tagS(s)+'）',q:s.c.map(x=>x[0]).join(' / '),en:true,a:''};
+ if(mode==='je')return{id,kind:'s',mode,s,tag:'和 → 英（'+tagS(s)+'）',q:s.c.map(x=>x[1]).join(' / '),a:''};
+ return{id,kind:'s',mode:'ord',s,tag:'並べ替え（'+tagS(s)+'）',q:s.ja.replace(/ \/ /g,''),a:s.en};
+}
+function vocabItem(v,dir){
+ const id='v'+dir+':'+v.w;
+ return dir==='em'?{id,kind:'v',dir,v,tag:'英語 → 意味（L'+v.L+' 第'+v.p+'段落）',q:v.w,en:true,a:v.m}
+                  :{id,kind:'v',dir,v,tag:'意味 → 英語（L'+v.L+' 第'+v.p+'段落）',q:v.m,a:v.w};
+}
+const CAT={内:'内容理解',文:'文法・構文',補:'空所補充'};
+function kousaItem(k,i){return{id:'k:'+i,kind:'k',c:k.c,tag:CAT[k.c]+'（L'+k.L+' 第'+k.p+'段落）',q:k.q,a:k.a,pt:k.pt,long:true}}
+function findItem(id){
+ const [h,rest]=[id.slice(0,id.indexOf(':')),id.slice(id.indexOf(':')+1)];
+ if(h==='k')return KOUSA[+rest]?kousaItem(KOUSA[+rest],+rest):null;
+ if(h[0]==='s'){const s=SENTS[+rest];return s?sentItem(s,h.slice(1)):null}
+ if(h[0]==='v'){const v=VOCAB.find(x=>x.w===rest);return v?vocabItem(v,h.slice(1)):null}
+ return null;
+}
+
+// ===== スタート =====
+let deck=[],idx=0,style='card',wrongNow=[],okCount=0,backTab='t-bun',answered=false,ordState=null;
+function startBun(){
+ const list=SENTS.filter(s=>inL(s.L,opt['b-L']));
+ const items=list.map(s=>sentItem(s,opt['b-mode']));
+ run(opt['b-order']==='seq'?items:shuffle(items),opt['b-mode']==='ord'?'ord':'card','t-bun');
+}
+function startGoku(){run(shuffle(VOCAB.filter(v=>inL(v.L,opt['g-L']))).map(v=>vocabItem(v,opt['g-dir'])),opt['g-style'],'t-goku')}
+function startKousa(inOrder){
+ const list=KOUSA.map((k,i)=>({k,i})).filter(o=>inL(o.k.L,opt['k-L'])&&(opt['k-cat']==='all'||o.k.c===opt['k-cat'])).map(o=>kousaItem(o.k,o.i));
+ run(inOrder?list:shuffle(list),'card','t-kousa');
+}
+function startNigate(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0);
+ if(!ids.length){alertBox('まだ苦手な問題はありません。');return}
+ const items=shuffle(ids.map(findItem).filter(Boolean));
+ run(items,'mix','t-nigate');
+}
+function run(d,st,back){
+ if(!d.length){alertBox('問題がありません。');return}
+ deck=d;idx=0;style=st;wrongNow=[];okCount=0;backTab=back;
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#quiz').classList.add('show');$('#quiz').style.display='block';draw();
+}
+function chkTable(s){return '<table class="chk">'+s.c.map(x=>'<tr><td class="e">'+esc(x[0])+'</td><td>'+esc(x[1])+'</td></tr>').join('')+'</table>'}
+function draw(){
+ const it=deck[idx];answered=false;ordState=null;
+ $('#qNo').textContent=(idx+1)+' / '+deck.length;$('#qBar').style.width=(idx/deck.length*100)+'%';
+ $('#qTag').textContent=it.tag;$('#qText').textContent=it.q;
+ $('#qText').className='q'+(it.en?' en':'')+((it.long||it.q.length>28)?' long':'');
+ const ans=$('#qAns');ans.style.display='none';
+ if(it.kind==='s')ans.innerHTML=(it.mode==='ord'?'<div class="en" style="font-family:Georgia,serif;margin-bottom:6px">'+esc(it.s.en)+'</div>':'')+chkTable(it.s);
+ else ans.innerHTML=esc(it.a)+(it.pt?'<span class="pt">'+esc(it.pt)+'</span>':'');
+ $('#qChoices').innerHTML='';$('#qOrder').innerHTML='';
+ const st=style==='mix'?(it.kind==='s'&&it.mode==='ord'?'ord':'card'):style;
+ if(st==='ord'&&it.kind==='s')return drawOrder(it);
+ if(st==='four'&&it.kind==='v')return drawFour(it);
+ $('#qBtns').innerHTML='<button class="big" onclick="reveal()">答えを見る</button>';
+}
+function drawFour(it){
+ const key=it.dir==='em'?'m':'w';const correct=it.v[key];
+ const others=shuffle(VOCAB.filter(x=>x!==it.v&&x[key]!==correct)).slice(0,3).map(x=>x[key]);
+ const ch=$('#qChoices');
+ shuffle([correct,...others]).forEach(t=>{const b=document.createElement('button');b.textContent=t;if(it.dir==='me')b.style.fontFamily='Georgia,serif';b.onclick=()=>{
+  if(answered)return;answered=true;const ok=t===correct;
+  ch.querySelectorAll('button').forEach(x=>{if(x.textContent===correct)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+  mark(ok);$('#qAns').style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>';};ch.appendChild(b)});
+ $('#qBtns').innerHTML='';
+}
+// 並べ替え
+function drawOrder(it){
+ const s=it.s;let pieces;
+ const words=s.en.split(/\s+/);
+ if(s.c.length>=3) pieces=s.c.map(x=>x[0]);
+ else pieces=words;
+ if(pieces.length<2) pieces=words;
+ const correct=pieces.slice();
+ let pool=shuffle(pieces.map((p,i)=>({p,i})));
+ if(pool.length>1&&pool.every((o,k)=>o.i===k))pool.reverse();
+ ordState={correct,pool,picked:[]};
+ $('#qOrder').innerHTML='<p class="note" style="margin-top:8px">'+(s.c.length>=3?'チャンク（かたまり）':'単語')+'をタップして、正しい順に並べよう。並べた部分をタップすると戻せます。</p><div class="slot" id="oSlot"></div><div class="pool" id="oPool"></div>';
+ renderOrder();
+ $('#qBtns').innerHTML='<button class="big" onclick="checkOrder()">答え合わせ</button><button class="sub" onclick="giveUpOrder()">わからない（答えを見る）</button>';
+}
+function renderOrder(){
+ const o=ordState;
+ $('#oSlot').innerHTML=o.picked.map((x,k)=>'<button class="pc" onclick="unpick('+k+')">'+esc(x.p)+'</button>').join('');
+ $('#oPool').innerHTML=o.pool.map((x,k)=>'<button class="pc" onclick="pick('+k+')">'+esc(x.p)+'</button>').join('');
+}
+function pick(k){if(answered)return;ordState.picked.push(ordState.pool.splice(k,1)[0]);renderOrder()}
+function unpick(k){if(answered)return;ordState.pool.push(ordState.picked.splice(k,1)[0]);renderOrder()}
+function checkOrder(){
+ if(answered)return;const o=ordState;
+ if(o.pool.length){alertBox('すべて並べてから答え合わせしよう。');return}
+ answered=true;const ok=o.picked.map(x=>x.p).join(' ')===o.correct.join(' ');
+ $('#oSlot').classList.add(ok?'ok':'ng');mark(ok);$('#qAns').style.display='block';
+ $('#qBtns').innerHTML='<button class="big" onclick="next()">'+(ok?'正解！ ':'')+'次へ ▶</button>';
+}
+function giveUpOrder(){if(answered)return;answered=true;mark(false);$('#qAns').style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>'}
+function reveal(){$('#qAns').style.display='block';$('#qBtns').innerHTML='<div class="judge"><button class="o" onclick="mark(true);next()">○ わかった</button><button class="x" onclick="mark(false);next()">× まだ</button></div>'}
+function mark(ok){const it=deck[idx];if(ok){okCount++;if(REC[it.id])REC[it.id]=Math.max(0,REC[it.id]-1)}else{wrongNow.push(it);REC[it.id]=(REC[it.id]||0)+1}saveRec()}
+function next(){idx++;if(idx>=deck.length)finish();else{draw();window.scrollTo(0,0)}}
+function finish(){
+ $('#qBar').style.width='100%';$('#qOrder').innerHTML='';
+ $('#qTag').textContent='おつかれさま！';$('#qText').className='q';$('#qText').textContent=deck.length+'問中 '+okCount+'問 ○';
+ $('#qChoices').innerHTML='';$('#qAns').style.display='block';
+ $('#qAns').innerHTML=wrongNow.length?'<span style="color:#333;font-size:14px">×の問題：'+wrongNow.length+'問</span>':'全問正解！🎉';
+ $('#qBtns').innerHTML=(wrongNow.length?'<button class="big" onclick="retryWrong()">×の問題だけもう一度</button><button class="sub" onclick="showWrongNow()">×の一覧を見る</button>':'')+'<button class="sub" onclick="quitQuiz()">メニューにもどる</button>';
+}
+function retryWrong(){run(shuffle(wrongNow),style,backTab)}
+function quitQuiz(){showTab(backTab)}
+const itemAns=it=>it.kind==='s'?(it.mode==='ej'?it.s.ja:it.s.en):it.a;
+function showWrongNow(){
+ const h=wrongNow.length?wrongNow.map(it=>'<div class="item"><b>'+esc(it.q)+'</b><br>→ '+esc(itemAns(it))+'</div>').join(''):'<p class="note">まだ×の問題はありません。</p>';
+ openModal('<h2>今回の×一覧</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function showList(){
+ const h=[5,6].map(L=>'<h3>Lesson '+L+'</h3>'+VOCAB.filter(v=>v.L===L).map(v=>'<div class="item"><b style="font-family:Georgia,serif">'+esc(v.w)+'</b>　<span class="note">第'+v.p+'段落</span><br>'+esc(v.m)+'</div>').join('')).join('');
+ openModal('<h2>語句一覧（'+VOCAB.length+'語）</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function drawRank(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0).sort((a,b)=>REC[b]-REC[a]);
+ $('#rankList').innerHTML=ids.length?ids.map((id,i)=>{const it=findItem(id);return it?'<div class="item"><span class="c">×'+REC[id]+'</span><b>'+(i+1)+'.</b> <span class="note">'+esc(it.tag)+'</span><br>'+esc(it.q)+'<br><span class="note">→ '+esc(itemAns(it))+'</span></div>':''}).join(''):'<p class="note">まだ記録がありません。</p>';
+}
+function resetRank(){openModal('<p>苦手の記録をすべて消しますか？</p><div class="judge"><button class="x" onclick="REC={};saveRec();drawRank();closeModal()">消す</button><button class="o" onclick="closeModal()">やめる</button></div>')}
+function alertBox(t){openModal('<p>'+t+'</p><button class="sub" onclick="closeModal()">OK</button>')}
+function openModal(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
+function closeModal(){$('#modal').style.display='none'}
+function speak(){try{const it=deck[idx];if(!it)return;speechSynthesis.cancel();
+ const showing=$('#qAns').style.display==='block';
+ let t,lang;
+ if(it.kind==='s'){t=it.s.en;lang='en-US'}
+ else if(it.kind==='v'){t=it.v.w.replace(/~/g,'something').replace(/\bA\b|\bB\b|\bO\b/g,'');lang='en-US'}
+ else{t=showing?it.a:it.q;lang=/[ぁ-んァ-ン一-龯]/.test(t)?'ja-JP':'en-US'}
+ const u=new SpeechSynthesisUtterance(t);u.lang=lang;u.rate=lang==='en-US'?.9:1;speechSynthesis.speak(u)}catch(e){}}
+
+// ===== 本文と構成 =====
+function drawHon(){
+ const L=+opt['h-L'],v=opt['h-view'],F=FLOW[L];let h='<h3>'+F.title+'</h3>';
+ if(v==='flow') h+=F.paras.map(p=>'<div class="flow"><b>'+p[0]+'</b>'+p[1]+'</div>').join('');
+ else{
+  const byP={};SENTS.filter(s=>s.L===L).forEach(s=>(byP[s.p]=byP[s.p]||[]).push(s));
+  h+='<div class="'+(v==='texte'?'hidej':'')+'">'+Object.keys(byP).map(p=>'<div class="txt"><span class="pn">第'+p+'段落</span>'+byP[p].map(s=>'<p><span class="e">'+esc(s.en)+'</span><br><span class="j">'+esc(s.ja.replace(/ \/ /g,'　'))+'</span></p>').join('')+'</div>').join('')+'</div>';
+ }
+ $('#honBody').innerHTML=h;
+}
+
+// ===== プリント =====
+function makePrint(){
+ const PL=opt['p-L'];let pool=[];
+ const S=SENTS.filter(s=>inL(s.L,PL)),V=VOCAB.filter(v=>inL(v.L,PL));
+ const K=KOUSA.map((k,i)=>({k,i})).filter(o=>inL(o.k.L,PL));
+ if($('#p-ej').checked)pool.push(...S.map(s=>({ins:'次の英文を和訳せよ。',q:s.en,en:true,a:s.ja.replace(/ \/ /g,''),long:true})));
+ if($('#p-je').checked)pool.push(...S.map(s=>({ins:'次の日本語を英語にせよ。',q:s.ja.replace(/ \/ /g,''),a:s.en,aen:true,long:true})));
+ if($('#p-em').checked)pool.push(...V.map(v=>({ins:'意味を書け。',q:v.w,en:true,a:v.m})));
+ if($('#p-me').checked)pool.push(...V.map(v=>({ins:'英語で書け。',q:v.m,a:v.w,aen:true})));
+ if($('#p-nai').checked)pool.push(...K.filter(o=>o.k.c==='内').map(o=>({ins:'',q:o.k.q,a:o.k.a,long:true})));
+ if($('#p-bun').checked)pool.push(...K.filter(o=>o.k.c==='文').map(o=>({ins:'',q:o.k.q,a:o.k.a,long:true})));
+ if($('#p-ho').checked)pool.push(...K.filter(o=>o.k.c==='補').map(o=>({ins:'',q:o.k.q.replace('\n',' '),a:o.k.a,aen:true})));
+ if(!pool.length){alertBox('入れる問題を選んでください。');return}
+ const n=Math.max(1,parseInt($('#p-num').value)||30);
+ const qs=shuffle(pool).slice(0,n);
+ const rng=PL==='all'?'Lesson 5・6':'Lesson '+PL;
+ const head=t=>'<h1>論理表現 '+rng+'　'+t+'<span class="nm">　年　組　名前（　　　　　　　）</span></h1>';
+ const qHtml=qs.map(it=>'<li>'+(it.ins?'<small>【'+it.ins+'】</small> ':'')+'<span class="'+(it.en?'en':'')+'">'+esc(it.q)+'</span><span class="blank"></span>'+(it.long?'<span class="blank"></span>':'')+'</li>').join('');
+ const aHtml=qs.map(it=>'<li><span class="'+(it.en?'en':'')+'">'+esc(it.q)+'</span><br><span class="ka '+(it.aen?'en':'')+'">→ '+esc(it.a)+'</span></li>').join('');
+ $('#printArea').innerHTML='<div class="pp">'+head('確認テスト')+'<ol>'+qHtml+'</ol></div><div class="pp">'+head('解答')+'<ol>'+aHtml+'</ol></div>';
+ setTimeout(()=>window.print(),200);
+}
+</script>
+</body>
+</html>
