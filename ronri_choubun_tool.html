@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>論理表現 長文2題 考査対策ツール</title>
+<style>
+:root{--main:#2f6b3f;--accent:#c75b39;--bg:#f2f6f2;--card:#fff;--ok:#2e8b57;--ng:#c0392b;--line:#d3dbe3}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;background:var(--bg);color:#222;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{background:var(--main);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:8px}
+header h1{font-size:17px}
+header small{font-size:11px;opacity:.85}
+.ver{margin-left:auto;font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:8px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1;border:0;background:none;padding:8px 0 6px;font-size:10.5px;color:#777;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:19px;font-weight:normal}
+nav button.on{color:var(--main);font-weight:bold}
+.tab{display:none;padding:14px;max-width:640px;margin:0 auto}
+.tab.show{display:block}
+h2{font-size:16px;color:var(--main);margin:6px 0 10px}
+h3{font-size:14px;color:#555;margin:14px 0 6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.seg button{border:1.5px solid var(--main);background:#fff;color:var(--main);border-radius:18px;padding:7px 12px;font-size:13px}
+.seg button.on{background:var(--main);color:#fff}
+.big{display:block;width:100%;border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:bold;padding:14px;border-radius:12px;margin-top:14px}
+.sub{display:block;width:100%;border:1.5px solid var(--main);background:#fff;color:var(--main);font-size:14px;padding:11px;border-radius:12px;margin-top:8px}
+.note{font-size:12px;color:#777;line-height:1.6}
+#quiz{display:none}
+.bar{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;margin-bottom:8px}
+.bar .prog{flex:1;height:6px;background:#dde4ea;border-radius:3px;overflow:hidden}
+.bar .prog i{display:block;height:100%;background:var(--accent)}
+.bar button{border:1px solid #bbb;background:#fff;border-radius:12px;padding:4px 9px;font-size:12px}
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 16px;min-height:170px}
+.tag{display:inline-block;font-size:11px;color:#fff;background:var(--main);padding:2px 8px;border-radius:8px;margin-bottom:10px}
+.q{font-size:19px;line-height:1.7;white-space:pre-wrap}
+.q.long{font-size:16px}
+.q.en{font-family:Georgia,"Times New Roman",serif}
+.ans{display:none;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:16px;line-height:1.7;color:var(--accent);font-weight:bold;white-space:pre-wrap}
+.ans .pt{display:block;margin-top:8px;font-size:13px;color:#555;font-weight:normal;background:#f3f6f9;padding:8px;border-radius:8px}
+.chk{width:100%;border-collapse:collapse;font-size:14px;font-weight:normal;color:#222;margin-top:4px}
+.chk td{border-bottom:1px solid #eee;padding:5px 4px;vertical-align:top;line-height:1.5}
+.chk td.e{font-family:Georgia,serif;width:52%}
+.choices{display:grid;gap:8px;margin-top:12px}
+.choices button{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px;font-size:15px;line-height:1.5;color:#222}
+.choices button.right{border-color:var(--ok);background:#e8f5ee}
+.choices button.wrong{border-color:var(--ng);background:#fbeaea}
+.judge{display:flex;gap:10px;margin-top:12px}
+.judge button{flex:1;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:bold;color:#fff}
+.judge .o{background:var(--ok)}.judge .x{background:var(--ng)}
+.tts{float:right;border:0;background:#eee;border-radius:50%;width:34px;height:34px;font-size:16px}
+/* 並べ替え */
+.slot{min-height:54px;border:2px dashed var(--line);border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;background:#fafcfd}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pc{border:1.5px solid var(--main);background:#fff;color:#123;border-radius:8px;padding:7px 10px;font-size:15px;font-family:Georgia,serif;line-height:1.3}
+.slot .pc{background:#e9f1f8}
+.slot.ok{border-color:var(--ok);background:#e8f5ee}.slot.ng{border-color:var(--ng);background:#fbeaea}
+.item{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:14px;line-height:1.6}
+.item b{color:var(--main)}
+.item .c{float:right;color:var(--ng);font-weight:bold}
+.flow{background:#fff;border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:14px;line-height:1.75}
+.flow b{display:block;color:var(--accent);margin-bottom:2px}
+.txt{background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.txt .pn{font-size:12px;color:#fff;background:var(--accent);display:inline-block;padding:1px 8px;border-radius:8px;margin-bottom:6px}
+.txt p{margin-bottom:8px;line-height:1.6}
+.txt .e{font-family:Georgia,serif;font-size:15px}
+.txt .j{font-size:13px;color:#555}
+.hidej .txt .j{display:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:40px 14px}
+.modal .in{background:#fff;border-radius:14px;max-width:600px;margin:0 auto;max-height:80vh;overflow:auto;padding:14px}
+input[type=number]{width:70px;font-size:15px;padding:5px;border:1px solid #bbb;border-radius:6px}
+label.ck{display:block;font-size:14px;padding:6px 0}
+#printArea{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  header,nav,.tab,.modal{display:none!important}
+  #printArea{display:block!important;color:#000}
+  .pp{page-break-after:always;padding:6mm}
+  .pp:last-child{page-break-after:auto}
+  .pp h1{font-size:15pt;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm}
+  .pp .nm{float:right;font-size:11pt;font-weight:normal}
+  .pp ol{padding-left:8mm;font-size:11pt;line-height:1.6}
+  .pp li{margin-bottom:3mm;break-inside:avoid}
+  .pp .en{font-family:Georgia,serif}
+  .pp .blank{display:block;border-bottom:1px solid #888;height:7mm}
+  .pp .ka{font-weight:bold}
+}
+@page{size:A4;margin:10mm}
+</style>
+</head>
+<body>
+<header><div><h1>論理表現　長文2題</h1><small>定期考査対策ツール（服装コンサルタント／リーダーの資質）</small></div><span class="ver">v1</span></header>
+
+<section class="tab show" id="t-bun">
+  <h2>🔤 英文（本文の訳・並べ替え）</h2>
+  <h3>長文</h3>
+  <div class="seg" id="b-L"><button data-v="all" class="on">全部</button><button data-v="1">長文1 服装</button><button data-v="2">長文2 リーダー</button></div>
+  <h3>出題のしかた</h3>
+  <div class="seg" id="b-mode"><button data-v="ej" class="on">英 → 和</button><button data-v="je">和 → 英</button><button data-v="ord">並べ替え</button></div>
+  <h3>順番</h3>
+  <div class="seg" id="b-order"><button data-v="sh" class="on">シャッフル</button><button data-v="seq">本文の順</button></div>
+  <p class="note">英→和・和→英は、答えを見てチャンク（区切り）ごとに確認し、○×をつけよう。並べ替えは、長い文はチャンク単位、短い文は単語単位です。</p>
+  <button class="big" onclick="startBun()">▶ スタート</button>
+</section>
+
+<section class="tab" id="t-goku">
+  <h2>📖 語句</h2>
+  <h3>長文</h3>
+  <div class="seg" id="g-L"><button data-v="all" class="on">全部</button><button data-v="1">長文1 服装</button><button data-v="2">長文2 リーダー</button></div>
+  <h3>出題のしかた</h3>
+  <div class="seg" id="g-dir"><button data-v="em" class="on">英語 → 意味</button><button data-v="me">意味 → 英語</button></div>
+  <h3>答え方</h3>
+  <div class="seg" id="g-style"><button data-v="card" class="on">カード（自己採点）</button><button data-v="four">4択</button></div>
+  <button class="big" onclick="startGoku()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="showList()">語句の一覧を見る</button>
+</section>
+
+<section class="tab" id="t-kousa">
+  <h2>📝 考査対策</h2>
+  <h3>長文</h3>
+  <div class="seg" id="k-L"><button data-v="all" class="on">全部</button><button data-v="1">長文1 服装</button><button data-v="2">長文2 リーダー</button></div>
+  <h3>種類</h3>
+  <div class="seg" id="k-cat"><button data-v="all" class="on">全部</button><button data-v="内">内容理解</button><button data-v="正">内容一致T/F</button><button data-v="文">文法・構文</button><button data-v="補">空所・並べ替え</button></div>
+  <button class="big" onclick="startKousa()">▶ スタート（シャッフル）</button>
+  <button class="sub" onclick="startKousa(true)">▶ 本文の順番どおりに出題</button>
+</section>
+
+<section class="tab" id="t-hon">
+  <h2>📄 本文と構成</h2>
+  <div class="seg" id="h-L"><button data-v="1" class="on">長文1 服装</button><button data-v="2">長文2 リーダー</button></div>
+  <div class="seg" id="h-view"><button data-v="flow" class="on">段落の要約</button><button data-v="text">本文＋和訳</button><button data-v="texte">本文のみ</button></div>
+  <div id="honBody"></div>
+</section>
+
+<section class="tab" id="t-nigate">
+  <h2>📊 苦手ランキング</h2>
+  <p class="note">×にした回数が多い順。このスマホのブラウザに記録されます。</p>
+  <button class="big" onclick="startNigate()">▶ 苦手な問題だけ出題</button>
+  <div id="rankList" style="margin-top:12px"></div>
+  <button class="sub" onclick="resetRank()">記録をリセット</button>
+</section>
+
+<section class="tab" id="t-print">
+  <h2>🖨 プリント作成</h2>
+  <h3>長文</h3>
+  <div class="seg" id="p-L"><button data-v="all" class="on">全部</button><button data-v="1">長文1 服装</button><button data-v="2">長文2 リーダー</button></div>
+  <h3>入れる問題</h3>
+  <label class="ck"><input type="checkbox" id="p-ej" checked> 英文 → 和訳</label>
+  <label class="ck"><input type="checkbox" id="p-je"> 和訳 → 英文</label>
+  <label class="ck"><input type="checkbox" id="p-em" checked> 語句：英語 → 意味</label>
+  <label class="ck"><input type="checkbox" id="p-me" checked> 語句：意味 → 英語</label>
+  <label class="ck"><input type="checkbox" id="p-nai"> 内容理解</label>
+  <label class="ck"><input type="checkbox" id="p-tf"> 内容一致（T/F）</label>
+  <label class="ck"><input type="checkbox" id="p-bun"> 文法・構文</label>
+  <label class="ck"><input type="checkbox" id="p-ho" checked> 空所補充</label>
+  <h3>問題数</h3>
+  <p><input type="number" id="p-num" value="30" min="5" max="200"> 問（足りない時はある分だけ）</p>
+  <button class="big" onclick="makePrint()">🖨 プリントを作って印刷</button>
+  <p class="note" style="margin-top:8px">iPhoneは印刷画面で「PDFとして保存」や共有も選べます。</p>
+</section>
+
+<section class="tab" id="quiz">
+  <div class="bar"><button onclick="quitQuiz()">✕ やめる</button><span id="qNo"></span><div class="prog"><i id="qBar"></i></div><button onclick="showWrongNow()">×一覧</button></div>
+  <div class="card">
+    <button class="tts" onclick="speak()">🔊</button>
+    <span class="tag" id="qTag"></span>
+    <div class="q" id="qText"></div>
+    <div id="qOrder"></div>
+    <div class="choices" id="qChoices"></div>
+    <div class="ans" id="qAns"></div>
+  </div>
+  <div id="qBtns"></div>
+</section>
+
+<nav>
+  <button class="on" data-t="t-bun"><b>🔤</b>英文</button>
+  <button data-t="t-goku"><b>📖</b>語句</button>
+  <button data-t="t-kousa"><b>📝</b>考査</button>
+  <button data-t="t-hon"><b>📄</b>本文</button>
+  <button data-t="t-nigate"><b>📊</b>苦手</button>
+  <button data-t="t-print"><b>🖨</b>印刷</button>
+</nav>
+
+<div class="modal" id="modal" onclick="if(event.target===this)this.style.display='none'"><div class="in" id="modalIn"></div></div>
+<div id="printArea"></div>
+
+<script>
+const SENTS=[{"L": 1, "p": 1, "c": [["Although his job title of 'clothes consultant'", "彼の「服装コンサルタント」という肩書きは"], ["doesn't sound very serious,", "あまりまじめなものに聞こえないが"], ["William Thourlby performs a valuable service", "ウィリアム・ソーリビーは価値のあるサービスを行っている"], ["for those who seek his advice.", "彼の助言を求める人々のために"]]}, {"L": 1, "p": 1, "c": [["His customers are men in the business world", "彼の顧客はビジネス界の男性たちだ"], ["who wonder why they are not socially successful", "自分がなぜ社会的に成功していないのか疑問に思っている"], ["or why they are not rising faster in their company.", "あるいはなぜ会社でもっと早く出世しないのか（疑問に思っている）"]]}, {"L": 1, "p": 1, "c": [["Suspecting they are somehow not making a good impression,", "自分がどういうわけか良い印象を与えていないのではないかと思って"], ["they ask Thourlby to examine them", "彼らはソーリビーに自分を診てくれるよう頼む"], ["and give his opinion.", "そして意見を言ってくれるよう（頼む）"]]}, {"L": 1, "p": 1, "c": [["If the man's problem is a matter of improper clothing,", "もしその人の問題が不適切な服装の問題なら"], ["it is promptly solved.", "それはすぐに解決される"]]}, {"L": 1, "p": 1, "c": [["Thourlby knows what to do.", "ソーリビーはどうすればよいかを知っている"]]}, {"L": 1, "p": 1, "c": [["He knows it so well", "彼はそれをとてもよく知っているので"], ["that he is often consulted by statesmen and politicians", "政治家たちからよく相談を受ける"], ["concerned with their public image;", "自分の世間でのイメージを気にしている"], ["and when the President wore a sweater", "そして大統領がセーターを着たとき"], ["for a television interview,", "テレビのインタビューで"], ["the White House asked Thourlby", "ホワイトハウスはソーリビーに尋ねた"], ["what he thought of this informal costume", "このくだけた服装をどう思うかと"], ["— he didn't like it.", "彼はそれを気に入らなかった"]]}, {"L": 1, "p": 2, "c": [["William Thourlby is surely familiar", "ウィリアム・ソーリビーはきっとよく知っている"], ["with all the old sayings such as 'Clothes do not make the man,'", "「服が人を作るのではない」といった昔からのことわざをすべて"], ["or 'You shouldn't judge a book by its cover.'", "あるいは「本を表紙で判断してはいけない」（といったことわざを）"]]}, {"L": 1, "p": 2, "c": [["However, his experience has led him", "しかし、彼の経験は彼に〜させた"], ["to doubt the truth of these well-known proverbs.", "これらのよく知られたことわざの正しさを疑うように"]]}, {"L": 1, "p": 2, "c": [["A former actor,", "元俳優である"], ["Thourlby had often observed the difference", "ソーリビーはその違いをしばしば目にしてきた"], ["that a costume could make in the appearance", "衣装が外見に生み出しうる（違いを）"], ["of the men and women acting with him in a play.", "劇で彼と共演する男女の"]]}, {"L": 1, "p": 2, "c": [["A man who had arrived at the studio", "スタジオにやって来た男性が"], ["looking ridiculous in ill-chosen clothes", "選び方の悪い服を着て、こっけいに見えていた"], ["would come out of the dressing room", "楽屋から出てくるのだった"], ["like a man of authority:", "権威ある人物のようになって"], ["a judge, a doctor, a learned scientist, the perfect lawyer.", "裁判官、医師、学識ある科学者、完璧な弁護士のように"]]}, {"L": 1, "p": 2, "c": [["Not only would he look different,", "彼は見た目が違うだけでなく"], ["but he would move and walk", "動いたり歩いたりもするのだった"], ["in a manner fitting the character.", "その役柄にふさわしいやり方で"]]}, {"L": 1, "p": 2, "c": [["Because of his clothes,", "服のおかげで"], ["he was dignified, elegant, or brilliant.", "彼は威厳があり、上品で、あるいは才気あふれていた"]]}, {"L": 1, "p": 2, "c": [["He felt different.", "彼は気持ちまで違っていた"]]}, {"L": 1, "p": 3, "c": [["Eventually, Thourlby decided to give up acting", "やがて、ソーリビーは俳優をやめることを決めた"], ["and to make a career of helping people dress right", "そして人々が正しい服装をする手助けを職業にすることを（決めた）"], ["for the part they wanted to play in real life.", "現実の生活で演じたいと思う役にふさわしく"]]}, {"L": 1, "p": 3, "c": [["The idea proved excellent.", "その考えはすばらしいものだとわかった"]]}, {"L": 1, "p": 3, "c": [["The 'clothes consultant,'", "その「服装コンサルタント」は"], ["who charges a considerable hourly rate,", "かなりの時間料金を請求するのだが"], ["is kept busy flying all over the country", "国中を飛び回って忙しくしている"], ["for consultations.", "相談のために"]]}, {"L": 1, "p": 3, "c": [["His customers seem to feel", "彼の顧客たちは感じているようだ"], ["he deserves his fee.", "彼はその料金に値すると"]]}, {"L": 2, "p": 1, "c": [["What are the qualities of good leaders?", "よいリーダーの資質とは何だろうか"]]}, {"L": 2, "p": 1, "c": [["What makes them successful?", "何が彼らを成功させるのだろうか"]]}, {"L": 2, "p": 1, "c": [["Think of some of the greatest leaders of all time.", "史上最も偉大なリーダーたちの何人かを考えてみよう"]]}, {"L": 2, "p": 1, "c": [["What allows them to stand out from others?", "何が彼らを他の人より際立たせているのだろうか"]]}, {"L": 2, "p": 1, "c": [["Words such as \"heroic,\" \"inspiring,\" and \"flexible\"", "「英雄的な」「人を奮い立たせる」「柔軟な」といった言葉が"], ["come to mind.", "頭に浮かぶ"]]}, {"L": 2, "p": 1, "c": [["These are all leadership qualities,", "これらはすべてリーダーの資質だ"], ["but what really makes for a strong and successful leader?", "しかし、強く成功したリーダーを本当に生み出すものは何だろうか"]]}, {"L": 2, "p": 2, "c": [["Successful leaders are able to influence others.", "成功するリーダーは他の人に影響を与えることができる"]]}, {"L": 2, "p": 2, "c": [["They are able to manage relationships with others", "彼らは他の人との関係をうまく扱うことができる"], ["to create positive results.", "良い結果を生み出すために"]]}, {"L": 2, "p": 2, "c": [["Winston Churchill is thought by many", "ウィンストン・チャーチルは多くの人に考えられている"], ["to be one of the greatest leaders in history.", "歴史上最も偉大なリーダーの一人だと"]]}, {"L": 2, "p": 2, "c": [["He was a talented speaker and lawmaker,", "彼は才能ある演説家であり、立法者だった"], ["but what made Churchill a great leader", "しかし、チャーチルを偉大なリーダーにしたものは"], ["was his ability to influence and strengthen the will of his people", "国民の意志に影響を与え、それを強める彼の能力だった"], ["through his words and policies.", "彼の言葉と政策を通して"]]}, {"L": 2, "p": 3, "c": [["Successful leaders have a fixed and unchanging purpose", "成功するリーダーは、定まって変わらない目的をもっている"], ["that keeps them focused on a certain goal or objective", "それが彼らをある目標や目的に集中させておく"], ["in spite of problems or difficult conditions.", "問題や困難な状況にもかかわらず"]]}, {"L": 2, "p": 3, "c": [["Despite hardships,", "困難にもかかわらず"], ["they keep their original, clearly defined goals in mind.", "彼らは当初の、はっきりと定めた目標を心にとどめておく"]]}, {"L": 2, "p": 4, "c": [["Successful leaders not only have a fixed, long-term perspective on goals;", "成功するリーダーは、目標について定まった長期的な見方をもっているだけでなく"], ["they also have new and flexible ways of achieving those goals.", "それらの目標を達成する新しく柔軟な方法ももっている"]]}, {"L": 2, "p": 4, "c": [["They are flexible in their approach", "彼らはやり方において柔軟であり"], ["and are prepared to make corrections and improvements along the way:", "途中で修正や改善をする用意ができている"], ["leaders \"bend but don't break.\"", "リーダーは「曲がるが折れない」のだ"]]}, {"L": 2, "p": 4, "c": [["Churchill allowed his belief in democracy and freedom", "チャーチルは民主主義と自由への信念に〜させた"], ["to direct his wartime thinking and policies.", "戦時中の自分の考え方と政策を方向づけることを"]]}, {"L": 2, "p": 4, "c": [["However, it was not only his policies,", "しかし、彼の政策だけでなく"], ["but also his flexibility", "彼の柔軟性も"], ["that allowed him to carry out those policies,", "それらの政策を実行することを可能にした（柔軟性）"], ["that made him a successful leader.", "彼を成功したリーダーにしたのだった"]]}, {"L": 2, "p": 5, "c": [["Finally, leadership such as that demonstrated by Churchill", "最後に、チャーチルによって示されたようなリーダーシップは"], ["is about inspiring others to do the right thing.", "他の人を奮い立たせて正しいことをさせることなのだ"]]}, {"L": 2, "p": 5, "c": [["Good leaders are not only able to inspire those around them", "よいリーダーは、周りの人々を奮い立たせることができるだけでなく"], ["to do their best to fulfill the group mission.", "集団の使命を果たすために最善を尽くすように"]]}, {"L": 2, "p": 5, "c": [["They are also able to inspire those around them", "彼らはまた、周りの人々を奮い立たせることもできる"], ["to achieve desired results", "望ましい結果を達成するように"], ["without compromising their moral standards.", "自分たちの道徳的な基準を曲げることなく"]]}, {"L": 2, "p": 5, "c": [["As business expert Peter F. Drucker said:", "経営学者のピーター・F・ドラッカーが言ったように"], ["\"Management is doing things right;", "「マネジメントとは物事を正しく行うことであり"], ["leadership is doing the right things.\"", "リーダーシップとは正しいことを行うことである」"]]}];
+const LNAME={1:"服装コンサルタント",2:"リーダーの資質"};
+const VOCAB=[
+// 長文1
+{w:"job title",m:"肩書き、職名",L:1,p:1},
+{w:"consultant",m:"コンサルタント、相談役",L:1,p:1},
+{w:"serious",m:"まじめな、重大な",L:1,p:1},
+{w:"perform",m:"〜を行う",L:1,p:1},
+{w:"valuable",m:"価値のある、貴重な",L:1,p:1},
+{w:"those who ~",m:"〜する人々",L:1,p:1},
+{w:"seek",m:"〜を求める",L:1,p:1},
+{w:"advice",m:"助言、アドバイス",L:1,p:1},
+{w:"customer",m:"顧客、客",L:1,p:1},
+{w:"wonder why ~",m:"なぜ〜なのかと思う",L:1,p:1},
+{w:"socially",m:"社会的に",L:1,p:1},
+{w:"rise",m:"出世する、昇進する",L:1,p:1},
+{w:"suspect (that) ~",m:"〜ではないかと思う（疑う）",L:1,p:1},
+{w:"somehow",m:"どういうわけか",L:1,p:1},
+{w:"make a good impression",m:"良い印象を与える",L:1,p:1},
+{w:"examine",m:"〜を調べる、診る",L:1,p:1},
+{w:"opinion",m:"意見",L:1,p:1},
+{w:"a matter of ~",m:"〜の問題",L:1,p:1},
+{w:"improper",m:"不適切な",L:1,p:1},
+{w:"promptly",m:"すぐに、迅速に",L:1,p:1},
+{w:"solve",m:"〜を解決する",L:1,p:1},
+{w:"consult",m:"〜に相談する",L:1,p:1},
+{w:"statesman",m:"（りっぱな）政治家",L:1,p:1},
+{w:"politician",m:"政治家",L:1,p:1},
+{w:"be concerned with ~",m:"〜に関心がある、〜を気にする",L:1,p:1},
+{w:"public image",m:"世間でのイメージ",L:1,p:1},
+{w:"interview",m:"インタビュー",L:1,p:1},
+{w:"informal",m:"くだけた、略式の",L:1,p:1},
+{w:"costume",m:"衣装、服装",L:1,p:1},
+{w:"be familiar with ~",m:"〜をよく知っている、〜に精通している",L:1,p:2},
+{w:"be familiar to ~",m:"〜によく知られている",L:1,p:2},
+{w:"saying",m:"ことわざ、格言",L:1,p:2},
+{w:"judge A by B",m:"AをBで判断する",L:1,p:2},
+{w:"cover",m:"表紙",L:1,p:2},
+{w:"lead O to do",m:"Oに〜させる（Oを〜するように導く）",L:1,p:2},
+{w:"doubt",m:"〜を疑う",L:1,p:2},
+{w:"truth",m:"真実、正しさ",L:1,p:2},
+{w:"proverb",m:"ことわざ",L:1,p:2},
+{w:"former",m:"かつての、元の",L:1,p:2},
+{w:"observe",m:"〜を目にする、観察する",L:1,p:2},
+{w:"make a difference",m:"違いを生む",L:1,p:2},
+{w:"appearance",m:"外見、見た目",L:1,p:2},
+{w:"ridiculous",m:"ばかげた、こっけいな",L:1,p:2},
+{w:"ill-chosen",m:"選び方の悪い、不適切な",L:1,p:2},
+{w:"dressing room",m:"楽屋、更衣室",L:1,p:2},
+{w:"authority",m:"権威",L:1,p:2},
+{w:"judge",m:"裁判官",L:1,p:2},
+{w:"learned",m:"学識のある",L:1,p:2},
+{w:"lawyer",m:"弁護士",L:1,p:2},
+{w:"manner",m:"やり方、態度",L:1,p:2},
+{w:"fitting",m:"ふさわしい、似合った",L:1,p:2},
+{w:"character",m:"役柄、登場人物",L:1,p:2},
+{w:"dignified",m:"威厳のある",L:1,p:2},
+{w:"elegant",m:"上品な、優雅な",L:1,p:2},
+{w:"brilliant",m:"才気あふれる、すばらしい",L:1,p:2},
+{w:"eventually",m:"やがて、最終的に",L:1,p:3},
+{w:"give up doing",m:"〜することをやめる、あきらめる",L:1,p:3},
+{w:"make a career of ~",m:"〜を職業にする",L:1,p:3},
+{w:"dress right",m:"正しい（ふさわしい）服装をする",L:1,p:3},
+{w:"part",m:"役",L:1,p:3},
+{w:"in real life",m:"現実の生活で",L:1,p:3},
+{w:"prove C",m:"Cだとわかる、判明する",L:1,p:3},
+{w:"charge",m:"（料金）を請求する",L:1,p:3},
+{w:"considerable",m:"かなりの",L:1,p:3},
+{w:"hourly rate",m:"時間料金、時給",L:1,p:3},
+{w:"be kept busy doing",m:"〜して忙しくしている",L:1,p:3},
+{w:"consultation",m:"相談",L:1,p:3},
+{w:"deserve",m:"〜に値する",L:1,p:3},
+{w:"fee",m:"料金、報酬",L:1,p:3},
+// 長文2
+{w:"quality",m:"資質、特質",L:2,p:1},
+{w:"of all time",m:"史上、古今を通じて",L:2,p:1},
+{w:"allow A to do",m:"Aが〜するのを可能にする（許す）",L:2,p:1},
+{w:"stand out",m:"目立つ、際立つ",L:2,p:1},
+{w:"heroic",m:"英雄的な",L:2,p:1},
+{w:"inspiring",m:"人を奮い立たせる、感動させる",L:2,p:1},
+{w:"flexible",m:"柔軟な",L:2,p:1},
+{w:"come to mind",m:"頭に浮かぶ",L:2,p:1},
+{w:"make for ~",m:"〜を生み出す、〜に役立つ",L:2,p:1},
+{w:"influence",m:"〜に影響を与える",L:2,p:2},
+{w:"manage",m:"〜をうまく扱う、管理する",L:2,p:2},
+{w:"relationship",m:"関係",L:2,p:2},
+{w:"positive",m:"良い、前向きな",L:2,p:2},
+{w:"result",m:"結果",L:2,p:2},
+{w:"be thought to be ~",m:"〜だと考えられている",L:2,p:2},
+{w:"talented",m:"才能のある",L:2,p:2},
+{w:"lawmaker",m:"立法者、国会議員",L:2,p:2},
+{w:"ability",m:"能力",L:2,p:2},
+{w:"strengthen",m:"〜を強める",L:2,p:2},
+{w:"will",m:"意志",L:2,p:2},
+{w:"policy",m:"政策",L:2,p:2},
+{w:"fixed",m:"定まった、固定された",L:2,p:3},
+{w:"unchanging",m:"変わらない",L:2,p:3},
+{w:"purpose",m:"目的",L:2,p:3},
+{w:"keep A C",m:"AをCの状態に保つ",L:2,p:3},
+{w:"be focused on ~",m:"〜に集中している",L:2,p:3},
+{w:"objective",m:"目的、目標",L:2,p:3},
+{w:"in spite of ~",m:"〜にもかかわらず",L:2,p:3},
+{w:"condition",m:"状況、条件",L:2,p:3},
+{w:"despite ~",m:"〜にもかかわらず",L:2,p:3},
+{w:"hardship",m:"苦難、困難",L:2,p:3},
+{w:"original",m:"もとの、当初の",L:2,p:3},
+{w:"clearly defined",m:"はっきりと定められた",L:2,p:3},
+{w:"keep A in mind",m:"Aを心にとどめておく",L:2,p:3},
+{w:"long-term",m:"長期的な",L:2,p:4},
+{w:"perspective",m:"見方、観点",L:2,p:4},
+{w:"achieve",m:"〜を達成する",L:2,p:4},
+{w:"approach",m:"やり方、取り組み方",L:2,p:4},
+{w:"be prepared to do",m:"〜する用意（覚悟）ができている",L:2,p:4},
+{w:"correction",m:"修正",L:2,p:4},
+{w:"improvement",m:"改善",L:2,p:4},
+{w:"along the way",m:"途中で",L:2,p:4},
+{w:"bend",m:"曲がる",L:2,p:4},
+{w:"belief in ~",m:"〜への信念",L:2,p:4},
+{w:"democracy",m:"民主主義",L:2,p:4},
+{w:"direct",m:"〜を方向づける、導く",L:2,p:4},
+{w:"wartime",m:"戦時中の",L:2,p:4},
+{w:"flexibility",m:"柔軟性",L:2,p:4},
+{w:"carry out",m:"〜を実行する",L:2,p:4},
+{w:"demonstrate",m:"〜を示す",L:2,p:5},
+{w:"inspire A to do",m:"Aを奮い立たせて〜させる",L:2,p:5},
+{w:"do one's best",m:"最善を尽くす",L:2,p:5},
+{w:"fulfill",m:"〜を果たす",L:2,p:5},
+{w:"mission",m:"使命",L:2,p:5},
+{w:"desired",m:"望ましい、望んだ",L:2,p:5},
+{w:"compromise",m:"〜を曲げる、損なう",L:2,p:5},
+{w:"moral",m:"道徳的な",L:2,p:5},
+{w:"standard",m:"基準",L:2,p:5},
+{w:"expert",m:"専門家",L:2,p:5},
+{w:"management",m:"マネジメント、経営",L:2,p:5}
+];
+
+// c: 内=内容理解 正=内容一致（T/F） 文=文法・構文 補=空所補充・語形
+const KOUSA=[
+// ===== 長文1 内容
+{L:1,p:1,c:"内",q:"ソーリビーの肩書きは何か。",a:"服装コンサルタント（clothes consultant）"},
+{L:1,p:1,c:"内",q:"ソーリビーの顧客は、どのような人たちか。",a:"自分がなぜ社会的に成功していないのか、なぜ会社でもっと早く出世しないのかと疑問に思っている、ビジネス界の男性たち。"},
+{L:1,p:1,c:"内",q:"顧客たちがソーリビーに相談に来るのは、自分のことをどう思っているからか。",a:"自分がどういうわけか良い印象を与えていないのではないかと思っているから。"},
+{L:1,p:1,c:"内",q:"顧客の問題が不適切な服装によるものだった場合、どうなるか。",a:"すぐに解決される。"},
+{L:1,p:1,c:"内",q:"ソーリビーによく相談するのは、顧客のほかにどのような人々か。",a:"世間でのイメージを気にしている政治家たち。"},
+{L:1,p:1,c:"内",q:"ホワイトハウスがソーリビーに意見を求めたのは、どのような出来事についてか。また、彼の意見はどうだったか。",a:"大統領がテレビのインタビューでセーターを着たこと。ソーリビーはそのくだけた服装を気に入らなかった。"},
+{L:1,p:2,c:"内",q:"ソーリビーがよく知っている2つのことわざを英語で答えよ。",a:"Clothes do not make the man.／You shouldn't judge a book by its cover."},
+{L:1,p:2,c:"内",q:"ソーリビーは、自分の経験から、そのことわざについてどう考えるようになったか。",a:"そのことわざが正しいかどうかを疑うようになった。（服装は人を変えると考えている）"},
+{L:1,p:2,c:"内",q:"ソーリビーの以前の職業は何か。",a:"俳優"},
+{L:1,p:2,c:"内",q:"俳優時代のソーリビーは、何をよく目にしていたか。",a:"衣装が、劇で共演する男女の外見にもたらす違い。"},
+{L:1,p:2,c:"内",q:"選び方の悪い服でスタジオに来た男性は、楽屋から出てくるとどうなっていたか。",a:"裁判官、医師、学識ある科学者、完璧な弁護士のような、権威ある人物のようになっていた。"},
+{L:1,p:2,c:"内",q:"衣装を着た男性は、見た目のほかに何が変わったか（2つ）。",a:"①役柄にふさわしいやり方で動いたり歩いたりするようになった。②気持ちまで変わった（He felt different.）。"},
+{L:1,p:3,c:"内",q:"ソーリビーは、俳優をやめて何を職業にしたか。",a:"人々が、現実の生活で演じたい役にふさわしい服装をする手助けをすること。"},
+{L:1,p:3,c:"内",q:"「服装コンサルタント」としてのソーリビーの今の様子を答えよ。",a:"かなりの時間料金を請求しているが、相談のために国中を飛び回って忙しくしている。"},
+{L:1,p:3,c:"内",q:"顧客たちは、ソーリビーの料金についてどう感じているか。",a:"その料金に見合う（値する）価値があると感じている。"},
+// 長文1 正誤
+{L:1,p:1,c:"正",q:"Thourlby's job title sounds very serious.",a:"F（×）",pt:"doesn't sound very serious（あまりまじめに聞こえない）とある。"},
+{L:1,p:1,c:"正",q:"Thourlby's customers are worried that they are not making a good impression.",a:"T（○）"},
+{L:1,p:1,c:"正",q:"The White House liked the sweater the President wore in a TV interview.",a:"F（×）",pt:"ホワイトハウスがソーリビーに意見を聞き、ソーリビーは気に入らなかった、とある。"},
+{L:1,p:2,c:"正",q:"Thourlby believes that you should never judge people by their clothes.",a:"F（×）",pt:"経験から、そのことわざの正しさを疑うようになった。"},
+{L:1,p:2,c:"正",q:"Thourlby used to be an actor.",a:"T（○）",pt:"A former actor とある。"},
+{L:1,p:2,c:"正",q:"Actors changed only their appearance when they wore the right costume.",a:"F（×）",pt:"動き方や歩き方、気持ちまで変わった。"},
+{L:1,p:3,c:"正",q:"Thourlby's service is cheap, so many people use it.",a:"F（×）",pt:"かなりの時間料金を請求する（charges a considerable hourly rate）。"},
+{L:1,p:3,c:"正",q:"Thourlby is very busy traveling around the country.",a:"T（○）"},
+// 長文1 文法
+{L:1,p:1,c:"文",q:"for those who seek his advice の those の意味は？",a:"人々（＝the people）",pt:"those who ~「〜する人々」。those present「出席者」、those concerned「関係者」も覚えておこう。"},
+{L:1,p:1,c:"文",q:"Although his job title ... doesn't sound very serious, の although の意味は？",a:"〜だけれども（譲歩）"},
+{L:1,p:1,c:"文",q:"who wonder why they are not socially successful の why 以下は何という構造か。",a:"間接疑問（疑問詞＋主語＋動詞の語順）"},
+{L:1,p:1,c:"文",q:"Suspecting they are somehow not making a good impression, の Suspecting は何という構文か。訳も答えよ。",a:"分詞構文。「〜ではないかと思って（思うので）」"},
+{L:1,p:1,c:"文",q:"they ask Thourlby to examine them の構文は？",a:"ask O to do「Oに〜するよう頼む」"},
+{L:1,p:1,c:"文",q:"Thourlby knows what to do. の what to do の意味は？",a:"何をすべきか（どうすればよいか）",pt:"疑問詞＋to不定詞：how to do, where to go なども同じ。"},
+{L:1,p:1,c:"文",q:"He knows it so well that he is often consulted by ... の構文と意味は？",a:"so ... that ~「とても…なので〜」（結果）"},
+{L:1,p:1,c:"文",q:"he is often consulted by statesmen and politicians の態は？",a:"受動態（政治家たちから相談を受ける）"},
+{L:1,p:1,c:"文",q:"statesmen and politicians concerned with their public image の concerned は何の働きか。",a:"過去分詞で statesmen and politicians を後ろから修飾（世間でのイメージを気にしている政治家）"},
+{L:1,p:1,c:"文",q:"the White House asked Thourlby what he thought of this informal costume の what 以下の語順に注意。疑問文に戻すと？",a:"What did he think of this informal costume?",pt:"間接疑問になると、平叙文の語順（主語＋動詞）になる。"},
+{L:1,p:2,c:"文",q:"William Thourlby is surely familiar with ... の be familiar with と、be familiar to の違いは？",a:"be familiar with A＝Aをよく知っている（人が主語）。be familiar to A＝Aによく知られている（物が主語）。"},
+{L:1,p:2,c:"文",q:"his experience has led him to doubt the truth の構文は？自然な日本語にせよ。",a:"lead O to do「Oに〜させる」。→経験から、彼はこれらのことわざの正しさを疑うようになった。",pt:"無生物主語の構文。「〜によって（〜から）…するようになった」と訳すと自然。"},
+{L:1,p:2,c:"文",q:"A former actor, Thourlby had often observed ... の A former actor と Thourlby の関係は？",a:"同格（「元俳優である」ソーリビー）",pt:"文頭の名詞句が主語を説明している。"},
+{L:1,p:2,c:"文",q:"the difference that a costume could make in the appearance の that の働きは？",a:"関係代名詞（目的格）。先行詞は the difference。make a difference「違いを生む」の difference が前に出た形。"},
+{L:1,p:2,c:"文",q:"A man ... would come out of the dressing room の would の意味は？",a:"過去の習慣「（よく）〜したものだった」"},
+{L:1,p:2,c:"文",q:"looking ridiculous in ill-chosen clothes の looking は何の働きか。",a:"分詞構文（付帯状況）「こっけいに見えながら（見える様子で）」"},
+{L:1,p:2,c:"文",q:"Not only would he look different, but he would move ... の語順が would he になっているのはなぜか。",a:"否定語 Not only が文頭に来たため、倒置（疑問文と同じ語順）が起きている。",pt:"Not only does he say ... but also he does ... も同じ形。"},
+{L:1,p:2,c:"文",q:"in a manner fitting the character の fitting の働きは？",a:"現在分詞で a manner を後ろから修飾（役柄にふさわしいやり方）"},
+{L:1,p:3,c:"文",q:"Thourlby decided to give up acting の give up の後ろの形に注意。acting は何か。",a:"動名詞（give up doing「〜することをやめる」）"},
+{L:1,p:3,c:"文",q:"helping people dress right の構文は？",a:"help O do「Oが〜するのを手伝う」（原形不定詞）"},
+{L:1,p:3,c:"文",q:"the part they wanted to play の they の前に省略されている語は？",a:"関係代名詞 that（which）",pt:"目的格の関係代名詞は省略できる。"},
+{L:1,p:3,c:"文",q:"The idea proved excellent. の prove の意味は？",a:"〜だとわかる、判明する（＝turn out）"},
+{L:1,p:3,c:"文",q:"The 'clothes consultant,' who charges ... の who の用法は？",a:"関係代名詞の非制限用法（補足説明）"},
+{L:1,p:3,c:"文",q:"is kept busy flying all over the country の構文は？",a:"keep O C（busy）の受動態＋busy doing「〜して忙しい」"},
+// 長文1 補充
+{L:1,p:1,c:"補",q:"（　）に入る語は？\nWilliam Thourlby performs a valuable service for (　　) who seek his advice.",a:"those"},
+{L:1,p:1,c:"補",q:"（　）に入る語は？\nHe knows it (　　) well that he is often consulted by statesmen.",a:"so"},
+{L:1,p:1,c:"補",q:"正しく並べ替えよ。\nthe White House asked Thourlby (thought / he / what / of) this informal costume.",a:"what he thought of"},
+{L:1,p:2,c:"補",q:"（　）に入る語は？\nWilliam Thourlby is surely familiar (　　) all the old sayings.",a:"with"},
+{L:1,p:2,c:"補",q:"正しく並べ替えよ。\nhis experience has (him / doubt / led / to) the truth of these proverbs.",a:"led him to doubt"},
+{L:1,p:2,c:"補",q:"（　）に入る語は？\nNot only (　　) he look different, but he would move in a manner fitting the character.",a:"would"},
+{L:1,p:3,c:"補",q:"（　）に入る語は？\nThourlby decided to give up (　　)(act).",a:"acting"},
+{L:1,p:3,c:"補",q:"（　）に入る語は？\nThe idea (　　) excellent.（〜だとわかった）",a:"proved"},
+{L:1,p:3,c:"補",q:"（　）に入る語は？\nHis customers seem to feel he (　　) his fee.（〜に値する）",a:"deserves"},
+// ===== 長文2 内容
+{L:2,p:1,c:"内",q:"偉大なリーダーを思い浮かべたとき、頭に浮かぶ言葉として挙げられている3つの語を英語で答えよ。",a:"heroic, inspiring, flexible"},
+{L:2,p:2,c:"内",q:"成功するリーダーは、何のために他の人との関係をうまく扱うのか。",a:"良い結果を生み出すため。"},
+{L:2,p:2,c:"内",q:"チャーチルは多くの人にどう考えられているか。",a:"歴史上最も偉大なリーダーの一人だと考えられている。"},
+{L:2,p:2,c:"内",q:"チャーチルを偉大なリーダーにしたものは何か。",a:"言葉と政策を通して、国民の意志に影響を与え、それを強める能力。"},
+{L:2,p:3,c:"内",q:"成功するリーダーがもっている「定まって変わらない目的」は、彼らをどのような状態にしておくか。",a:"問題や困難な状況にもかかわらず、ある目標や目的に集中させておく。"},
+{L:2,p:3,c:"内",q:"成功するリーダーは、困難の中でも何を心にとどめておくか。",a:"当初の、はっきりと定めた目標。"},
+{L:2,p:4,c:"内",q:"成功するリーダーが、長期的な目標のほかにもっているものは何か。",a:"目標を達成するための、新しく柔軟な方法。"},
+{L:2,p:4,c:"内",q:"「曲がるが折れない（bend but don't break）」とは、リーダーのどのような姿勢を表しているか。",a:"やり方は柔軟に修正・改善するが、目標そのものは変えない（あきらめない）姿勢。"},
+{L:2,p:4,c:"内",q:"チャーチルの戦時中の考え方と政策を方向づけたものは何か。",a:"民主主義と自由への信念。"},
+{L:2,p:4,c:"内",q:"チャーチルを成功したリーダーにしたものは何か（2つ）。",a:"①彼の政策　②その政策を実行することを可能にした彼の柔軟性"},
+{L:2,p:5,c:"内",q:"チャーチルが示したようなリーダーシップとは、どのようなことか。",a:"他の人を奮い立たせて、正しいことをさせること。"},
+{L:2,p:5,c:"内",q:"よいリーダーが周りの人々を奮い立たせてさせることを2つ答えよ。",a:"①集団の使命を果たすために最善を尽くすこと　②道徳的な基準を曲げずに望ましい結果を達成すること"},
+{L:2,p:5,c:"内",q:"ドラッカーの言葉で、「マネジメント」と「リーダーシップ」の違いを説明せよ。",a:"マネジメントは物事を正しく行うこと（doing things right）、リーダーシップは正しいことを行うこと（doing the right things）。"},
+// 長文2 正誤
+{L:2,p:2,c:"正",q:"Churchill was a great leader only because he was a talented speaker.",a:"F（×）",pt:"国民の意志に影響を与え強める能力が、彼を偉大なリーダーにした。"},
+{L:2,p:3,c:"正",q:"Successful leaders change their goals when they face difficult conditions.",a:"F（×）",pt:"困難にもかかわらず、当初の目標を心にとどめておく。"},
+{L:2,p:4,c:"正",q:"Successful leaders are ready to correct and improve their ways of reaching goals.",a:"T（○）"},
+{L:2,p:4,c:"正",q:"Churchill's flexibility helped him carry out his policies.",a:"T（○）"},
+{L:2,p:5,c:"正",q:"Good leaders sometimes give up their moral standards to get good results.",a:"F（×）",pt:"without compromising their moral standards（道徳的基準を曲げずに）とある。"},
+{L:2,p:5,c:"正",q:"According to Drucker, leadership is doing the right things.",a:"T（○）"},
+// 長文2 文法
+{L:2,p:1,c:"文",q:"What makes them successful? の構文は？",a:"make O C「OをCにする」（何が彼らを成功させるのか）"},
+{L:2,p:1,c:"文",q:"What allows them to stand out from others? の allow A to do の意味は？",a:"Aが〜するのを可能にする（許す）。→何が彼らを他の人より際立たせているのか。",pt:"allow A to do＝enable A to do／let A do"},
+{L:2,p:1,c:"文",q:"what really makes for a strong and successful leader? の make for の意味は？",a:"〜を生み出す、〜に役立つ"},
+{L:2,p:2,c:"文",q:"They are able to manage relationships with others to create positive results. の to create は何用法か。",a:"不定詞の副詞的用法（目的）「良い結果を生み出すために」"},
+{L:2,p:2,c:"文",q:"Winston Churchill is thought by many to be one of the greatest leaders の構文は？",a:"be thought to be ~「〜だと考えられている」",pt:"＝It is thought by many that Churchill is one of the greatest leaders."},
+{L:2,p:2,c:"文",q:"what made Churchill a great leader was his ability ... の主語と構文は？",a:"主語は what made Churchill a great leader（関係代名詞 what の節）。make O C「OをCにする」。"},
+{L:2,p:2,c:"文",q:"his ability to influence and strengthen the will の to influence は何用法か。",a:"不定詞の形容詞的用法（ability を修飾）"},
+{L:2,p:3,c:"文",q:"a fixed and unchanging purpose that keeps them focused on a certain goal の構文は？",a:"that は主格の関係代名詞（先行詞 purpose）。keep O C（focused on ~）「Oを〜に集中した状態に保つ」。"},
+{L:2,p:3,c:"文",q:"in spite of と同じ意味で、第3段落に出てくる1語は？",a:"despite"},
+{L:2,p:3,c:"文",q:"they keep their original, clearly defined goals in mind の構文と意味は？",a:"keep A in mind「Aを心にとどめておく」"},
+{L:2,p:4,c:"文",q:"Successful leaders not only have ...; they also have ... の構文は？",a:"not only A but also B（AだけでなくBも）の but が省略され、セミコロンで2つの文がつながった形。"},
+{L:2,p:4,c:"文",q:"are prepared to make corrections の be prepared to do の意味は？",a:"〜する用意（覚悟）ができている"},
+{L:2,p:4,c:"文",q:"Churchill allowed his belief in democracy and freedom to direct his wartime thinking の構文は？",a:"allow A to do「Aが〜するのを許す（させておく）」。→チャーチルは、民主主義と自由への信念に戦時の考え方を方向づけさせた。"},
+{L:2,p:4,c:"文",q:"it was not only his policies, but also his flexibility ..., that made him a successful leader. の構文は？",a:"強調構文 It was ～ that ...（…したのは～だった）。強調されているのは not only his policies, but also his flexibility。"},
+{L:2,p:4,c:"文",q:"his flexibility that allowed him to carry out those policies の that の働きは？",a:"主格の関係代名詞（先行詞 his flexibility）",pt:"文の最後の that（that made him ...）は強調構文の that。区別しよう。"},
+{L:2,p:5,c:"文",q:"leadership such as that demonstrated by Churchill の that は何を指すか。",a:"leadership",pt:"that＝the＋単数名詞（名詞のくり返しを避ける）。demonstrated は過去分詞で that を修飾。"},
+{L:2,p:5,c:"文",q:"inspiring others to do the right thing の inspire A to do の意味は？",a:"Aを奮い立たせて〜させる"},
+{L:2,p:5,c:"文",q:"without compromising their moral standards の without doing の意味は？",a:"〜することなく（＝道徳的な基準を曲げることなく）"},
+{L:2,p:5,c:"文",q:"Management is doing things right; leadership is doing the right things. の doing は何か。",a:"動名詞（補語）「〜すること」"},
+// 長文2 補充
+{L:2,p:1,c:"補",q:"（　）に入る語は？\nWhat allows them to (　　) out from others?",a:"stand"},
+{L:2,p:1,c:"補",q:"（　）に入る語は？\nWords such as \"heroic\" and \"flexible\" (　　) to mind.",a:"come"},
+{L:2,p:2,c:"補",q:"（　）に入る語は？\nWinston Churchill is (　　) by many to be one of the greatest leaders in history.",a:"thought"},
+{L:2,p:3,c:"補",q:"正しく並べ替えよ。\na fixed and unchanging purpose (them / keeps / on / that / focused) a certain goal",a:"that keeps them focused on"},
+{L:2,p:3,c:"補",q:"（　）に入る語は？\nDespite hardships, they (　　) their original goals in mind.",a:"keep"},
+{L:2,p:4,c:"補",q:"（　）に入る語は？\nThey are prepared to make corrections and improvements (　　) the way.",a:"along"},
+{L:2,p:4,c:"補",q:"（　）に入る語は？\nit was not only his policies, but also his flexibility (　　) made him a successful leader.",a:"that"},
+{L:2,p:5,c:"補",q:"（　）に入る語は？\nleadership such as (　　) demonstrated by Churchill",a:"that"},
+{L:2,p:5,c:"補",q:"（　）に入る語は？\nGood leaders inspire those around them to (　　) their best.",a:"do"},
+{L:2,p:5,c:"補",q:"（　）に入る語句は？\n\"Management is doing things right; leadership is (　　)(　　)(　　)(　　).\"",a:"doing the right things"}
+];
+
+const FLOW={
+1:{title:"長文1　服装コンサルタント（William Thourlby）",paras:[
+ ["第1段落","ソーリビーは「服装コンサルタント」。顧客は、なぜ社会的に成功しないのか・出世しないのかと悩むビジネスマンで、良い印象を与えていないのではと考えて相談に来る。服装の問題ならすぐに解決する。政治家やホワイトハウスからも相談を受けている。"],
+ ["第2段落","「服が人を作るのではない」「本を表紙で判断するな」ということわざがあるが、ソーリビーは経験からその正しさを疑っている。元俳優の彼は、衣装によって共演者の外見・動き・気持ちまでが変わるのを目にしてきた。"],
+ ["第3段落","やがて彼は俳優をやめ、現実の生活で演じたい役にふさわしい服装をする手助けを職業にした。料金は高いが国中を飛び回るほど忙しく、顧客はその料金に値すると感じている。"]
+]},
+2:{title:"長文2　リーダーの資質（Churchill / Drucker）",paras:[
+ ["第1段落（問題提起）","よいリーダーの資質とは何か。heroic, inspiring, flexible といった言葉が浮かぶが、強く成功したリーダーを本当に生み出すものは何だろうか。"],
+ ["第2段落（①影響力）","成功するリーダーは他者に影響を与え、関係をうまく扱って良い結果を生む。チャーチルは言葉と政策で国民の意志を強めたことで偉大なリーダーとなった。"],
+ ["第3段落（②変わらない目的）","成功するリーダーは、困難にもかかわらず目標に集中させる、定まって変わらない目的をもち、当初の目標を心にとどめておく。"],
+ ["第4段落（③柔軟性）","目標は変えないが、達成の方法は柔軟で、途中で修正・改善する（bend but don't break）。チャーチルを成功させたのは政策だけでなく、それを実行する柔軟性だった。"],
+ ["第5段落（④正しいことへ導く）","リーダーシップとは、人々を奮い立たせて正しいことをさせること。道徳的基準を曲げずに望ましい結果へ導く。ドラッカー「マネジメントは物事を正しく行うこと、リーダーシップは正しいことを行うこと」。"]
+]}
+};
+
+
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const inL=(L,v)=>v==='all'||String(L)===v;
+SENTS.forEach((s,i)=>{s.i=i;s.en=s.c.map(x=>x[0]).join(' ');s.ja=s.c.map(x=>x[1]).join(' / ')});
+// 段落ごとの文番号
+(function(){const k={};SENTS.forEach(s=>{const key=s.L+'-'+s.p;k[key]=(k[key]||0)+1;s.n=k[key]})})();
+
+const opt={};
+document.querySelectorAll('.seg').forEach(g=>{opt[g.id]=g.querySelector('.on').dataset.v;
+ g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');opt[g.id]=b.dataset.v;if(g.id.startsWith('h-'))drawHon();})});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+function showTab(id){$('#quiz').style.display='';document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#'+id).classList.add('show');
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===id));if(id==='t-nigate')drawRank();if(id==='t-hon')drawHon();window.scrollTo(0,0)}
+
+let REC={};try{REC=JSON.parse(localStorage.getItem('ronri_choubun2_rec')||'{}')}catch(e){}
+function saveRec(){try{localStorage.setItem('ronri_choubun2_rec',JSON.stringify(REC))}catch(e){}}
+
+// ===== 問題オブジェクト =====
+const tagS=s=>LNAME[s.L]+' 第'+s.p+'段落 '+s.n+'文目';
+function sentItem(s,mode){
+ const id='s'+mode+':'+s.i;
+ if(mode==='ej')return{id,kind:'s',mode,s,tag:'英 → 和（'+tagS(s)+'）',q:s.c.map(x=>x[0]).join(' / '),en:true,a:''};
+ if(mode==='je')return{id,kind:'s',mode,s,tag:'和 → 英（'+tagS(s)+'）',q:s.c.map(x=>x[1]).join(' / '),a:''};
+ return{id,kind:'s',mode:'ord',s,tag:'並べ替え（'+tagS(s)+'）',q:s.ja.replace(/ \/ /g,''),a:s.en};
+}
+function vocabItem(v,dir){
+ const id='v'+dir+':'+v.w;
+ return dir==='em'?{id,kind:'v',dir,v,tag:'英語 → 意味（'+LNAME[v.L]+' 第'+v.p+'段落）',q:v.w,en:true,a:v.m}
+                  :{id,kind:'v',dir,v,tag:'意味 → 英語（'+LNAME[v.L]+' 第'+v.p+'段落）',q:v.m,a:v.w};
+}
+const CAT={内:'内容理解',正:'内容一致（T/F）',文:'文法・構文',補:'空所補充・並べ替え'};
+function kousaItem(k,i){return{id:'k:'+i,kind:'k',c:k.c,tag:CAT[k.c]+'（'+LNAME[k.L]+' 第'+k.p+'段落）',q:k.q,a:k.a,pt:k.pt,long:true}}
+function findItem(id){
+ const [h,rest]=[id.slice(0,id.indexOf(':')),id.slice(id.indexOf(':')+1)];
+ if(h==='k')return KOUSA[+rest]?kousaItem(KOUSA[+rest],+rest):null;
+ if(h[0]==='s'){const s=SENTS[+rest];return s?sentItem(s,h.slice(1)):null}
+ if(h[0]==='v'){const v=VOCAB.find(x=>x.w===rest);return v?vocabItem(v,h.slice(1)):null}
+ return null;
+}
+
+// ===== スタート =====
+let deck=[],idx=0,style='card',wrongNow=[],okCount=0,backTab='t-bun',answered=false,ordState=null;
+function startBun(){
+ const list=SENTS.filter(s=>inL(s.L,opt['b-L']));
+ const items=list.map(s=>sentItem(s,opt['b-mode']));
+ run(opt['b-order']==='seq'?items:shuffle(items),opt['b-mode']==='ord'?'ord':'card','t-bun');
+}
+function startGoku(){run(shuffle(VOCAB.filter(v=>inL(v.L,opt['g-L']))).map(v=>vocabItem(v,opt['g-dir'])),opt['g-style'],'t-goku')}
+function startKousa(inOrder){
+ const list=KOUSA.map((k,i)=>({k,i})).filter(o=>inL(o.k.L,opt['k-L'])&&(opt['k-cat']==='all'||o.k.c===opt['k-cat'])).map(o=>kousaItem(o.k,o.i));
+ run(inOrder?list:shuffle(list),'card','t-kousa');
+}
+function startNigate(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0);
+ if(!ids.length){alertBox('まだ苦手な問題はありません。');return}
+ const items=shuffle(ids.map(findItem).filter(Boolean));
+ run(items,'mix','t-nigate');
+}
+function run(d,st,back){
+ if(!d.length){alertBox('問題がありません。');return}
+ deck=d;idx=0;style=st;wrongNow=[];okCount=0;backTab=back;
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));$('#quiz').classList.add('show');$('#quiz').style.display='block';draw();
+}
+function chkTable(s){return '<table class="chk">'+s.c.map(x=>'<tr><td class="e">'+esc(x[0])+'</td><td>'+esc(x[1])+'</td></tr>').join('')+'</table>'}
+function draw(){
+ const it=deck[idx];answered=false;ordState=null;
+ $('#qNo').textContent=(idx+1)+' / '+deck.length;$('#qBar').style.width=(idx/deck.length*100)+'%';
+ $('#qTag').textContent=it.tag;$('#qText').textContent=it.q;
+ $('#qText').className='q'+(it.en?' en':'')+((it.long||it.q.length>28)?' long':'');
+ const ans=$('#qAns');ans.style.display='none';
+ if(it.kind==='s')ans.innerHTML=(it.mode==='ord'?'<div class="en" style="font-family:Georgia,serif;margin-bottom:6px">'+esc(it.s.en)+'</div>':'')+chkTable(it.s);
+ else ans.innerHTML=esc(it.a)+(it.pt?'<span class="pt">'+esc(it.pt)+'</span>':'');
+ $('#qChoices').innerHTML='';$('#qOrder').innerHTML='';
+ const st=style==='mix'?(it.kind==='s'&&it.mode==='ord'?'ord':'card'):style;
+ if(st==='ord'&&it.kind==='s')return drawOrder(it);
+ if(st==='four'&&it.kind==='v')return drawFour(it);
+ $('#qBtns').innerHTML='<button class="big" onclick="reveal()">答えを見る</button>';
+}
+function drawFour(it){
+ const key=it.dir==='em'?'m':'w';const correct=it.v[key];
+ const others=shuffle(VOCAB.filter(x=>x!==it.v&&x[key]!==correct)).slice(0,3).map(x=>x[key]);
+ const ch=$('#qChoices');
+ shuffle([correct,...others]).forEach(t=>{const b=document.createElement('button');b.textContent=t;if(it.dir==='me')b.style.fontFamily='Georgia,serif';b.onclick=()=>{
+  if(answered)return;answered=true;const ok=t===correct;
+  ch.querySelectorAll('button').forEach(x=>{if(x.textContent===correct)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+  mark(ok);$('#qAns').style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>';};ch.appendChild(b)});
+ $('#qBtns').innerHTML='';
+}
+// 並べ替え
+function drawOrder(it){
+ const s=it.s;let pieces;
+ const words=s.en.split(/\s+/);
+ if(s.c.length>=3) pieces=s.c.map(x=>x[0]);
+ else pieces=words;
+ if(pieces.length<2) pieces=words;
+ const correct=pieces.slice();
+ let pool=shuffle(pieces.map((p,i)=>({p,i})));
+ if(pool.length>1&&pool.every((o,k)=>o.i===k))pool.reverse();
+ ordState={correct,pool,picked:[]};
+ $('#qOrder').innerHTML='<p class="note" style="margin-top:8px">'+(s.c.length>=3?'チャンク（かたまり）':'単語')+'をタップして、正しい順に並べよう。並べた部分をタップすると戻せます。</p><div class="slot" id="oSlot"></div><div class="pool" id="oPool"></div>';
+ renderOrder();
+ $('#qBtns').innerHTML='<button class="big" onclick="checkOrder()">答え合わせ</button><button class="sub" onclick="giveUpOrder()">わからない（答えを見る）</button>';
+}
+function renderOrder(){
+ const o=ordState;
+ $('#oSlot').innerHTML=o.picked.map((x,k)=>'<button class="pc" onclick="unpick('+k+')">'+esc(x.p)+'</button>').join('');
+ $('#oPool').innerHTML=o.pool.map((x,k)=>'<button class="pc" onclick="pick('+k+')">'+esc(x.p)+'</button>').join('');
+}
+function pick(k){if(answered)return;ordState.picked.push(ordState.pool.splice(k,1)[0]);renderOrder()}
+function unpick(k){if(answered)return;ordState.pool.push(ordState.picked.splice(k,1)[0]);renderOrder()}
+function checkOrder(){
+ if(answered)return;const o=ordState;
+ if(o.pool.length){alertBox('すべて並べてから答え合わせしよう。');return}
+ answered=true;const ok=o.picked.map(x=>x.p).join(' ')===o.correct.join(' ');
+ $('#oSlot').classList.add(ok?'ok':'ng');mark(ok);$('#qAns').style.display='block';
+ $('#qBtns').innerHTML='<button class="big" onclick="next()">'+(ok?'正解！ ':'')+'次へ ▶</button>';
+}
+function giveUpOrder(){if(answered)return;answered=true;mark(false);$('#qAns').style.display='block';$('#qBtns').innerHTML='<button class="big" onclick="next()">次へ ▶</button>'}
+function reveal(){$('#qAns').style.display='block';$('#qBtns').innerHTML='<div class="judge"><button class="o" onclick="mark(true);next()">○ わかった</button><button class="x" onclick="mark(false);next()">× まだ</button></div>'}
+function mark(ok){const it=deck[idx];if(ok){okCount++;if(REC[it.id])REC[it.id]=Math.max(0,REC[it.id]-1)}else{wrongNow.push(it);REC[it.id]=(REC[it.id]||0)+1}saveRec()}
+function next(){idx++;if(idx>=deck.length)finish();else{draw();window.scrollTo(0,0)}}
+function finish(){
+ $('#qBar').style.width='100%';$('#qOrder').innerHTML='';
+ $('#qTag').textContent='おつかれさま！';$('#qText').className='q';$('#qText').textContent=deck.length+'問中 '+okCount+'問 ○';
+ $('#qChoices').innerHTML='';$('#qAns').style.display='block';
+ $('#qAns').innerHTML=wrongNow.length?'<span style="color:#333;font-size:14px">×の問題：'+wrongNow.length+'問</span>':'全問正解！🎉';
+ $('#qBtns').innerHTML=(wrongNow.length?'<button class="big" onclick="retryWrong()">×の問題だけもう一度</button><button class="sub" onclick="showWrongNow()">×の一覧を見る</button>':'')+'<button class="sub" onclick="quitQuiz()">メニューにもどる</button>';
+}
+function retryWrong(){run(shuffle(wrongNow),style,backTab)}
+function quitQuiz(){showTab(backTab)}
+const itemAns=it=>it.kind==='s'?(it.mode==='ej'?it.s.ja:it.s.en):it.a;
+function showWrongNow(){
+ const h=wrongNow.length?wrongNow.map(it=>'<div class="item"><b>'+esc(it.q)+'</b><br>→ '+esc(itemAns(it))+'</div>').join(''):'<p class="note">まだ×の問題はありません。</p>';
+ openModal('<h2>今回の×一覧</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function showList(){
+ const h=[1,2].map(L=>'<h3>'+LNAME[L]+'</h3>'+VOCAB.filter(v=>v.L===L).map(v=>'<div class="item"><b style="font-family:Georgia,serif">'+esc(v.w)+'</b>　<span class="note">第'+v.p+'段落</span><br>'+esc(v.m)+'</div>').join('')).join('');
+ openModal('<h2>語句一覧（'+VOCAB.length+'語）</h2>'+h+'<button class="sub" onclick="closeModal()">閉じる</button>');
+}
+function drawRank(){
+ const ids=Object.keys(REC).filter(k=>REC[k]>0).sort((a,b)=>REC[b]-REC[a]);
+ $('#rankList').innerHTML=ids.length?ids.map((id,i)=>{const it=findItem(id);return it?'<div class="item"><span class="c">×'+REC[id]+'</span><b>'+(i+1)+'.</b> <span class="note">'+esc(it.tag)+'</span><br>'+esc(it.q)+'<br><span class="note">→ '+esc(itemAns(it))+'</span></div>':''}).join(''):'<p class="note">まだ記録がありません。</p>';
+}
+function resetRank(){openModal('<p>苦手の記録をすべて消しますか？</p><div class="judge"><button class="x" onclick="REC={};saveRec();drawRank();closeModal()">消す</button><button class="o" onclick="closeModal()">やめる</button></div>')}
+function alertBox(t){openModal('<p>'+t+'</p><button class="sub" onclick="closeModal()">OK</button>')}
+function openModal(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
+function closeModal(){$('#modal').style.display='none'}
+function speak(){try{const it=deck[idx];if(!it)return;speechSynthesis.cancel();
+ const showing=$('#qAns').style.display==='block';
+ let t,lang;
+ if(it.kind==='s'){t=it.s.en;lang='en-US'}
+ else if(it.kind==='v'){t=it.v.w.replace(/~/g,'something').replace(/\bA\b|\bB\b|\bO\b/g,'');lang='en-US'}
+ else{t=showing?it.a:it.q;lang=/[ぁ-んァ-ン一-龯]/.test(t)?'ja-JP':'en-US'}
+ const u=new SpeechSynthesisUtterance(t);u.lang=lang;u.rate=lang==='en-US'?.9:1;speechSynthesis.speak(u)}catch(e){}}
+
+// ===== 本文と構成 =====
+function drawHon(){
+ const L=+opt['h-L'],v=opt['h-view'],F=FLOW[L];let h='<h3>'+F.title+'</h3>';
+ if(v==='flow') h+=F.paras.map(p=>'<div class="flow"><b>'+p[0]+'</b>'+p[1]+'</div>').join('');
+ else{
+  const byP={};SENTS.filter(s=>s.L===L).forEach(s=>(byP[s.p]=byP[s.p]||[]).push(s));
+  h+='<div class="'+(v==='texte'?'hidej':'')+'">'+Object.keys(byP).map(p=>'<div class="txt"><span class="pn">第'+p+'段落</span>'+byP[p].map(s=>'<p><span class="e">'+esc(s.en)+'</span><br><span class="j">'+esc(s.ja.replace(/ \/ /g,'　'))+'</span></p>').join('')+'</div>').join('')+'</div>';
+ }
+ $('#honBody').innerHTML=h;
+}
+
+// ===== プリント =====
+function makePrint(){
+ const PL=opt['p-L'];let pool=[];
+ const S=SENTS.filter(s=>inL(s.L,PL)),V=VOCAB.filter(v=>inL(v.L,PL));
+ const K=KOUSA.map((k,i)=>({k,i})).filter(o=>inL(o.k.L,PL));
+ if($('#p-ej').checked)pool.push(...S.map(s=>({ins:'次の英文を和訳せよ。',q:s.en,en:true,a:s.ja.replace(/ \/ /g,''),long:true})));
+ if($('#p-je').checked)pool.push(...S.map(s=>({ins:'次の日本語を英語にせよ。',q:s.ja.replace(/ \/ /g,''),a:s.en,aen:true,long:true})));
+ if($('#p-em').checked)pool.push(...V.map(v=>({ins:'意味を書け。',q:v.w,en:true,a:v.m})));
+ if($('#p-me').checked)pool.push(...V.map(v=>({ins:'英語で書け。',q:v.m,a:v.w,aen:true})));
+ if($('#p-nai').checked)pool.push(...K.filter(o=>o.k.c==='内').map(o=>({ins:'',q:o.k.q,a:o.k.a,long:true})));
+ if($('#p-tf').checked)pool.push(...K.filter(o=>o.k.c==='正').map(o=>({ins:'本文の内容と一致すればT、しなければFを書け。',q:o.k.q,en:true,a:o.k.a})));
+ if($('#p-bun').checked)pool.push(...K.filter(o=>o.k.c==='文').map(o=>({ins:'',q:o.k.q,a:o.k.a,long:true})));
+ if($('#p-ho').checked)pool.push(...K.filter(o=>o.k.c==='補').map(o=>({ins:'',q:o.k.q.replace('\n',' '),a:o.k.a,aen:true})));
+ if(!pool.length){alertBox('入れる問題を選んでください。');return}
+ const n=Math.max(1,parseInt($('#p-num').value)||30);
+ const qs=shuffle(pool).slice(0,n);
+ const rng=PL==='all'?'長文2題':LNAME[PL];
+ const head=t=>'<h1>論理表現 '+rng+'　'+t+'<span class="nm">　年　組　名前（　　　　　　　）</span></h1>';
+ const qHtml=qs.map(it=>'<li>'+(it.ins?'<small>【'+it.ins+'】</small> ':'')+'<span class="'+(it.en?'en':'')+'">'+esc(it.q)+'</span><span class="blank"></span>'+(it.long?'<span class="blank"></span>':'')+'</li>').join('');
+ const aHtml=qs.map(it=>'<li><span class="'+(it.en?'en':'')+'">'+esc(it.q)+'</span><br><span class="ka '+(it.aen?'en':'')+'">→ '+esc(it.a)+'</span></li>').join('');
+ $('#printArea').innerHTML='<div class="pp">'+head('確認テスト')+'<ol>'+qHtml+'</ol></div><div class="pp">'+head('解答')+'<ol>'+aHtml+'</ol></div>';
+ setTimeout(()=>window.print(),200);
+}
+</script>
+</body>
+</html>
