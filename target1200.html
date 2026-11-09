@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ターゲット1200 フラッシュカード</title>
+<style>
+  :root{
+    --green:#1b6e3c;
+    --green-dark:#0f4d29;
+    --green-light:#e8f5ec;
+    --accent:#ffb703;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--green-light);
+    color:#222;
+    min-height:100vh;
+  }
+  header{
+    background:var(--green);
+    color:#fff;
+    padding:14px 16px 10px;
+    text-align:center;
+    position:relative;
+  }
+  header h1{margin:0;font-size:1.05rem;}
+  header .build{
+    font-size:0.65rem;
+    color:#cde9d6;
+    margin-top:2px;
+  }
+  .tabs{
+    display:flex;
+    background:var(--green-dark);
+  }
+  .tabs button{
+    flex:1;
+    padding:10px 4px;
+    background:none;
+    border:none;
+    color:#cde9d6;
+    font-size:0.8rem;
+    cursor:pointer;
+  }
+  .tabs button.active{
+    color:#fff;
+    background:var(--green);
+    font-weight:bold;
+  }
+  .screen{display:none;padding:16px;max-width:480px;margin:0 auto;}
+  .screen.show{display:block;}
+
+  /* 学習画面 */
+  .progress-bar{
+    height:6px;
+    background:#cfe7d8;
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .progress-bar-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .2s;
+  }
+  .progress-text{
+    text-align:center;
+    font-size:0.8rem;
+    color:#555;
+    margin-bottom:14px;
+  }
+  .card{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px 16px;
+    cursor:pointer;
+    user-select:none;
+    position:relative;
+  }
+  .card .no{
+    position:absolute;
+    top:10px;
+    left:14px;
+    font-size:0.75rem;
+    color:#aaa;
+  }
+  .card .word{
+    font-size:2rem;
+    font-weight:bold;
+    color:var(--green-dark);
+    margin-bottom:10px;
+    word-break:break-word;
+  }
+  .card .meaning{
+    font-size:1.2rem;
+    color:#444;
+    display:none;
+  }
+  .card.flipped .meaning{display:block;}
+  .card .hint{
+    font-size:0.75rem;
+    color:#bbb;
+    margin-top:14px;
+  }
+  .speak-btn{
+    position:absolute;
+    top:8px;
+    right:10px;
+    background:none;
+    border:none;
+    font-size:1.4rem;
+    cursor:pointer;
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+  .controls button{
+    flex:1;
+    padding:14px 0;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .btn-no{background:#f1d2d2;color:#a33;}
+  .btn-yes{background:#cdeedb;color:var(--green-dark);}
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+  }
+  .nav-row button{
+    background:none;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:0.85rem;
+    color:#666;
+  }
+
+  /* ランキング・履歴 */
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th,td{padding:8px 6px;border-bottom:1px solid #ddd;text-align:left;}
+  th{color:var(--green-dark);}
+  .stat-card{
+    background:#fff;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-num{font-size:1.6rem;font-weight:bold;color:var(--green);}
+  .small{font-size:0.8rem;color:#777;}
+  .reset-btn{
+    margin-top:18px;
+    width:100%;
+    padding:10px;
+    background:#eee;
+    border:none;
+    border-radius:8px;
+    color:#888;
+    font-size:0.85rem;
+  }
+  .letter-tile{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border:1px solid var(--green);
+    background:#fff;
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .letter-tile:disabled{
+    opacity:0.25;
+    cursor:default;
+  }
+  .answer-slot{
+    width:38px;
+    height:42px;
+    border-radius:8px;
+    border:2px solid transparent;
+    border-bottom:2px solid var(--green);
+    background:var(--green-light);
+    color:var(--green-dark);
+    font-size:1.1rem;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .answer-slot.drag-over{
+    background:#fff8e1;
+    border-color:var(--accent);
+  }
+  .mode-btn.active{
+    background:var(--green)!important;
+    color:#fff!important;
+  }
+  .sub-mode-btn.active{
+    background:var(--accent)!important;
+    color:#5c3d00!important;
+  }
+  /* ===== 4択モード ===== */
+  .choice-head{
+    background:var(--green);
+    color:#fff;
+    border-radius:16px 16px 0 0;
+    padding:12px 14px 22px;
+    position:relative;
+  }
+  .choice-top{display:flex;align-items:center;gap:10px;}
+  .choice-timer{flex:1;display:flex;align-items:center;gap:6px;font-size:0.7rem;font-weight:bold;}
+  .choice-timer-track{flex:1;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;overflow:hidden;}
+  .choice-timer-fill{height:100%;width:100%;background:#fff;}
+  .choice-count{background:#fff;color:var(--green-dark);border-radius:999px;padding:2px 14px;font-size:0.8rem;font-weight:bold;}
+  .choice-word{font-size:2.3rem;font-weight:bold;text-align:center;margin-top:16px;word-break:break-word;}
+  .choice-no{text-align:center;font-size:0.72rem;color:#cde9d6;margin-top:2px;}
+  .choice-speak{position:absolute;right:10px;bottom:8px;background:none;border:none;font-size:1.4rem;cursor:pointer;}
+  .choice-body{background:#fff;border-radius:0 0 16px 16px;padding:16px 14px 18px;box-shadow:0 4px 14px rgba(0,0,0,0.12);}
+  .choice-opt{
+    display:block;width:100%;margin:0 0 12px;padding:16px 10px;
+    background:#fff;border:2px solid #d9d9d9;border-radius:12px;
+    font-size:1.2rem;font-weight:bold;color:#222;cursor:pointer;
+    font-family:inherit;line-height:1.35;
+  }
+  .choice-opt:last-of-type{margin-bottom:0;}
+  .choice-opt.correct{background:#d8f3e2;border-color:var(--green);color:var(--green-dark);}
+  .choice-opt.wrong{background:#f9dcdc;border-color:#c44;color:#a33;}
+  .choice-opt:disabled{cursor:default;}
+  .choice-dunno{
+    display:block;margin:18px auto 0;padding:12px 40px;
+    background:#fff;border:2px solid #ccc;border-radius:999px;
+    color:#888;font-size:1rem;font-weight:bold;font-family:inherit;
+  }
+  .choice-feedback{text-align:center;min-height:24px;margin-top:12px;font-weight:bold;}
+  .choice-next{display:none;width:100%;margin-top:10px;padding:14px 0;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:1rem;font-weight:bold;font-family:inherit;}
+  .choice-setting{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-size:0.8rem;color:var(--green-dark);}
+  .choice-len-btn{padding:5px 10px;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.78rem;font-family:inherit;}
+  .choice-len-btn.active{background:var(--green);color:#fff;}
+  .choice-result{background:#fff;border-radius:16px;padding:20px 16px;box-shadow:0 4px 14px rgba(0,0,0,0.12);text-align:center;}
+  .choice-result .big{font-size:2rem;font-weight:bold;color:var(--green-dark);}
+  .choice-result table{margin-top:10px;text-align:left;}
+  .choice-result button{width:100%;margin-top:10px;padding:13px 0;border:none;border-radius:10px;font-size:0.95rem;font-weight:bold;font-family:inherit;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ターゲット1200 フラッシュカード</h1>
+  <div class="build">全17セット・1〜1700（単語＋熟語）・build v1（1900版v21と同じ仕様）</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="study">学習</button>
+  <button class="tab-btn" data-tab="rank">苦手ランキング</button>
+  <button class="tab-btn" data-tab="history">学習履歴</button>
+</div>
+
+<!-- 学習タブ -->
+<div id="tabStudy" class="screen show">
+  <div id="setSelector" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;"></div>
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 100</div>
+
+  <div class="mode-toggle" style="display:flex;gap:8px;margin-bottom:10px;">
+    <button class="mode-btn active" id="modeCardBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">カード学習</button>
+    <button class="mode-btn" id="modeSpellBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">文字並べ式</button>
+    <button class="mode-btn" id="modeChoiceBtn" style="flex:1;padding:8px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.85rem;">4択</button>
+  </div>
+
+  <div style="display:flex;margin-bottom:10px;">
+    <button id="reviewToggleBtn" style="flex:1;padding:8px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.85rem;">🔁 苦手単語だけ復習（全セット対象）</button>
+  </div>
+
+  <div id="spellSubToggle" style="display:none;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button class="sub-mode-btn active" id="subBasicBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">ベーシック（ダミーなし）</button>
+    <button class="sub-mode-btn" id="subChallengeBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">チャレンジ（ダミーあり）</button>
+    <button class="sub-mode-btn" id="subTypeBtn" style="flex:1;min-width:100px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.78rem;">✏️ フル入力</button>
+  </div>
+
+  <div id="voiceWarning" style="display:none;background:#fff3cd;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:0.8rem;color:#7a5b00;line-height:1.5;">
+    ⚠️ 英語の音声が見つかりません。発音がカタカナ読みになる場合は、iPhoneの「設定」→「アクセシビリティ」→「読み上げコンテンツ」→「声」で<strong>English</strong>の声をダウンロードしてください。
+  </div>
+
+  <div id="cardView">
+  <div class="card" id="card">
+    <div class="no" id="cardNo">No.1</div>
+    <button class="speak-btn" id="speakBtn" title="発音を聞く">🔊</button>
+    <div class="word" id="cardWord">create</div>
+    <div class="meaning" id="cardMeaning">創り出す</div>
+    <div class="hint" id="cardHint">タップして意味を表示</div>
+  </div>
+
+  <div class="controls" id="controls" style="visibility:hidden;">
+    <button class="btn-no" id="btnNo">✕ わからない</button>
+    <button class="btn-yes" id="btnYes">○ わかった</button>
+  </div>
+
+  <div class="nav-row">
+    <button id="btnShuffle">🔀 シャッフル</button>
+    <button id="btnRestart">↺ 最初から</button>
+  </div>
+  </div>
+
+  <div id="spellView" style="display:none;">
+    <div class="card" id="spellCard" style="cursor:default;">
+      <div class="no" id="spellNo">No.1</div>
+      <button class="speak-btn" id="spellSpeakBtn" title="発音を聞く">🔊</button>
+      <div class="meaning" id="spellMeaning" style="display:block;font-size:1.3rem;font-weight:bold;color:var(--green-dark);margin-bottom:14px;">創り出す</div>
+      <div id="spellAnswerSlot" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:46px;margin-bottom:16px;"></div>
+      <div id="spellLetterTray" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+      <div id="spellTypeWrap" style="display:none;justify-content:center;margin-bottom:6px;">
+        <input id="spellTypeInput" type="text" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="英単語を入力" style="width:100%;max-width:280px;font-size:1.3rem;text-align:center;padding:10px 8px;border:2px solid var(--green);border-radius:10px;letter-spacing:2px;">
+      </div>
+      <div class="hint" id="spellFeedback" style="margin-top:14px;min-height:20px;"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-no" id="spellBackBtn" style="flex:0.8;">⌫ 1文字消す</button>
+      <button class="btn-no" id="spellClearBtn" style="flex:1;">↺ クリア</button>
+      <button class="btn-yes" id="spellCheckBtn">○ 判定する</button>
+    </div>
+
+    <div class="nav-row">
+      <button id="spellShuffleBtn">🔀 シャッフル</button>
+      <button id="spellNextBtn">次へ ➡</button>
+    </div>
+  </div>
+
+  <div id="choiceView" style="display:none;">
+    <div class="choice-setting">
+      <span>問題数</span>
+      <button class="choice-len-btn" data-len="10">10問</button>
+      <button class="choice-len-btn active" data-len="20">20問</button>
+      <button class="choice-len-btn" data-len="0">全部</button>
+      <label style="margin-left:auto;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="choiceAutoSpeak" checked>答えたら発音</label>
+    </div>
+    <div id="choiceQuiz">
+      <div class="choice-head">
+        <div class="choice-top">
+          <div class="choice-timer">⏱ タイムボーナス<div class="choice-timer-track"><div class="choice-timer-fill" id="choiceTimerFill"></div></div></div>
+          <div class="choice-count" id="choiceCount">1/20</div>
+        </div>
+        <div class="choice-word" id="choiceWord">patient</div>
+        <div class="choice-no" id="choiceNo">No.1</div>
+        <button class="choice-speak" id="choiceSpeakBtn" title="発音を聞く">🔊</button>
+      </div>
+      <div class="choice-body">
+        <div id="choiceOptions"></div>
+        <button class="choice-dunno" id="choiceDunnoBtn">わからない</button>
+        <div class="choice-feedback" id="choiceFeedback"></div>
+        <button class="choice-next" id="choiceNextBtn">次へ ➡</button>
+      </div>
+      <div class="nav-row">
+        <span class="small" id="choiceScoreLive">スコア 0</span>
+        <button id="choiceRestartBtn">↺ 新しく出題</button>
+      </div>
+    </div>
+    <div id="choiceResult" class="choice-result" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- 苦手ランキングタブ -->
+<div id="tabRank" class="screen">
+  <h2 style="color:var(--green-dark);font-size:1rem;">苦手ランキング</h2>
+  <p class="small">「わからない」を押した回数が多い順に表示します。学習方法ごとに切り替えられます。</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+    <button class="rank-mode-btn active" data-rankmode="all" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--green);border-radius:8px;background:var(--green);color:#fff;font-size:0.75rem;">全体</button>
+    <button class="rank-mode-btn" data-rankmode="card" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.75rem;">カード学習</button>
+    <button class="rank-mode-btn" data-rankmode="spellBasic" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.75rem;">並び替え<br>ベーシック</button>
+    <button class="rank-mode-btn" data-rankmode="spellChallenge" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.75rem;">並び替え<br>チャレンジ</button>
+    <button class="rank-mode-btn" data-rankmode="spellType" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--accent);border-radius:8px;background:#fff;color:#8a6300;font-size:0.75rem;">✏️ フル入力</button>
+    <button class="rank-mode-btn" data-rankmode="choice" style="flex:1;min-width:70px;padding:6px 0;border:1px solid var(--green);border-radius:8px;background:#fff;color:var(--green);font-size:0.75rem;">4択</button>
+  </div>
+  <table>
+    <thead><tr><th>No.</th><th>単語</th><th>意味</th><th>✕回数</th></tr></thead>
+    <tbody id="rankBody"></tbody>
+  </table>
+</div>
+
+<!-- 学習履歴タブ -->
+<div id="tabHistory" class="screen">
+  <div class="stat-card" id="weeklyReportCard" style="background:linear-gradient(135deg,#1b6e3c,#0f4d29);color:#fff;padding:18px;">
+    <div style="font-size:0.95rem;font-weight:bold;margin-bottom:10px;">📊 今週の学習報告</div>
+    <div id="weeklyReportBody" style="font-size:0.85rem;line-height:1.9;white-space:pre-line;"></div>
+    <button id="copyReportBtn" style="margin-top:12px;width:100%;padding:9px;border:none;border-radius:8px;background:#ffb703;color:#5c3d00;font-size:0.85rem;font-weight:bold;">📋 報告文をコピー（LINE用）</button>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-num" id="statTotal">0</div>
+    <div class="small">これまでの総学習回数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statMastered">0 / 100</div>
+    <div class="small">「わかった」が一度でもある語数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statLast">-</div>
+    <div class="small">最終学習日</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="statMode" style="font-size:1rem;">カード学習 0回 ／ 文字並べ式 0回 ／ 4択 0回</div>
+    <div class="small">学習方法の内訳（これまでの合計）</div>
+  </div>
+  <button class="reset-btn" id="btnReset">学習履歴をリセットする</button>
+</div>
+
+<script>
+const SETS = {"1": [{"no": 1, "w": "change", "m": "変える"}, {"no": 2, "w": "learn", "m": "学ぶ"}, {"no": 3, "w": "help", "m": "手伝う，助ける"}, {"no": 4, "w": "need", "m": "必要とする"}, {"no": 5, "w": "live", "m": "住んでいる"}, {"no": 6, "w": "ask", "m": "頼む"}, {"no": 7, "w": "enjoy", "m": "楽しむ"}, {"no": 8, "w": "wait", "m": "待つ"}, {"no": 9, "w": "cook", "m": "調理する"}, {"no": 10, "w": "talk", "m": "話す (t-)"}, {"no": 11, "w": "speak", "m": "話す (s-)"}, {"no": 12, "w": "meet", "m": "会う"}, {"no": 13, "w": "mean", "m": "意味する"}, {"no": 14, "w": "buy", "m": "買う"}, {"no": 15, "w": "travel", "m": "旅行する"}, {"no": 16, "w": "build", "m": "建てる"}, {"no": 17, "w": "close", "m": "閉じる"}, {"no": 18, "w": "stay", "m": "滞在する"}, {"no": 19, "w": "move", "m": "動かす"}, {"no": 20, "w": "plan", "m": "計画する"}, {"no": 21, "w": "write", "m": "書く"}, {"no": 22, "w": "listen", "m": "聞く (l-)"}, {"no": 23, "w": "happen", "m": "起こる，生じる"}, {"no": 24, "w": "lose", "m": "失う，なくす"}, {"no": 25, "w": "stand", "m": "立つ，立っている"}, {"no": 26, "w": "grow", "m": "育つ"}, {"no": 27, "w": "sound", "m": "〜のように聞こえる"}, {"no": 28, "w": "rain", "m": "雨が降る"}, {"no": 29, "w": "worry", "m": "心配する"}, {"no": 30, "w": "teach", "m": "教える"}, {"no": 31, "w": "hope", "m": "望む"}, {"no": 32, "w": "hold", "m": "持つ，抱える"}, {"no": 33, "w": "life", "m": "一生，生涯"}, {"no": 34, "w": "thing", "m": "事"}, {"no": 35, "w": "country", "m": "国"}, {"no": 36, "w": "example", "m": "例"}, {"no": 37, "w": "place", "m": "場所"}, {"no": 38, "w": "part", "m": "部分"}, {"no": 39, "w": "trip", "m": "旅行"}, {"no": 40, "w": "problem", "m": "問題"}, {"no": 41, "w": "question", "m": "質問"}, {"no": 42, "w": "color", "m": "色"}, {"no": 43, "w": "point", "m": "要点"}, {"no": 44, "w": "language", "m": "言語"}, {"no": 45, "w": "word", "m": "単語，語"}, {"no": 46, "w": "health", "m": "健康"}, {"no": 47, "w": "report", "m": "報告書"}, {"no": 48, "w": "minute", "m": "分"}, {"no": 49, "w": "reason", "m": "理由"}, {"no": 50, "w": "line", "m": "路線"}, {"no": 51, "w": "month", "m": "（暦の）月"}, {"no": 52, "w": "week", "m": "週"}, {"no": 53, "w": "date", "m": "日にち"}, {"no": 54, "w": "event", "m": "行事"}, {"no": 55, "w": "future", "m": "未来，将来"}, {"no": 56, "w": "design", "m": "デザイン"}, {"no": 57, "w": "end", "m": "終わり"}, {"no": 58, "w": "computer", "m": "コンピューター"}, {"no": 59, "w": "plant", "m": "植物"}, {"no": 60, "w": "art", "m": "美術"}, {"no": 61, "w": "chance", "m": "機会，好機"}, {"no": 62, "w": "history", "m": "歴史"}, {"no": 63, "w": "festival", "m": "祭り"}, {"no": 64, "w": "season", "m": "季節"}, {"no": 65, "w": "fun", "m": "楽しみ"}, {"no": 66, "w": "host", "m": "主人"}, {"no": 67, "w": "message", "m": "伝言"}, {"no": 68, "w": "step", "m": "段階"}, {"no": 69, "w": "popular", "m": "人気のある"}, {"no": 70, "w": "most", "m": "大部分の"}, {"no": 71, "w": "different", "m": "違う"}, {"no": 72, "w": "such", "m": "そのような"}, {"no": 73, "w": "last", "m": "この前の"}, {"no": 74, "w": "same", "m": "同じ"}, {"no": 75, "w": "great", "m": "すばらしい (g-)"}, {"no": 76, "w": "open", "m": "開いている"}, {"no": 77, "w": "own", "m": "自分自身の"}, {"no": 78, "w": "kind", "m": "親切な"}, {"no": 79, "w": "difficult", "m": "難しい"}, {"no": 80, "w": "enough", "m": "十分な"}, {"no": 81, "w": "special", "m": "特別な"}, {"no": 82, "w": "famous", "m": "有名な"}, {"no": 83, "w": "bad", "m": "悪い"}, {"no": 84, "w": "short", "m": "短い"}, {"no": 85, "w": "useful", "m": "役に立つ"}, {"no": 86, "w": "afraid", "m": "恐れて"}, {"no": 87, "w": "favorite", "m": "お気に入りの"}, {"no": 88, "w": "expensive", "m": "高価な"}, {"no": 89, "w": "carry", "m": "運ぶ"}, {"no": 90, "w": "break", "m": "壊れる，割れる"}, {"no": 91, "w": "arrive", "m": "到着する"}, {"no": 92, "w": "fall", "m": "落ちる"}, {"no": 93, "w": "miss", "m": "がいなくてさみしく思う"}, {"no": 94, "w": "cover", "m": "覆う"}, {"no": 95, "w": "catch", "m": "捕まえる"}, {"no": 96, "w": "save", "m": "救う"}, {"no": 97, "w": "check", "m": "点検する"}, {"no": 98, "w": "introduce", "m": "紹介する"}, {"no": 99, "w": "join", "m": "加わる"}, {"no": 100, "w": "clean", "m": "きれいにする"}], "2": [{"no": 101, "w": "answer", "m": "答える"}, {"no": 102, "w": "throw", "m": "投げる"}, {"no": 103, "w": "invite", "m": "招待する"}, {"no": 104, "w": "pick", "m": "摘み取る"}, {"no": 105, "w": "die", "m": "死ぬ"}, {"no": 106, "w": "return", "m": "戻る"}, {"no": 107, "w": "fly", "m": "飛ぶ"}, {"no": 108, "w": "cut", "m": "切る"}, {"no": 109, "w": "hit", "m": "襲う，打つ"}, {"no": 110, "w": "excuse", "m": "許す"}, {"no": 111, "w": "wash", "m": "洗う"}, {"no": 112, "w": "cry", "m": "叫ぶ"}, {"no": 113, "w": "borrow", "m": "借りる"}, {"no": 114, "w": "kill", "m": "殺す"}, {"no": 115, "w": "push", "m": "押す"}, {"no": 116, "w": "climb", "m": "登る"}, {"no": 117, "w": "laugh", "m": "笑う"}, {"no": 118, "w": "smile", "m": "ほほえむ"}, {"no": 119, "w": "hurry", "m": "急ぐ"}, {"no": 120, "w": "cheer", "m": "元気づける"}, {"no": 121, "w": "volunteer", "m": "ボランティア"}, {"no": 122, "w": "side", "m": "側"}, {"no": 123, "w": "front", "m": "前，正面"}, {"no": 124, "w": "concert", "m": "コンサート"}, {"no": 125, "w": "fire", "m": "火事"}, {"no": 126, "w": "village", "m": "村"}, {"no": 127, "w": "lesson", "m": "レッスン"}, {"no": 128, "w": "light", "m": "明かり"}, {"no": 129, "w": "Internet", "m": "インターネット"}, {"no": 130, "w": "weather", "m": "天気"}, {"no": 131, "w": "voice", "m": "声"}, {"no": 132, "w": "piece", "m": "１つ，１枚"}, {"no": 133, "w": "goal", "m": "目標"}, {"no": 134, "w": "speech", "m": "スピーチ"}, {"no": 135, "w": "fan", "m": "ファン"}, {"no": 136, "w": "dream", "m": "夢"}, {"no": 137, "w": "mistake", "m": "間違い"}, {"no": 138, "w": "meter", "m": "メートル"}, {"no": 139, "w": "land", "m": "土地"}, {"no": 140, "w": "hundred", "m": "百"}, {"no": 141, "w": "thousand", "m": "千"}, {"no": 142, "w": "million", "m": "百万"}, {"no": 143, "w": "medicine", "m": "薬"}, {"no": 144, "w": "uniform", "m": "制服"}, {"no": 145, "w": "heat", "m": "暑さ"}, {"no": 146, "w": "evening", "m": "夕方"}, {"no": 147, "w": "noon", "m": "正午"}, {"no": 148, "w": "holiday", "m": "休日，祝日"}, {"no": 149, "w": "course", "m": "講座"}, {"no": 150, "w": "rule", "m": "ルール"}, {"no": 151, "w": "forest", "m": "森林"}, {"no": 152, "w": "farm", "m": "農場"}, {"no": 153, "w": "treasure", "m": "大切な物"}, {"no": 154, "w": "hole", "m": "穴"}, {"no": 155, "w": "cloud", "m": "雲"}, {"no": 156, "w": "phone", "m": "電話"}, {"no": 157, "w": "sorry", "m": "すまなく思って"}, {"no": 158, "w": "careful", "m": "注意深い"}, {"no": 159, "w": "wonderful", "m": "すばらしい (w-)"}, {"no": 160, "w": "heavy", "m": "重い"}, {"no": 161, "w": "sick", "m": "病気の"}, {"no": 162, "w": "dear", "m": "親愛なる"}, {"no": 163, "w": "glad", "m": "うれしい"}, {"no": 164, "w": "dark", "m": "暗い"}, {"no": 165, "w": "sad", "m": "悲しい"}, {"no": 166, "w": "cute", "m": "かわいい"}, {"no": 167, "w": "free", "m": "暇な"}, {"no": 168, "w": "foreign", "m": "外国の"}, {"no": 169, "w": "low", "m": "低い"}, {"no": 170, "w": "safe", "m": "安全な"}, {"no": 171, "w": "angry", "m": "怒った"}, {"no": 172, "w": "lucky", "m": "幸運な"}, {"no": 173, "w": "bright", "m": "輝いて"}, {"no": 174, "w": "soft", "m": "柔らかい"}, {"no": 175, "w": "loud", "m": "（音が）大きい"}, {"no": 176, "w": "even", "m": "〜でさえ"}, {"no": 177, "w": "back", "m": "戻って"}, {"no": 178, "w": "still", "m": "まだ，なお"}, {"no": 179, "w": "early", "m": "早く"}, {"no": 180, "w": "soon", "m": "すぐに，まもなく"}, {"no": 181, "w": "away", "m": "離れて"}, {"no": 182, "w": "almost", "m": "ほとんど，ほぼ"}, {"no": 183, "w": "together", "m": "一緒に"}, {"no": 184, "w": "maybe", "m": "もしかすると"}, {"no": 185, "w": "once", "m": "１度"}, {"no": 186, "w": "else", "m": "ほかに"}, {"no": 187, "w": "ago", "m": "〜前に"}, {"no": 188, "w": "straight", "m": "まっすぐに"}, {"no": 189, "w": "slowly", "m": "ゆっくりと"}, {"no": 190, "w": "suddenly", "m": "突然，急に"}, {"no": 191, "w": "until", "m": "…するまで"}, {"no": 192, "w": "since", "m": "…したときから"}, {"no": 193, "w": "around", "m": "〜のあちこちを"}, {"no": 194, "w": "over", "m": "〜を超えて"}, {"no": 195, "w": "without", "m": "〜なしに"}, {"no": 196, "w": "through", "m": "〜の間じゅう"}, {"no": 197, "w": "between", "m": "〜の間に (b-)"}, {"no": 198, "w": "during", "m": "〜の間に (d-)"}, {"no": 199, "w": "behind", "m": "〜の後ろに"}, {"no": 200, "w": "along", "m": "〜に沿って"}], "3": [{"no": 201, "w": "come from", "m": "〜から来ている"}, {"no": 202, "w": "come true", "m": "実現する"}, {"no": 203, "w": "cut off", "m": "〜を切り取る"}, {"no": 204, "w": "do one's best", "m": "全力を尽くす"}, {"no": 205, "w": "get off", "m": "〜を降りる"}, {"no": 206, "w": "get on", "m": "〜に乗る"}, {"no": 207, "w": "get to", "m": "〜に到着する"}, {"no": 208, "w": "go through", "m": "〜を経験する"}, {"no": 209, "w": "grow up", "m": "成長する，大人になる"}, {"no": 210, "w": "hear of", "m": "〜のことを聞く"}, {"no": 211, "w": "help oneself to", "m": "〜を自由にとって食べる［飲む］"}, {"no": 212, "w": "look for", "m": "〜を探す"}, {"no": 213, "w": "look forward to", "m": "〜を楽しみに待つ"}, {"no": 214, "w": "look like", "m": "〜に似ている"}, {"no": 215, "w": "pick up", "m": "〜を拾い上げる"}, {"no": 216, "w": "speak to / speak with", "m": "〜と話す"}, {"no": 217, "w": "take care of", "m": "〜の世話をする"}, {"no": 218, "w": "take off", "m": "〜を脱ぐ"}, {"no": 219, "w": "take part in", "m": "〜に参加する"}, {"no": 220, "w": "think of", "m": "〜を思いつく"}, {"no": 221, "w": "after school", "m": "放課後に"}, {"no": 222, "w": "all over", "m": "〜の至る所に"}, {"no": 223, "w": "all the time", "m": "いつも"}, {"no": 224, "w": "at first", "m": "最初は，初めのうちは"}, {"no": 225, "w": "at home", "m": "在宅して"}, {"no": 226, "w": "at last", "m": "ついに，やっと"}, {"no": 227, "w": "at that time", "m": "その時に，当時"}, {"no": 228, "w": "at the same time", "m": "同時に"}, {"no": 229, "w": "for a long time", "m": "長い間"}, {"no": 230, "w": "for the first time", "m": "初めて"}, {"no": 231, "w": "in the end", "m": "結局"}, {"no": 232, "w": "in the future", "m": "将来"}, {"no": 233, "w": "in this way", "m": "このようにして"}, {"no": 234, "w": "more than", "m": "〜より多い"}, {"no": 235, "w": "of course", "m": "もちろん"}, {"no": 236, "w": "on one's way to", "m": "〜に行く途中で"}, {"no": 237, "w": "over there", "m": "あそこに，あそこで"}, {"no": 238, "w": "these days", "m": "近ごろ"}, {"no": 239, "w": "a kind of", "m": "一種の"}, {"no": 240, "w": "a lot of / lots of", "m": "たくさんの"}, {"no": 241, "w": "A such as B", "m": "BのようなA"}, {"no": 242, "w": "and so on", "m": "など"}, {"no": 243, "w": "here is [are]", "m": "これが〜です"}, {"no": 244, "w": "How about ~ ?", "m": "〜（して）はいかがですか？"}, {"no": 245, "w": "no longer", "m": "もはや〜ない"}, {"no": 246, "w": "not only A but (also) B", "m": "AだけでなくBも"}, {"no": 247, "w": "so ~ that …", "m": "とても〜なので…"}, {"no": 248, "w": "too ~ to", "m": "あまりに〜なので…できない"}, {"no": 249, "w": "used to", "m": "以前はよく…した"}, {"no": 250, "w": "would like to", "m": "…したいと思う"}, {"no": 251, "w": "create", "m": "創造する"}, {"no": 252, "w": "base", "m": "基礎を置く"}, {"no": 253, "w": "repair", "m": "修理する，修復する"}, {"no": 254, "w": "fail", "m": "失敗する"}, {"no": 255, "w": "accept", "m": "受け入れる"}, {"no": 256, "w": "belong", "m": "属する"}, {"no": 257, "w": "exchange", "m": "交換する"}, {"no": 258, "w": "complete", "m": "完成させる"}, {"no": 259, "w": "treat", "m": "扱う"}, {"no": 260, "w": "cross", "m": "横切る"}, {"no": 261, "w": "hide", "m": "隠す"}, {"no": 262, "w": "shake", "m": "振る"}, {"no": 263, "w": "challenge", "m": "挑戦する"}, {"no": 264, "w": "connect", "m": "つなぐ"}, {"no": 265, "w": "reply", "m": "返事をする"}, {"no": 266, "w": "beat", "m": "打ち負かす"}, {"no": 267, "w": "share", "m": "分かち合う"}, {"no": 268, "w": "observe", "m": "観察する"}, {"no": 269, "w": "mark", "m": "しるしをつける"}, {"no": 270, "w": "burn", "m": "焦がす，焦げる"}, {"no": 271, "w": "locate", "m": "位置している"}, {"no": 272, "w": "fix", "m": "修理する，固定する"}, {"no": 273, "w": "suit", "m": "に最適である"}, {"no": 274, "w": "destroy", "m": "破壊する"}, {"no": 275, "w": "control", "m": "抑制する，制御する"}, {"no": 276, "w": "respond", "m": "返答する"}, {"no": 277, "w": "depend", "m": "当てにする"}, {"no": 278, "w": "forgive", "m": "許す"}, {"no": 279, "w": "attack", "m": "襲う"}, {"no": 280, "w": "sink", "m": "沈む"}, {"no": 281, "w": "appreciate", "m": "感謝する"}, {"no": 282, "w": "feed", "m": "に食べ物を与える"}, {"no": 283, "w": "success", "m": "成功"}, {"no": 284, "w": "mystery", "m": "謎，未知のこと"}, {"no": 285, "w": "ceremony", "m": "式典，儀式"}, {"no": 286, "w": "schedule", "m": "予定，予定表"}, {"no": 287, "w": "damage", "m": "損害，悪影響"}, {"no": 288, "w": "model", "m": "型，模型"}, {"no": 289, "w": "search", "m": "捜索"}, {"no": 290, "w": "project", "m": "計画，事業"}, {"no": 291, "w": "form", "m": "形態"}, {"no": 292, "w": "scene", "m": "場面"}, {"no": 293, "w": "accident", "m": "事故"}, {"no": 294, "w": "contact", "m": "連絡"}, {"no": 295, "w": "image", "m": "イメージ"}, {"no": 296, "w": "trust", "m": "信頼，信用"}, {"no": 297, "w": "quality", "m": "質，品質"}, {"no": 298, "w": "action", "m": "行動"}, {"no": 299, "w": "lack", "m": "不足，ないこと"}, {"no": 300, "w": "spot", "m": "場所"}], "4": [{"no": 301, "w": "truth", "m": "真実，本当のこと"}, {"no": 302, "w": "effort", "m": "努力"}, {"no": 303, "w": "type", "m": "型，タイプ"}, {"no": 304, "w": "site", "m": "敷地，土地"}, {"no": 305, "w": "tool", "m": "手段，道具"}, {"no": 306, "w": "couple", "m": "２つ，２人"}, {"no": 307, "w": "hero", "m": "ヒーロー，英雄"}, {"no": 308, "w": "courage", "m": "勇気"}, {"no": 309, "w": "board", "m": "板，掲示板"}, {"no": 310, "w": "purpose", "m": "目的，意図"}, {"no": 311, "w": "waste", "m": "無駄，浪費"}, {"no": 312, "w": "shape", "m": "形"}, {"no": 313, "w": "technique", "m": "技能，技術"}, {"no": 314, "w": "middle", "m": "真ん中，中央"}, {"no": 315, "w": "spirit", "m": "精神，心"}, {"no": 316, "w": "partner", "m": "パートナー"}, {"no": 317, "w": "population", "m": "人口"}, {"no": 318, "w": "fever", "m": "熱，発熱"}, {"no": 319, "w": "method", "m": "方法"}, {"no": 320, "w": "structure", "m": "構造"}, {"no": 321, "w": "background", "m": "経歴，生い立ち"}, {"no": 322, "w": "combination", "m": "組み合わせ"}, {"no": 323, "w": "official", "m": "公式の"}, {"no": 324, "w": "flat", "m": "平らな"}, {"no": 325, "w": "serious", "m": "深刻な"}, {"no": 326, "w": "ordinary", "m": "普通の"}, {"no": 327, "w": "private", "m": "私的な，個人的な"}, {"no": 328, "w": "major", "m": "重大な"}, {"no": 329, "w": "classical", "m": "クラシックの"}, {"no": 330, "w": "honest", "m": "正直な"}, {"no": 331, "w": "excellent", "m": "とても優れた"}, {"no": 332, "w": "whole", "m": "全体の"}, {"no": 333, "w": "central", "m": "中心の"}, {"no": 334, "w": "ancient", "m": "古代の"}, {"no": 335, "w": "fantastic", "m": "とてもすばらしい"}, {"no": 336, "w": "regular", "m": "定期的な"}, {"no": 337, "w": "basic", "m": "基本的な，初歩的な"}, {"no": 338, "w": "huge", "m": "巨大な"}, {"no": 339, "w": "empty", "m": "空の，空いている"}, {"no": 340, "w": "smart", "m": "頭のよい，賢い"}, {"no": 341, "w": "general", "m": "大まかな，一般的な"}, {"no": 342, "w": "single", "m": "たった１つの"}, {"no": 343, "w": "responsible", "m": "責任のある"}, {"no": 344, "w": "fresh", "m": "新鮮な"}, {"no": 345, "w": "familiar", "m": "熟知している"}, {"no": 346, "w": "native", "m": "出生地の，母国の"}, {"no": 347, "w": "instant", "m": "即席の"}, {"no": 348, "w": "lovely", "m": "すてきな"}, {"no": 349, "w": "clear", "m": "明白な"}, {"no": 350, "w": "convenient", "m": "都合のよい，便利な"}, {"no": 351, "w": "crazy", "m": "夢中で，頭の狂った"}, {"no": 352, "w": "funny", "m": "おかしい"}, {"no": 353, "w": "secret", "m": "秘密の"}, {"no": 354, "w": "remote", "m": "（遠く）離れた"}, {"no": 355, "w": "wake", "m": "目を覚ます"}, {"no": 356, "w": "release", "m": "解放する"}, {"no": 357, "w": "establish", "m": "設立する"}, {"no": 358, "w": "examine", "m": "調べる"}, {"no": 359, "w": "celebrate", "m": "祝う"}, {"no": 360, "w": "float", "m": "漂う，浮く"}, {"no": 361, "w": "recommend", "m": "推薦する"}, {"no": 362, "w": "supply", "m": "供給する"}, {"no": 363, "w": "disappear", "m": "見えなくなる"}, {"no": 364, "w": "apologize", "m": "謝る"}, {"no": 365, "w": "paint", "m": "塗る"}, {"no": 366, "w": "pull", "m": "引く，引っ張る"}, {"no": 367, "w": "print", "m": "印刷する"}, {"no": 368, "w": "lift", "m": "持ち上げる"}, {"no": 369, "w": "separate", "m": "分ける"}, {"no": 370, "w": "melt", "m": "溶かす，溶ける"}, {"no": 371, "w": "strike", "m": "強く打つ"}, {"no": 372, "w": "blow", "m": "吹き飛ばす"}, {"no": 373, "w": "let", "m": "させてやる"}, {"no": 374, "w": "roll", "m": "転がる，転がす"}, {"no": 375, "w": "recover", "m": "回復する"}, {"no": 376, "w": "surround", "m": "囲む，取り囲む"}, {"no": 377, "w": "doubt", "m": "疑う"}, {"no": 378, "w": "display", "m": "展示する，陳列する"}, {"no": 379, "w": "announce", "m": "発表する"}, {"no": 380, "w": "support", "m": "支持する"}, {"no": 381, "w": "act", "m": "行動する"}, {"no": 382, "w": "repeat", "m": "繰り返す"}, {"no": 383, "w": "count", "m": "数える"}, {"no": 384, "w": "compare", "m": "比べる"}, {"no": 385, "w": "shine", "m": "輝く"}, {"no": 386, "w": "replace", "m": "に取って代わる"}, {"no": 387, "w": "reality", "m": "現実"}, {"no": 388, "w": "strength", "m": "力，強さ"}, {"no": 389, "w": "era", "m": "時代"}, {"no": 390, "w": "area", "m": "地域，区域"}, {"no": 391, "w": "respect", "m": "尊敬"}, {"no": 392, "w": "pressure", "m": "重圧"}, {"no": 393, "w": "pleasure", "m": "喜び，楽しみ"}, {"no": 394, "w": "favor", "m": "親切な行為"}, {"no": 395, "w": "statue", "m": "像"}, {"no": 396, "w": "limit", "m": "限度，限界"}, {"no": 397, "w": "bottom", "m": "下部，底"}, {"no": 398, "w": "position", "m": "立場"}, {"no": 399, "w": "memory", "m": "記憶，記憶力"}, {"no": 400, "w": "level", "m": "水準，レベル"}], "5": [{"no": 401, "w": "figure", "m": "数，数値"}, {"no": 402, "w": "direction", "m": "方向"}, {"no": 403, "w": "bit", "m": "少し，少量"}, {"no": 404, "w": "contrast", "m": "対比，差異"}, {"no": 405, "w": "religion", "m": "宗教"}, {"no": 406, "w": "harmony", "m": "調和，一致"}, {"no": 407, "w": "pattern", "m": "模様，図柄"}, {"no": 408, "w": "stage", "m": "段階"}, {"no": 409, "w": "degree", "m": "程度"}, {"no": 410, "w": "emergency", "m": "緊急"}, {"no": 411, "w": "origin", "m": "起源"}, {"no": 412, "w": "battle", "m": "戦闘"}, {"no": 413, "w": "enemy", "m": "敵"}, {"no": 414, "w": "note", "m": "メモ"}, {"no": 415, "w": "countryside", "m": "田舎"}, {"no": 416, "w": "contest", "m": "競技会，コンテスト"}, {"no": 417, "w": "sort", "m": "種類"}, {"no": 418, "w": "depth", "m": "深さ"}, {"no": 419, "w": "top", "m": "最高部，頂上"}, {"no": 420, "w": "theme", "m": "テーマ，主題"}, {"no": 421, "w": "sentence", "m": "文"}, {"no": 422, "w": "cycle", "m": "周期"}, {"no": 423, "w": "concept", "m": "概念"}, {"no": 424, "w": "rhythm", "m": "リズム"}, {"no": 425, "w": "tradition", "m": "伝統"}, {"no": 426, "w": "theory", "m": "理論，説"}, {"no": 427, "w": "correct", "m": "正しい"}, {"no": 428, "w": "blank", "m": "白紙の，空白の"}, {"no": 429, "w": "quiet", "m": "静かな"}, {"no": 430, "w": "smooth", "m": "滑らかな，すべすべした"}, {"no": 431, "w": "wet", "m": "濡れた，湿った"}, {"no": 432, "w": "chief", "m": "最高の，最高位の"}, {"no": 433, "w": "raw", "m": "生の"}, {"no": 434, "w": "personal", "m": "個人の，個人的な"}, {"no": 435, "w": "double", "m": "２倍の"}, {"no": 436, "w": "dirty", "m": "汚れた"}, {"no": 437, "w": "normal", "m": "普通の"}, {"no": 438, "w": "full", "m": "いっぱいの"}, {"no": 439, "w": "simple", "m": "簡単な"}, {"no": 440, "w": "equal", "m": "等しい，同等の"}, {"no": 441, "w": "quick", "m": "短時間の，すばやい"}, {"no": 442, "w": "rapid", "m": "急速な，急激な"}, {"no": 443, "w": "ideal", "m": "理想的な"}, {"no": 444, "w": "rough", "m": "大まかな，粗い"}, {"no": 445, "w": "silent", "m": "無言の，静かな"}, {"no": 446, "w": "violent", "m": "暴力的な"}, {"no": 447, "w": "rich", "m": "豊富の，金持ちの"}, {"no": 448, "w": "perfect", "m": "完全な，完璧な"}, {"no": 449, "w": "weak", "m": "弱い，弱った"}, {"no": 450, "w": "upper", "m": "上の方の，高い方の"}, {"no": 451, "w": "inner", "m": "内部の，中心部の"}, {"no": 452, "w": "awful", "m": "ひどい"}, {"no": 453, "w": "false", "m": "間違った"}, {"no": 454, "w": "vivid", "m": "鮮やかな"}, {"no": 455, "w": "pure", "m": "純粋な"}, {"no": 456, "w": "minor", "m": "重要でない，小さい方の"}, {"no": 457, "w": "mild", "m": "（天候が）穏やかな"}, {"no": 458, "w": "admire", "m": "賞賛する，感嘆する"}, {"no": 459, "w": "drop", "m": "落とす"}, {"no": 460, "w": "reflect", "m": "映し出す，反射する"}, {"no": 461, "w": "dig", "m": "掘る"}, {"no": 462, "w": "beg", "m": "懇願する"}, {"no": 463, "w": "freeze", "m": "凍る"}, {"no": 464, "w": "adopt", "m": "採用する"}, {"no": 465, "w": "measure", "m": "測る"}, {"no": 466, "w": "flow", "m": "流れる"}, {"no": 467, "w": "fulfill", "m": "実現させる"}, {"no": 468, "w": "deliver", "m": "配達する"}, {"no": 469, "w": "wrap", "m": "包む"}, {"no": 470, "w": "knock", "m": "ノックする"}, {"no": 471, "w": "spell", "m": "つづる"}, {"no": 472, "w": "rush", "m": "急いで行く"}, {"no": 473, "w": "pray", "m": "祈る"}, {"no": 474, "w": "reject", "m": "拒絶する"}, {"no": 475, "w": "protest", "m": "抗議する"}, {"no": 476, "w": "handle", "m": "扱う，処理する"}, {"no": 477, "w": "disturb", "m": "邪魔する"}, {"no": 478, "w": "gather", "m": "集める"}, {"no": 479, "w": "copy", "m": "写しをとる"}, {"no": 480, "w": "press", "m": "押す"}, {"no": 481, "w": "consist", "m": "成り立つ"}, {"no": 482, "w": "assist", "m": "手助けする"}, {"no": 483, "w": "kick", "m": "蹴る"}, {"no": 484, "w": "link", "m": "結びつける，関連づける"}, {"no": 485, "w": "adjust", "m": "順応する，適応する"}, {"no": 486, "w": "defend", "m": "守る"}, {"no": 487, "w": "shut", "m": "閉める，閉じる"}, {"no": 488, "w": "bear", "m": "耐える"}, {"no": 489, "w": "task", "m": "仕事"}, {"no": 490, "w": "hug", "m": "抱擁，ハグ"}, {"no": 491, "w": "clue", "m": "手がかり"}, {"no": 492, "w": "percent", "m": "パーセント"}, {"no": 493, "w": "dozen", "m": "１ダース"}, {"no": 494, "w": "ghost", "m": "幽霊"}, {"no": 495, "w": "error", "m": "誤り"}, {"no": 496, "w": "trend", "m": "流行，トレンド"}, {"no": 497, "w": "thought", "m": "考え"}, {"no": 498, "w": "alarm", "m": "警報"}, {"no": 499, "w": "sample", "m": "見本，試供品"}, {"no": 500, "w": "shadow", "m": "影，陰"}], "6": [{"no": 501, "w": "shade", "m": "陰，日陰"}, {"no": 502, "w": "standard", "m": "基準，標準"}, {"no": 503, "w": "hunger", "m": "飢え，空腹"}, {"no": 504, "w": "appeal", "m": "訴え，要求"}, {"no": 505, "w": "harm", "m": "害，危害"}, {"no": 506, "w": "pile", "m": "積み重ね"}, {"no": 507, "w": "plenty", "m": "たくさん"}, {"no": 508, "w": "edge", "m": "端，縁"}, {"no": 509, "w": "poison", "m": "毒"}, {"no": 510, "w": "scale", "m": "規模，目盛り"}, {"no": 511, "w": "section", "m": "節，区分"}, {"no": 512, "w": "attempt", "m": "試み"}, {"no": 513, "w": "merit", "m": "長所，利点"}, {"no": 514, "w": "trick", "m": "いたずら"}, {"no": 515, "w": "second", "m": "少しの間，秒"}, {"no": 516, "w": "medium", "m": "媒体，手段"}, {"no": 517, "w": "unit", "m": "単位"}, {"no": 518, "w": "ambition", "m": "願望，野心"}, {"no": 519, "w": "midnight", "m": "夜の１２時"}, {"no": 520, "w": "power", "m": "力"}, {"no": 521, "w": "principle", "m": "信条"}, {"no": 522, "w": "vision", "m": "展望"}, {"no": 523, "w": "quarter", "m": "4分の1"}, {"no": 524, "w": "luck", "m": "運，幸運"}, {"no": 525, "w": "quantity", "m": "分量，数量"}, {"no": 526, "w": "fault", "m": "責任，罪"}, {"no": 527, "w": "somehow", "m": "何とかして"}, {"no": 528, "w": "forever", "m": "永遠に"}, {"no": 529, "w": "mostly", "m": "主に，たいてい"}, {"no": 530, "w": "forward", "m": "前へ，先に"}, {"no": 531, "w": "nowadays", "m": "近ごろ，最近では"}, {"no": 532, "w": "ahead", "m": "前方に"}, {"no": 533, "w": "apart", "m": "離れて"}, {"no": 534, "w": "altogether", "m": "まったく，完全に"}, {"no": 535, "w": "throughout", "m": "〜の間じゅう"}, {"no": 536, "w": "beyond", "m": "〜の向こうに"}, {"no": 537, "w": "toward", "m": "〜の方向へ"}, {"no": 538, "w": "within", "m": "〜以内に"}, {"no": 539, "w": "above", "m": "〜の上方に"}, {"no": 540, "w": "below", "m": "〜より下に"}, {"no": 541, "w": "per", "m": "〜につき"}, {"no": 542, "w": "except", "m": "〜を除いて"}, {"no": 543, "w": "beside", "m": "〜のそばに"}, {"no": 544, "w": "unlike", "m": "〜と違って"}, {"no": 545, "w": "outside", "m": "〜の外に"}, {"no": 546, "w": "inside", "m": "〜の中に"}, {"no": 547, "w": "against", "m": "〜に反対して"}, {"no": 548, "w": "beneath", "m": "〜の下に"}, {"no": 549, "w": "plus", "m": "〜を加えて"}, {"no": 550, "w": "across", "m": "〜を横切って"}, {"no": 551, "w": "bring back", "m": "〜を返す"}, {"no": 552, "w": "carry out", "m": "〜を実行する"}, {"no": 553, "w": "date back to", "m": "〜にさかのぼる"}, {"no": 554, "w": "find out", "m": "知る"}, {"no": 555, "w": "get together", "m": "集まる"}, {"no": 556, "w": "give off", "m": "〜を発する"}, {"no": 557, "w": "hand in", "m": "〜を提出する"}, {"no": 558, "w": "hang up", "m": "電話を切る"}, {"no": 559, "w": "hold up", "m": "〜を支えている"}, {"no": 560, "w": "live on", "m": "〜で暮らしを立てる"}, {"no": 561, "w": "look after", "m": "〜の世話をする"}, {"no": 562, "w": "look out", "m": "注意する"}, {"no": 563, "w": "look up", "m": "〜を調べる"}, {"no": 564, "w": "major in", "m": "〜を専攻する"}, {"no": 565, "w": "name after", "m": "〜にちなんで名付ける"}, {"no": 566, "w": "put down", "m": "〜を書き留める"}, {"no": 567, "w": "see off", "m": "〜を見送る"}, {"no": 568, "w": "take a look", "m": "ちょっと見る"}, {"no": 569, "w": "take away", "m": "〜を片付ける"}, {"no": 570, "w": "take one's time", "m": "…するのに時間をかける"}, {"no": 571, "w": "think of A as B", "m": "AをBと見なす"}, {"no": 572, "w": "be about to", "m": "…しようとしている"}, {"no": 573, "w": "be born into", "m": "〜の家庭に生まれる"}, {"no": 574, "w": "be faced with", "m": "〜に直面している"}, {"no": 575, "w": "be good at", "m": "〜が上手だ"}, {"no": 576, "w": "be in need of", "m": "〜を必要としている"}, {"no": 577, "w": "be made of [from]", "m": "〜でできている"}, {"no": 578, "w": "be short of", "m": "〜が足りない"}, {"no": 579, "w": "be up to", "m": "〜次第である"}, {"no": 580, "w": "be worried about", "m": "〜のことを心配している"}, {"no": 581, "w": "by oneself", "m": "ひとりで，独力で"}, {"no": 582, "w": "on one's own", "m": "たったひとりで"}, {"no": 583, "w": "above all", "m": "とりわけ"}, {"no": 584, "w": "across from", "m": "〜の向かい側に"}, {"no": 585, "w": "after all", "m": "結局は，やはり"}, {"no": 586, "w": "at a time", "m": "１度に"}, {"no": 587, "w": "by accident", "m": "偶然"}, {"no": 588, "w": "by mistake", "m": "間違って"}, {"no": 589, "w": "day after day", "m": "来る日も来る日も"}, {"no": 590, "w": "for free", "m": "無料で"}, {"no": 591, "w": "from on", "m": "〜以降"}, {"no": 592, "w": "from time to time", "m": "時々"}, {"no": 593, "w": "in a hurry", "m": "急いで"}, {"no": 594, "w": "in favor of", "m": "〜に賛成して"}, {"no": 595, "w": "in order to", "m": "…するために"}, {"no": 596, "w": "in the past", "m": "昔は，過去に"}, {"no": 597, "w": "in those days", "m": "その当時は"}, {"no": 598, "w": "on purpose", "m": "故意に，わざと"}, {"no": 599, "w": "over and over", "m": "何度も"}, {"no": 600, "w": "upside down", "m": "逆さまに"}], "7": [{"no": 601, "w": "a large number of", "m": "たくさんの"}, {"no": 602, "w": "a series of", "m": "一連の，一続きの"}, {"no": 603, "w": "as long as", "m": "…である限り"}, {"no": 604, "w": "as soon as", "m": "…するとすぐに"}, {"no": 605, "w": "had better", "m": "…するべきだ"}, {"no": 606, "w": "more and more", "m": "ますます多くの"}, {"no": 607, "w": "not at all", "m": "まったく〜ではない"}, {"no": 608, "w": "not A but B", "m": "AではなくてB"}, {"no": 609, "w": "the first time", "m": "初めて…したとき"}, {"no": 610, "w": "when it comes to", "m": "〜のこととなると"}, {"no": 611, "w": "parent", "m": "親"}, {"no": 612, "w": "husband", "m": "夫"}, {"no": 613, "w": "wife", "m": "妻"}, {"no": 614, "w": "kid", "m": "子供"}, {"no": 615, "w": "twin", "m": "双子（の１人）"}, {"no": 616, "w": "relative", "m": "親戚"}, {"no": 617, "w": "cousin", "m": "いとこ"}, {"no": 618, "w": "ancestor", "m": "先祖"}, {"no": 619, "w": "job", "m": "仕事"}, {"no": 620, "w": "work", "m": "仕事"}, {"no": 621, "w": "occupation", "m": "職業"}, {"no": 622, "w": "career", "m": "職業"}, {"no": 623, "w": "business", "m": "仕事，商売"}, {"no": 624, "w": "interview", "m": "面接"}, {"no": 625, "w": "hire", "m": "雇う"}, {"no": 626, "w": "retire", "m": "退職する，引退する"}, {"no": 627, "w": "clerk", "m": "店員"}, {"no": 628, "w": "officer", "m": "警官"}, {"no": 629, "w": "engineer", "m": "技師，技術者"}, {"no": 630, "w": "artist", "m": "芸術家"}, {"no": 631, "w": "director", "m": "監督"}, {"no": 632, "w": "actor", "m": "俳優"}, {"no": 633, "w": "nurse", "m": "看護師"}, {"no": 634, "w": "secretary", "m": "秘書"}, {"no": 635, "w": "agent", "m": "代行業者"}, {"no": 636, "w": "civil", "m": "民間の"}, {"no": 637, "w": "mayor", "m": "市長"}, {"no": 638, "w": "chairperson", "m": "議長，委員長"}, {"no": 639, "w": "professor", "m": "教授"}, {"no": 640, "w": "principal", "m": "校長"}, {"no": 641, "w": "expert", "m": "専門家"}, {"no": 642, "w": "leader", "m": "指導者，リーダー"}, {"no": 643, "w": "queen", "m": "女王"}, {"no": 644, "w": "prince", "m": "王子"}, {"no": 645, "w": "royal", "m": "国王の"}, {"no": 646, "w": "slave", "m": "奴隷"}, {"no": 647, "w": "hall", "m": "会館，ホール"}, {"no": 648, "w": "office", "m": "事務所，会社"}, {"no": 649, "w": "bank", "m": "銀行"}, {"no": 650, "w": "apartment", "m": "アパート"}, {"no": 651, "w": "library", "m": "図書館"}, {"no": 652, "w": "gym", "m": "体育館，ジム"}, {"no": 653, "w": "museum", "m": "博物館，美術館"}, {"no": 654, "w": "theater", "m": "劇場"}, {"no": 655, "w": "studio", "m": "スタジオ，（映画）撮影所"}, {"no": 656, "w": "stadium", "m": "競技場，スタジアム"}, {"no": 657, "w": "temple", "m": "寺院"}, {"no": 658, "w": "shrine", "m": "聖堂，神社"}, {"no": 659, "w": "castle", "m": "城"}, {"no": 660, "w": "tower", "m": "塔"}, {"no": 661, "w": "entrance", "m": "入口，玄関"}, {"no": 662, "w": "exit", "m": "出口"}, {"no": 663, "w": "architecture", "m": "建築"}, {"no": 664, "w": "avenue", "m": "大通り，〜街"}, {"no": 665, "w": "block", "m": "１区画，ブロック"}, {"no": 666, "w": "corner", "m": "曲がり角"}, {"no": 667, "w": "intersection", "m": "交差点"}, {"no": 668, "w": "zone", "m": "地帯，区域"}, {"no": 669, "w": "square", "m": "広場，正方形"}, {"no": 670, "w": "market", "m": "市場"}, {"no": 671, "w": "path", "m": "小道"}, {"no": 672, "w": "slope", "m": "坂"}, {"no": 673, "w": "traffic", "m": "交通，交通量"}, {"no": 674, "w": "drive", "m": "（車を）運転する"}, {"no": 675, "w": "ride", "m": "乗る"}, {"no": 676, "w": "railroad", "m": "鉄道"}, {"no": 677, "w": "subway", "m": "地下鉄"}, {"no": 678, "w": "automobile", "m": "自動車"}, {"no": 679, "w": "engine", "m": "エンジン"}, {"no": 680, "w": "wheel", "m": "ハンドル"}, {"no": 681, "w": "license", "m": "免許，免許証"}, {"no": 682, "w": "airport", "m": "空港"}, {"no": 683, "w": "flight", "m": "定期航空便，フライト"}, {"no": 684, "w": "port", "m": "港"}, {"no": 685, "w": "canal", "m": "運河"}, {"no": 686, "w": "key", "m": "鍵"}, {"no": 687, "w": "stair", "m": "階段"}, {"no": 688, "w": "upstairs", "m": "上の階に［で］"}, {"no": 689, "w": "floor", "m": "床"}, {"no": 690, "w": "shelf", "m": "棚"}, {"no": 691, "w": "roof", "m": "屋根"}, {"no": 692, "w": "ladder", "m": "はしご"}, {"no": 693, "w": "yard", "m": "庭"}, {"no": 694, "w": "closet", "m": "クローゼット"}, {"no": 695, "w": "refrigerator", "m": "冷蔵庫"}, {"no": 696, "w": "shower", "m": "シャワー"}, {"no": 697, "w": "housework", "m": "家事"}, {"no": 698, "w": "plastic", "m": "プラスチックの"}, {"no": 699, "w": "plate", "m": "皿"}, {"no": 700, "w": "glass", "m": "グラス"}], "8": [{"no": 701, "w": "garbage", "m": "生ゴミ，ごみ"}, {"no": 702, "w": "trash", "m": "ごみ，紙くず"}, {"no": 703, "w": "dust", "m": "ほこり"}, {"no": 704, "w": "trap", "m": "わな"}, {"no": 705, "w": "brush", "m": "ブラシ，はけ"}, {"no": 706, "w": "comb", "m": "くし"}, {"no": 707, "w": "blanket", "m": "毛布"}, {"no": 708, "w": "sheet", "m": "紙，紙の１枚"}, {"no": 709, "w": "label", "m": "ラベル"}, {"no": 710, "w": "envelope", "m": "封筒"}, {"no": 711, "w": "fashion", "m": "ファッション"}, {"no": 712, "w": "style", "m": "スタイル"}, {"no": 713, "w": "formal", "m": "正式の"}, {"no": 714, "w": "tight", "m": "きつい"}, {"no": 715, "w": "loose", "m": "ゆったりした"}, {"no": 716, "w": "wear", "m": "着ている，身につけている"}, {"no": 717, "w": "clothes", "m": "衣服，衣類"}, {"no": 718, "w": "dress", "m": "衣服を着せる"}, {"no": 719, "w": "costume", "m": "衣装，仮装"}, {"no": 720, "w": "tie", "m": "結ぶ"}, {"no": 721, "w": "sew", "m": "縫う，縫い付ける"}, {"no": 722, "w": "frame", "m": "フレーム"}, {"no": 723, "w": "button", "m": "ボタン"}, {"no": 724, "w": "ring", "m": "指輪"}, {"no": 725, "w": "jewel", "m": "宝石"}, {"no": 726, "w": "wallet", "m": "財布"}, {"no": 727, "w": "mobile", "m": "携帯電話"}, {"no": 728, "w": "portable", "m": "持ち運びできる"}, {"no": 729, "w": "umbrella", "m": "傘"}, {"no": 730, "w": "silk", "m": "絹，絹糸"}, {"no": 731, "w": "cotton", "m": "綿"}, {"no": 732, "w": "leather", "m": "革"}, {"no": 733, "w": "feather", "m": "羽，羽毛"}, {"no": 734, "w": "meal", "m": "食事"}, {"no": 735, "w": "supper", "m": "夕食"}, {"no": 736, "w": "snack", "m": "軽食"}, {"no": 737, "w": "dessert", "m": "デザート"}, {"no": 738, "w": "diet", "m": "ダイエット"}, {"no": 739, "w": "chopstick", "m": "箸"}, {"no": 740, "w": "bite", "m": "噛む"}, {"no": 741, "w": "flavor", "m": "風味，味"}, {"no": 742, "w": "delicious", "m": "とてもおいしい"}, {"no": 743, "w": "bitter", "m": "苦い"}, {"no": 744, "w": "sour", "m": "酸っぱい"}, {"no": 745, "w": "recipe", "m": "調理法，レシピ"}, {"no": 746, "w": "mix", "m": "混ぜる"}, {"no": 747, "w": "pour", "m": "注ぐ，かける"}, {"no": 748, "w": "fry", "m": "炒める，揚げる"}, {"no": 749, "w": "boil", "m": "ゆでる，煮る"}, {"no": 750, "w": "steam", "m": "蒸す"}, {"no": 751, "w": "bake", "m": "（パンなどを）焼く"}, {"no": 752, "w": "harvest", "m": "収穫，収穫物"}, {"no": 753, "w": "vegetable", "m": "野菜"}, {"no": 754, "w": "meat", "m": "肉"}, {"no": 755, "w": "wheat", "m": "小麦"}, {"no": 756, "w": "flour", "m": "小麦粉"}, {"no": 757, "w": "honey", "m": "ハチミツ"}, {"no": 758, "w": "salt", "m": "塩"}, {"no": 759, "w": "menu", "m": "メニュー"}, {"no": 760, "w": "choice", "m": "選択"}, {"no": 761, "w": "service", "m": "サービス，応対"}, {"no": 762, "w": "tip", "m": "チップ"}, {"no": 763, "w": "cancel", "m": "取り消す，中止する"}, {"no": 764, "w": "culture", "m": "文化"}, {"no": 765, "w": "hobby", "m": "趣味"}, {"no": 766, "w": "amusement", "m": "楽しみ"}, {"no": 767, "w": "entertainment", "m": "娯楽"}, {"no": 768, "w": "collect", "m": "集める，収集する"}, {"no": 769, "w": "exhibit", "m": "展示する"}, {"no": 770, "w": "instrument", "m": "楽器"}, {"no": 771, "w": "tune", "m": "（音楽の）調子"}, {"no": 772, "w": "film", "m": "映画"}, {"no": 773, "w": "cartoon", "m": "（子供向けの）アニメ"}, {"no": 774, "w": "comic", "m": "漫画"}, {"no": 775, "w": "photograph", "m": "写真"}, {"no": 776, "w": "portrait", "m": "肖像画"}, {"no": 777, "w": "magic", "m": "手品"}, {"no": 778, "w": "tour", "m": "旅行，ツアー"}, {"no": 779, "w": "journey", "m": "旅行"}, {"no": 780, "w": "sightseeing", "m": "観光"}, {"no": 781, "w": "adventure", "m": "冒険"}, {"no": 782, "w": "explore", "m": "探検する"}, {"no": 783, "w": "wander", "m": "歩き回る，ぶらつく"}, {"no": 784, "w": "camp", "m": "キャンプ"}, {"no": 785, "w": "tourist", "m": "観光客"}, {"no": 786, "w": "passenger", "m": "乗客"}, {"no": 787, "w": "guide", "m": "ガイド，案内人"}, {"no": 788, "w": "vacation", "m": "休暇"}, {"no": 789, "w": "souvenir", "m": "お土産"}, {"no": 790, "w": "pack", "m": "荷物を詰める"}, {"no": 791, "w": "win", "m": "勝つ"}, {"no": 792, "w": "victory", "m": "勝利"}, {"no": 793, "w": "record", "m": "記録"}, {"no": 794, "w": "score", "m": "得点，スコア"}, {"no": 795, "w": "prize", "m": "賞"}, {"no": 796, "w": "award", "m": "賞，賞金"}, {"no": 797, "w": "race", "m": "競争，人種"}, {"no": 798, "w": "match", "m": "試合"}, {"no": 799, "w": "tournament", "m": "トーナメント"}, {"no": 800, "w": "professional", "m": "プロの"}], "9": [{"no": 801, "w": "athlete", "m": "運動選手"}, {"no": 802, "w": "coach", "m": "コーチ，指導員"}, {"no": 803, "w": "rival", "m": "ライバル，競争相手"}, {"no": 804, "w": "train", "m": "訓練する，トレーニングする"}, {"no": 805, "w": "exercise", "m": "運動する"}, {"no": 806, "w": "practice", "m": "練習する"}, {"no": 807, "w": "indoor", "m": "屋内の，室内の"}, {"no": 808, "w": "flag", "m": "旗，国旗"}, {"no": 809, "w": "nature", "m": "自然"}, {"no": 810, "w": "climate", "m": "気候"}, {"no": 811, "w": "forecast", "m": "予報，予測"}, {"no": 812, "w": "temperature", "m": "温度，気温"}, {"no": 813, "w": "wind", "m": "風"}, {"no": 814, "w": "breeze", "m": "そよ風"}, {"no": 815, "w": "storm", "m": "嵐"}, {"no": 816, "w": "thunder", "m": "雷，雷鳴"}, {"no": 817, "w": "wave", "m": "波"}, {"no": 818, "w": "ray", "m": "光線"}, {"no": 819, "w": "sunlight", "m": "日光"}, {"no": 820, "w": "sunshine", "m": "日差し，日なた"}, {"no": 821, "w": "sunset", "m": "日没，夕焼け"}, {"no": 822, "w": "landscape", "m": "風景，景色"}, {"no": 823, "w": "continent", "m": "大陸"}, {"no": 824, "w": "ocean", "m": "海，大洋"}, {"no": 825, "w": "island", "m": "島"}, {"no": 826, "w": "ground", "m": "地面"}, {"no": 827, "w": "cave", "m": "洞窟"}, {"no": 828, "w": "bay", "m": "湾，入り江"}, {"no": 829, "w": "coast", "m": "海岸，沿岸"}, {"no": 830, "w": "shore", "m": "岸"}, {"no": 831, "w": "horizon", "m": "地平線，水平線"}, {"no": 832, "w": "valley", "m": "谷，盆地"}, {"no": 833, "w": "desert", "m": "砂漠"}, {"no": 834, "w": "sand", "m": "砂"}, {"no": 835, "w": "mud", "m": "泥"}, {"no": 836, "w": "rock", "m": "岩，岩石"}, {"no": 837, "w": "environment", "m": "環境"}, {"no": 838, "w": "recycle", "m": "再処理する，リサイクルする"}, {"no": 839, "w": "pollution", "m": "汚染，公害"}, {"no": 840, "w": "disaster", "m": "災害"}, {"no": 841, "w": "earthquake", "m": "地震"}, {"no": 842, "w": "flood", "m": "洪水"}, {"no": 843, "w": "rescue", "m": "救助する"}, {"no": 844, "w": "creature", "m": "生き物，動物"}, {"no": 845, "w": "species", "m": "種"}, {"no": 846, "w": "wild", "m": "野生の"}, {"no": 847, "w": "wildlife", "m": "野生動物"}, {"no": 848, "w": "insect", "m": "昆虫"}, {"no": 849, "w": "dinosaur", "m": "恐竜"}, {"no": 850, "w": "hunt", "m": "狩りをする"}, {"no": 851, "w": "bark", "m": "吠える"}, {"no": 852, "w": "nest", "m": "巣"}, {"no": 853, "w": "wood", "m": "森"}, {"no": 854, "w": "bush", "m": "茂み"}, {"no": 855, "w": "branch", "m": "枝"}, {"no": 856, "w": "root", "m": "根"}, {"no": 857, "w": "grass", "m": "芝生，草"}, {"no": 858, "w": "leaf", "m": "葉"}, {"no": 859, "w": "bloom", "m": "開花"}, {"no": 860, "w": "seed", "m": "種"}, {"no": 861, "w": "human", "m": "人間の"}, {"no": 862, "w": "person", "m": "人，人間"}, {"no": 863, "w": "people", "m": "人々"}, {"no": 864, "w": "crowd", "m": "群衆，人混み"}, {"no": 865, "w": "generation", "m": "世代"}, {"no": 866, "w": "male", "m": "男性の，雄の"}, {"no": 867, "w": "female", "m": "女性の，雌の"}, {"no": 868, "w": "gender", "m": "ジェンダー，性"}, {"no": 869, "w": "neighbor", "m": "隣人"}, {"no": 870, "w": "stranger", "m": "（その土地に）不案内な人"}, {"no": 871, "w": "birth", "m": "誕生"}, {"no": 872, "w": "childhood", "m": "子供時代"}, {"no": 873, "w": "youth", "m": "青年時代"}, {"no": 874, "w": "teenager", "m": "13歳から19歳までの若者"}, {"no": 875, "w": "adult", "m": "大人，成人"}, {"no": 876, "w": "junior", "m": "年少者"}, {"no": 877, "w": "senior", "m": "年長者，高齢者"}, {"no": 878, "w": "elderly", "m": "年配の"}, {"no": 879, "w": "dead", "m": "死んでいる"}, {"no": 880, "w": "age", "m": "年齢"}, {"no": 881, "w": "physical", "m": "身体の，肉体の"}, {"no": 882, "w": "condition", "m": "状態，体調"}, {"no": 883, "w": "function", "m": "機能，働き"}, {"no": 884, "w": "sight", "m": "視力"}, {"no": 885, "w": "weight", "m": "体重"}, {"no": 886, "w": "fat", "m": "太った"}, {"no": 887, "w": "thin", "m": "やせた"}, {"no": 888, "w": "slim", "m": "ほっそりした，スリムな"}, {"no": 889, "w": "ugly", "m": "醜い，不格好な"}, {"no": 890, "w": "thirsty", "m": "喉の渇いた"}, {"no": 891, "w": "tear", "m": "涙"}, {"no": 892, "w": "sweat", "m": "汗"}, {"no": 893, "w": "hospital", "m": "病院"}, {"no": 894, "w": "ambulance", "m": "救急車"}, {"no": 895, "w": "wheelchair", "m": "車椅子"}, {"no": 896, "w": "patient", "m": "患者"}, {"no": 897, "w": "disease", "m": "病気"}, {"no": 898, "w": "illness", "m": "病気"}, {"no": 899, "w": "ill", "m": "病気で，気分が悪い"}, {"no": 900, "w": "pain", "m": "痛み"}], "10": [{"no": 901, "w": "injure", "m": "傷つける，痛める"}, {"no": 902, "w": "headache", "m": "頭痛"}, {"no": 903, "w": "cancer", "m": "癌"}, {"no": 904, "w": "breathe", "m": "呼吸する"}, {"no": 905, "w": "touch", "m": "触れる"}, {"no": 906, "w": "pat", "m": "（手のひらで）軽くたたく"}, {"no": 907, "w": "shout", "m": "叫ぶ，大声で話す"}, {"no": 908, "w": "scream", "m": "金切り声を出す"}, {"no": 909, "w": "whisper", "m": "ささやく"}, {"no": 910, "w": "bow", "m": "おじぎをする"}, {"no": 911, "w": "bend", "m": "かがむ"}, {"no": 912, "w": "forehead", "m": "額"}, {"no": 913, "w": "cheek", "m": "頬"}, {"no": 914, "w": "lip", "m": "唇"}, {"no": 915, "w": "tooth", "m": "歯"}, {"no": 916, "w": "throat", "m": "喉"}, {"no": 917, "w": "shoulder", "m": "肩"}, {"no": 918, "w": "chest", "m": "胸"}, {"no": 919, "w": "elbow", "m": "肘"}, {"no": 920, "w": "finger", "m": "（手の）指"}, {"no": 921, "w": "thumb", "m": "（手の）親指"}, {"no": 922, "w": "nail", "m": "爪"}, {"no": 923, "w": "toe", "m": "（足の）指，つま先"}, {"no": 924, "w": "ankle", "m": "足首"}, {"no": 925, "w": "skin", "m": "皮膚，肌"}, {"no": 926, "w": "brain", "m": "脳"}, {"no": 927, "w": "heart", "m": "心臓"}, {"no": 928, "w": "stomach", "m": "胃"}, {"no": 929, "w": "blood", "m": "血液"}, {"no": 930, "w": "bone", "m": "骨"}, {"no": 931, "w": "muscle", "m": "筋肉"}, {"no": 932, "w": "emotion", "m": "感情"}, {"no": 933, "w": "mind", "m": "心，精神"}, {"no": 934, "w": "mental", "m": "心の，精神の"}, {"no": 935, "w": "pleasant", "m": "楽しい"}, {"no": 936, "w": "suffer", "m": "苦しむ"}, {"no": 937, "w": "upset", "m": "取り乱して，動転して"}, {"no": 938, "w": "nervous", "m": "心配して，緊張して"}, {"no": 939, "w": "lonely", "m": "孤独な，ひとりぼっちの"}, {"no": 940, "w": "shocked", "m": "ショックを受けた"}, {"no": 941, "w": "stress", "m": "ストレス"}, {"no": 942, "w": "mad", "m": "怒って"}, {"no": 943, "w": "anger", "m": "怒り"}, {"no": 944, "w": "joy", "m": "喜び"}, {"no": 945, "w": "relaxed", "m": "くつろいだ"}, {"no": 946, "w": "fear", "m": "恐怖"}, {"no": 947, "w": "panic", "m": "パニック"}, {"no": 948, "w": "character", "m": "性格"}, {"no": 949, "w": "humor", "m": "ユーモア"}, {"no": 950, "w": "frank", "m": "率直な"}, {"no": 951, "w": "cheerful", "m": "元気な，陽気な"}, {"no": 952, "w": "friendly", "m": "親切な，好意的な"}, {"no": 953, "w": "gentle", "m": "優しい"}, {"no": 954, "w": "calm", "m": "落ち着いた"}, {"no": 955, "w": "lively", "m": "元気な，活発な"}, {"no": 956, "w": "shy", "m": "恥ずかしがりの"}, {"no": 957, "w": "strict", "m": "厳しい，厳格な"}, {"no": 958, "w": "positive", "m": "前向きの，積極的な"}, {"no": 959, "w": "negative", "m": "後ろ向きの，消極的な"}, {"no": 960, "w": "active", "m": "活動的な，活発な"}, {"no": 961, "w": "lazy", "m": "怠惰な"}, {"no": 962, "w": "communication", "m": "コミュニケーション，意思伝達"}, {"no": 963, "w": "greet", "m": "挨拶する"}, {"no": 964, "w": "conversation", "m": "会話"}, {"no": 965, "w": "chat", "m": "おしゃべりする"}, {"no": 966, "w": "text", "m": "メッセージを送る"}, {"no": 967, "w": "e-mail", "m": "Eメール"}, {"no": 968, "w": "address", "m": "住所，アドレス"}, {"no": 969, "w": "translate", "m": "翻訳する"}, {"no": 970, "w": "argue", "m": "口論する，言い争う"}, {"no": 971, "w": "claim", "m": "主張する"}, {"no": 972, "w": "insist", "m": "強く主張する"}, {"no": 973, "w": "praise", "m": "ほめる，賞賛する"}, {"no": 974, "w": "debate", "m": "討論，ディベート"}, {"no": 975, "w": "blame", "m": "非難する"}, {"no": 976, "w": "joke", "m": "冗談"}, {"no": 977, "w": "pronounce", "m": "発音する"}, {"no": 978, "w": "express", "m": "言い表す"}, {"no": 979, "w": "state", "m": "はっきりと述べる"}, {"no": 980, "w": "define", "m": "定義する"}, {"no": 981, "w": "describe", "m": "特徴を述べる"}, {"no": 982, "w": "refer", "m": "言及する"}, {"no": 983, "w": "predict", "m": "予測する，予言する"}, {"no": 984, "w": "comment", "m": "論評，コメント"}, {"no": 985, "w": "term", "m": "用語，専門用語"}, {"no": 986, "w": "publish", "m": "出版する"}, {"no": 987, "w": "novel", "m": "小説"}, {"no": 988, "w": "fiction", "m": "フィクション，作り話"}, {"no": 989, "w": "essay", "m": "小論文，エッセイ"}, {"no": 990, "w": "newspaper", "m": "新聞"}, {"no": 991, "w": "magazine", "m": "雑誌"}, {"no": 992, "w": "journal", "m": "専門誌"}, {"no": 993, "w": "article", "m": "記事"}, {"no": 994, "w": "title", "m": "題名，タイトル"}, {"no": 995, "w": "poem", "m": "詩"}, {"no": 996, "w": "tale", "m": "話，物語"}, {"no": 997, "w": "chapter", "m": "章"}, {"no": 998, "w": "education", "m": "教育"}, {"no": 999, "w": "knowledge", "m": "知識"}, {"no": 1000, "w": "intelligent", "m": "知能の高い"}], "11": [{"no": 1001, "w": "logic", "m": "論理"}, {"no": 1002, "w": "talent", "m": "才能"}, {"no": 1003, "w": "master", "m": "習得する"}, {"no": 1004, "w": "solve", "m": "解く，解決する"}, {"no": 1005, "w": "review", "m": "復習する，論評する"}, {"no": 1006, "w": "textbook", "m": "教科書"}, {"no": 1007, "w": "dictionary", "m": "辞書"}, {"no": 1008, "w": "lecture", "m": "講義"}, {"no": 1009, "w": "subject", "m": "科目"}, {"no": 1010, "w": "mathematics", "m": "数学"}, {"no": 1011, "w": "biology", "m": "生物学"}, {"no": 1012, "w": "elementary", "m": "初等の"}, {"no": 1013, "w": "college", "m": "大学"}, {"no": 1014, "w": "university", "m": "総合大学"}, {"no": 1015, "w": "scholar", "m": "学者"}, {"no": 1016, "w": "enter", "m": "入学する，入る"}, {"no": 1017, "w": "attend", "m": "出席する"}, {"no": 1018, "w": "absent", "m": "欠席の"}, {"no": 1019, "w": "graduate", "m": "卒業する"}, {"no": 1020, "w": "grade", "m": "成績，評点"}, {"no": 1021, "w": "quiz", "m": "小テスト"}, {"no": 1022, "w": "homework", "m": "宿題"}, {"no": 1023, "w": "science", "m": "科学"}, {"no": 1024, "w": "chemical", "m": "化学の"}, {"no": 1025, "w": "experiment", "m": "実験"}, {"no": 1026, "w": "element", "m": "元素"}, {"no": 1027, "w": "oxygen", "m": "酸素"}, {"no": 1028, "w": "technology", "m": "科学技術"}, {"no": 1029, "w": "advance", "m": "進歩"}, {"no": 1030, "w": "machine", "m": "機械"}, {"no": 1031, "w": "automatic", "m": "自動の"}, {"no": 1032, "w": "invent", "m": "発明する"}, {"no": 1033, "w": "operate", "m": "操作する"}, {"no": 1034, "w": "artificial", "m": "人工の"}, {"no": 1035, "w": "web", "m": "ウェブ"}, {"no": 1036, "w": "material", "m": "材料，原料"}, {"no": 1037, "w": "resource", "m": "資源"}, {"no": 1038, "w": "energy", "m": "エネルギー"}, {"no": 1039, "w": "electricity", "m": "電気，電力"}, {"no": 1040, "w": "battery", "m": "バッテリー，電池"}, {"no": 1041, "w": "oil", "m": "石油"}, {"no": 1042, "w": "gas", "m": "ガス"}, {"no": 1043, "w": "coal", "m": "石炭"}, {"no": 1044, "w": "metal", "m": "金属"}, {"no": 1045, "w": "steel", "m": "鋼鉄"}, {"no": 1046, "w": "nuclear", "m": "核の，原子力の"}, {"no": 1047, "w": "universe", "m": "宇宙"}, {"no": 1048, "w": "planet", "m": "惑星"}, {"no": 1049, "w": "astronaut", "m": "宇宙飛行士"}, {"no": 1050, "w": "earth", "m": "地球，地面"}, {"no": 1051, "w": "cash", "m": "現金"}, {"no": 1052, "w": "earn", "m": "（お金を）得る"}, {"no": 1053, "w": "reward", "m": "報酬"}, {"no": 1054, "w": "income", "m": "収入"}, {"no": 1055, "w": "budget", "m": "予算"}, {"no": 1056, "w": "tax", "m": "税金"}, {"no": 1057, "w": "consume", "m": "消費する"}, {"no": 1058, "w": "benefit", "m": "利益，恩恵"}, {"no": 1059, "w": "wealth", "m": "富，財産"}, {"no": 1060, "w": "price", "m": "価格"}, {"no": 1061, "w": "cheap", "m": "安い"}, {"no": 1062, "w": "reasonable", "m": "（値段が）手頃な"}, {"no": 1063, "w": "sale", "m": "特売"}, {"no": 1064, "w": "charge", "m": "（サービスへの）料金"}, {"no": 1065, "w": "advertisement", "m": "広告"}, {"no": 1066, "w": "commercial", "m": "営利的な，商業的な"}, {"no": 1067, "w": "trade", "m": "貿易，取引"}, {"no": 1068, "w": "import", "m": "輸入する"}, {"no": 1069, "w": "export", "m": "輸出する"}, {"no": 1070, "w": "factory", "m": "工場"}, {"no": 1071, "w": "agriculture", "m": "農業"}, {"no": 1072, "w": "society", "m": "社会"}, {"no": 1073, "w": "community", "m": "地域社会"}, {"no": 1074, "w": "organization", "m": "組織，団体"}, {"no": 1075, "w": "committee", "m": "委員会"}, {"no": 1076, "w": "charity", "m": "慈善事業"}, {"no": 1077, "w": "citizen", "m": "国民，市民"}, {"no": 1078, "w": "duty", "m": "義務"}, {"no": 1079, "w": "law", "m": "法律"}, {"no": 1080, "w": "judge", "m": "裁判官"}, {"no": 1081, "w": "court", "m": "法廷，裁判所"}, {"no": 1082, "w": "guard", "m": "警戒，見張り"}, {"no": 1083, "w": "arrest", "m": "逮捕する"}, {"no": 1084, "w": "punish", "m": "罰する"}, {"no": 1085, "w": "crime", "m": "犯罪"}, {"no": 1086, "w": "murder", "m": "殺人，殺人事件"}, {"no": 1087, "w": "shoot", "m": "（銃で）撃つ"}, {"no": 1088, "w": "steal", "m": "盗む"}, {"no": 1089, "w": "rob", "m": "奪う"}, {"no": 1090, "w": "thief", "m": "泥棒"}, {"no": 1091, "w": "victim", "m": "犠牲者"}, {"no": 1092, "w": "drug", "m": "薬物"}, {"no": 1093, "w": "poverty", "m": "貧困"}, {"no": 1094, "w": "government", "m": "政府"}, {"no": 1095, "w": "policy", "m": "政策，方針"}, {"no": 1096, "w": "nation", "m": "国家"}, {"no": 1097, "w": "capital", "m": "首都"}, {"no": 1098, "w": "international", "m": "国際的な，国家間の"}, {"no": 1099, "w": "global", "m": "全世界の，地球全体の"}, {"no": 1100, "w": "election", "m": "選挙"}], "12": [{"no": 1101, "w": "vote", "m": "投票をする"}, {"no": 1102, "w": "president", "m": "大統領"}, {"no": 1103, "w": "liberty", "m": "自由"}, {"no": 1104, "w": "fight", "m": "戦う"}, {"no": 1105, "w": "war", "m": "戦争，戦争状態"}, {"no": 1106, "w": "military", "m": "軍の，軍隊の"}, {"no": 1107, "w": "army", "m": "軍隊，陸軍"}, {"no": 1108, "w": "soldier", "m": "兵士"}, {"no": 1109, "w": "weapon", "m": "武器，兵器"}, {"no": 1110, "w": "bomb", "m": "爆弾"}, {"no": 1111, "w": "break out", "m": "突然起こる，勃発する"}, {"no": 1112, "w": "come across", "m": "〜に偶然会う，〜をふと見つける"}, {"no": 1113, "w": "come out", "m": "発売される"}, {"no": 1114, "w": "come up with", "m": "〜を思いつく"}, {"no": 1115, "w": "count on [upon]", "m": "〜に頼る，〜を当てにする"}, {"no": 1116, "w": "cut down [back] on", "m": "〜を減らす"}, {"no": 1117, "w": "die out", "m": "（消えて）なくなる，絶滅する"}, {"no": 1118, "w": "drop in [on]", "m": "ちょっと訪れる"}, {"no": 1119, "w": "feel free to", "m": "自由に…する"}, {"no": 1120, "w": "get along (with)", "m": "仲よくやっている"}, {"no": 1121, "w": "get out of", "m": "〜から逃れる"}, {"no": 1122, "w": "get over", "m": "〜から回復する，立ち直る"}, {"no": 1123, "w": "get through", "m": "〜を切り抜ける"}, {"no": 1124, "w": "give way (to)", "m": "譲歩する，屈する"}, {"no": 1125, "w": "go along with", "m": "〜に賛成する，を支持する"}, {"no": 1126, "w": "head for", "m": "〜に向かう"}, {"no": 1127, "w": "keep [bear] in mind", "m": "〜を心に留めておく"}, {"no": 1128, "w": "keep [stay] in touch (with)", "m": "連絡を取り続ける"}, {"no": 1129, "w": "learn (how) to", "m": "…できるようになる"}, {"no": 1130, "w": "look back (on)", "m": "回想する，振り返る"}, {"no": 1131, "w": "look into", "m": "〜を調査する"}, {"no": 1132, "w": "look over", "m": "〜をざっと調べる，〜に目を通す"}, {"no": 1133, "w": "look up to", "m": "〜を尊敬する"}, {"no": 1134, "w": "make a difference (to)", "m": "影響がある，重要である"}, {"no": 1135, "w": "make [earn] a living", "m": "生計を立てる"}, {"no": 1136, "w": "make up", "m": "〜を構成する"}, {"no": 1137, "w": "pass away", "m": "亡くなる"}, {"no": 1138, "w": "point out", "m": "〜を指摘する"}, {"no": 1139, "w": "put off", "m": "〜を延期する"}, {"no": 1140, "w": "put together", "m": "〜を組み立てる，まとめ上げる"}, {"no": 1141, "w": "put up with", "m": "〜を我慢する"}, {"no": 1142, "w": "run after", "m": "〜を追いかける"}, {"no": 1143, "w": "run away (from)", "m": "逃げる"}, {"no": 1144, "w": "run out of", "m": "〜を使い果たす"}, {"no": 1145, "w": "stand for", "m": "〜を意味する，〜の略称である"}, {"no": 1146, "w": "stand out", "m": "ずば抜けている"}, {"no": 1147, "w": "take A for B", "m": "AをBだと思う"}, {"no": 1148, "w": "take place", "m": "起こる，行われる"}, {"no": 1149, "w": "take up", "m": "〜を始める"}, {"no": 1150, "w": "work on", "m": "〜に取り組む"}, {"no": 1151, "w": "all at once", "m": "（予期せず）突然"}, {"no": 1152, "w": "all the way", "m": "はるばる，ずっと"}, {"no": 1153, "w": "along with", "m": "〜と一緒に，〜に加えて"}, {"no": 1154, "w": "at least", "m": "少なくとも"}, {"no": 1155, "w": "at (the) most", "m": "せいぜい，多くても"}, {"no": 1156, "w": "by way of", "m": "〜を通って"}, {"no": 1157, "w": "for some time", "m": "かなり長い間"}, {"no": 1158, "w": "face to face (with)", "m": "面と向かって"}, {"no": 1159, "w": "first of all", "m": "まず第一に"}, {"no": 1160, "w": "in advance", "m": "あらかじめ，〜前に"}, {"no": 1161, "w": "in all", "m": "全部で"}, {"no": 1162, "w": "in place of", "m": "〜の代わりに"}, {"no": 1163, "w": "in return (for)", "m": "お返しに"}, {"no": 1164, "w": "in the long run", "m": "長い目で見れば"}, {"no": 1165, "w": "in time (for)", "m": "間に合うように，遅れずに"}, {"no": 1166, "w": "on sale", "m": "販売されて"}, {"no": 1167, "w": "on time", "m": "時間通りに，定刻に"}, {"no": 1168, "w": "one by one", "m": "１つずつ，１人ずつ"}, {"no": 1169, "w": "out of the question", "m": "論外で，不可能で"}, {"no": 1170, "w": "side by side (with)", "m": "（横に）並んで"}, {"no": 1171, "w": "become", "m": "になる"}, {"no": 1172, "w": "turn", "m": "になる，変わる"}, {"no": 1173, "w": "remain", "m": "のままである"}, {"no": 1174, "w": "smell", "m": "のにおいがする"}, {"no": 1175, "w": "taste", "m": "の味がする"}, {"no": 1176, "w": "take", "m": "連れて行く，持って行く"}, {"no": 1177, "w": "put", "m": "置く，入れる"}, {"no": 1178, "w": "set", "m": "置く，配置する"}, {"no": 1179, "w": "spread", "m": "広げる"}, {"no": 1180, "w": "fold", "m": "折る，折りたたむ"}, {"no": 1181, "w": "show", "m": "見せる，示す"}, {"no": 1182, "w": "give", "m": "与える，あげる"}, {"no": 1183, "w": "choose", "m": "選ぶ"}, {"no": 1184, "w": "pay", "m": "支払う"}, {"no": 1185, "w": "leave", "m": "残しておく"}, {"no": 1186, "w": "offer", "m": "申し出る"}, {"no": 1187, "w": "bring", "m": "持ってくる，連れてくる"}, {"no": 1188, "w": "send", "m": "送る"}, {"no": 1189, "w": "pass", "m": "手渡す"}, {"no": 1190, "w": "sell", "m": "売る"}, {"no": 1191, "w": "draw", "m": "描く，引く"}, {"no": 1192, "w": "owe", "m": "にお金を借りている"}, {"no": 1193, "w": "lend", "m": "貸す"}, {"no": 1194, "w": "envy", "m": "うらやむ"}, {"no": 1195, "w": "make", "m": "（ある状態）にする"}, {"no": 1196, "w": "find", "m": "見つける、気づく"}, {"no": 1197, "w": "keep", "m": "保つ"}, {"no": 1198, "w": "call", "m": "と呼ぶ"}, {"no": 1199, "w": "know", "m": "知っている"}, {"no": 1200, "w": "understand", "m": "理解する，わかる"}], "13": [{"no": 1201, "w": "believe", "m": "信じる，信用する"}, {"no": 1202, "w": "notice", "m": "気づく"}, {"no": 1203, "w": "exist", "m": "存在する"}, {"no": 1204, "w": "discuss", "m": "について議論する"}, {"no": 1205, "w": "agree", "m": "意見が一致する"}, {"no": 1206, "w": "disagree", "m": "意見が異なる"}, {"no": 1207, "w": "raise", "m": "上げる"}, {"no": 1208, "w": "rise", "m": "上がる"}, {"no": 1209, "w": "approach", "m": "近づく，接近する"}, {"no": 1210, "w": "complain", "m": "不平［苦情］を言う"}, {"no": 1211, "w": "lie", "m": "横たわる，ある"}, {"no": 1212, "w": "lay", "m": "横たえる，置く"}, {"no": 1213, "w": "marry", "m": "と結婚する"}, {"no": 1214, "w": "order", "m": "命じる"}, {"no": 1215, "w": "demand", "m": "要求する"}, {"no": 1216, "w": "request", "m": "頼む，要請する"}, {"no": 1217, "w": "seem", "m": "のように思える"}, {"no": 1218, "w": "appear", "m": "のように見える［思える］"}, {"no": 1219, "w": "prove", "m": "と判明する"}, {"no": 1220, "w": "tell", "m": "伝える，言う"}, {"no": 1221, "w": "expect", "m": "予期［予想］する"}, {"no": 1222, "w": "warn", "m": "に警告［注意］する"}, {"no": 1223, "w": "forbid", "m": "禁ずる"}, {"no": 1224, "w": "feel", "m": "感じる"}, {"no": 1225, "w": "hear", "m": "が聞こえる"}, {"no": 1226, "w": "watch", "m": "（じっと）見る"}, {"no": 1227, "w": "decide", "m": "決める"}, {"no": 1228, "w": "manage", "m": "何とかやり遂げる"}, {"no": 1229, "w": "promise", "m": "約束する"}, {"no": 1230, "w": "afford", "m": "の余裕がある"}, {"no": 1231, "w": "pretend", "m": "ふりをする"}, {"no": 1232, "w": "refuse", "m": "断る，拒否する"}, {"no": 1233, "w": "consider", "m": "よく考える"}, {"no": 1234, "w": "stop", "m": "やめる"}, {"no": 1235, "w": "finish", "m": "終える"}, {"no": 1236, "w": "avoid", "m": "避ける"}, {"no": 1237, "w": "imagine", "m": "想像する"}, {"no": 1238, "w": "escape", "m": "逃れる，免れる"}, {"no": 1239, "w": "quit", "m": "やめる"}, {"no": 1240, "w": "dislike", "m": "嫌う"}, {"no": 1241, "w": "start", "m": "始める，出発する"}, {"no": 1242, "w": "begin", "m": "始める"}, {"no": 1243, "w": "continue", "m": "続ける"}, {"no": 1244, "w": "prefer", "m": "の方を好む"}, {"no": 1245, "w": "hate", "m": "ひどく嫌う，憎む"}, {"no": 1246, "w": "try", "m": "試みる"}, {"no": 1247, "w": "remember", "m": "覚えている，思い出す"}, {"no": 1248, "w": "forget", "m": "忘れる"}, {"no": 1249, "w": "regret", "m": "後悔する"}, {"no": 1250, "w": "air", "m": "空気，大気"}, {"no": 1251, "w": "cloth", "m": "布，布地"}, {"no": 1252, "w": "paper", "m": "紙"}, {"no": 1253, "w": "iron", "m": "鉄，鉄分"}, {"no": 1254, "w": "audience", "m": "聴衆，観客"}, {"no": 1255, "w": "police", "m": "警察官"}, {"no": 1256, "w": "staff", "m": "スタッフ，職員"}, {"no": 1257, "w": "furniture", "m": "家具"}, {"no": 1258, "w": "stuff", "m": "（漠然と）物，こと"}, {"no": 1259, "w": "baggage", "m": "手荷物"}, {"no": 1260, "w": "information", "m": "情報"}, {"no": 1261, "w": "ability", "m": "能力"}, {"no": 1262, "w": "advice", "m": "助言，忠告"}, {"no": 1263, "w": "beauty", "m": "美，美しさ"}, {"no": 1264, "w": "death", "m": "死"}, {"no": 1265, "w": "freedom", "m": "自由"}, {"no": 1266, "w": "peace", "m": "平和"}, {"no": 1267, "w": "customer", "m": "（店の）客，顧客"}, {"no": 1268, "w": "guest", "m": "（招待）客，ゲスト"}, {"no": 1269, "w": "habit", "m": "（個人の）習慣，癖"}, {"no": 1270, "w": "custom", "m": "（社会的）慣習，風習"}, {"no": 1271, "w": "fee", "m": "（入場・加入などの）料金，会費"}, {"no": 1272, "w": "fare", "m": "（交通機関の）運賃，料金"}, {"no": 1273, "w": "appointment", "m": "（面会の）約束，（医者などの）予約"}, {"no": 1274, "w": "idea", "m": "考え，アイデア"}, {"no": 1275, "w": "fact", "m": "事実，現実"}, {"no": 1276, "w": "feeling", "m": "気持ち，感情"}, {"no": 1277, "w": "evidence", "m": "証拠"}, {"no": 1278, "w": "other", "m": "もう一方"}, {"no": 1279, "w": "another", "m": "別の物［人］"}, {"no": 1280, "w": "each", "m": "それぞれ"}, {"no": 1281, "w": "both", "m": "両方"}, {"no": 1282, "w": "either", "m": "（二者のうち）どちらか，どちらでも"}, {"no": 1283, "w": "neither", "m": "（二者のうち）どちらも…ない"}, {"no": 1284, "w": "none", "m": "どれ［誰］も…ない"}, {"no": 1285, "w": "something", "m": "何か"}, {"no": 1286, "w": "anything", "m": "何も（〜ない），何か，何でも"}, {"no": 1287, "w": "nothing", "m": "何も〜ない"}, {"no": 1288, "w": "everything", "m": "すべての物［こと］"}, {"no": 1289, "w": "everyone", "m": "みんな，誰でも"}, {"no": 1290, "w": "someone", "m": "誰か，ある人"}, {"no": 1291, "w": "anyone", "m": "誰か，誰も（〜ない），誰でも"}, {"no": 1292, "w": "nobody", "m": "誰も〜ない"}, {"no": 1293, "w": "main", "m": "主な，主要な"}, {"no": 1294, "w": "daily", "m": "毎日の，日々の"}, {"no": 1295, "w": "alone", "m": "ただ１人で"}, {"no": 1296, "w": "aware", "m": "気づいて"}, {"no": 1297, "w": "awake", "m": "目が覚めて"}, {"no": 1298, "w": "asleep", "m": "眠って"}, {"no": 1299, "w": "alive", "m": "生きて（いる）"}, {"no": 1300, "w": "alike", "m": "似ている，同様な"}], "14": [{"no": 1301, "w": "right", "m": "右の，正しい"}, {"no": 1302, "w": "present", "m": "現在の，出席して"}, {"no": 1303, "w": "certain", "m": "ある〜，確信して"}, {"no": 1304, "w": "interested", "m": "興味を持って"}, {"no": 1305, "w": "surprised", "m": "驚いて"}, {"no": 1306, "w": "tired", "m": "飽きて，うんざりして"}, {"no": 1307, "w": "pleased", "m": "喜んで"}, {"no": 1308, "w": "satisfied", "m": "満足して"}, {"no": 1309, "w": "bored", "m": "退屈して，うんざりして"}, {"no": 1310, "w": "excited", "m": "興奮して，わくわくして"}, {"no": 1311, "w": "confused", "m": "困惑［混乱］して"}, {"no": 1312, "w": "scared", "m": "怖がって"}, {"no": 1313, "w": "able", "m": "できる"}, {"no": 1314, "w": "likely", "m": "ありそうな"}, {"no": 1315, "w": "sure", "m": "確信して"}, {"no": 1316, "w": "ready", "m": "準備［用意］のできた"}, {"no": 1317, "w": "eager", "m": "熱望して"}, {"no": 1318, "w": "polite", "m": "礼儀正しい，丁寧な"}, {"no": 1319, "w": "clever", "m": "利口な"}, {"no": 1320, "w": "brave", "m": "勇敢な"}, {"no": 1321, "w": "wise", "m": "賢明な，賢い"}, {"no": 1322, "w": "rude", "m": "失礼な"}, {"no": 1323, "w": "silly", "m": "愚かな，ばかげた"}, {"no": 1324, "w": "foolish", "m": "愚かな，ばかげた"}, {"no": 1325, "w": "stupid", "m": "愚かな，ばかげた"}, {"no": 1326, "w": "careless", "m": "不注意な"}, {"no": 1327, "w": "important", "m": "重要な"}, {"no": 1328, "w": "necessary", "m": "必要な"}, {"no": 1329, "w": "proper", "m": "正当な，当然な"}, {"no": 1330, "w": "strange", "m": "奇妙な，不思議な"}, {"no": 1331, "w": "wrong", "m": "間違った"}, {"no": 1332, "w": "few", "m": "（可算名詞の前で）ほとんどない"}, {"no": 1333, "w": "little", "m": "（不可算名詞の前で）ほとんどない"}, {"no": 1334, "w": "late", "m": "遅れた／遅く，遅れて"}, {"no": 1335, "w": "far", "m": "遠い方の／遠くに［へ］"}, {"no": 1336, "w": "hard", "m": "難しい，困難な／懸命に，熱心に"}, {"no": 1337, "w": "fast", "m": "速い，素早い／速く"}, {"no": 1338, "w": "deep", "m": "深い／深く"}, {"no": 1339, "w": "direct", "m": "直接の／直接に，まっすぐ"}, {"no": 1340, "w": "well", "m": "健康で／十分に，よく"}, {"no": 1341, "w": "wide", "m": "広い／大きく，すっかり"}, {"no": 1342, "w": "pretty", "m": "かわいい／かなり"}, {"no": 1343, "w": "sharp", "m": "鋭い，とがった／ちょうど，きっかり"}, {"no": 1344, "w": "just", "m": "たった今，ちょうど（〜したばかり）"}, {"no": 1345, "w": "already", "m": "もう，すでに"}, {"no": 1346, "w": "recently", "m": "（ここ）最近"}, {"no": 1347, "w": "lately", "m": "（ここ）最近"}, {"no": 1348, "w": "yet", "m": "まだ（〜ない）"}, {"no": 1349, "w": "ever", "m": "これまでに，かつて"}, {"no": 1350, "w": "twice", "m": "２度，２回"}, {"no": 1351, "w": "only", "m": "だけ，しか（〜ない）"}, {"no": 1352, "w": "always", "m": "いつも，必ず"}, {"no": 1353, "w": "sometimes", "m": "時々"}, {"no": 1354, "w": "usually", "m": "たいてい，ふつうは"}, {"no": 1355, "w": "nearly", "m": "ほとんど，ほぼ"}, {"no": 1356, "w": "hardly", "m": "（程度が）ほとんど〜ない"}, {"no": 1357, "w": "while", "m": "…している間"}, {"no": 1358, "w": "unless", "m": "…でない限り，もし…でなければ"}, {"no": 1359, "w": "nor", "m": "もまた（…ない）"}, {"no": 1360, "w": "whatever", "m": "何が［を］…しようとも"}, {"no": 1361, "w": "whichever", "m": "どちらが［を］…しようとも"}, {"no": 1362, "w": "whenever", "m": "…するときはいつでも，…するたびに"}, {"no": 1363, "w": "wherever", "m": "…する所ならどこでも"}, {"no": 1364, "w": "cause", "m": "を引き起こす"}, {"no": 1365, "w": "allow", "m": "を可能にする"}, {"no": 1366, "w": "enable", "m": "を可能にする"}, {"no": 1367, "w": "prevent", "m": "を妨げる，中止させる"}, {"no": 1368, "w": "force", "m": "を強いる"}, {"no": 1369, "w": "cost", "m": "（金額・費用が）かかる"}, {"no": 1370, "w": "remind", "m": "に思い出させる"}, {"no": 1371, "w": "believe in", "m": "〜の存在を信じる"}, {"no": 1372, "w": "bring out", "m": "〜を引き出す"}, {"no": 1373, "w": "bring up", "m": "〜を育てる"}, {"no": 1374, "w": "call for", "m": "〜を必要とする"}, {"no": 1375, "w": "call off", "m": "〜を中止する，取り消す"}, {"no": 1376, "w": "decide on [upon]", "m": "〜に決める"}, {"no": 1377, "w": "feel like (-ing)", "m": "…したい気がする"}, {"no": 1378, "w": "give up (-ing)", "m": "…することをやめる，諦める"}, {"no": 1379, "w": "go on (-ing)", "m": "…し続ける"}, {"no": 1380, "w": "have [be] nothing to do with", "m": "〜と何も関係がない"}, {"no": 1381, "w": "lie in [with]", "m": "（責任・問題などが）〜にある"}, {"no": 1382, "w": "make it", "m": "うまくいく，成功する"}, {"no": 1383, "w": "make oneself understood", "m": "自分の考えが（相手に）通じる"}, {"no": 1384, "w": "pass on", "m": "伝える，渡す"}, {"no": 1385, "w": "put away", "m": "〜を片付ける"}, {"no": 1386, "w": "put on", "m": "〜を身につける，着る"}, {"no": 1387, "w": "show up", "m": "（人が）現れる，やって来る"}, {"no": 1388, "w": "take [have] a walk", "m": "散歩する"}, {"no": 1389, "w": "take time (to do)", "m": "（…するのに）時間がかかる"}, {"no": 1390, "w": "tell A from B", "m": "AとBを区別する"}, {"no": 1391, "w": "throw away", "m": "〜を捨てる"}, {"no": 1392, "w": "try on", "m": "〜を試着する"}, {"no": 1393, "w": "turn A into B", "m": "AをBに変える"}, {"no": 1394, "w": "turn off", "m": "〜を切る，消す"}, {"no": 1395, "w": "turn on", "m": "〜をつける"}, {"no": 1396, "w": "turn out to be", "m": "〜であることがわかる"}, {"no": 1397, "w": "turn over", "m": "〜をひっくり返す"}, {"no": 1398, "w": "be known for", "m": "〜のことで有名だ"}, {"no": 1399, "w": "be unable to", "m": "…することができない"}, {"no": 1400, "w": "be used to (-ing)", "m": "…することに慣れている"}], "15": [{"no": 1401, "w": "be willing to", "m": "…してもかまわない，…する気がある"}, {"no": 1402, "w": "as ~ as ever", "m": "相変わらず〜で"}, {"no": 1403, "w": "as usual", "m": "いつものように"}, {"no": 1404, "w": "as well", "m": "〜もまた，同じように"}, {"no": 1405, "w": "at a loss", "m": "途方に暮れて，困って"}, {"no": 1406, "w": "at present", "m": "現在，目下"}, {"no": 1407, "w": "at the age of", "m": "〜歳で"}, {"no": 1408, "w": "before long", "m": "間もなく，ほどなく"}, {"no": 1409, "w": "for a while", "m": "しばらくの間"}, {"no": 1410, "w": "for sure [certain]", "m": "確かに"}, {"no": 1411, "w": "for the sake of", "m": "〜のために"}, {"no": 1412, "w": "in a [one] way", "m": "ある意味で"}, {"no": 1413, "w": "in danger of", "m": "〜の恐れがあって"}, {"no": 1414, "w": "in (actual) fact", "m": "実際には"}, {"no": 1415, "w": "in turn", "m": "順番に，交替で"}, {"no": 1416, "w": "little by little", "m": "少しずつ"}, {"no": 1417, "w": "no doubt", "m": "きっと"}, {"no": 1418, "w": "one after another [the other]", "m": "次々と"}, {"no": 1419, "w": "right away [off]", "m": "直ちに，すぐに"}, {"no": 1420, "w": "so far", "m": "これまでのところ"}, {"no": 1421, "w": "the other day", "m": "先日"}, {"no": 1422, "w": "to one's surprise", "m": "〜が驚いたことに"}, {"no": 1423, "w": "as [so] far as", "m": "…する限りは"}, {"no": 1424, "w": "as many [much] as", "m": "〜も多くの"}, {"no": 1425, "w": "both A and B", "m": "AもBも"}, {"no": 1426, "w": "either A or B", "m": "AかBのどちらか"}, {"no": 1427, "w": "each other", "m": "お互い"}, {"no": 1428, "w": "every other", "m": "〜ごとに，〜おきに"}, {"no": 1429, "w": "something is wrong with", "m": "〜はどこか調子が悪い"}, {"no": 1430, "w": "What is ~ like?", "m": "〜はどのようなもの［人］ですか"}, {"no": 1431, "w": "spend", "m": "費やす，使う"}, {"no": 1432, "w": "increase", "m": "増える"}, {"no": 1433, "w": "decrease", "m": "減る"}, {"no": 1434, "w": "improve", "m": "改善する，向上させる"}, {"no": 1435, "w": "provide", "m": "提供［供給］する"}, {"no": 1436, "w": "include", "m": "含む"}, {"no": 1437, "w": "develop", "m": "発達［発展］させる"}, {"no": 1438, "w": "receive", "m": "受け取る，受ける"}, {"no": 1439, "w": "explain", "m": "説明する"}, {"no": 1440, "w": "lead", "m": "至る，導く"}, {"no": 1441, "w": "perform", "m": "うまくいく，機能する"}, {"no": 1442, "w": "realize", "m": "気づく，認識する"}, {"no": 1443, "w": "produce", "m": "引き起こす，もたらす"}, {"no": 1444, "w": "participate", "m": "参加する"}, {"no": 1445, "w": "suggest", "m": "示す，暗示する"}, {"no": 1446, "w": "encourage", "m": "促進する，奨励する"}, {"no": 1447, "w": "apply", "m": "当てはまる"}, {"no": 1448, "w": "affect", "m": "影響する"}, {"no": 1449, "w": "recognize", "m": "わかる，識別する"}, {"no": 1450, "w": "require", "m": "要求する"}, {"no": 1451, "w": "maintain", "m": "維持する"}, {"no": 1452, "w": "tend", "m": "…する傾向がある，…しがちである"}, {"no": 1453, "w": "contain", "m": "含む"}, {"no": 1454, "w": "represent", "m": "表す，象徴する"}, {"no": 1455, "w": "reach", "m": "に届く，達する"}, {"no": 1456, "w": "mention", "m": "話に出す，言及する"}, {"no": 1457, "w": "focus", "m": "集中する，焦点を合わせる"}, {"no": 1458, "w": "rent", "m": "（有料で）借りる"}, {"no": 1459, "w": "guess", "m": "推測する"}, {"no": 1460, "w": "add", "m": "加える"}, {"no": 1461, "w": "delay", "m": "遅らせる"}, {"no": 1462, "w": "select", "m": "選び出す"}, {"no": 1463, "w": "system", "m": "（体系的）方法，方式"}, {"no": 1464, "w": "experience", "m": "経験，体験"}, {"no": 1465, "w": "activity", "m": "活動"}, {"no": 1466, "w": "program", "m": "計画，プログラム"}, {"no": 1467, "w": "care", "m": "注意"}, {"no": 1468, "w": "situation", "m": "状況，事態"}, {"no": 1469, "w": "research", "m": "研究，調査"}, {"no": 1470, "w": "passage", "m": "（本・音楽などの）一節"}, {"no": 1471, "w": "factor", "m": "要因，要素"}, {"no": 1472, "w": "value", "m": "価値"}, {"no": 1473, "w": "influence", "m": "影響，影響力"}, {"no": 1474, "w": "author", "m": "著者，作者"}, {"no": 1475, "w": "role", "m": "役割"}, {"no": 1476, "w": "average", "m": "平均"}, {"no": 1477, "w": "friendship", "m": "交友関係"}, {"no": 1478, "w": "view", "m": "意見，考え"}, {"no": 1479, "w": "result", "m": "結果"}, {"no": 1480, "w": "surface", "m": "外見，うわべ"}, {"no": 1481, "w": "rate", "m": "割合，比率"}, {"no": 1482, "w": "process", "m": "過程"}, {"no": 1483, "w": "topic", "m": "話題，トピック"}, {"no": 1484, "w": "variety", "m": "種類"}, {"no": 1485, "w": "risk", "m": "危険，リスク"}, {"no": 1486, "w": "amount", "m": "量，合計"}, {"no": 1487, "w": "skill", "m": "技能，技術"}, {"no": 1488, "w": "period", "m": "期間"}, {"no": 1489, "w": "center", "m": "中心"}, {"no": 1490, "w": "sense", "m": "感覚"}, {"no": 1491, "w": "opportunity", "m": "機会"}, {"no": 1492, "w": "effect", "m": "影響，効果"}, {"no": 1493, "w": "public", "m": "大衆，一般の人々"}, {"no": 1494, "w": "transportation", "m": "交通機関"}, {"no": 1495, "w": "atmosphere", "m": "雰囲気"}, {"no": 1496, "w": "attention", "m": "注意，注意力"}, {"no": 1497, "w": "space", "m": "場所，空間"}, {"no": 1498, "w": "behavior", "m": "振る舞い，行儀"}, {"no": 1499, "w": "object", "m": "物，物体"}, {"no": 1500, "w": "company", "m": "会社"}], "16": [{"no": 1501, "w": "field", "m": "分野，領域"}, {"no": 1502, "w": "following", "m": "次の，以下の"}, {"no": 1503, "w": "various", "m": "さまざまな，多様な"}, {"no": 1504, "w": "several", "m": "いくつかの"}, {"no": 1505, "w": "local", "m": "地元の，現地の"}, {"no": 1506, "w": "related", "m": "関連して"}, {"no": 1507, "w": "possible", "m": "可能な"}, {"no": 1508, "w": "similar", "m": "似ている，同様の"}, {"no": 1509, "w": "concerned", "m": "心配して"}, {"no": 1510, "w": "available", "m": "利用できる，手に入る"}, {"no": 1511, "w": "dry", "m": "雨の少ない，乾燥した"}, {"no": 1512, "w": "past", "m": "過ぎたばかりの，この前の"}, {"no": 1513, "w": "modern", "m": "近代的な，最新の"}, {"no": 1514, "w": "unique", "m": "特有の"}, {"no": 1515, "w": "common", "m": "よくある，普通の"}, {"no": 1516, "w": "prepare", "m": "準備［用意］する"}, {"no": 1517, "w": "regard", "m": "（〜と）思う，考える"}, {"no": 1518, "w": "occur", "m": "（予期せず）起こる"}, {"no": 1519, "w": "suppose", "m": "だと思う，考える"}, {"no": 1520, "w": "serve", "m": "（食事を）出す"}, {"no": 1521, "w": "wonder", "m": "だろうかと思う"}, {"no": 1522, "w": "reduce", "m": "減らす"}, {"no": 1523, "w": "promote", "m": "促進する"}, {"no": 1524, "w": "survive", "m": "生き延びる，切り抜ける"}, {"no": 1525, "w": "gain", "m": "得る"}, {"no": 1526, "w": "divide", "m": "分ける，分かれる"}, {"no": 1527, "w": "attract", "m": "引き寄せる"}, {"no": 1528, "w": "achieve", "m": "達成する"}, {"no": 1529, "w": "fit", "m": "適する，合致する"}, {"no": 1530, "w": "reveal", "m": "明らかにする"}, {"no": 1531, "w": "wish", "m": "願う"}, {"no": 1532, "w": "fill", "m": "満たす"}, {"no": 1533, "w": "hurt", "m": "傷つける，害する"}, {"no": 1534, "w": "discover", "m": "知る，わかる"}, {"no": 1535, "w": "indicate", "m": "示す"}, {"no": 1536, "w": "overcome", "m": "克服する，打ち勝つ"}, {"no": 1537, "w": "protect", "m": "守る，保護する"}, {"no": 1538, "w": "remove", "m": "取り去る，移動させる"}, {"no": 1539, "w": "rely", "m": "当てにする，頼る"}, {"no": 1540, "w": "bother", "m": "わざわざ…する，悩ませる"}, {"no": 1541, "w": "seek", "m": "追い求める"}, {"no": 1542, "w": "matter", "m": "重要［問題］だ"}, {"no": 1543, "w": "concentrate", "m": "集中する，専念する"}, {"no": 1544, "w": "react", "m": "反応［対応］する"}, {"no": 1545, "w": "struggle", "m": "奮闘する"}, {"no": 1546, "w": "admit", "m": "（しぶしぶ）認める"}, {"no": 1547, "w": "lock", "m": "しまい込む，閉じ込める"}, {"no": 1548, "w": "issue", "m": "問題，問題点"}, {"no": 1549, "w": "relationship", "m": "関係"}, {"no": 1550, "w": "list", "m": "リスト，一覧"}, {"no": 1551, "w": "item", "m": "１品，１点"}, {"no": 1552, "w": "distance", "m": "距離"}, {"no": 1553, "w": "case", "m": "場合"}, {"no": 1554, "w": "opinion", "m": "意見，見解"}, {"no": 1555, "w": "century", "m": "世紀"}, {"no": 1556, "w": "trouble", "m": "困難，困ったこと"}, {"no": 1557, "w": "total", "m": "合計"}, {"no": 1558, "w": "advantage", "m": "有利な点，強み"}, {"no": 1559, "w": "detail", "m": "細部"}, {"no": 1560, "w": "moment", "m": "時点"}, {"no": 1561, "w": "bill", "m": "請求書"}, {"no": 1562, "w": "rest", "m": "残り，休み"}, {"no": 1563, "w": "deal", "m": "量，取引"}, {"no": 1564, "w": "feature", "m": "特徴"}, {"no": 1565, "w": "survey", "m": "調査"}, {"no": 1566, "w": "destination", "m": "目的地，行き先"}, {"no": 1567, "w": "conclusion", "m": "結論"}, {"no": 1568, "w": "attitude", "m": "態度，考え方"}, {"no": 1569, "w": "impact", "m": "影響，衝撃"}, {"no": 1570, "w": "source", "m": "源"}, {"no": 1571, "w": "row", "m": "列，並び"}, {"no": 1572, "w": "assistant", "m": "助手，補佐"}, {"no": 1573, "w": "impression", "m": "印象"}, {"no": 1574, "w": "noise", "m": "騒音"}, {"no": 1575, "w": "sign", "m": "兆し，表れ"}, {"no": 1576, "w": "aim", "m": "目的，目標"}, {"no": 1577, "w": "occasion", "m": "（特定の）時，機会"}, {"no": 1578, "w": "relation", "m": "関係，関連"}, {"no": 1579, "w": "signal", "m": "合図"}, {"no": 1580, "w": "balance", "m": "バランス，均衡"}, {"no": 1581, "w": "track", "m": "小道"}, {"no": 1582, "w": "symbol", "m": "象徴，シンボル"}, {"no": 1583, "w": "circle", "m": "円，仲間"}, {"no": 1584, "w": "leisure", "m": "余暇，自由な時間"}, {"no": 1585, "w": "angle", "m": "角度，観点"}, {"no": 1586, "w": "comfortable", "m": "快適な"}, {"no": 1587, "w": "recent", "m": "最近の"}, {"no": 1588, "w": "real", "m": "現実の，実在する"}, {"no": 1589, "w": "dangerous", "m": "危険な"}, {"no": 1590, "w": "current", "m": "現在の，今の"}, {"no": 1591, "w": "final", "m": "最後の"}, {"no": 1592, "w": "obvious", "m": "明らかな"}, {"no": 1593, "w": "fair", "m": "妥当な，適正な"}, {"no": 1594, "w": "proud", "m": "誇りに思って"}, {"no": 1595, "w": "anxious", "m": "切望して，心配して"}, {"no": 1596, "w": "impossible", "m": "不可能な"}, {"no": 1597, "w": "opposite", "m": "反対側の，向かい側の"}, {"no": 1598, "w": "terrible", "m": "ひどい，恐ろしい"}, {"no": 1599, "w": "thick", "m": "厚い"}, {"no": 1600, "w": "narrow", "m": "狭い，細い"}], "17": [{"no": 1601, "w": "actually", "m": "実際に，実は"}, {"no": 1602, "w": "especially", "m": "特に，とりわけ"}, {"no": 1603, "w": "perhaps", "m": "もしかしたら"}, {"no": 1604, "w": "fortunately", "m": "幸運にも"}, {"no": 1605, "w": "less", "m": "より少なく"}, {"no": 1606, "w": "least", "m": "最も〜でない"}, {"no": 1607, "w": "abroad", "m": "外国に［で］"}, {"no": 1608, "w": "overseas", "m": "海外へ［に，で］"}, {"no": 1609, "w": "rather", "m": "むしろ"}, {"no": 1610, "w": "probably", "m": "たぶん"}, {"no": 1611, "w": "easily", "m": "たやすく，簡単に"}, {"no": 1612, "w": "quite", "m": "かなり"}, {"no": 1613, "w": "exactly", "m": "正確に，まさに"}, {"no": 1614, "w": "instead", "m": "その代わりに"}, {"no": 1615, "w": "immediately", "m": "直ちに"}, {"no": 1616, "w": "somewhere", "m": "どこかに［へ，で］"}, {"no": 1617, "w": "gradually", "m": "徐々に，だんだんと"}, {"no": 1618, "w": "simply", "m": "単に"}, {"no": 1619, "w": "indeed", "m": "確かに，本当に"}, {"no": 1620, "w": "whether", "m": "…かどうか"}, {"no": 1621, "w": "also", "m": "その上"}, {"no": 1622, "w": "moreover", "m": "その上，さらに"}, {"no": 1623, "w": "besides", "m": "その上"}, {"no": 1624, "w": "though", "m": "でも，だけど"}, {"no": 1625, "w": "however", "m": "しかしながら"}, {"no": 1626, "w": "although", "m": "…だけれども，…にもかかわらず"}, {"no": 1627, "w": "true", "m": "本当の，真実の"}, {"no": 1628, "w": "because", "m": "なぜなら，…なので"}, {"no": 1629, "w": "therefore", "m": "したがって，それゆえ"}, {"no": 1630, "w": "anyway", "m": "いずれにせよ"}, {"no": 1631, "w": "bring about", "m": "〜を引き起こす，もたらす"}, {"no": 1632, "w": "catch up (with)", "m": "追いつく"}, {"no": 1633, "w": "check out", "m": "〜を調べる"}, {"no": 1634, "w": "deal with", "m": "〜に対処する，処理する"}, {"no": 1635, "w": "end up (-ing)", "m": "最終的には…することになる"}, {"no": 1636, "w": "figure out", "m": "〜を理解する，解決する"}, {"no": 1637, "w": "fill in", "m": "〜に記入する"}, {"no": 1638, "w": "get rid of", "m": "〜を処分する，取り除く"}, {"no": 1639, "w": "have A in common (with B)", "m": "（Bと）共通のAを持つ"}, {"no": 1640, "w": "keep up with", "m": "〜に（遅れずに）ついて行く"}, {"no": 1641, "w": "look to A (for B)", "m": "Aに（Bを）期待する，当てにする"}, {"no": 1642, "w": "make sense", "m": "意味をなす，理解しやすい"}, {"no": 1643, "w": "make sure", "m": "…を確かめる"}, {"no": 1644, "w": "make up for", "m": "〜の埋め合わせをする，〜を償う"}, {"no": 1645, "w": "make up one's mind", "m": "決心する"}, {"no": 1646, "w": "never fail to", "m": "必ず…する"}, {"no": 1647, "w": "result in", "m": "〜という結果になる"}, {"no": 1648, "w": "set off (for)", "m": "出発する"}, {"no": 1649, "w": "set out to", "m": "…し始める，…しようと試みる"}, {"no": 1650, "w": "set up", "m": "〜を始める，設立する"}, {"no": 1651, "w": "stay up", "m": "（寝ないで）起きている"}, {"no": 1652, "w": "take advantage of", "m": "〜を利用する"}, {"no": 1653, "w": "take in", "m": "〜をだます"}, {"no": 1654, "w": "take over", "m": "〜を引き継ぐ"}, {"no": 1655, "w": "turn down", "m": "〜を拒む，断る"}, {"no": 1656, "w": "according to", "m": "〜によれば"}, {"no": 1657, "w": "at [from] a distance", "m": "離れた所に［から］"}, {"no": 1658, "w": "by means of", "m": "〜によって，〜を用いて"}, {"no": 1659, "w": "for a moment", "m": "少しの間"}, {"no": 1660, "w": "in a [one] sense", "m": "ある意味では"}, {"no": 1661, "w": "in case of", "m": "〜の場合は"}, {"no": 1662, "w": "in contrast to [with]", "m": "〜とは対照的に"}, {"no": 1663, "w": "in one's opinion [view]", "m": "〜の考え［意見］では"}, {"no": 1664, "w": "in terms of", "m": "〜の観点から"}, {"no": 1665, "w": "instead of", "m": "〜の代わりに，〜ではなくて"}, {"no": 1666, "w": "next to", "m": "〜の隣に"}, {"no": 1667, "w": "no more than", "m": "わずか〜，たった〜"}, {"no": 1668, "w": "nothing but", "m": "ただ〜だけ"}, {"no": 1669, "w": "out of order", "m": "故障して，調子が悪い"}, {"no": 1670, "w": "regardless of", "m": "〜に関係なく，かまわず"}, {"no": 1671, "w": "to make matters worse", "m": "さらに悪いことに"}, {"no": 1672, "w": "with ease", "m": "容易に"}, {"no": 1673, "w": "a variety of", "m": "いろいろな"}, {"no": 1674, "w": "as ~ as possible [one can]", "m": "できるだけ"}, {"no": 1675, "w": "as if [though]", "m": "…であるかのように"}, {"no": 1676, "w": "by the time", "m": "…するまでに"}, {"no": 1677, "w": "even if", "m": "たとえ…だとしても"}, {"no": 1678, "w": "now (that)", "m": "今や…だから"}, {"no": 1679, "w": "the moment [minute]", "m": "…するとすぐに"}, {"no": 1680, "w": "by the way", "m": "ところで，それはそうと"}, {"no": 1681, "w": "as for", "m": "〜については，〜はどうかと言えば"}, {"no": 1682, "w": "in general", "m": "一般に，概して"}, {"no": 1683, "w": "on the whole", "m": "全体的に見て"}, {"no": 1684, "w": "for example [instance]", "m": "例えば"}, {"no": 1685, "w": "in particular", "m": "特に，とりわけ"}, {"no": 1686, "w": "that is (to say)", "m": "すなわち，より正確に言えば"}, {"no": 1687, "w": "in other words", "m": "言い換えると，つまり"}, {"no": 1688, "w": "to begin [start] with", "m": "まず第一に"}, {"no": 1689, "w": "in the first place", "m": "まず第一に"}, {"no": 1690, "w": "in addition", "m": "その上，さらに"}, {"no": 1691, "w": "A as well as B", "m": "BだけでなくAも"}, {"no": 1692, "w": "on the other hand", "m": "他方では"}, {"no": 1693, "w": "in spite of", "m": "〜にもかかわらず"}, {"no": 1694, "w": "because of", "m": "〜のために，〜が原因で"}, {"no": 1695, "w": "on account of", "m": "〜のために，〜が原因で"}, {"no": 1696, "w": "due to", "m": "〜のために，〜が原因で"}, {"no": 1697, "w": "thanks to", "m": "〜のおかげで"}, {"no": 1698, "w": "as a result", "m": "結果として"}, {"no": 1699, "w": "in any case [event]", "m": "いずれにしても"}, {"no": 1700, "w": "in short", "m": "要約すると，手短にいうと"}]};
+const PARTS = {1:[1,2,3,4,5,6], 2:[7,8,9,10,11,12], 3:[13,14,15,16,17]};
+let currentSet = 1;
+let DATA = SETS[currentSet];
+function allWords(){ return Object.keys(SETS).flatMap(k => SETS[k]); }
+
+const STORAGE_KEY = 'target1200_progress';
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(!p.modeStats) p.modeStats = { card:{right:0,wrong:0}, spell:{right:0,wrong:0} };
+      return p;
+    }
+  }catch(e){}
+  const init = {};
+  DATA.forEach(d => { init[d.no] = {wrong:0, right:0}; });
+  return { stats: init, totalSessions:0, lastDate:null, modeStats: { card:{right:0,wrong:0}, spell:{right:0,wrong:0} } };
+}
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+let progress = loadProgress();
+
+// 単語ごとに「カード学習／ベーシック／チャレンジ／フル入力」別の正誤を記録する
+function bumpWordModeStat(no, modeKey, correct){
+  if(!progress.stats[no]) progress.stats[no] = {wrong:0, right:0};
+  if(!progress.stats[no].byMode) progress.stats[no].byMode = {
+    card:{wrong:0,right:0}, spellBasic:{wrong:0,right:0}, spellChallenge:{wrong:0,right:0}, spellType:{wrong:0,right:0}
+  };
+  if(!progress.stats[no].byMode[modeKey]) progress.stats[no].byMode[modeKey] = {wrong:0, right:0};
+  if(correct) progress.stats[no].byMode[modeKey].right++;
+  else progress.stats[no].byMode[modeKey].wrong++;
+}
+
+let order = DATA.map(d => d.no);
+let idx = 0;
+let flipped = false;
+
+const cardEl = document.getElementById('card');
+const cardNo = document.getElementById('cardNo');
+const cardWord = document.getElementById('cardWord');
+const cardMeaning = document.getElementById('cardMeaning');
+const cardHint = document.getElementById('cardHint');
+const controls = document.getElementById('controls');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+function dataByNo(no){ return allWords().find(d => d.no === no); }
+
+let reviewMode = false;
+
+function wrongList(){
+  // 全セット対象。「✕回数 > ○回数」の単語を苦手単語とみなす
+  return allWords().filter(d => {
+    const s = progress.stats[d.no];
+    return s && s.wrong > s.right;
+  }).map(d => d.no);
+}
+
+function buildOrder(){
+  if(reviewMode){
+    return wrongList();
+  }
+  return DATA.map(d => d.no);
+}
+
+function renderCard(){
+  if(reviewMode && order.length === 0){
+    cardNo.textContent = '';
+    cardWord.textContent = '🎉 苦手な単語はありません';
+    cardMeaning.textContent = 'このまま頑張ろう！';
+    cardHint.textContent = '';
+    controls.style.visibility = 'hidden';
+    cardEl.classList.remove('flipped');
+    progressFill.style.width = '0%';
+    progressText.textContent = '0 / 0';
+    return;
+  }
+  if(idx >= order.length){
+    cardNo.textContent = '完了!';
+    cardWord.textContent = 'お疲れさまでした 🎉';
+    cardMeaning.textContent = '';
+    cardHint.textContent = '「最初から」でもう一周できます';
+    controls.style.visibility = 'hidden';
+    cardEl.classList.remove('flipped');
+    progressFill.style.width = '100%';
+    progressText.textContent = `${order.length} / ${order.length}`;
+    return;
+  }
+  const no = order[idx];
+  const d = dataByNo(no);
+  cardNo.textContent = 'No.' + no;
+  cardWord.textContent = d.w;
+  cardMeaning.textContent = d.m;
+  cardHint.textContent = 'タップして意味を表示';
+  cardEl.classList.remove('flipped');
+  flipped = false;
+  controls.style.visibility = 'hidden';
+  progressFill.style.width = (idx / order.length * 100) + '%';
+  progressText.textContent = `${idx} / ${order.length}`;
+}
+
+cardEl.addEventListener('click', (e) => {
+  if(e.target.id === 'speakBtn') return;
+  if(idx >= order.length) return;
+  flipped = !flipped;
+  cardEl.classList.toggle('flipped', flipped);
+  controls.style.visibility = flipped ? 'visible' : 'hidden';
+});
+
+document.getElementById('speakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(idx >= order.length) return;
+  const d = dataByNo(order[idx]);
+  speak(d.w);
+});
+
+let englishVoice = null;
+
+function pickEnglishVoice(){
+  const voices = window.speechSynthesis.getVoices();
+  if(!voices || voices.length === 0) return null;
+  // 優先順位: en-US > en-GB > その他の en-*
+  let v = voices.find(v => v.lang === 'en-US');
+  if(!v) v = voices.find(v => v.lang === 'en-GB');
+  if(!v) v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  return v || null;
+}
+
+if('speechSynthesis' in window){
+  // 一部ブラウザは非同期に音声リストを読み込むため、準備できたら再取得
+  window.speechSynthesis.onvoiceschanged = () => {
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  };
+  englishVoice = pickEnglishVoice();
+}
+
+function updateVoiceWarning(){
+  const el = document.getElementById('voiceWarning');
+  if(!el) return;
+  el.style.display = englishVoice ? 'none' : 'block';
+}
+updateVoiceWarning();
+// iOSは読み込み直後に音声リストが空のことがあるため少し待って再チェック
+setTimeout(() => {
+  if(!englishVoice){
+    englishVoice = pickEnglishVoice();
+    updateVoiceWarning();
+  }
+}, 800);
+
+function cleanEn(w){
+  let t = String(w).split(' / ')[0];
+  t = t.replace(/\[[^\]]*\]/g, ' ').replace(/\([^)]*\)/g, ' ');
+  t = t.replace(/[~〜…?？]/g, ' ').replace(/’/g, "'");
+  return t.replace(/\s+/g, ' ').trim();
+}
+function speak(text){
+  text = cleanEn(text);
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if(!englishVoice) englishVoice = pickEnglishVoice();
+  if(englishVoice){
+    u.voice = englishVoice;
+    u.lang = englishVoice.lang;
+  } else {
+    // 英語音声が見つからない場合の保険
+    u.lang = 'en-US';
+  }
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function answer(correct){
+  const no = order[idx];
+  if(!progress.stats[no]) progress.stats[no] = {wrong:0, right:0};
+  if(correct) progress.stats[no].right++;
+  else progress.stats[no].wrong++;
+  bumpWordModeStat(no, 'card', correct);
+  const today = new Date().toISOString().slice(0,10);
+  progress.stats[no].lastSeen = today;
+  progress.stats[no].lastMode = 'card';
+  if(!progress.dailyStats) progress.dailyStats = {};
+  if(!progress.dailyStats[today]) progress.dailyStats[today] = {right:0, wrong:0, words:{}, modes:{card:{right:0,wrong:0},spell:{right:0,wrong:0}}};
+  if(!progress.dailyStats[today].modes) progress.dailyStats[today].modes = {card:{right:0,wrong:0},spell:{right:0,wrong:0}};
+  if(correct) progress.dailyStats[today].right++;
+  else progress.dailyStats[today].wrong++;
+  if(correct) progress.dailyStats[today].modes.card.right++;
+  else progress.dailyStats[today].modes.card.wrong++;
+  progress.dailyStats[today].words[no] = true;
+  if(!progress.modeStats) progress.modeStats = { card:{right:0,wrong:0}, spell:{right:0,wrong:0} };
+  if(correct) progress.modeStats.card.right++;
+  else progress.modeStats.card.wrong++;
+  progress.totalSessions++;
+  progress.lastDate = today;
+  saveProgress();
+  idx++;
+  renderCard();
+}
+
+document.getElementById('btnYes').addEventListener('click', () => answer(true));
+document.getElementById('btnNo').addEventListener('click', () => answer(false));
+
+document.getElementById('btnShuffle').addEventListener('click', () => {
+  order = order.slice().sort(() => Math.random() - 0.5);
+  idx = 0;
+  renderCard();
+});
+document.getElementById('btnRestart').addEventListener('click', () => {
+  order = buildOrder();
+  idx = 0;
+  renderCard();
+});
+
+const reviewToggleBtn = document.getElementById('reviewToggleBtn');
+reviewToggleBtn.addEventListener('click', () => {
+  reviewMode = !reviewMode;
+  if(reviewMode){
+    reviewToggleBtn.style.background = 'var(--accent)';
+    reviewToggleBtn.style.color = '#5c3d00';
+    reviewToggleBtn.textContent = '✕ 復習モード解除（' + wrongList().length + '語）';
+  } else {
+    reviewToggleBtn.style.background = '#fff';
+    reviewToggleBtn.style.color = '#8a6300';
+    reviewToggleBtn.textContent = '🔁 苦手単語だけ復習（全セット対象）';
+  }
+  order = buildOrder();
+  idx = 0;
+  renderCard();
+  if(typeof resetChoice === 'function') resetChoice();
+});
+
+// タブ切り替え
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    // 先に新しいタブの内容を表示してから、他のタブを隠す
+    // (iPad Safariで「非表示→表示」の描画タイミングがズレ、高さ0pxになる不具合を回避)
+    if(tab === 'study'){
+      document.getElementById('tabStudy').classList.add('show');
+    }
+    if(tab === 'rank'){
+      document.getElementById('tabRank').classList.add('show');
+      renderRank();
+    }
+    if(tab === 'history'){
+      document.getElementById('tabHistory').classList.add('show');
+      renderHistory();
+    }
+    document.querySelectorAll('.screen').forEach(s => {
+      if(s.id !== 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1)){
+        s.classList.remove('show');
+      }
+    });
+  });
+});
+
+let rankMode = 'all'; // 'all' | 'card' | 'spellBasic' | 'spellChallenge' | 'spellType'
+
+function getRankWrongCount(d){
+  const s = progress.stats[d.no];
+  if(!s) return 0;
+  if(rankMode === 'all') return s.wrong || 0;
+  const bm = s.byMode && s.byMode[rankMode];
+  return bm ? bm.wrong : 0;
+}
+
+function renderRank(){
+  const rows = allWords().map(d => {
+    return { ...d, wrong: getRankWrongCount(d) };
+  }).filter(d => d.wrong > 0).sort((a,b) => b.wrong - a.wrong);
+  const body = document.getElementById('rankBody');
+  if(rows.length === 0){
+    body.innerHTML = '<tr><td colspan="4" class="small">まだデータがありません</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => `<tr><td>${r.no}</td><td>${r.w}</td><td>${r.m}</td><td>${r.wrong}</td></tr>`).join('');
+}
+
+document.querySelectorAll('.rank-mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.rank-mode-btn').forEach(b => {
+      b.classList.remove('active');
+      const isAccentGroup = b.dataset.rankmode.startsWith('spell');
+      b.style.background = '#fff';
+      b.style.color = isAccentGroup ? '#8a6300' : 'var(--green)';
+    });
+    btn.classList.add('active');
+    const isAccentGroup = btn.dataset.rankmode.startsWith('spell');
+    btn.style.background = isAccentGroup ? 'var(--accent)' : 'var(--green)';
+    btn.style.color = isAccentGroup ? '#5c3d00' : '#fff';
+    rankMode = btn.dataset.rankmode;
+    renderRank();
+  });
+});
+
+function dateNDaysAgo(n){
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0,10);
+}
+
+function aggregateDailyStats(startDaysAgo, endDaysAgo){
+  // startDaysAgo > endDaysAgo （例：直近7日間は startDaysAgo=6, endDaysAgo=0）
+  const ds = progress.dailyStats || {};
+  let right = 0, wrong = 0;
+  const wordSet = new Set();
+  const modes = { card:{right:0,wrong:0}, spell:{right:0,wrong:0}, choice:{right:0,wrong:0} };
+  for(let n = startDaysAgo; n >= endDaysAgo; n--){
+    const day = dateNDaysAgo(n);
+    const rec = ds[day];
+    if(!rec) continue;
+    right += rec.right || 0;
+    wrong += rec.wrong || 0;
+    Object.keys(rec.words || {}).forEach(w => wordSet.add(w));
+    if(rec.modes){
+      modes.card.right += rec.modes.card?.right || 0;
+      modes.card.wrong += rec.modes.card?.wrong || 0;
+      modes.spell.right += rec.modes.spell?.right || 0;
+      modes.spell.wrong += rec.modes.spell?.wrong || 0;
+      modes.choice.right += rec.modes.choice?.right || 0;
+      modes.choice.wrong += rec.modes.choice?.wrong || 0;
+    }
+  }
+  return { right, wrong, wordCount: wordSet.size, modes };
+}
+
+function buildWeeklyReportText(){
+  const thisWeek = aggregateDailyStats(6, 0);
+  const lastWeek = aggregateDailyStats(13, 7);
+  const diff = thisWeek.wordCount - lastWeek.wordCount;
+  const diffText = diff > 0 ? `（先週より+${diff}語）` : diff < 0 ? `（先週より${diff}語）` : '（先週と同じ）';
+  const totalAnswered = thisWeek.right + thisWeek.wrong;
+  const correctRate = totalAnswered > 0 ? Math.round(thisWeek.right / totalAnswered * 100) : 0;
+  const weakCount = wrongList().length;
+
+  let comment;
+  if(thisWeek.wordCount === 0){
+    comment = '今週はまだ学習記録がありません。';
+  } else if(diff > 0){
+    comment = '先週よりペースが上がっています。とても良い調子です！';
+  } else if(weakCount > 0){
+    comment = `苦手単語が${weakCount}語あります。「苦手単語だけ復習」で見直すのがおすすめです。`;
+  } else {
+    comment = 'このまま続けていきましょう。';
+  }
+
+  const cardCount = thisWeek.modes.card.right + thisWeek.modes.card.wrong;
+  const spellCount = thisWeek.modes.spell.right + thisWeek.modes.spell.wrong;
+  const choiceCount = thisWeek.modes.choice.right + thisWeek.modes.choice.wrong;
+  const modeText = (cardCount + spellCount + choiceCount) > 0
+    ? `・内訳：カード学習${cardCount}回／文字並べ式${spellCount}回／4択${choiceCount}回\n`
+    : '';
+
+  return `📅 今週（直近7日間）の学習\n`
+    + `・学習した単語数：${thisWeek.wordCount}語 ${diffText}\n`
+    + `・「わかった」率：${totalAnswered > 0 ? correctRate + '%' : '-'}\n`
+    + modeText
+    + `・現在の苦手単語：${weakCount}語\n\n`
+    + `💬 ${comment}`;
+}
+
+function renderWeeklyReport(){
+  const body = document.getElementById('weeklyReportBody');
+  if(body) body.textContent = buildWeeklyReportText();
+}
+
+document.getElementById('copyReportBtn').addEventListener('click', () => {
+  const text = buildWeeklyReportText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => {
+      alert('報告文をコピーしました。LINEなどに貼り付けてください。');
+    }).catch(() => {
+      alert('コピーに失敗しました。お手数ですが、文章を長押しして手動でコピーしてください。');
+    });
+  } else {
+    alert('このブラウザではコピー機能が使えません。お手数ですが、文章を長押しして手動でコピーしてください。');
+  }
+});
+
+function renderHistory(){
+  document.getElementById('statTotal').textContent = progress.totalSessions;
+  const masteredCount = Object.values(progress.stats).filter(s => s.right > 0).length;
+  document.getElementById('statMastered').textContent = `${masteredCount} / ${allWords().length}`;
+  document.getElementById('statLast').textContent = progress.lastDate || '-';
+  const ms = progress.modeStats || { card:{right:0,wrong:0}, spell:{right:0,wrong:0} };
+  const cardTotal = ms.card.right + ms.card.wrong;
+  const spellTotal = ms.spell.right + ms.spell.wrong;
+  const modeEl = document.getElementById('statMode');
+  const choiceTotal = ms.choice ? (ms.choice.right + ms.choice.wrong) : 0;
+  if(modeEl) modeEl.textContent = `カード学習 ${cardTotal}回 ／ 文字並べ式 ${spellTotal}回 ／ 4択 ${choiceTotal}回`;
+  renderWeeklyReport();
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  if(confirm('学習履歴をリセットしますか？この操作は元に戻せません。')){
+    localStorage.removeItem(STORAGE_KEY);
+    progress = loadProgress();
+    renderHistory();
+    renderRank();
+    alert('リセットしました');
+  }
+});
+
+renderCard();
+
+/* ===== スペリングモード ===== */
+let spellOrder = DATA.map(d => d.no);
+let spellIdx = 0;
+let spellAnswer = []; // 各マスの内容（位置固定の配列。nullは空マス）
+let spellLetters = []; // {ch, used:bool}
+let spellChecked = false;
+let selectedSlotIndex = null;
+let spellFixed = {}; // 文字マス以外（空白・'・-）の位置 // タップで選択中の空マス
+
+const modeCardBtn = document.getElementById('modeCardBtn');
+const modeSpellBtn = document.getElementById('modeSpellBtn');
+const cardView = document.getElementById('cardView');
+const spellView = document.getElementById('spellView');
+const spellSubToggle = document.getElementById('spellSubToggle');
+const subBasicBtn = document.getElementById('subBasicBtn');
+const subChallengeBtn = document.getElementById('subChallengeBtn');
+const subTypeBtn = document.getElementById('subTypeBtn');
+const spellTypeWrap = document.getElementById('spellTypeWrap');
+const spellTypeInput = document.getElementById('spellTypeInput');
+let spellSubMode = 'basic'; // 'basic' | 'challenge' | 'type'
+function spellModeKey(){
+  return 'spell' + spellSubMode.charAt(0).toUpperCase() + spellSubMode.slice(1);
+}
+
+modeCardBtn.addEventListener('click', () => {
+  if(typeof leaveChoice === 'function') leaveChoice();
+  modeCardBtn.classList.add('active');
+  modeSpellBtn.classList.remove('active');
+  cardView.style.display = '';
+  spellView.style.display = 'none';
+  spellSubToggle.style.display = 'none';
+});
+modeSpellBtn.addEventListener('click', () => {
+  if(typeof leaveChoice === 'function') leaveChoice();
+  modeSpellBtn.classList.add('active');
+  modeCardBtn.classList.remove('active');
+  cardView.style.display = 'none';
+  spellView.style.display = '';
+  spellSubToggle.style.display = 'flex';
+  renderSpell();
+});
+subBasicBtn.addEventListener('click', () => {
+  spellSubMode = 'basic';
+  subBasicBtn.classList.add('active');
+  subChallengeBtn.classList.remove('active');
+  subTypeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+subChallengeBtn.addEventListener('click', () => {
+  spellSubMode = 'challenge';
+  subChallengeBtn.classList.add('active');
+  subBasicBtn.classList.remove('active');
+  subTypeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+subTypeBtn.addEventListener('click', () => {
+  spellSubMode = 'type';
+  subTypeBtn.classList.add('active');
+  subBasicBtn.classList.remove('active');
+  subChallengeBtn.classList.remove('active');
+  spellIdx = 0;
+  renderSpell();
+});
+
+function shuffleArr(arr){
+  return arr.slice().sort(() => Math.random() - 0.5);
+}
+
+function makeDummyLetters(word, count){
+  const used = new Set(word.toLowerCase().split(''));
+  const pool = 'abcdefghijklmnopqrstuvwxyz'.split('').filter(c => !used.has(c));
+  const shuffledPool = shuffleArr(pool);
+  return shuffledPool.slice(0, count);
+}
+
+function renderSpell(){
+  const fb = document.getElementById('spellFeedback');
+  fb.textContent = '';
+  selectedSlotIndex = null;
+  if(spellIdx >= spellOrder.length){
+    document.getElementById('spellNo').textContent = '完了!';
+    document.getElementById('spellMeaning').textContent = 'お疲れさまでした 🎉';
+    document.getElementById('spellAnswerSlot').innerHTML = '';
+    document.getElementById('spellLetterTray').innerHTML = '';
+    spellTypeWrap.style.display = 'none';
+    return;
+  }
+  const d = dataByNo(spellOrder[spellIdx]);
+  document.getElementById('spellNo').textContent = 'No.' + d.no;
+  document.getElementById('spellMeaning').textContent = d.m;
+  spellChecked = false;
+
+  if(spellSubMode === 'type'){
+    document.getElementById('spellAnswerSlot').innerHTML = '';
+    document.getElementById('spellLetterTray').innerHTML = '';
+    spellTypeWrap.style.display = 'flex';
+    spellTypeInput.value = '';
+    spellTypeInput.disabled = false;
+    spellTypeInput.style.borderColor = 'var(--green)';
+    return;
+  }
+  spellTypeWrap.style.display = 'none';
+
+  const form = cleanEn(d.w).toLowerCase();
+  const letters = form.replace(/[^a-z]/g, '').split('');
+  spellFixed = {};
+  let li = 0;
+  form.split('').forEach(ch => {
+    if(/[a-z]/.test(ch)) li++;
+    else (spellFixed[li] = spellFixed[li] || []).push(ch);
+  });
+  spellAnswer = new Array(letters.length).fill(null); // 位置固定（どこからでも埋められる）
+  let pool = letters.map((ch, i) => ({ch, id:'r'+i, dummy:false}));
+  if(spellSubMode === 'challenge'){
+    const dummyCount = Math.max(3, Math.min(6, Math.round(letters.length * 0.5)));
+    const dummies = makeDummyLetters(cleanEn(d.w), dummyCount).map((ch, i) => ({ch, id:'d'+i, dummy:true}));
+    pool = pool.concat(dummies);
+  }
+  const shuffled = shuffleArr(pool);
+  spellLetters = shuffled.map(item => ({...item, used:false}));
+  renderSpellSlots(letters.length);
+  renderSpellTray();
+}
+
+function firstEmptySlot(){
+  return spellAnswer.findIndex(s => s === null);
+}
+
+function placeLetterAt(item, idx){
+  item.used = true;
+  spellAnswer[idx] = item;
+  selectedSlotIndex = null;
+  const next = firstEmptySlot();
+  if(next !== -1) selectedSlotIndex = next;
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+}
+
+function placeLetter(item){
+  // 選択中の空マスがあればそこへ、なければ最初の空マスへ
+  let idx = (selectedSlotIndex !== null && spellAnswer[selectedSlotIndex] === null) ? selectedSlotIndex : firstEmptySlot();
+  if(idx === -1) return; // 満杯
+  placeLetterAt(item, idx);
+}
+
+let spellWordBox = null; // 1単語分のマスをまとめる箱（単語の途中で改行しないため）
+function newSpellWordBox(slot){
+  spellWordBox = document.createElement('div');
+  spellWordBox.style.cssText = 'display:flex;gap:6px;flex-wrap:nowrap;margin:0 6px 6px 0;';
+  slot.appendChild(spellWordBox);
+}
+function appendSpellFixed(slot, i){
+  (spellFixed[i] || []).forEach(ch => {
+    if(ch === ' '){ newSpellWordBox(slot); return; }
+    const sp = document.createElement('div');
+    sp.textContent = ch;
+    sp.style.cssText = 'font-size:1.2rem;font-weight:bold;color:var(--green-dark);align-self:center;';
+    spellWordBox.appendChild(sp);
+  });
+}
+function renderSpellSlots(len){
+  const slot = document.getElementById('spellAnswerSlot');
+  slot.innerHTML = '';
+  newSpellWordBox(slot);
+  for(let i=0;i<len;i++){
+    const div = document.createElement('div');
+    div.className = 'answer-slot';
+    div.dataset.idx = i;
+    div.textContent = spellAnswer[i] ? spellAnswer[i].ch : '';
+    if(!spellChecked && i === selectedSlotIndex && spellAnswer[i] === null){
+      div.style.borderColor = 'var(--accent)';
+      div.style.borderWidth = '3px';
+      div.style.background = '#fff8e1';
+    }
+    div.addEventListener('click', () => {
+      if(spellChecked) return;
+      if(spellAnswer[i]){
+        // 文字が入っているマスをタップ → そのマスだけ消す
+        const letterObj = spellAnswer[i];
+        letterObj.used = false;
+        spellAnswer[i] = null;
+        selectedSlotIndex = i;
+        renderSpellSlots(len);
+        renderSpellTray();
+      } else {
+        // 空マスをタップ → ここに次の文字を置く、と選択する
+        selectedSlotIndex = i;
+        renderSpellSlots(len);
+      }
+    });
+    appendSpellFixed(slot, i);
+    spellWordBox.appendChild(div);
+  }
+}
+
+let dragGhost = null;
+let dragStartPos = null;
+let dragItem = null;
+
+function clearDragGhost(){
+  if(dragGhost){ dragGhost.remove(); dragGhost = null; }
+  document.querySelectorAll('.answer-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function renderSpellTray(){
+  const tray = document.getElementById('spellLetterTray');
+  tray.innerHTML = '';
+  spellLetters.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-tile';
+    btn.textContent = item.ch;
+    btn.style.opacity = item.used ? '0.25' : '1';
+    btn.style.touchAction = 'none';
+    btn.disabled = item.used || spellChecked;
+
+    btn.addEventListener('pointerdown', (e) => {
+      if(spellChecked || item.used) return;
+      dragItem = item;
+      dragStartPos = {x:e.clientX, y:e.clientY};
+      dragGhost = btn.cloneNode(true);
+      dragGhost.style.position = 'fixed';
+      dragGhost.style.zIndex = '9999';
+      dragGhost.style.pointerEvents = 'none';
+      dragGhost.style.opacity = '0.9';
+      dragGhost.style.left = (e.clientX - 18) + 'px';
+      dragGhost.style.top = (e.clientY - 18) + 'px';
+      document.body.appendChild(dragGhost);
+    });
+    tray.appendChild(btn);
+  });
+}
+
+document.addEventListener('pointermove', (e) => {
+  if(!dragGhost) return;
+  dragGhost.style.left = (e.clientX - 18) + 'px';
+  dragGhost.style.top = (e.clientY - 18) + 'px';
+  document.querySelectorAll('.answer-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  const slotEl = under ? under.closest('.answer-slot') : null;
+  if(slotEl) slotEl.classList.add('drag-over');
+});
+
+document.addEventListener('pointerup', (e) => {
+  if(!dragItem) return;
+  const item = dragItem;
+  const moved = dragStartPos ? Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y) : 0;
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  const slotEl = under ? under.closest('.answer-slot') : null;
+  clearDragGhost();
+  dragItem = null;
+  dragStartPos = null;
+  if(item.used || spellChecked) return;
+  if(slotEl && spellAnswer[Number(slotEl.dataset.idx)] === null){
+    // 指定のマスにドロップ
+    placeLetterAt(item, Number(slotEl.dataset.idx));
+  } else if(moved < 8){
+    // ほぼ動いていない＝タップ扱い
+    placeLetter(item);
+  }
+  // ドラッグしたが空マス以外の場所で離した場合は何もしない（元に戻る）
+});
+
+document.getElementById('spellBackBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  if(spellSubMode === 'type'){
+    spellTypeInput.value = spellTypeInput.value.slice(0, -1);
+    return;
+  }
+  // 一番右（末尾）の、文字が入っているマスを1つ消す
+  for(let i = spellAnswer.length - 1; i >= 0; i--){
+    if(spellAnswer[i]){
+      spellAnswer[i].used = false;
+      spellAnswer[i] = null;
+      selectedSlotIndex = i;
+      break;
+    }
+  }
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellClearBtn').addEventListener('click', () => {
+  if(spellChecked) return;
+  if(spellSubMode === 'type'){
+    spellTypeInput.value = '';
+    return;
+  }
+  spellAnswer.forEach(item => { if(item) item.used = false; });
+  spellAnswer = spellAnswer.map(() => null);
+  selectedSlotIndex = 0;
+  renderSpellSlots(spellAnswer.length);
+  renderSpellTray();
+});
+
+document.getElementById('spellShuffleBtn').addEventListener('click', () => {
+  spellOrder = shuffleArr(spellOrder);
+  spellIdx = 0;
+  renderSpell();
+});
+
+document.getElementById('spellCheckBtn').addEventListener('click', () => {
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  const built = spellSubMode === 'type'
+    ? spellTypeInput.value.toLowerCase().replace(/[^a-z]/g, '')
+    : spellAnswer.map(a => a ? a.ch : '').join('');
+  const fb = document.getElementById('spellFeedback');
+  spellChecked = true;
+  if(spellSubMode === 'type'){
+    spellTypeInput.disabled = true;
+  } else {
+    renderSpellTray();
+  }
+  const today = new Date().toISOString().slice(0,10);
+  if(!progress.dailyStats) progress.dailyStats = {};
+  if(!progress.dailyStats[today]) progress.dailyStats[today] = {right:0, wrong:0, words:{}, modes:{card:{right:0,wrong:0},spell:{right:0,wrong:0}}};
+  if(!progress.dailyStats[today].modes) progress.dailyStats[today].modes = {card:{right:0,wrong:0},spell:{right:0,wrong:0}};
+  if(!progress.modeStats) progress.modeStats = { card:{right:0,wrong:0}, spell:{right:0,wrong:0} };
+  if(built === cleanEn(d.w).toLowerCase().replace(/[^a-z]/g, '')){
+    fb.textContent = '○ 正解！';
+    fb.style.color = 'var(--green-dark)';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].right++;
+    bumpWordModeStat(d.no, spellModeKey(), true);
+    progress.dailyStats[today].right++;
+    progress.dailyStats[today].modes.spell.right++;
+    progress.modeStats.spell.right++;
+  } else {
+    fb.textContent = `✕ 不正解（正解: ${d.w}）`;
+    fb.style.color = '#a33';
+    if(!progress.stats[d.no]) progress.stats[d.no] = {wrong:0, right:0};
+    progress.stats[d.no].wrong++;
+    bumpWordModeStat(d.no, spellModeKey(), false);
+    progress.dailyStats[today].wrong++;
+    progress.dailyStats[today].modes.spell.wrong++;
+    progress.modeStats.spell.wrong++;
+  }
+  progress.stats[d.no].lastSeen = today;
+  progress.stats[d.no].lastMode = 'spell';
+  progress.dailyStats[today].words[d.no] = true;
+  progress.totalSessions++;
+  progress.lastDate = today;
+  saveProgress();
+});
+
+document.getElementById('spellNextBtn').addEventListener('click', () => {
+  spellIdx++;
+  renderSpell();
+});
+
+document.getElementById('spellSpeakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(spellIdx >= spellOrder.length) return;
+  const d = dataByNo(spellOrder[spellIdx]);
+  speak(d.w);
+});
+
+/* ===== セット切替 ===== */
+let currentPart = null; // 現在選択中のPart（初期はセット1が属するPartを自動選択）
+
+function partOf(setNo){
+  for(const p in PARTS){ if(PARTS[p].includes(setNo)) return Number(p); }
+  return 1;
+}
+
+/* ===== 番号で範囲を指定（セットをまたいでもOK） ===== */
+const RANGE_KEY = 'target1200_range';
+let rangeFrom = 1, rangeTo = 100;
+try{
+  const r = JSON.parse(localStorage.getItem(RANGE_KEY) || 'null');
+  if(r && r.from && r.to){ rangeFrom = r.from; rangeTo = r.to; }
+}catch(e){}
+
+function applyRange(a, b){
+  a = Math.round(Number(a)); b = Math.round(Number(b));
+  if(!a || !b || a < 1 || b < 1 || a > 1700 || b > 1700){
+    alert('1〜1700の番号を入れてください');
+    return;
+  }
+  if(a > b){ const t = a; a = b; b = t; }
+  rangeFrom = a; rangeTo = b;
+  try{ localStorage.setItem(RANGE_KEY, JSON.stringify({from:a, to:b})); }catch(e){}
+  currentSet = null;
+  DATA = allWords().filter(d => d.no >= a && d.no <= b);
+  order = DATA.map(d => d.no);
+  idx = 0;
+  flipped = false;
+  renderCard();
+  spellOrder = DATA.map(d => d.no);
+  spellIdx = 0;
+  if(typeof renderSpell === 'function') renderSpell();
+  if(typeof resetChoice === 'function') resetChoice();
+  renderSetSelector();
+}
+
+function switchSet(n){
+  currentSet = n;
+  currentPart = partOf(n);
+  DATA = SETS[currentSet];
+  order = DATA.map(d => d.no);
+  idx = 0;
+  flipped = false;
+  renderCard();
+  spellOrder = DATA.map(d => d.no);
+  spellIdx = 0;
+  if(typeof renderSpell === 'function') renderSpell();
+  if(typeof resetChoice === 'function') resetChoice();
+  renderSetSelector();
+}
+
+function switchPart(p){
+  currentPart = p;
+  renderSetSelector();
+}
+
+function renderSetSelector(){
+  if(currentPart === null) currentPart = partOf(currentSet);
+  const el = document.getElementById('setSelector');
+  const partKeys = Object.keys(PARTS).map(Number).sort((a,b)=>a-b);
+  const partRange = p => {
+    const sets = PARTS[p];
+    const first = SETS[sets[0]][0].no;
+    const last = SETS[sets[sets.length-1]][SETS[sets[sets.length-1]].length-1].no;
+    return `${first}〜${last}`;
+  };
+  let html = '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-bottom:6px;">';
+  html += partKeys.map(p => {
+    const active = p === currentPart;
+    return `<button class="part-btn" data-part="${p}" style="flex:1 1 auto;min-width:90px;padding:7px 4px;border:1px solid var(--green-dark);border-radius:8px;font-size:0.8rem;font-weight:bold;background:${active ? 'var(--green-dark)' : '#fff'};color:${active ? '#fff' : 'var(--green-dark)'};">Part${p}（${partRange(p)}）</button>`;
+  }).join('');
+  html += '</div>';
+  html += '<div style="display:flex;gap:6px;flex-wrap:wrap;width:100%;">';
+  html += PARTS[currentPart].map(k => {
+    const active = k === currentSet && Object.keys(SETS).map(Number).includes(k);
+    const exists = SETS.hasOwnProperty(k);
+    return `<button class="set-btn" data-set="${k}" ${exists ? '' : 'disabled'} style="flex:1 1 auto;min-width:60px;padding:6px 4px;border:1px solid var(--green);border-radius:8px;font-size:0.78rem;background:${active ? 'var(--green)' : '#fff'};color:${active ? '#fff' : (exists ? 'var(--green)' : '#bbb')};opacity:${exists ? '1':'0.5'};">セット${k}</button>`;
+  }).join('');
+  html += '</div>';
+  const inRange = currentSet === null;
+  html += `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;width:100%;margin-top:8px;padding:8px 10px;border:1px dashed var(--green-dark);border-radius:8px;background:${inRange ? '#eaf5ee' : '#fff'};">
+    <span style="font-size:0.8rem;font-weight:bold;color:var(--green-dark);">番号で範囲指定</span>
+    <input id="rangeFromInput" type="number" inputmode="numeric" min="1" max="1700" value="${rangeFrom}" aria-label="開始番号" style="width:64px;font-size:1rem;padding:5px;border:1px solid var(--green);border-radius:6px;text-align:center;">
+    <span style="font-size:0.85rem;">〜</span>
+    <input id="rangeToInput" type="number" inputmode="numeric" min="1" max="1700" value="${rangeTo}" aria-label="終了番号" style="width:64px;font-size:1rem;padding:5px;border:1px solid var(--green);border-radius:6px;text-align:center;">
+    <button id="rangeApplyBtn" style="flex:1 1 auto;min-width:90px;padding:7px 6px;border:none;border-radius:8px;background:var(--green-dark);color:#fff;font-size:0.8rem;font-weight:bold;">この範囲で学習</button>
+    ${inRange ? `<div style="width:100%;font-size:0.78rem;color:var(--green-dark);">▶ 今は No.${rangeFrom}〜${rangeTo}（${DATA.length}語）を学習中</div>` : ''}
+  </div>`;
+  el.innerHTML = html;
+  document.getElementById('rangeApplyBtn').addEventListener('click', () => {
+    applyRange(document.getElementById('rangeFromInput').value, document.getElementById('rangeToInput').value);
+  });
+  el.querySelectorAll('.part-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPart(Number(btn.dataset.part)));
+  });
+  el.querySelectorAll('.set-btn:not([disabled])').forEach(btn => {
+    btn.addEventListener('click', () => switchSet(Number(btn.dataset.set)));
+  });
+}
+/* ===== 4択モード（英単語 → 日本語の意味を4つから選ぶ） ===== */
+const CHOICE_TIME_MS = 10000;      // タイムボーナスの持ち時間（10秒）
+const modeChoiceBtn = document.getElementById('modeChoiceBtn');
+const choiceView = document.getElementById('choiceView');
+const choiceQuiz = document.getElementById('choiceQuiz');
+const choiceResult = document.getElementById('choiceResult');
+const choiceOptionsEl = document.getElementById('choiceOptions');
+const choiceFeedback = document.getElementById('choiceFeedback');
+const choiceNextBtn = document.getElementById('choiceNextBtn');
+const choiceDunnoBtn = document.getElementById('choiceDunnoBtn');
+const choiceTimerFill = document.getElementById('choiceTimerFill');
+const choiceAutoSpeak = document.getElementById('choiceAutoSpeak');
+
+let choiceLen = 20;          // 1回の問題数（0 = 全部）
+let choiceOrder = [];        // 今回出題する単語番号
+let choiceIdx = 0;
+let choiceAnswered = false;
+let choiceScore = 0;
+let choiceRight = 0;
+let choiceWrongNos = [];
+let choiceStartTime = 0;
+let choiceTimerRaf = null;
+let choiceNextTimeout = null;
+let choiceActive = false;
+
+try{
+  const st = JSON.parse(localStorage.getItem('target1200_choice_settings') || 'null');
+  if(st){
+    if(typeof st.len === 'number') choiceLen = st.len;
+    if(typeof st.autoSpeak === 'boolean') choiceAutoSpeak.checked = st.autoSpeak;
+  }
+}catch(e){}
+function saveChoiceSettings(){
+  try{ localStorage.setItem('target1200_choice_settings', JSON.stringify({len:choiceLen, autoSpeak:choiceAutoSpeak.checked})); }catch(e){}
+}
+function updateLenButtons(){
+  document.querySelectorAll('.choice-len-btn').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.len) === choiceLen);
+  });
+}
+updateLenButtons();
+
+// 日本語訳の語尾から品詞をおおまかに判定（ダミーの選択肢を同じ品詞からそろえるため）
+function mainMeaning(m){
+  let t = String(m).replace(/\s*\([a-z]-\)$/, '').split(/[　\n，、／]/)[0].trim();
+  t = t.replace(/[（(][^）)]*[）)]$/, '').trim();   // 末尾の（）を外す
+  return t || String(m);
+}
+function meaningType(m){
+  const t = mainMeaning(m);
+  const last = t.slice(-1);
+  if(last === '…') return 'conj';
+  if('なのいた'.includes(last)) return 'adj';
+  if('るうくすつぬむぶぐ'.includes(last)) return 'verb';
+  if('にとはもてりら'.includes(last)) return 'adv';
+  return 'noun';
+}
+let meaningTypeCache = null;
+function isPhrase(d){ return /\s/.test(cleanEn(d.w)); }
+function choiceKey(d){ return (isPhrase(d) ? 'P_' : 'W_') + meaningType(d.m); }
+function getTypeIndex(){
+  if(meaningTypeCache) return meaningTypeCache;
+  meaningTypeCache = {};
+  allWords().forEach(d => {
+    const t = choiceKey(d);
+    (meaningTypeCache[t] = meaningTypeCache[t] || []).push(d);
+    const g = isPhrase(d) ? 'phrase' : 'word';
+    (meaningTypeCache[g] = meaningTypeCache[g] || []).push(d);
+  });
+  return meaningTypeCache;
+}
+function displayMeaning(m){
+  return String(m).replace(/\n/g, ' ').replace(/\s*\([a-z]-\)$/, '');
+}
+function makeChoices(d){
+  const idxMap = getTypeIndex();
+  const type = choiceKey(d);
+  const group = isPhrase(d) ? 'phrase' : 'word';
+  const myMain = mainMeaning(d.m);
+  const ok = x => x.no !== d.no && x.m !== d.m && mainMeaning(x.m) !== myMain;
+  let pool = shuffleArr((idxMap[type] || []).filter(ok));
+  const picked = [];
+  const seen = new Set([d.m]);
+  for(const x of pool){
+    if(seen.has(x.m)) continue;
+    seen.add(x.m); picked.push(x);
+    if(picked.length === 3) break;
+  }
+  if(picked.length < 3){
+    for(const x of shuffleArr((idxMap[group] || []).filter(ok)).concat(shuffleArr(allWords().filter(ok)))){
+      if(seen.has(x.m)) continue;
+      seen.add(x.m); picked.push(x);
+      if(picked.length === 3) break;
+    }
+  }
+  return shuffleArr([d, ...picked]);
+}
+
+function choiceSourceNos(){
+  return reviewMode ? wrongList() : DATA.map(d => d.no);
+}
+function stopChoiceTimers(){
+  if(choiceTimerRaf){ cancelAnimationFrame(choiceTimerRaf); choiceTimerRaf = null; }
+  if(choiceNextTimeout){ clearTimeout(choiceNextTimeout); choiceNextTimeout = null; }
+}
+function startChoiceRound(nos){
+  stopChoiceTimers();
+  let list = shuffleArr(nos);
+  if(choiceLen > 0) list = list.slice(0, choiceLen);
+  choiceOrder = list;
+  choiceIdx = 0;
+  choiceScore = 0;
+  choiceRight = 0;
+  choiceWrongNos = [];
+  renderChoice();
+}
+function resetChoice(){
+  if(!choiceActive) { choiceOrder = []; return; }
+  startChoiceRound(choiceSourceNos());
+}
+function leaveChoice(){
+  choiceActive = false;
+  stopChoiceTimers();
+  modeChoiceBtn.classList.remove('active');
+  choiceView.style.display = 'none';
+}
+
+function tickChoiceTimer(){
+  const remain = Math.max(0, CHOICE_TIME_MS - (performance.now() - choiceStartTime));
+  choiceTimerFill.style.width = (remain / CHOICE_TIME_MS * 100) + '%';
+  if(remain > 0 && !choiceAnswered) choiceTimerRaf = requestAnimationFrame(tickChoiceTimer);
+}
+
+function renderChoice(){
+  stopChoiceTimers();
+  document.getElementById('choiceScoreLive').textContent = `スコア ${choiceScore}`;
+  if(choiceOrder.length === 0){
+    choiceQuiz.style.display = 'none';
+    choiceResult.style.display = 'block';
+    choiceResult.innerHTML = reviewMode
+      ? '<div class="big">🎉</div><p>苦手な単語はありません。このまま頑張ろう！</p>'
+      : '<p>出題できる単語がありません。</p>';
+    return;
+  }
+  if(choiceIdx >= choiceOrder.length){
+    showChoiceResult();
+    return;
+  }
+  choiceQuiz.style.display = '';
+  choiceResult.style.display = 'none';
+  const d = dataByNo(choiceOrder[choiceIdx]);
+  document.getElementById('choiceWord').textContent = d.w;
+  document.getElementById('choiceNo').textContent = 'No.' + d.no;
+  document.getElementById('choiceCount').textContent = `${choiceIdx + 1}/${choiceOrder.length}`;
+  choiceFeedback.textContent = '';
+  choiceNextBtn.style.display = 'none';
+  choiceDunnoBtn.style.display = '';
+  choiceDunnoBtn.disabled = false;
+  choiceAnswered = false;
+  choiceOptionsEl.innerHTML = '';
+  makeChoices(d).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'choice-opt';
+    b.textContent = displayMeaning(opt.m);
+    b.dataset.no = opt.no;
+    b.addEventListener('click', () => answerChoice(opt.no === d.no ? true : false, b));
+    choiceOptionsEl.appendChild(b);
+  });
+  choiceStartTime = performance.now();
+  choiceTimerFill.style.width = '100%';
+  choiceTimerRaf = requestAnimationFrame(tickChoiceTimer);
+}
+
+function recordChoiceStat(no, correct){
+  if(!progress.stats[no]) progress.stats[no] = {wrong:0, right:0};
+  if(correct) progress.stats[no].right++;
+  else progress.stats[no].wrong++;
+  bumpWordModeStat(no, 'choice', correct);
+  const today = new Date().toISOString().slice(0,10);
+  progress.stats[no].lastSeen = today;
+  progress.stats[no].lastMode = 'choice';
+  if(!progress.dailyStats) progress.dailyStats = {};
+  if(!progress.dailyStats[today]) progress.dailyStats[today] = {right:0, wrong:0, words:{}, modes:{card:{right:0,wrong:0},spell:{right:0,wrong:0}}};
+  const ds = progress.dailyStats[today];
+  if(!ds.modes) ds.modes = {card:{right:0,wrong:0},spell:{right:0,wrong:0}};
+  if(!ds.modes.choice) ds.modes.choice = {right:0,wrong:0};
+  if(correct){ ds.right++; ds.modes.choice.right++; }
+  else { ds.wrong++; ds.modes.choice.wrong++; }
+  ds.words[no] = true;
+  if(!progress.modeStats) progress.modeStats = { card:{right:0,wrong:0}, spell:{right:0,wrong:0} };
+  if(!progress.modeStats.choice) progress.modeStats.choice = {right:0,wrong:0};
+  if(correct) progress.modeStats.choice.right++;
+  else progress.modeStats.choice.wrong++;
+  progress.totalSessions++;
+  progress.lastDate = today;
+  saveProgress();
+}
+
+// correct: true=正解 / false=不正解 / null=わからない
+function answerChoice(correct, btn){
+  if(choiceAnswered) return;
+  choiceAnswered = true;
+  stopChoiceTimers();
+  const d = dataByNo(choiceOrder[choiceIdx]);
+  const remain = Math.max(0, CHOICE_TIME_MS - (performance.now() - choiceStartTime));
+  choiceOptionsEl.querySelectorAll('.choice-opt').forEach(b => {
+    b.disabled = true;
+    if(Number(b.dataset.no) === d.no) b.classList.add('correct');
+  });
+  choiceDunnoBtn.disabled = true;
+  if(correct){
+    const bonus = Math.round(remain / CHOICE_TIME_MS * 100);
+    const pts = 100 + bonus;
+    choiceScore += pts;
+    choiceRight++;
+    choiceFeedback.style.color = 'var(--green-dark)';
+    choiceFeedback.textContent = bonus > 0 ? `○ 正解！ +${pts}（ボーナス${bonus}）` : `○ 正解！ +${pts}`;
+  } else {
+    if(btn) btn.classList.add('wrong');
+    choiceWrongNos.push(d.no);
+    choiceFeedback.style.color = '#a33';
+    choiceFeedback.textContent = `✕ 正解は「${displayMeaning(d.m)}」`;
+  }
+  document.getElementById('choiceScoreLive').textContent = `スコア ${choiceScore}`;
+  recordChoiceStat(d.no, !!correct);
+  if(choiceAutoSpeak.checked) speak(d.w);
+  if(correct){
+    choiceNextTimeout = setTimeout(() => { choiceIdx++; renderChoice(); }, 900);
+  } else {
+    choiceDunnoBtn.style.display = 'none';
+    choiceNextBtn.style.display = 'block';
+  }
+}
+
+function showChoiceResult(){
+  choiceQuiz.style.display = 'none';
+  choiceResult.style.display = 'block';
+  const total = choiceOrder.length;
+  const rate = Math.round(choiceRight / total * 100);
+  const msg = rate === 100 ? 'パーフェクト！🎉' : rate >= 80 ? 'よくできました！' : rate >= 50 ? 'あと少し！間違えた単語を見直そう' : '間違えた単語をもう一度やってみよう';
+  let html = `<div class="small">結果</div>
+    <div class="big">${choiceRight} / ${total} 問正解</div>
+    <div style="font-size:1.1rem;font-weight:bold;color:#8a6300;margin:4px 0 6px;">スコア ${choiceScore}</div>
+    <div>${msg}</div>`;
+  if(choiceWrongNos.length > 0){
+    html += `<table><thead><tr><th>No.</th><th>単語</th><th>意味</th><th></th></tr></thead><tbody>`
+      + choiceWrongNos.map(no => {
+          const w = dataByNo(no);
+          return `<tr><td>${w.no}</td><td>${w.w}</td><td>${displayMeaning(w.m)}</td><td><button class="choice-res-speak" data-w="${w.w}" style="width:auto;margin:0;padding:2px 4px;background:none;font-size:1.1rem;">🔊</button></td></tr>`;
+        }).join('')
+      + `</tbody></table>
+      <button id="choiceRetryWrongBtn" style="background:var(--accent);color:#5c3d00;">✕ 間違えた${choiceWrongNos.length}語だけもう一度</button>`;
+  }
+  html += `<button id="choiceAgainBtn" style="background:var(--green);color:#fff;">↺ 新しく出題する</button>`;
+  choiceResult.innerHTML = html;
+  choiceResult.querySelectorAll('.choice-res-speak').forEach(b => {
+    b.addEventListener('click', () => speak(b.dataset.w));
+  });
+  const retry = document.getElementById('choiceRetryWrongBtn');
+  if(retry){
+    const wrongs = choiceWrongNos.slice();
+    retry.addEventListener('click', () => {
+      const saveLen = choiceLen;
+      choiceLen = 0;                // 間違えた単語は全部出す
+      startChoiceRound(wrongs);
+      choiceLen = saveLen;
+    });
+  }
+  document.getElementById('choiceAgainBtn').addEventListener('click', () => startChoiceRound(choiceSourceNos()));
+}
+
+modeChoiceBtn.addEventListener('click', () => {
+  modeChoiceBtn.classList.add('active');
+  modeCardBtn.classList.remove('active');
+  modeSpellBtn.classList.remove('active');
+  cardView.style.display = 'none';
+  spellView.style.display = 'none';
+  spellSubToggle.style.display = 'none';
+  choiceView.style.display = '';
+  if(!choiceActive){
+    choiceActive = true;
+    startChoiceRound(choiceSourceNos());
+  }
+  setTimeout(() => choiceView.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+});
+choiceDunnoBtn.addEventListener('click', () => answerChoice(null, null));
+choiceNextBtn.addEventListener('click', () => { choiceIdx++; renderChoice(); });
+document.getElementById('choiceSpeakBtn').addEventListener('click', () => {
+  if(choiceIdx < choiceOrder.length) speak(dataByNo(choiceOrder[choiceIdx]).w);
+});
+document.getElementById('choiceRestartBtn').addEventListener('click', () => startChoiceRound(choiceSourceNos()));
+document.querySelectorAll('.choice-len-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    choiceLen = Number(b.dataset.len);
+    updateLenButtons();
+    saveChoiceSettings();
+    startChoiceRound(choiceSourceNos());
+  });
+});
+choiceAutoSpeak.addEventListener('change', saveChoiceSettings);
+
+renderSetSelector();
+</script>
+</body>
+</html>
+
