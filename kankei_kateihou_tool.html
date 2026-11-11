@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Unit 5・6 関係代名詞・仮定法 マスター</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#f6f3ff;color:#2b2540;-webkit-text-size-adjust:100%}
+header{background:#3a2a6b;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.85;margin:2px 0 8px}
+nav{display:flex;gap:4px;overflow-x:auto}
+nav button{flex:1;min-width:64px;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:700;padding:9px 4px;border-radius:10px 10px 0 0}
+nav button.on{background:#f6f3ff;color:#3a2a6b}
+.tab{display:none;padding:14px;max-width:720px;margin:0 auto}
+.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(58,42,107,.12)}
+.gtag{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:#c2185b;border-radius:999px;padding:2px 10px;margin-bottom:6px}
+.gtag.K{background:#1f7a8c}
+h2{font-size:16px;color:#3a2a6b;margin-bottom:6px}
+.card p{font-size:15px;line-height:1.7;margin:4px 0}
+.ex{background:#f4f0fb;border-left:4px solid #3a2a6b;padding:8px 10px;margin:8px 0;font-size:15px;line-height:1.7;border-radius:6px;font-family:Georgia,"Times New Roman",serif}
+.paren{color:#8a7fa8}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+th,td{border:1px solid #d8cfee;padding:6px 8px;text-align:left}
+th{background:#ede7fa;color:#3a2a6b}
+b{color:#c2185b}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 4px;border-bottom:1px solid #eee}
+.sel input{width:22px;height:22px}
+.sel .gh{font-weight:800;color:#3a2a6b;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.sel .gh button{font-size:12px;border:1px solid #3a2a6b;background:#fff;color:#3a2a6b;border-radius:8px;padding:3px 8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;display:flex;align-items:center;gap:6px;font-size:14px;background:#f4f0fb;border-radius:10px;padding:10px}
+.btn{display:block;width:100%;border:0;background:#c2185b;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#3a2a6b}
+.btn.ghost{background:#fff;color:#3a2a6b;border:2px solid #3a2a6b}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#6b5f86;margin-bottom:8px}
+.qtext{font-size:19px;line-height:1.6;font-family:Georgia,"Times New Roman",serif;white-space:pre-line;margin-bottom:6px}
+.qtext b{font-family:-apple-system,"Hiragino Sans",sans-serif}
+.qja{font-size:14px;color:#6b5f86;margin-bottom:12px}
+.choice{display:block;width:100%;text-align:left;font-size:17px;border:2px solid #d8cfee;background:#fff;border-radius:12px;padding:12px;margin:8px 0;font-family:Georgia,"Times New Roman",serif;color:#2b2540}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}
+.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:12px;margin-top:10px;font-size:15px;line-height:1.7}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.fb .mark{font-size:22px;font-weight:900}
+.ans{min-height:56px;border:2px dashed #b9a9d6;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;background:#fff;margin-bottom:10px}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.tile{font-size:17px;border:2px solid #3a2a6b;background:#fff;color:#3a2a6b;border-radius:10px;padding:8px 12px;font-family:Georgia,"Times New Roman",serif}
+.ans .tile{background:#3a2a6b;color:#fff}
+.tile.used{visibility:hidden}
+.minibar{display:flex;gap:8px}
+.minibar button{flex:1;font-size:13px;border:1px solid #3a2a6b;background:#fff;color:#3a2a6b;border-radius:10px;padding:8px}
+.score{font-size:40px;font-weight:900;color:#c2185b;text-align:center}
+.mist{border-bottom:1px solid #eee;padding:10px 0;font-size:14px;line-height:1.6}
+.mist .q{font-family:Georgia,"Times New Roman",serif;font-size:15px;white-space:pre-line}
+.mist .a{color:#2e7d32;font-weight:700}
+.mist .n{float:right;background:#c2185b;color:#fff;border-radius:999px;padding:0 9px;font-weight:800}
+.note{font-size:13px;color:#6b5f86;line-height:1.6}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:14mm 14mm}
+ body{background:#fff}
+ header,.tab,nav{display:none!important}
+ #printArea{display:block;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif;color:#000}
+ .ph{border-bottom:2px solid #000;margin-bottom:4mm;padding-bottom:2mm;display:flex;justify-content:space-between;align-items:flex-end}
+ .ph h1{font-size:15pt}.ph .nm{font-size:10.5pt}
+ .psec{break-after:avoid;page-break-after:avoid;font-weight:800;font-size:11.5pt;margin:4mm 0 1.5mm;border-left:4px solid #000;padding-left:2mm;font-family:"Hiragino Sans","Noto Sans CJK JP",sans-serif}
+ .pq{font-size:11pt;line-height:1.75;margin:0 0 2.6mm;break-inside:avoid;white-space:pre-line}
+ .pq .en{font-family:"Times New Roman",Georgia,serif;font-size:12pt}
+ .pq .jp{font-size:9.5pt;color:#333}
+ .pq .chs{font-family:"Times New Roman",Georgia,serif;font-size:11.5pt}
+ .pq .line{border-bottom:1px solid #000;height:8mm}
+ .pans{page-break-before:always}
+ .pans .pq{margin-bottom:1.5mm;font-size:10pt;line-height:1.55}
+}
+</style></head><body>
+<header><h1>Unit 5・6 関係代名詞・仮定法</h1><div class="sub">しくみ → 問題 → まちがいを復習（教科書 p.62〜87）</div>
+<nav><button data-t="guide" class="on">📘 しくみ</button><button data-t="quiz">✏️ 問題</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
+
+<div class="tab show" id="guide"></div>
+
+<div class="tab" id="quiz">
+ <div id="qsetup" class="card">
+  <h2>出題する範囲をえらぶ</h2>
+  <div class="sel" id="qsel"></div>
+  <div class="row"><label class="opt"><input type="radio" name="qord" value="seq" checked> 順番どおり</label><label class="opt"><input type="radio" name="qord" value="shuf"> シャッフル</label></div>
+  <button class="btn" id="qstart">スタート</button>
+ </div>
+ <div id="qplay" style="display:none"></div>
+</div>
+
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた問題</h2><p class="note">問題を解いている途中でも、いつでも見られます。</p><div id="misslist"></div></div></div>
+
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">これまでにまちがえた回数が多い順です（このスマホに記録されます）。</p><div id="ranklist"></div><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+
+<div class="tab" id="print"><div class="card">
+ <h2>プリントを作る</h2>
+ <div class="sel" id="psel"></div>
+ <div class="row"><label class="opt"><input type="radio" name="pord" value="seq" checked> 順番どおり</label><label class="opt"><input type="radio" name="pord" value="shuf"> シャッフル</label></div>
+ <div class="row"><label class="opt"><input type="checkbox" id="pans" checked> 解答ページを付ける</label></div>
+ <button class="btn sub" id="pgo">印刷する</button>
+ <p class="note" style="margin-top:8px">iPhone・iPadでは、印刷画面で2本指で広げるとPDFとして保存・共有できます。</p>
+</div></div>
+
+<div id="printArea"></div>
+
+<script>
+const UNITS = [
+ {id:'R0', g:'関係代名詞・後置修飾', name:'① 後置修飾（前置詞・不定詞・分詞）'},
+ {id:'R1', g:'関係代名詞・後置修飾', name:'② who / which / that をえらぶ'},
+ {id:'R2', g:'関係代名詞・後置修飾', name:'③ 文の動詞を見失わない（Key 22）'},
+ {id:'R3', g:'関係代名詞・後置修飾', name:'④ 目的格・接触節（Key 15・18）'},
+ {id:'R4', g:'関係代名詞・後置修飾', name:'⑤ 並べかえ'},
+ {id:'K1', g:'仮定法', name:'⑥ I wish ～（Key 19）'},
+ {id:'K2', g:'仮定法', name:'⑦ If ～ were / 過去形（Key 20・21）'},
+ {id:'K3', g:'仮定法', name:'⑧ 正しい形にする（p.83 Practice型）'},
+ {id:'K4', g:'仮定法', name:'⑨ 現実 ⇔ 仮定法の書きかえ'},
+ {id:'K5', g:'仮定法', name:'⑩ 可能性がある？ない？（p.87）'},
+ {id:'K6', g:'仮定法', name:'⑪ 並べかえ'},
+ {id:'H1', g:'本文', name:'⑫ Unit 5 ガンディー（本文の内容）'},
+ {id:'H2', g:'本文', name:'⑬ Unit 6 ランドセル・貿易（本文の内容）'},
+];
+
+const Q = [
+// ---------- R0 後置修飾 ----------
+{u:'R0',type:'mc',q:'That cat (　　) the bench is so cute.',ja:'ベンチの上のあのネコはとてもかわいい。',ch:['in','on','at','to'],a:1,ex:'前置詞＋語句がうしろから説明：That cat <b>on the bench</b>（p.70）。'},
+{u:'R0',type:'mc',q:'We have many things (　　) study.',ja:'私たちには勉強すべきことがたくさんあります。',ch:['for','to','of','that'],a:1,ex:'不定詞（to＋原形）がうしろから説明：many things <b>to study</b>。'},
+{u:'R0',type:'mc',q:'The boy (　　) by me is Eddy.',ja:'私のそばに立っている少年はエディです。',ch:['stand','stood','standing','to stand'],a:2,ex:'「〜している」は現在分詞（-ing）：The boy <b>standing</b> by me。'},
+{u:'R0',type:'mc',q:'This is a book (　　) by Soseki.',ja:'これは漱石によって書かれた本です。',ch:['write','wrote','writing','written'],a:3,ex:'「〜された」は過去分詞：a book <b>written</b> by Soseki。'},
+{u:'R0',type:'mc',q:'Do you remember the boy (　　) a green shirt?',ja:'緑の服を着ていた男の子を覚えてる？',ch:['wear','wearing','wore','worn'],a:1,ex:'「〜を着ている」→ 現在分詞 <b>wearing</b>（p.70）。'},
+{u:'R0',type:'mc',q:'That (　　) cat is so cute.',ja:'眠っているあのネコはとてもかわいい。',ch:['sleep','slept','sleeping','to sleep'],a:2,ex:'<b>1語だけ</b>のときは名詞の<b>前</b>に置く：That <b>sleeping</b> cat（p.71）。'},
+{u:'R0',type:'mc',q:'There are many products (　　) in foreign countries.',ja:'外国で作られた製品がたくさんあります。',ch:['make','making','made','to make'],a:2,ex:'「作られた」→ 過去分詞 <b>made</b>（p.82 Round 2 の文）。'},
+{u:'R0',type:'mc',q:'This is a picture (　　) my friends.',ja:'これは私の友達の写真です。',ch:['of','on','at','to'],a:0,ex:'a picture <b>of my friends</b>（前置詞＋語句）。'},
+// ---------- R1 who/which/that ----------
+{u:'R1',type:'mc',q:'Gandhi is a man (　　) has influenced a lot of people.',ja:'ガンディーは多くの人々に影響を与えてきた人物です。',ch:['which','who','what','he'],a:1,ex:'Key 16。先行詞 a man は「人」→ <b>who</b>。'},
+{u:'R1',type:'mc',q:'This is a movie (　　) makes people happy.',ja:'これは人々を幸せにする映画です。',ch:['who','what','which','it'],a:2,ex:'Key 17。先行詞 a movie は「もの」→ <b>which</b>（that でもよい）。'},
+{u:'R1',type:'mc',q:'He\'s still respected by people (　　) fight for human rights.',ja:'彼は今でも人権のためにたたかう人々に尊敬されています。',ch:['which','who','they','what'],a:1,ex:'先行詞 people は「人」→ <b>who</b>（本文 p.63）。'},
+{u:'R1',type:'mc',q:'Eddy is a classmate (　　) can cook well.',ja:'エディは料理がじょうずなクラスメートです。',ch:['which','he','who','what'],a:2,ex:'先行詞 a classmate は「人」→ <b>who</b>（p.63 Practice）。'},
+{u:'R1',type:'mc',q:'This is a school (　　) was built in 2000.',ja:'これは2000年に建てられた学校です。',ch:['who','that','what','where'],a:1,ex:'先行詞 a school は「もの」→ <b>that</b>（which でもよい）。'},
+{u:'R1',type:'mc',q:'This is the bus (　　) goes to the hospital.',ja:'これは病院に行くバスです。',ch:['who','which','what','it'],a:1,ex:'先行詞 the bus は「もの」→ <b>which</b>。'},
+{u:'R1',type:'mc',q:'There were also hotels (　　) did not accept Indian guests.',ja:'インド人の客を受け入れないホテルもありました。',ch:['who','that','what','they'],a:1,ex:'先行詞 hotels は「もの」→ <b>that</b>（本文 p.64）。'},
+{u:'R1',type:'mc',q:'Have you ever heard of groups (　　) collect Japanese school backpacks?',ja:'日本のランドセルを集めている団体を聞いたことがある？',ch:['who','what','that','they'],a:2,ex:'本文 p.79。groups（団体）は that が使われています。'},
+{u:'R1',type:'mc',q:'Ms. Chen is a teacher (　　) came from Canada two years ago.',ja:'チェン先生は2年前にカナダから来た先生です。',ch:['which','who','what','she'],a:1,ex:'先行詞 a teacher は「人」→ <b>who</b>（p.63 Practice）。'},
+// ---------- R2 文の動詞 ----------
+{u:'R2',type:'mc',q:'Many things that we see every day (　　) from overseas.',ja:'私たちが毎日目にする多くのものは海外から来ています。',ch:['comes','come','coming','came from'],a:1,ex:'Key 22。骨組みは Many things … <b>come</b> from overseas. 主語は複数なので s は付けない。'},
+{u:'R2',type:'mc',q:'The park that I often visited (　　) changed.',ja:'私がよく訪れた公園は変わってしまった。',ch:['have','has','is','are'],a:1,ex:'骨組みは The park … <b>has</b> changed.（p.83 Practice）'},
+{u:'R2',type:'mc',q:'The gifts I brought from Japan (　　) my friends happy.',ja:'私が日本から持ってきたおみやげは友達を喜ばせた。',ch:['makes','made','making','to make'],a:1,ex:'骨組みは The gifts … <b>made</b> my friends happy.'},
+{u:'R2',type:'mc',q:'The new zoo that opened last month (　　) popular.',ja:'先月開園した新しい動物園は人気がある。',ch:['are','be','is','were'],a:2,ex:'骨組みは The new zoo … <b>is</b> popular.'},
+{u:'R2',type:'mc',q:'The boy who is talking with Ken (　　) my brother.',ja:'ケンと話している少年は私の弟です。',ch:['are','is','be','am'],a:1,ex:'(who is talking with Ken) をカッコに入れる → The boy <b>is</b> my brother.'},
+{u:'R2',type:'mc',q:'次の文の「文全体の動詞」はどれ？\nMany products that are sold by Japanese companies are made in other countries.',ja:'',ch:['sold','are（1つ目）','are made（2つ目）','companies'],a:2,ex:'that are sold by Japanese companies は products の説明。骨組みは Many products <b>are made</b> in other countries.'},
+{u:'R2',type:'mc',q:'I have an aunt who (　　) in Osaka.',ja:'私には大阪に住んでいるおばがいます。',ch:['live','lives','living','to live'],a:1,ex:'who のうしろの動詞は<b>先行詞</b>に合わせる。an aunt は単数 → <b>lives</b>。'},
+{u:'R2',type:'mc',q:'Jun is a boy who (　　) to play soccer.',ja:'純はサッカーをするのが大好きな男の子です。',ch:['love','loves','loving','to love'],a:1,ex:'先行詞 a boy は単数 → <b>loves</b>（p.63 Practice）。'},
+// ---------- R3 目的格・接触節 ----------
+{u:'R3',type:'mc',q:'This is a picture (　　) I found on the internet.',ja:'これは私がインターネットで見つけた写真です。',ch:['who','which','what','it'],a:1,ex:'Key 18。うしろが「I found（主語＋動詞）」→ 目的格 <b>which</b>（that でもよい）。'},
+{u:'R3',type:'mc',q:'He\'s a leader Indian people (　　) greatly.',ja:'彼はインドの人々がとても尊敬しているリーダーです。',ch:['respect','respects','respecting','respected'],a:0,ex:'本文 p.62。a leader (that) Indian people <b>respect</b>。主語 Indian people は複数。'},
+{u:'R3',type:'mc',q:'Ms. Chen is a teacher (　　) I respect.',ja:'チェン先生は私が尊敬する先生です。',ch:['which','that','what','she'],a:1,ex:'目的格で先行詞が「人」→ <b>that</b>。which は人には使えません。'},
+{u:'R3',type:'mc',q:'関係代名詞を<b>省略できる</b>のはどれ？',ja:'',ch:['Gandhi is a man who has influenced many people.','This is a movie that makes people happy.','This is a picture that my father took.','This is the bus which goes to the hospital.'],a:2,ex:'省略できるのは<b>目的格</b>（すぐうしろが「主語＋動詞」）だけ。This is a picture (that) <b>my father took</b>.'},
+{u:'R3',type:'mc',q:'This is a gift my sister (　　) me.',ja:'これは姉がくれたプレゼントです。',ch:['give','gave','giving','given'],a:1,ex:'接触節（which の省略）。a gift (which) my sister <b>gave</b> me（p.62 Practice）。'},
+{u:'R3',type:'mc',q:'This is the gym the students (　　) in their P.E. class.',ja:'これは生徒たちが体育の授業で使う体育館です。',ch:['use','uses','using','used by'],a:0,ex:'the gym (that) the students <b>use</b>。主語 the students は複数（p.67 Practice）。'},
+{u:'R3',type:'mc',q:'次の文で<b>不要な語</b>はどれ？\nThis is the book which I bought it yesterday.',ja:'これは私が昨日買った本です。',ch:['which','bought','it','yesterday'],a:2,ex:'which が「それ（the book）」の役目をしているので <b>it</b> は重ねない。'},
+{u:'R3',type:'mc',q:'This is a T-shirt that the students (　　) for Sports Day.',ja:'これは生徒たちが体育祭のためにデザインしたTシャツです。',ch:['design','designed','designing','to design'],a:1,ex:'過去のこと → <b>designed</b>（p.67 Practice）。'},
+// ---------- R4 並べかえ ----------
+{u:'R4',type:'tile',ja:'これは私がインターネットで見つけた写真です。',t:['This','is','a picture','I','found','on the internet'],ex:'Key 15。a picture ＋ I found …（which の省略）。'},
+{u:'R4',type:'tile',ja:'ガンディーは多くの人々に影響を与えてきた人物です。',t:['Gandhi','is','a man','who','has influenced','a lot of people'],ex:'Key 16。a man ＋ who has influenced …'},
+{u:'R4',type:'tile',ja:'これは人々を幸せにする映画です。',t:['This','is','a movie','that','makes','people','happy'],ex:'Key 17。a movie ＋ that makes people happy。'},
+{u:'R4',type:'tile',ja:'私たちが毎日目にする多くのものは海外から来ています。',t:['Many things','that','we','see','every day','come','from overseas'],ex:'Key 22。主語のカタマリ Many things that we see every day ＋ come …'},
+{u:'R4',type:'tile',ja:'マキは英語をじょうずに話す少女です。',t:['Maki','is','the girl','who','speaks','English','well'],ex:'the girl ＋ who speaks English well。'},
+{u:'R4',type:'tile',ja:'私はこの本を書いた作家を知っています。',t:['I','know','the writer','who','wrote','this book'],ex:'the writer ＋ who wrote this book。'},
+{u:'R4',type:'tile',ja:'私が尊敬する人はマハトマ・ガンディーです。',t:['The person','I','respect','is','Mahatma Gandhi'],ex:'p.68 の例文。The person (that) I respect ＋ is …'},
+{u:'R4',type:'tile',ja:'私のそばに立っている少年はエディです。',t:['The boy','standing','by me','is','Eddy'],ex:'現在分詞の後置修飾：The boy standing by me ＋ is Eddy。'},
+// ---------- K1 I wish ----------
+{u:'K1',type:'mc',q:'I wish I (　　) go to school.',ja:'学校に行けたらいいのに。',ch:['can','could','will','am'],a:1,ex:'Key 19。I can\'t go → I wish I <b>could</b> go（過去形にずらす）。'},
+{u:'K1',type:'mc',q:'I wish I (　　) pens and notebooks.',ja:'ペンとノートがあればいいのに。',ch:['have','has','had','having'],a:2,ex:'Key 19。I don\'t have → I wish I <b>had</b>。'},
+{u:'K1',type:'mc',q:'I wish I (　　) in Hawaii.',ja:'ハワイに住んでいればいいのに。',ch:['live','lives','lived','living'],a:2,ex:'p.87。I don\'t live → I wish I <b>lived</b>。'},
+{u:'K1',type:'mc',q:'I wish I (　　) in Hawaii.',ja:'ハワイにいればいいのに。',ch:['am','was','were','be'],a:2,ex:'p.87。仮定法の be動詞は主語に関係なく <b>were</b> が多い。'},
+{u:'K1',type:'mc',q:'I wish I (　　) more time to play.',ja:'遊ぶ時間がもっとあればいいのに。',ch:['have','had','has','will have'],a:1,ex:'p.78 Practice①。<b>had</b>。'},
+{u:'K1',type:'mc',q:'I wish there (　　) clean water to drink.',ja:'飲むためのきれいな水があればいいのに。',ch:['is','are','were','be'],a:2,ex:'p.78 Practice②。there is → there <b>were</b>。'},
+{u:'K1',type:'mc',q:'I wish I could speak many languages. の現実は？',ja:'',ch:['I can speak many languages.','I can\'t speak many languages.','I could speak many languages.','I will speak many languages.'],a:1,ex:'I wish＝「現実はちがう」。現実は「話せない」。'},
+// ---------- K2 If ----------
+{u:'K2',type:'mc',q:'If I (　　) you, I would ask my friends for help.',ja:'もし私があなたなら、友達に助けを求めるだろう。',ch:['am','was','were','be'],a:2,ex:'Key 20。If I <b>were</b> you（決まり文句）。'},
+{u:'K2',type:'mc',q:'If I were you, I (　　) ask my friends for help.',ja:'もし私があなたなら、友達に助けを求めるだろう。',ch:['will','would','can','am'],a:1,ex:'後半は〈助動詞の過去形 <b>would</b> ＋ 動詞の原形〉。'},
+{u:'K2',type:'mc',q:'If I (　　) a school backpack, I would donate it.',ja:'もしランドセルを持っていたら、寄付するのに。',ch:['have','has','had','will have'],a:2,ex:'Key 21。一般動詞も過去形 → <b>had</b>。'},
+{u:'K2',type:'mc',q:'If I were a Japanese student, I (　　) send my old backpack.',ja:'もし僕が日本の生徒なら、古いランドセルを送るのに。',ch:['will','would','can','do'],a:1,ex:'本文 p.79 のエディのセリフ。<b>would</b> send。'},
+{u:'K2',type:'mc',q:'If I were an adult, I (　　) go to developing countries to help people.',ja:'もし大人なら、人々を助けるために発展途上国へ行けるのに。',ch:['can','could','will','am'],a:1,ex:'p.79 Practice の例。「〜できるのに」は <b>could</b>。'},
+{u:'K2',type:'mc',q:'If you (　　) illiterate, you couldn\'t get information through books.',ja:'もし読み書きができなければ、本から情報を得られないだろう。',ch:['are','were','be','is'],a:1,ex:'本文 p.80。If you <b>were</b> illiterate。'},
+{u:'K2',type:'mc',q:'If you didn\'t study, you (　　) read or write.',ja:'もし勉強しなかったら、読み書きができないだろう。',ch:['can\'t','couldn\'t','won\'t','don\'t'],a:1,ex:'本文 p.80。<b>couldn\'t</b>＋原形。'},
+{u:'K2',type:'mc',q:'If we didn\'t import chicken, fried chicken (　　) be quite expensive in Japan.',ja:'鶏肉を輸入しなければ、日本でフライドチキンはかなり高くなるだろう。',ch:['will','would','is','can'],a:1,ex:'本文 p.81。<b>would</b> be。'},
+// ---------- K3 正しい形に ----------
+{u:'K3',type:'mc',q:'She is in Canada now. If I (am) there, we (can) watch an ice hockey game together.\n（　　）に入る正しい形は？',ja:'',ch:['am / can','were / could','was / can','were / can'],a:1,ex:'p.83 Practice①。am → <b>were</b>、can → <b>could</b>。'},
+{u:'K3',type:'mc',q:'She is busy during winter vacation. If she (have) time, she (will) send us a letter.\n（　　）に入る正しい形は？',ja:'',ch:['has / will','had / would','had / will','have / would'],a:1,ex:'p.83 Practice②。have → <b>had</b>、will → <b>would</b>。'},
+{u:'K3',type:'mc',q:'Ms. Chen is in Vancouver now. If I (go) there, I (will) see her.',ja:'',ch:['go / will','went / would','gone / would','went / will'],a:1,ex:'p.83 の例。go → <b>went</b>、will → <b>would</b>。'},
+{u:'K3',type:'mc',q:'If I (be) rich, I (can) donate a lot of money.',ja:'',ch:['am / can','were / could','was / will','be / could'],a:1,ex:'p.79 Practice①。<b>were</b> / <b>could</b>。'},
+{u:'K3',type:'mc',q:'If I (be) a doctor, I (will) save many lives.',ja:'',ch:['were / would','am / will','were / will','was / can'],a:0,ex:'p.79 Practice②。<b>were</b> / <b>would</b>。'},
+// ---------- K4 書きかえ ----------
+{u:'K4',type:'mc',q:'I can\'t go to school.\n＝ I wish I (　　) go to school.',ja:'',ch:['can','could','couldn\'t','can\'t'],a:1,ex:'現実の<b>反対</b>（否定→肯定）＋過去形 → <b>could</b>。'},
+{u:'K4',type:'mc',q:'I don\'t have a computer, so I can\'t play a lot of games.\nとほぼ同じ意味は？',ja:'',ch:['If I have a computer, I can play a lot of games.','If I had a computer, I could play a lot of games.','If I didn\'t have a computer, I could play a lot of games.','If I had a computer, I couldn\'t play a lot of games.'],a:1,ex:'現実の反対＋過去形：If I <b>had</b> …, I <b>could</b> …（p.87）。'},
+{u:'K4',type:'mc',q:'If it were sunny today, I would go fishing.\nの現実は？',ja:'',ch:['It is sunny today.','It isn\'t sunny today, so I won\'t go fishing.','It will be sunny tomorrow.','I went fishing today.'],a:1,ex:'仮定法は現実の反対。現実は「晴れていない」。'},
+{u:'K4',type:'mc',q:'I am in Japan now.\n＝ I wish I (　　) in Hawaii.',ja:'',ch:['am','was','were','be'],a:2,ex:'p.87。<b>were</b>。'},
+{u:'K4',type:'mc',q:'I am not rich, so I can\'t donate a lot of money.\nとほぼ同じ意味は？',ja:'',ch:['If I am rich, I can donate a lot of money.','If I were rich, I could donate a lot of money.','If I were not rich, I could donate a lot of money.','If I were rich, I can donate a lot of money.'],a:1,ex:'<b>were</b> / <b>could</b>。'},
+// ---------- K5 可能性 ----------
+{u:'K5',type:'mc',q:'If it is sunny tomorrow, I will go fishing.\nはどちら？',ja:'明日晴れたら、釣りに行きます。',ch:['可能性がある（ふつうの if）','可能性がない（仮定法）'],a:0,ex:'p.87。明日晴れることは本当に起こりうる → 現在形 is と will。'},
+{u:'K5',type:'mc',q:'If it were sunny today, I would go fishing.\nはどちら？',ja:'今日晴れていたら、釣りに行くのに。',ch:['可能性がある（ふつうの if）','可能性がない（仮定法）'],a:1,ex:'p.87。今日は晴れていない → 仮定法（were / would）。'},
+{u:'K5',type:'mc',q:'If you get one million yen, what will you buy?\nが表すのは？',ja:'',ch:['手に入れる可能性があり得る','手に入れる可能性があり得ない'],a:0,ex:'p.87 の吹き出し。get / will → 可能性がある。'},
+{u:'K5',type:'mc',q:'If you got one million yen, what would you buy?\nが表すのは？',ja:'',ch:['手に入れる可能性があり得る','手に入れる可能性があり得ない'],a:1,ex:'got / would → 可能性がない（仮定法）。'},
+{u:'K5',type:'mc',q:'If we look around, we (　　) find many products made in foreign countries.',ja:'まわりを見ると、外国で作られた製品がたくさん見つかります。',ch:['will','would','could','did'],a:0,ex:'本文 p.82。look（現在形）＝ 本当に起こること → <b>will</b>。'},
+// ---------- K6 並べかえ ----------
+{u:'K6',type:'tile',ja:'もし私があなたなら、友達に助けを求めるだろう。',t:['If','I','were','you,','I','would','ask','my friends','for help'],ex:'Key 20。'},
+{u:'K6',type:'tile',ja:'もしランドセルを持っていたら、それを寄付するのに。',t:['If','I','had','a school backpack,','I','would','donate','it'],ex:'Key 21。'},
+{u:'K6',type:'tile',ja:'学校に行けたらいいのに。',t:['I','wish','I','could','go','to school'],ex:'Key 19。'},
+{u:'K6',type:'tile',ja:'ペンとノートがあればいいのに。',t:['I','wish','I','had','pens','and','notebooks'],ex:'Key 19。'},
+{u:'K6',type:'tile',ja:'ハワイに住んでいればいいのに。',t:['I','wish','I','lived','in Hawaii'],ex:'p.87。'},
+{u:'K6',type:'tile',ja:'もし今コンピュータを持っていたら、たくさんゲームができるのに。',t:['If','you','had','a computer','now,','you','could','play','a lot of games'],ex:'p.87。'},
+{u:'K6',type:'tile',ja:'もし大人なら、人々を助けるために発展途上国へ行けるのに。',t:['If','I','were','an adult,','I','could','go','to developing countries','to help people'],ex:'p.79 Practice。'},
+// ---------- H1 Unit5 ----------
+{u:'H1',type:'mc',q:'Gandhi\'s image is printed on (　　).',ja:'ガンディーの肖像は何に印刷されている？',ch:['all Indian stamps','all Indian rupee notes','all Indian coins','all Indian flags'],a:1,ex:'p.62：His image is printed on all Indian rupee notes.'},
+{u:'H1',type:'mc',q:'Gandhi\'s birthday, October 2, is now (　　).',ja:'',ch:['an Indian national holiday','a British holiday','Human Rights Day','Children\'s Day'],a:0,ex:'p.62。インドの祝日で、国際非暴力デーでもある。'},
+{u:'H1',type:'mc',q:'Well, he also (　　) fasts to protest.',ja:'彼は抗議するために断食もしました。',ch:['started on','went on','got on','put on'],a:1,ex:'p.63。<b>go on</b> fasts＝断食を始める（する）。'},
+{u:'H1',type:'mc',q:'A "fast" means (　　).',ja:'',ch:['running quickly','eating little or no food','working hard','walking to the sea'],a:1,ex:'p.63：A "fast" means eating little or no food.'},
+{u:'H1',type:'mc',q:'Gandhi moved to South Africa to work as a (　　) in 1893.',ja:'',ch:['teacher','doctor','lawyer','leader'],a:2,ex:'p.64。<b>lawyer</b>（弁護士）。'},
+{u:'H1',type:'mc',q:'When Gandhi moved to South Africa, Indians there were respected.',ja:'',ch:['T（正しい）','F（まちがい）'],a:1,ex:'p.66 Round 2①。差別が多かった → <b>F</b>。'},
+{u:'H1',type:'mc',q:'In 1930, Gandhi decided to walk to the sea and (　　).',ja:'',ch:['buy salt','make salt himself','sell salt','eat salt'],a:1,ex:'p.65：walk to the sea and make salt himself（塩の行進 Salt March）。'},
+{u:'H1',type:'mc',q:'In 1947, India won (　　).',ja:'',ch:['salt','independence','violence','the law'],a:1,ex:'p.65。<b>independence</b>（独立）。'},
+{u:'H1',type:'mc',q:'Gandhi thought Indians should keep buying salt from the British.',ja:'',ch:['T（正しい）','F（まちがい）'],a:1,ex:'p.66 Round 2③。不公平だと考えた → <b>F</b>。'},
+// ---------- H2 Unit6 ----------
+{u:'H2',type:'mc',q:'So far, more than (　　) backpacks have been sent.',ja:'',ch:['26,000','260,000','2,600,000','2,600'],a:1,ex:'p.79。260,000 個以上。'},
+{u:'H2',type:'mc',q:'School backpacks from Japan have been (　　) children\'s lives.',ja:'',ch:['changing','helping','making','sending'],a:0,ex:'p.80 / p.82 Round 1。'},
+{u:'H2',type:'mc',q:'Japan (　　) on foreign trade for its survival.',ja:'',ch:['lives','depends','relies','comes'],a:1,ex:'p.81。<b>depends on</b>＝〜に頼る。'},
+{u:'H2',type:'mc',q:'It\'s necessary for us to continue (　　) each other.',ja:'',ch:['helping','to help us','help','helped'],a:0,ex:'p.81 / p.82 Round 1。continue <b>helping</b>。'},
+{u:'H2',type:'mc',q:'If we didn\'t import food, (　　)',ja:'',ch:['we would have to spend more money on food.','you couldn\'t read or write.','we will find many products made in foreign countries.','comes from other countries.'],a:0,ex:'p.82 Round 2③。'},
+{u:'H2',type:'mc',q:'About 33 percent of the chicken we eat (　　)',ja:'',ch:['we would have to spend more money on food.','you couldn\'t read or write.','comes from other countries.','we will find many products.'],a:2,ex:'p.82 Round 2④。one-third＝約33％。'},
+{u:'H2',type:'mc',q:'About 90 percent of our clothes are imported from (　　).',ja:'',ch:['Brazil and Thailand','China and other Asian countries','Afghanistan','Canada'],a:1,ex:'p.81。鶏肉はブラジルとタイ、衣服は中国などアジアの国。'},
+{u:'H2',type:'mc',q:'In areas with no school buildings, children can use the backpacks as (　　) in the open air.',ja:'',ch:['chairs','desks','bags','houses'],a:1,ex:'p.80。<b>desks</b>（机）として使う。'},
+];
+
+const GUIDE = [
+{g:'関係代名詞・後置修飾', title:'しくみ：名詞に「うしろから説明」をくっつける（後置修飾）', body:`
+<p>日本語は説明が<b>前</b>、英語は説明が<b>うしろ</b>。</p>
+<table><tr><th>形</th><th>例（p.70〜71）</th></tr>
+<tr><td>前置詞＋語句</td><td>That cat <b>on the bench</b></td></tr>
+<tr><td>不定詞</td><td>many things <b>to study</b></td></tr>
+<tr><td>現在分詞（〜している）</td><td>The boy <b>standing by me</b></td></tr>
+<tr><td>過去分詞（〜された）</td><td>a book <b>written by Soseki</b></td></tr>
+<tr><td>関係代名詞</td><td>the boy <b>who came to our house</b></td></tr></table>
+<p>⚠️ 分詞が<b>1語だけ</b>なら前に置く：That <b>sleeping</b> cat</p>`},
+{g:'関係代名詞・後置修飾', title:'who / which / that の使い分け', body:`
+<table><tr><th>先行詞</th><th>主格</th><th>目的格</th></tr>
+<tr><td>人</td><td><b>who</b>（that）</td><td><b>that</b>（省略できる）</td></tr>
+<tr><td>もの・動物</td><td><b>which</b> / that</td><td><b>which</b> / that（省略できる）</td></tr></table>
+<div class="ex">Gandhi is a man <b>who</b> has influenced a lot of people.（Key 16）<br>This is a movie <b>that [which]</b> makes people happy.（Key 17）</div>`},
+{g:'関係代名詞・後置修飾', title:'目的格と接触節（Key 15・18）', body:`
+<p>関係代名詞のうしろが「<b>主語＋動詞</b>」なら目的格。目的格は<b>省略できる</b>（＝接触節）。</p>
+<div class="ex">This is a picture <b>that [which]</b> I found on the internet.（Key 18）<br>＝ This is a picture I found on the internet.（Key 15）</div>
+<p>⚠️ which が「それ」の役目なので、<b>it を重ねない</b>。</p>`},
+{g:'関係代名詞・後置修飾', title:'いちばん大事：文の動詞を見失わない（Key 22）', body:`
+<p>主語に説明がつくと、主語と動詞の間に説明が<b>入り込む</b>。説明の部分をカッコに入れてみよう。</p>
+<div class="ex">Many things <span class="paren">(that we see every day)</span> <b>come</b> from overseas.</div>
+<p>主語は Many things、文の動詞は <b>come</b>。</p>`},
+{g:'仮定法', title:'しくみ：現実とちがうことは「1つ過去」にずらす', body:`
+<p>「今」のことでも、<b>現実とちがう</b>願い・想像は<b>過去形</b>で表します。</p>
+<div class="ex">現実：I <b>can\'t</b> go to school.<br>仮定法：I wish I <b>could</b> go to school.（Key 19）</div>`},
+{g:'仮定法', title:'I wish ～（〜ならいいのに）', body:`
+<div class="ex">I wish ＋ 主語 ＋ <b>過去形</b>.<br>I wish ＋ 主語 ＋ <b>could</b> ＋ 動詞の原形.</div>
+<div class="ex">I wish I <b>had</b> pens and notebooks.<br>I wish I <b>lived</b> in Hawaii.<br>I wish I <b>were</b> in Hawaii.</div>
+<p>be動詞は主語に関係なく <b>were</b> が多い。</p>`},
+{g:'仮定法', title:'If ～（もし〜なら、…だろうに）', body:`
+<div class="ex">If ＋ 主語 ＋ <b>過去形</b> …, 主語 ＋ <b>would / could</b> ＋ 動詞の原形 ….</div>
+<div class="ex">If I <b>were</b> you, I <b>would</b> ask my friends for help.（Key 20）<br>If I <b>had</b> a school backpack, I <b>would</b> donate it.（Key 21）</div>
+<p>would ＝〜するだろうに／could ＝〜できるのに</p>`},
+{g:'仮定法', title:'可能性がある？ ない？（p.87）', body:`
+<table><tr><th></th><th>可能性がある</th><th>可能性がない（仮定法）</th></tr>
+<tr><td>if の文</td><td>現在形</td><td>過去形・were</td></tr>
+<tr><td>後半</td><td>will / can</td><td>would / could</td></tr></table>
+<div class="ex">If it <b>is</b> sunny tomorrow, I <b>will</b> go fishing.<br>If it <b>were</b> sunny today, I <b>would</b> go fishing.</div>`},
+];
+
+</script>
+<script>
+const $=s=>document.querySelector(s);
+Q.forEach((q,i)=>q.id=i);
+const unitName=id=>UNITS.find(u=>u.id===id).name;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const tileAns=q=>q.t.join(' ')+'.';
+const store={get(){try{return JSON.parse(localStorage.getItem('kk_rank')||'{}')}catch(e){return {}}},set(v){try{localStorage.setItem('kk_rank',JSON.stringify(v))}catch(e){}}};
+
+// tabs
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+ if(b.dataset.t==='miss')renderMiss(); if(b.dataset.t==='rank')renderRank(); window.scrollTo(0,0);
+});
+
+// guide
+$('#guide').innerHTML=GUIDE.map(g=>`<div class="card"><span class="gtag ${g.g==='仮定法'?'K':''}">${g.g}</span><h2>${g.title}</h2>${g.body}</div>`).join('');
+
+// selectors
+function buildSel(el,name){
+ let h='';
+ [...new Set(UNITS.map(u=>u.g))].forEach(g=>{
+  h+=`<div class="gh">${g}<button type="button" data-g="${g}">全部えらぶ</button></div>`;
+  UNITS.filter(u=>u.g===g).forEach(u=>{h+=`<label><input type="checkbox" name="${name}" value="${u.id}" data-g="${g}" checked> ${u.name}（${Q.filter(q=>q.u===u.id).length}問）</label>`});
+ });
+ el.innerHTML=h;
+ el.querySelectorAll('.gh button').forEach(b=>b.onclick=()=>{
+  const bs=el.querySelectorAll(`input[data-g="${b.dataset.g}"]`); const all=[...bs].every(x=>x.checked);
+  bs.forEach(x=>x.checked=!all); b.textContent=all?'全部えらぶ':'全部はずす';
+ });
+}
+buildSel($('#qsel'),'qu'); buildSel($('#psel'),'pu');
+const picked=name=>[...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);
+const pickQs=(name,ord)=>{const us=picked(name);let qs=Q.filter(q=>us.includes(q.u));return ord==='shuf'?shuffle(qs):qs};
+
+// quiz
+let S=null, sessionMiss=[];
+$('#qstart').onclick=()=>{
+ const qs=pickQs('qu',document.querySelector('input[name="qord"]:checked').value);
+ if(!qs.length){alert('範囲をえらんでください');return}
+ S={qs,i:0,ok:0}; sessionMiss=[];
+ $('#qsetup').style.display='none'; $('#qplay').style.display='block'; showQ();
+};
+function record(q,correct){
+ if(correct){S.ok++;return}
+ if(!sessionMiss.includes(q))sessionMiss.push(q);
+ const r=store.get(); r[q.id]=(r[q.id]||0)+1; store.set(r);
+}
+function head(){return `<div class="qhead"><span>${unitName(S.qs[S.i].u)}</span><span>${S.i+1} / ${S.qs.length}</span></div>`}
+function showQ(){
+ const q=S.qs[S.i]; const p=$('#qplay');
+ if(q.type==='mc'){
+  p.innerHTML=`<div class="card">${head()}<div class="qtext">${q.q}</div>${q.ja?`<div class="qja">${q.ja}</div>`:''}
+  ${q.ch.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join('')}<div id="fb"></div></div>`;
+  p.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+   if(p.dataset.done==='1')return; p.dataset.done='1';
+   const k=+b.dataset.k, ok=k===q.a; record(q,ok);
+   p.querySelectorAll('.choice').forEach(x=>{if(+x.dataset.k===q.a)x.classList.add('ok')}); if(!ok)b.classList.add('ng');
+   feedback(ok,q.ch[q.a],q.ex);
+  });
+ }else{
+  const order=shuffle(q.t.map((t,k)=>k));
+  p.innerHTML=`<div class="card">${head()}<div class="qja" style="font-size:16px;color:#2b2540">${q.ja}</div>
+  <div class="ans" id="ans"></div><div class="pool" id="pool">${order.map(k=>`<button class="tile" data-k="${k}">${q.t[k]}</button>`).join('')}</div>
+  <div class="minibar" style="margin-top:12px"><button id="tclear">やり直す</button></div>
+  <button class="btn sub" id="tcheck">答え合わせ</button><div id="fb"></div></div>`;
+  const ans=$('#ans'), pool=$('#pool'); let seq=[];
+  const redraw=()=>{ans.innerHTML=seq.map((k,n)=>`<button class="tile" data-n="${n}">${q.t[k]}</button>`).join('');
+   pool.querySelectorAll('.tile').forEach(b=>b.classList.toggle('used',seq.includes(+b.dataset.k)));
+   ans.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{if(p.dataset.done==='1')return;seq.splice(+b.dataset.n,1);redraw()});};
+  pool.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{if(p.dataset.done==='1')return;const k=+b.dataset.k;if(!seq.includes(k)){seq.push(k);redraw()}});
+  $('#tclear').onclick=()=>{if(p.dataset.done==='1')return;seq=[];redraw()};
+  $('#tcheck').onclick=()=>{
+   if(p.dataset.done==='1')return; if(seq.length<q.t.length){alert('すべての語を並べてください');return}
+   p.dataset.done='1'; const mine=seq.map(k=>q.t[k]).join(' '); const ok=mine===q.t.join(' ');
+   record(q,ok); $('#tcheck').style.display='none'; feedback(ok,tileAns(q),q.ex, ok?'':mine+'.');
+  };
+ }
+ p.dataset.done='0'; window.scrollTo(0,0);
+}
+function feedback(ok,right,ex,mine){
+ $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><span class="mark">${ok?'⭕ 正解！':'❌ ざんねん'}</span>
+ ${mine?`<p>あなたの答え：<span style="font-family:Georgia,serif">${mine}</span></p>`:''}
+ <p>正解：<b style="font-family:Georgia,serif">${right}</b></p><p>${ex}</p></div>
+ <button class="btn" id="next">${S.i+1<S.qs.length?'次の問題へ':'結果を見る'}</button>
+ <button class="btn ghost" id="quit">やめる</button>`;
+ $('#next').onclick=()=>{S.i++; S.i<S.qs.length?showQ():result()};
+ $('#quit').onclick=result;
+}
+function result(){
+ const n=S.i+(($('#qplay').dataset.done==='1'&&S.i<S.qs.length)?1:0); const tot=Math.min(n,S.qs.length);
+ $('#qplay').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${tot}</div>
+ <p style="text-align:center">${S.ok===tot?'全問正解！すばらしい！':'まちがえた問題を「❗ ミス」で復習しよう'}</p>
+ ${sessionMiss.length?`<button class="btn" id="retry">まちがえた問題だけもう一度</button>`:''}
+ <button class="btn sub" id="back">範囲えらびにもどる</button></div>`;
+ if(sessionMiss.length)$('#retry').onclick=()=>{S={qs:shuffle(sessionMiss),i:0,ok:0};sessionMiss=[];showQ()};
+ $('#back').onclick=()=>{$('#qplay').style.display='none';$('#qsetup').style.display='block'};
+}
+function qLine(q){return q.type==='mc'?`<div class="q">${q.q}</div>${q.ja?`<div class="note">${q.ja}</div>`:''}<div class="a">正解：${q.ch[q.a]}</div>`:`<div>${q.ja}</div><div class="a" style="font-family:Georgia,serif">${tileAns(q)}</div>`}
+function renderMiss(){
+ $('#misslist').innerHTML=sessionMiss.length?sessionMiss.map(q=>`<div class="mist">${qLine(q)}<div class="note">${q.ex}</div></div>`).join(''):'<p class="note">まだありません。</p>';
+}
+function renderRank(){
+ const r=store.get(); const ids=Object.keys(r).sort((a,b)=>r[b]-r[a]);
+ $('#ranklist').innerHTML=ids.length?ids.slice(0,30).map(id=>{const q=Q[id];return `<div class="mist"><span class="n">${r[id]}回</span><div class="note">${unitName(q.u)}</div>${qLine(q)}</div>`}).join(''):'<p class="note">まだ記録がありません。</p>';
+}
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+
+// print
+const KANA='アイウエ';
+$('#pgo').onclick=()=>{
+ const qs=pickQs('pu',document.querySelector('input[name="pord"]:checked').value);
+ if(!qs.length){alert('範囲をえらんでください');return}
+ const shuf=document.querySelector('input[name="pord"]:checked').value==='shuf';
+ let h=`<div class="ph"><h1>Unit 5・6 関係代名詞・仮定法 確認プリント</h1><div class="nm">名前（　　　　　　　　）　　　／${qs.length}</div></div>`;
+ let last=null, n=0, key=[];
+ qs.forEach(q=>{
+  if(!shuf&&q.u!==last){h+=`<div class="psec">${unitName(q.u)}</div>`;last=q.u}
+  n++;
+  if(q.type==='mc'){
+   const many=q.ch.some(c=>c.length>18);
+   h+=`<div class="pq">(${n}) <span class="en">${q.q.replace(/<\/?b>/g,'')}</span>${q.ja?`\n　<span class="jp">${q.ja}</span>`:''}\n　<span class="chs">${q.ch.map((c,k)=>`${KANA[k]}　${c}`).join(many?'\n　':'　　')}</span>　　答（　　　）</div>`;
+   key.push(`(${n}) ${KANA[q.a]}　${q.ch[q.a]}`);
+  }else{
+   h+=`<div class="pq">(${n}) ${q.ja}\n　<span class="chs">（ ${shuffle(q.t).join(' / ')} ）</span><div class="line"></div></div>`;
+   key.push(`(${n}) ${tileAns(q)}`);
+  }
+ });
+ if($('#pans').checked) h+=`<div class="pans"><div class="ph"><h1>解答</h1></div>${key.map(k=>`<div class="pq">${k}</div>`).join('')}</div>`;
+ $('#printArea').innerHTML=h; setTimeout(()=>window.print(),200);
+};
+</script></body></html>
