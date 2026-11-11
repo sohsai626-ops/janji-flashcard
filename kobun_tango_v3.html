@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>古文単語365 神無月・霜月・師走</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#faf5ef;color:#2b2320;-webkit-text-size-adjust:100%}
+header{background:#9b2c1f;color:#fff;padding:11px 12px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:17px;font-weight:800}
+header .sub{font-size:12px;opacity:.85;margin:2px 0 8px}
+nav{display:flex;gap:3px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.17);color:#fff;font-size:13px;font-weight:700;padding:9px 2px;border-radius:9px 9px 0 0}
+nav button.on{background:#faf5ef;color:#9b2c1f}
+.tab{display:none;padding:12px;max-width:680px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(80,30,20,.12)}
+h2{font-size:16px;color:#9b2c1f;margin-bottom:8px}
+.sel .gh{font-weight:800;color:#9b2c1f;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.sel .gh button{font-size:12px;border:1px solid #9b2c1f;background:#fff;color:#9b2c1f;border-radius:8px;padding:3px 9px}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:8px 4px;border-bottom:1px solid #f0e6dc}
+.sel input{width:22px;height:22px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;display:flex;align-items:center;gap:6px;font-size:14px;background:#f6ece2;border-radius:10px;padding:10px;min-width:40%}
+.btn{display:block;width:100%;border:0;background:#9b2c1f;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#3d2a24}.btn.ghost{background:#fff;color:#9b2c1f;border:2px solid #9b2c1f}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#86706a;margin-bottom:8px}
+.word{font-size:34px;font-weight:900;text-align:center;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif;margin:6px 0}
+.meta{text-align:center;color:#86706a;font-size:13px}
+.say{border:0;background:#f6ece2;border-radius:999px;padding:4px 12px;font-size:14px;margin-left:6px}
+.back{border-top:2px dashed #e5d3c3;margin-top:12px;padding-top:12px;display:none}
+.back.show{display:block}
+.mean{font-size:17px;line-height:1.75;color:#9b2c1f;font-weight:700}
+.ex{background:#fbf3ea;border-left:4px solid #9b2c1f;border-radius:8px;padding:9px 11px;margin-top:10px;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif;font-size:16px;line-height:1.8}
+.ex b{color:#9b2c1f;text-decoration:underline}
+.src{font-size:12px;color:#86706a;font-family:sans-serif}
+.yaku{font-size:14px;line-height:1.7;margin-top:6px;color:#4a3b36}
+.yaku em{font-style:normal;color:#c0392b;font-weight:800}
+.choice{display:block;width:100%;text-align:left;font-size:16px;border:2px solid #e5d3c3;background:#fff;border-radius:12px;padding:12px;margin:8px 0;color:#2b2320}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:12px;margin-top:10px;font-size:15px;line-height:1.7}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}.fb .mk{font-size:21px;font-weight:900}
+.twob{display:flex;gap:8px}.twob .btn{flex:1}
+.score{font-size:40px;font-weight:900;color:#9b2c1f;text-align:center}
+.li{border-bottom:1px solid #f0e6dc;padding:9px 0;font-size:14px;line-height:1.6}
+.li .w{font-weight:900;font-size:16px;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif}
+.li .n{float:right;background:#9b2c1f;color:#fff;border-radius:999px;padding:0 9px;font-weight:800}
+.note{font-size:13px;color:#86706a;line-height:1.6}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}header,.tab,nav{display:none!important}
+ #printArea{display:block;color:#000;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif}
+ .ph{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm}
+ .ph h1{font-size:14pt}.ph .nm{font-size:10pt;font-family:sans-serif}
+ table.pt{width:100%;border-collapse:collapse;font-size:10.5pt}
+ table.pt td,table.pt th{border:1px solid #555;padding:1.6mm 2mm;vertical-align:top}
+ table.pt th{background:#eee;font-family:sans-serif;font-size:9pt}
+ table.pt tr{break-inside:avoid}
+ .pq{margin-bottom:3.2mm;break-inside:avoid;font-size:10.5pt;line-height:1.7}
+ .pq b{text-decoration:underline}
+ .pq .y{font-family:sans-serif;font-size:9.5pt;color:#222}
+ .pans{break-before:page}
+}
+</style></head><body>
+<header><h1>古文単語365　神無月・霜月・師走</h1><div class="sub">No.184〜275（93語）　カード・4択・例文・苦手・プリント</div>
+<nav><button data-t="set" class="on">📋 範囲</button><button data-t="card">🃏 暗記</button><button data-t="quiz">✏️ 4択</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
+
+<div class="tab show" id="set"><div class="card">
+ <h2>出題範囲をえらぶ</h2>
+ <div class="sel" id="sel"></div>
+ <div class="row"><label class="opt"><input type="radio" name="ord" value="seq"> 番号順</label><label class="opt"><input type="radio" name="ord" value="shuf" checked> シャッフル</label></div>
+ <p class="note" id="cnt"></p>
+ <button class="btn" data-go="card">🃏 カードで覚える</button>
+ <button class="btn sub" data-go="quiz">✏️ 4択に挑戦</button>
+</div></div>
+
+<div class="tab" id="card"></div>
+<div class="tab" id="quiz"></div>
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた語</h2><p class="note">4択の途中でも見られます。</p><div id="misslist"></div><button class="btn" id="missretry" style="display:none">まちがえた語だけもう一度</button></div></div>
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">これまでにまちがえた回数が多い順（このスマホに記録）。</p><div id="ranklist"></div><button class="btn" id="rankquiz">苦手な語だけ4択</button><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+<div class="tab" id="print"><div class="card">
+ <h2>プリントを作る</h2>
+ <p class="note">「📋 範囲」でえらんだ語でプリントを作ります。</p>
+ <div class="row"><label class="opt"><input type="radio" name="pk" value="imi" checked> 意味テスト</label><label class="opt"><input type="radio" name="pk" value="rei"> 例文の穴うめ</label><label class="opt"><input type="radio" name="pk" value="list"> 覚える用一覧</label></div>
+ <div class="row"><label class="opt"><input type="checkbox" id="pans" checked> 解答ページを付ける</label></div>
+ <button class="btn sub" id="pgo">印刷する</button>
+ <p class="note" style="margin-top:8px">iPhone・iPadでは、印刷画面で2本指で広げるとPDFとして保存できます。</p>
+</div></div>
+<div id="printArea"></div>
+
+<script>
+// [番号, 見出し語, 品詞, 漢字, 月, グループ, 意味, 覚える意味(4択の正解), 例文, 出典, 訳(【　】が空欄), 答]
+const W = [
+// ===== 神無月 =====
+[184,"あさむ","動・マ四","","神無月","動詞と形容詞のペア","①驚きあきれる。意外に思う。②馬鹿にする。軽蔑する。","驚きあきれる／馬鹿にする","これを見る人、あざけり<b>あさみ</b>て、「世のしれ物かな。かく危き枝の上にて、安き心ありて睡るらんよ」と言ふに、","徒然草","これを見る人は、あざけって【　】て、「本当の馬鹿者だなあ。このように危ない枝の上で、安心して眠っているようだよ」と言うけれども、","馬鹿にし"],
+[123,"あさまし","形・シク活用","","神無月","動詞と形容詞のペア","①驚きあきれるほどだ。意外だ。②ひどい。程度が甚だしい。","驚きあきれるほどだ","","","",""],
+[185,"いとふ","動・ハ四","厭ふ","神無月","動詞と形容詞のペア","①いやがる。②（「世をいとふ」の形で）出家する。この世を避ける。","いやがる／出家する","世の常ならぬさまなれども、人に<b>いとは</b>れず、よろづ許されけり。","徒然草","（盛親僧都は）世間並みではない様子であるけれども、人に【　】れず、何事につけても許されていた。","いやがら"],
+[186,"いとほし","形・シク活用","","神無月","動詞と形容詞のペア","①かわいそうだ。気の毒だ。②かわいい。いとおしい。","かわいそうだ。気の毒だ","熊谷あまりに<b>いとほしく</b>て、いづくに刀を立つべしともおぼえず。","平家物語","熊谷直実は（平敦盛が）、あまりにも【　】で、どこに刀を突き立てたらいいのかもわからない。","かわいそう"],
+[187,"いむ","動・マ四","忌む・斎む","神無月","動詞と形容詞のペア","①不吉として避ける。忌み嫌う。","不吉として避ける","「月の顔見るは<b>いむ</b>こと」と制しけれども、","竹取物語","「月の面を見ることは【　】ことだ」と制止したけれども、","不吉として避ける"],
+[188,"いまいまし","形・シク活用","忌忌し","神無月","動詞と形容詞のペア","①慎むべきだ。はばかられる。②不吉だ。","不吉だ","聞くも<b>いまいましう</b>恐ろしかりし事どもなり。","平家物語","（それを）聞くのも【　】恐ろしかった事である。","不吉で"],
+[189,"つつむ","動・マ四","慎む","神無月","動詞と形容詞のペア","①はばかる。遠慮する。","はばかる。遠慮する","人目も、今は<b>つつみ</b>たまはず、泣きたまふ。","竹取物語","人目も今は【　】なさらず、お泣きになる。","はばかり"],
+[190,"つつまし","形・シク活用","慎まし","神無月","動詞と形容詞のペア","①遠慮される。恥ずかしい。","遠慮される。恥ずかしい","久しく行かざりければ、<b>つつましく</b>て立てりけり。","大和物語","長い間行っていなかったので、【　】て立っていた。","遠慮され"],
+[191,"なつく","動・カ四","懐く","神無月","動詞と形容詞のペア","①慣れ親しむ。慕う。","慣れ親しむ","猫はまだよく人にも<b>なつか</b>ぬにや、","源氏物語","猫はまだよく人に【　】ないのであろうか、","慣れ親しま"],
+[192,"なつかし","形・シク活用","懐かし","神無月","動詞と形容詞のペア","①親しみやすい。心ひかれる。","親しみやすい。心ひかれる","ただおほかたのことどもを、常よりことに<b>なつかしう</b>聞こえさせたまふ。","源氏物語","世間の一般的な事柄を、（冷泉帝は光源氏に）いつもより特に【　】申し上げなさる。","親しみやすく"],
+[193,"なやむ","動・マ四","悩む","神無月","動詞と形容詞のペア","①病気になる。病気で苦しむ。","病気になる。病気で苦しむ","いはば、よき女の<b>悩め</b>るところあるに似たり。","古今和歌集仮名序","いうなれば、身分の高い女が【　】でいるところがあるのに似ている。","病気で苦しん"],
+[194,"なやまし","形・シク活用","悩まし","神無月","動詞と形容詞のペア","①（病気などで）気分が悪い。","気分が悪い","御心地も浮きたるやうにおぼされて、<b>なやましう</b>し給ふ。","源氏物語","（六条御息所は）お気持ちも落ち着かないようだとお思いにならずにはいられなくて、【　】いらっしゃる。","気分が悪くて"],
+[195,"むつかる","動・ラ四","憤る","神無月","動詞と形容詞のペア","①不快に思う。（機嫌を悪くして）腹を立てる。","不快に思う","「あなにく。例の御癖ぞ」と、見奉り<b>むつかる</b>めり。","源氏物語","「ああ憎い。いつもの（色好みの）お癖だ」と、拝見して【　】ようだ。","不快に思う"],
+[196,"むつかし","形・シク活用","難し","神無月","動詞と形容詞のペア","①不快である。うっとうしい。","不快である","惜しむ由して、請はれむと思ひ、勝負の負けわざにことづけなどしたる、<b>むつかし</b>。","徒然草","秘蔵するふりをして、欲しがられようと思い、勝負ごとに負けたことの口実にしている態度は、【　】。","不快である"],
+[197,"わぶ","動・バ上二","侘ぶ","神無月","動詞と形容詞のペア","①嘆く。思い悩む。②困る。③［補助動詞］〜しづらくなる。〜しかねる。","嘆く。思い悩む／困る","限りなく遠くも来にけるものかなと、<b>わび</b>合へるに、","伊勢物語","この上もなく遠くに来てしまったものだなあと、互いに【　】合っていると、","嘆き"],
+[198,"わびし","形・シク活用","侘びし","神無月","動詞と形容詞のペア","①つらい。やりきれない。困ったことだ。②興ざめだ。がっかりする。物足りない。③貧しい。みすぼらしい。","つらい／興ざめだ","知らぬ事、したり顔に、おとなしく、もどきぬべくもあらぬ人の言ひ聞かするを、さもあらずと思ひながら聞きゐたる、いと<b>わびし</b>。","徒然草","知らない事を、よく知っているような顔をして、年配者だけにきっと反論もできない人が言い聞かせているのを、そうでもないと思いながら聞いているのは、たいそう【　】。","興ざめだ"],
+[199,"あへず","連語","敢へず","神無月","セットで覚えるもの","①（「…もあへず」の形で）〜やいなや。〜しきらないうちに。","〜やいなや","主上いとどしく夜の御殿を出でさせたまひも<b>あへず</b>、かしこへ行幸なつて、","平家物語","天皇はいつもより早く夜の御所をお出でになる【　】、そちらにお出でになって、","やいなや"],
+[200,"あへなし","形・ク活用","敢へ無し","神無月","セットで覚えるもの","①今となってはどうしようもない。","今となってはどうしようもない","誰も誰も、怪しう<b>あへなき</b>事を思ひ騒ぎて、","源氏物語","だれもかれも、不思議で、【　】できごとに心の中であわてて、","今となってはどうしようもない"],
+[201,"あへなむ","連語","敢へなむ","神無月","セットで覚えるもの","①さしつかえないだろう。","さしつかえないだろう","京に出で給はばこそあらめ、ここまでは<b>あへなむ</b>。","源氏物語","京に出ていらっしゃるなら大変だろうが、ここ（＝坂本）までなら【　】。","さしつかえないだろう"],
+[202,"うし","形・ク活用","憂し","神無月","セットで覚えるもの","①嫌だ。つらい。残念だ。②憎らしい。薄情だ。","嫌だ。つらい","古代の親は、宮仕へ人はいと<b>憂き</b>ことなりと思ひて、","更級日記","古風な親は、宮仕えする人（になるの）はたいそう【　】ことだと思って、","嫌な"],
+[203,"つらし","形・ク活用","辛し","神無月","セットで覚えるもの","①薄情だ。冷淡だ。つれない。","薄情だ。冷淡だ","<b>つらき</b>人の御前渡りの待たるるも心弱しや。","源氏物語","【　】人（＝光源氏）が前を通っていかれるのを待たずにいられないのも意志が弱いなあ。","薄情な"],
+[204,"めづ","動・ダ下二","愛づ","神無月","セットで覚えるもの","①褒める。感嘆する。②好む。気に入る。","褒める。感嘆する","「光る君」といふ名は、高麗人の<b>めで</b>きこえて、付け奉りける。","源氏物語","「光る君」という呼び名は、高麗国の人が【　】申し上げて、付け申し上げた。","褒め"],
+[205,"めでたし","形・ク活用","","神無月","セットで覚えるもの","①すばらしい。立派だ。","すばらしい","藤の花は、しなひ長く、色濃く咲きたる、いと<b>めでたし</b>。","枕草子","藤の花は、しなやかに垂れた花房が長く、濃い色で咲いているのがとても【　】。","すばらしい"],
+[206,"めづらし","形・シク活用","","神無月","セットで覚えるもの","①新鮮だ。目新しい。②すばらしい。","新鮮だ。目新しい","明けゆく空の気色、昨日に変はりたりとは見えねど、引き替へ<b>めづらしき</b>心地ぞする。","徒然草","明けてゆく（元日の）空の様子は、昨日と変わっているとは思われないが、うってかわって【　】気持ちがする。","新鮮な"],
+[207,"よし","形・ク活用","良し・好し・善し","神無月","セットで覚えるもの","①よい。すぐれている。②身分が高く、教養がある。","よい／身分が高く、教養がある","雅房大納言は、才賢く、<b>よき</b>人にて、大将にもなさばやと思しけるころ、","徒然草","雅房卿は、漢学の才能も立派で、【　】人で、大将にもしたいと（亀山法皇が）お思いになっていた頃、","教養がある"],
+[208,"よろし","形・シク活用","宜し","神無月","セットで覚えるもの","①悪くはない。まずまずだ。②普通だ。ありふれている。たいしたことはない。","悪くはない／普通だ","<b>よろしき</b>歌などよみて出だしたらむよりは、かかることはまさりたりかし。","枕草子","【　】歌を詠んで差し出したのよりは、このような言い方の方がまさっているよ。","普通の"],
+[209,"わろし","形・ク活用","悪し","神無月","セットで覚えるもの","①よくない。感心できない。好ましくない。","よくない","男も女も、ことばの文字いやしう使ひたるこそ、よろづのことよりまさりて<b>わろけれ</b>。","枕草子","男でも女でも、言葉遣いを下品に遣ったのは、何よりもまして【　】。","よくない"],
+[210,"あし","形・シク活用","悪し","神無月","セットで覚えるもの","①悪い。","悪い","公私の人のたたずまひ、良き、<b>悪しき</b>ことの、目にも耳にもとまるありさまを、","源氏物語","公私につけて、人の様子や、良い事や、【　】事が、目についたり耳にとまったりする様子を、","悪い"],
+[211,"けしからず","連語","","神無月","セットで覚えるもの","①普通ではない。異様だ。","普通ではない。異様だ","木霊など<b>けしからぬ</b>物ども、所得て、やうやう形を現し、ものわびしきことのみ数知らぬに、","源氏物語","（末摘花の邸宅には）木霊など【　】物の怪が、我が物顔に振る舞って、次第に姿を現して、気味が悪いことは数知れないほどで、","異様な"],
+[212,"けしうはあらず","連語","","神無月","セットで覚えるもの","①悪くはない。まあまあだ。","悪くはない。まあまあだ","昔、若き男、<b>けしうはあらぬ</b>女を思ひけり。","伊勢物語","昔、若い男は、【　】女のことが好きになった。","悪くない"],
+[213,"おこす","動・サ下二／サ四","遣す","神無月","セットで覚えるもの","①こちらへ送る。よこす。","こちらへ送る","<b>おこせ</b>たる者は「よき馬」とぞ言ひたる。","今昔物語集","【　】た者は「よい馬だ」と言っていた。","こちらへ送っ"],
+[214,"やる","動・ラ四","遣る","神無月","セットで覚えるもの","①行かせる。送る。②気を晴らす。","行かせる。送る／気を晴らす","更衣の曹司をほかに移させ給ひて、上局に賜はす。そのうらみまして<b>やら</b>む方なし。","源氏物語","（別の）更衣の部屋を他にお移しになって、（桐壺の更衣の）上局（＝休憩所）としてお与えになる。その（移らされた別の更衣の）恨みはいっそう【　】ようがない。","晴らし"],
+// ===== 霜月 =====
+[215,"つきづきし","形・シク活用","","霜月","形容詞","①似つかわしい。ふさわしい。","似つかわしい","いと寒きに、火など急ぎおこして、炭持て渡るも、いと<b>つきづきし</b>。","枕草子","とても寒い時に、火などを急いでおこして、炭を持って移動するのも、たいそう【　】。","似つかわしい"],
+[216,"はづかし","形・シク活用","","霜月","形容詞","①こちらが恥ずかしくなるほど立派だ。すぐれている。","こちらが恥ずかしくなるほど立派だ","<b>はづかしき</b>人の、歌の本末問ひたるに、ふと覚えたる、我ながらうれし。","枕草子","【　】人が、歌の上の句と下の句を尋ねたときに、さっと思い出したのは、我ながらうれしい。","こちらが恥ずかしくなるほど立派な"],
+[217,"まばゆし","形・ク活用","","霜月","形容詞","①恥ずかしい。気後れする。②（まぶしいほど）美しい。すばらしい。③見ていられない。","恥ずかしい。気後れする","髪の筋なども、なかなか昼よりも顕証に見えて<b>まばゆけれ</b>ど、念じて見などす。","枕草子","髪の筋なども、かえって昼よりもはっきりと見えて【　】けれど、我慢して見たりする。","恥ずかしい"],
+[218,"やむごとなし","形・ク活用","","霜月","形容詞","①高貴だ。尊い。②格別すぐれている。並々ではない。③捨ててはおけない。やむをえない。","高貴だ。尊い","融のおとど、左大臣にて<b>やむごとなく</b>て、位につかせたまはむ御心ふかくて、","大鏡","源融の大臣は、（このとき）左大臣で【　】（いらっしゃって）、（天皇の）位に就こうというお気持ちが強くて、","高貴で"],
+[219,"こちごちし","形・シク活用","骨骨し","霜月","形容詞","①無風流だ。無骨だ。","無風流だ","旧物語にかかづらひて、夜を明かしはてむも、<b>こちごちしかる</b>べければ、","源氏物語","古い物語にこだわって、夜をすっかり明かしてしまうようなことも、【　】に違いないので、","無風流である"],
+[220,"こちなし","形・ク活用","骨なし","霜月","形容詞","①無風流だ。無骨だ。②無作法である。非常識である。","無風流だ／無作法である","強ひて言ふもいと<b>こちなし</b>。","源氏物語","（食事をするように）無理に言うのもたいそう【　】。","無作法である"],
+[221,"びんなし","形・ク活用","便無し","霜月","形容詞","①不都合だ。","不都合だ","一の人といひながら、美麗ことのほかにて参れる、<b>びんなき</b>ことなり。","大鏡","左大臣（＝藤原時平）でありながら、格別に美麗に（装って）参内したことは【　】ことである。","不都合な"],
+[222,"まさなし","形・ク活用","正無し","霜月","形容詞","①よくない。","よくない","いとあさましう<b>まさなう</b>あしくぞおはせし。","大鏡","（福足君は）たいそうあきれるほど【　】、悪い子でいらっしゃった。","よくなくて"],
+[223,"はしたなし","形・ク活用","端なし","霜月","形容詞","①中途半端である。②きまりが悪い。みっともない。恥ずかしい。","中途半端である／きまりが悪い","げにいとあはれなり、など聞きながら、涙のつと出で来ぬ、いと<b>はしたなし</b>。","枕草子","本当にとても気の毒だ、などと聞きながらも、涙がすぐに出て来ないのは、とても【　】。","きまりが悪い"],
+[224,"めざまし","形・シク活用","","霜月","形容詞","①気にくわない。目障りだ。②すばらしい。立派だ。","気にくわない。目障りだ","はじめより、我はと思ひあがり給へる御方々、<b>めざましき</b>ものにおとしめそねみ給ふ。","源氏物語","はじめから、自分は（天皇に愛される）と自負していらっしゃった御方々は、（桐壺の更衣を）【　】者としてさげすみねたんでいらっしゃる。","気にくわない"],
+[225,"おどろおどろし","形・シク活用","","霜月","形容詞","①大げさである。仰々しい。②気味が悪い。","大げさである。仰々しい","夜いたくふけて、門をいたう<b>おどろおどろしう</b>たたけば、","枕草子","夜がひどく更けて、門をたいそう【　】たたくので、","仰々しく"],
+[226,"けうとし","形・ク活用","気疎し","霜月","形容詞","①親しみにくい。よそよそしい。②気味が悪い。","親しみにくい","御仲の違ひにたれば、ここをも<b>けうとく</b>思すにやあらむ。","蜻蛉日記","（兄弟の）御仲が悪くなってしまったので、私のことも【　】とお思いになるのであろうか。","親しみにくい"],
+[227,"はかなし","形・ク活用","果無し","霜月","形容詞","①むなしい。頼りない。あっけない。②取るに足りない。ちょっとした。","むなしい。頼りない","行く水に数書くよりも<b>はかなき</b>は思はぬ人を思ふなりけり","古今和歌集","流れていく水に数を書くよりも【　】のは、（自分のことを）思ってくれない人を好きになることであるなあ。","むなしい"],
+[228,"いかが","副","","霜月","副詞","①（疑問）どのように〜か。②（反語）どうして〜か、いや、〜ない。③どうだろうか。どうしたものか。","どのように〜か","「<b>いかが</b>すべき」と思しわづらふに、","竹取物語","「【　】するのがよい【　】」と思い悩みなさる時に、","どのように／か"],
+[229,"なでふ・など・などか・などて","副","","霜月","副詞","①（疑問）どうして〜か。②（反語）どうして〜か、いや、〜ない。","どうして〜か","<b>などて</b>かく泣くぞ。","大和物語","【　】このように泣くのである【　】。","どうして／か"],
+[230,"げに","副","実に","霜月","副詞","①本当に。なるほど。","本当に。なるほど","<b>げに</b>、ただ人にはあらざりけりと思して、","竹取物語","【　】、普通の人ではないなあとお思いになって、","本当に"],
+[231,"ここら・そこら","副","","霜月","副詞","①たくさん。","たくさん","古物語は<b>ここら</b>あるが中にも、この源氏のは、","源氏物語玉の小櫛","古い物語は【　】ある中でも、この源氏物語は、","たくさん"],
+[232,"さて","副","然て","霜月","副詞","①そのままで。そのままの状態で。②そのほか。","そのままで","し残したるを<b>さて</b>うち置きたるはおもしろく、生き延ぶるわざなり。","徒然草","やり残していることを【　】置いてあるのはおもしろく、寿命が延びることである。","そのままで"],
+[233,"さながら","副","","霜月","副詞","①そのまま。もとのまま。②すべて。全部。","そのまま","昔の枕の、<b>さながら</b>変はらぬを見るも、","十六夜日記","昔の枕が、【　】で変わらないのを見るのも、","そのまま"],
+[234,"せめて","副","","霜月","副詞","①無理に。強いて。","無理に。強いて","<b>せめて</b>思ひ鎮めて、のたまふ気色、いとわりなし。","源氏物語","【　】思いを鎮めて、おっしゃる様子は、たいそうつらそうだ。","無理に"],
+[235,"つくづく（と）","副","","霜月","副詞","①しみじみと。しんみりと。②することがなくて。","しみじみと","<b>つくづくと</b>一年を暮らすほどだにも、こよなうのどけしや。","徒然草","【　】一年を暮らす間でさえも、この上なくゆったりしていることよ。","しみじみと"],
+[236,"てづから","副","","霜月","副詞","①自分の手で。","自分の手で","今はうちとけて、<b>てづから</b>飯匙とりて、","伊勢物語","今はうちとけて、【　】杓子（＝しゃもじ）を取って、","自分の手で"],
+[237,"なべて","副","並べて","霜月","副詞","①総じて。一般に。②（「なべての＋体言」の形で）普通の。","総じて。一般に","この法師のみにもあらず、世間の人、<b>なべて</b>このことあり。","徒然草","この法師だけでもなく、世間の人々は、【　】こうしたことがある。","総じて"],
+[238,"なほ","副","猶・尚","霜月","副詞","①やはり。依然として。","やはり","夏は夜。月のころはさらなり。闇も<b>なほ</b>、蛍の多く飛びちがひたる。","枕草子","夏は夜（がすばらしい）。月の頃は言うまでもない。闇夜も【　】、蛍がたくさん飛び交っている（のはすばらしい）。","やはり"],
+[239,"はた","副","","霜月","副詞","①これもまた。","これもまた","日入りはてて、風の音、虫の音など、<b>はた</b>言ふべきにあらず。","枕草子","日がすっかり暮れて、風の音や虫の声など（がするの）は、【　】言うまでもない（ほど趣深い）。","これもまた"],
+[240,"はやく","副","","霜月","副詞","①なんとまあ。②すでに。とっくに。","なんとまあ","かしこう縫ひつと思ふに、針を引き抜きつれば、<b>はやく</b>しりを結ばざりけり。","枕草子","うまく縫ったと思うのに、針を引き抜いたところ、【　】糸の端を結ばなかったことよ。","なんとまあ"],
+[241,"まだき","副","","霜月","副詞","①早くも。もう。","早くも。もう","恋すてふわが名は<b>まだき</b>立ちにけり人知れずこそ思ひ初めしか","拾遺和歌集","恋をしているという私の噂は【　】立ってしまったなあ。人知れず恋をし始めたのに。","早くも"],
+[242,"むべ・うべ","副","宜・諾","霜月","副詞","①なるほど。","なるほど","吹くからに秋の草木のしをるれば<b>むべ</b>山風を嵐と言ふらむ","古今和歌集","吹くと同時に秋の草木がしおれるので、【　】（それで）山風を嵐と言うのだろう。","なるほど"],
+[243,"やはら・やをら","副","","霜月","副詞","①そっと。静かに。","そっと。静かに","それも、<b>やをら</b>引き上げて入るは、さらに鳴らず。","枕草子","それ（＝簾）も、【　】引き上げて入る時は、まったく音がしない。","静かに"],
+[244,"やや","副","","霜月","副詞","①次第に。だんだんと。②かなり。だいぶ。","次第に。だんだんと","夜更けて、<b>やや</b>涼しき風吹きけり。","伊勢物語","夜が更けて、【　】涼しい風が吹いてきた。","次第に"],
+// ===== 師走 =====
+[245,"かく・かかり","副／動・ラ変","","師走","指示語","①こう。このように。こうである。","こう。このように","かばかりになれば、いと<b>かから</b>ぬ人もあるものを。","源氏物語","これほど（の年齢）になると、本当に【　】ない人もいるのになあ。","こうで"],
+[246,"さ・さり","副／動・ラ変","","師走","指示語","①そう。そのように。そうである。","そう。そのように","「あはれ、<b>さる</b>めり」と思ひながら、","徒然草","「ああ、【　】ようだ」と思いながら、","そうである"],
+[247,"しか・しかり","副／動・ラ変","","師走","指示語","①そう。そのように。そうである。","そう。そのように（しか）","<b>しかり</b>と言へども、北国の上洛近々にあるべしと聞きて","太平記","【　】と言っても、北国からの援軍の上洛が近いうちにあるに違いないと聞いて","そうである"],
+[248,"とかく","副","","師走","指示語","①あれこれと。何やかんやと。②ややもすれば。ともすれば。","あれこれと","大方めぐらざりければ、<b>とかく</b>直しけれども、","徒然草","（水車が）まったく回らなかったので、【　】直したけれども、","あれこれと"],
+[249,"かばかり","副","","師走","指示語","①これほど。この程度。②これだけ。","これほど。この程度","さても<b>かばかり</b>の家に、車入らぬ門やはある。","枕草子","それにしても【　】（身分の高い人）の家に、牛車の入らない門があるはずがない。","これほど"],
+[250,"さばかり","副","","師走","指示語","①それほど。その程度。②たいそう。非常に。","それほど。その程度","この殿の御心、<b>さばかり</b>にこそ。","徒然草","この殿の御心は、【　】でいらっしゃったのだ。","その程度"],
+[251,"さるべき","連語","","師走","指示語","①そうなるはずの（運命の・宿命の）。②ふさわしい。適当な。③立派な。相当な。","そうなるはずの","かくおぼえなくてめぐりおはしたるも、<b>さるべき</b>契りあるにやと思しながら、","源氏物語","このように思いがけず巡り会いなさったのも、【　】前世からの因縁があるのであろうか、と（光源氏は）お思いになりながら、","そうなるはずの"],
+[252,"さるべきにや","連語","","師走","指示語","①そうするはずのものなのだろうか。②そうなるはずの前世からの宿縁であろうか。","そうなるはずの前世からの宿縁であろうか","あながちなるすき心はさらにならはぬを、<b>さるべきにや</b>、","源氏物語","（光源氏は）強引な浮気心はまったく慣れていらっしゃらないのに、（空蝉に執着するのは）【　】、","そうなるはずの前世からの宿縁であろうか"],
+[253,"あやなし","形・ク活用","文無し","師走","形容詞","①筋が通らない。道理が立たない。②むなしい。つまらない。","筋が通らない","紅の花ぞ<b>あやなく</b>疎まるる梅の立ち枝はなつかしけれど","源氏物語","紅梅は、【　】ことだが疎まずにはいられない。梅のすっと伸びた枝は好ましいけれど。","筋が通らない"],
+[254,"いぶかし","形・シク活用","","師走","形容詞","①気がかりだ。知りたい。","気がかりだ。知りたい","年ごろ<b>いぶかしく</b>思ひ給へしことを知れる人ありと聞きて、","無名抄","長年【　】と思いましたことを知っている人がいると聞いて、","気がかりだ"],
+[255,"うしろめたし・うしろめたなし","形・ク活用","","師走","形容詞","①心配だ。気がかりだ。不安だ。","心配だ。気がかりだ","後の世も、思ふにかなはずあらむかしとぞ、<b>うしろめたき</b>に、","更級日記","極楽往生の願いも、叶わないだろうよと、【　】が、","心配だ"],
+[256,"うしろやすし","形・ク活用","","師走","形容詞","①安心だ。頼もしい。","安心だ。頼もしい","人となして、<b>うしろやすから</b>む妻などにあづけてこそ、死にも心安からむとは思ひしか。","蜻蛉日記","（息子の道綱を）立派な貴族にして、【　】ような妻などにまかせて、（私が）死ぬことも安心してできるだろうと思ったのだが。","頼もしい"],
+[257,"うたてし","形・ク活用","","師走","形容詞","①いやだ。嘆かわしい。","いやだ。嘆かわしい","御前に人一人も候はざらんが、むげに<b>うたてしう</b>覚え候ふ。","平家物語","（高倉天皇の）御前に誰もお仕え申し上げないようなことが、むやみに【　】思われます。","嘆かわしく"],
+[258,"かたじけなし","形・ク活用","","師走","形容詞","①おそれ多い。もったいない。","おそれ多い","「<b>かたじけなく</b>、汚げなる所に、年月を経てものしたまふこと、極まりたるかしこまり」と申す。","竹取物語","「（貴公子たちが）【　】、（このような）見苦しい所に、長い年月を経過して通いなさることは、この上ない恐縮（です）」と申し上げる。","おそれ多いことにも"],
+[259,"かたはらいたし","形・ク活用","傍ら痛し","師走","形容詞","①みっともない。見苦しい。②気の毒だ。③恥ずかしい。きまりが悪い。","みっともない／気の毒だ／恥ずかしい","<b>かたはらいたき</b>もの。よくも音弾きとどめぬ琴を、よくも調べで、心のかぎり弾き立てたる。","枕草子","【　】もの。十分には弾きこなさない琴を、よく調律もしないで、思う存分弾き鳴らしているもの。","みっともない"],
+[260,"からし","形・ク活用","辛し","師走","形容詞","①つらい。切ない。","つらい。切ない","衣かづけられたりしも、<b>からく</b>なりにき。","大鏡","衣を褒美に与えられたことも、【　】なってしまった。","つらく"],
+[261,"こころぐるし","形・シク活用","心苦し","師走","形容詞","①つらい。気がかりだ。②気の毒だ。","つらい／気の毒だ","思はむ子を法師になしたらむこそ<b>心苦しけれ</b>。","枕草子","愛しているような子を法師にするならば、それは【　】。","気の毒だ"],
+[262,"こころやすし","形・ク活用","心安し","師走","形容詞","①安心だ。気楽だ。","安心だ。気楽だ","この位去りて、ただ<b>心やすく</b>てあらむとなむ思ひ侍る。","大鏡","この位を下りて、ただ【　】状態で生きようと思います。","安心な"],
+[263,"さうざうし","形・シク活用","寂寂し","師走","形容詞","①もの足りない。もの寂しい。","もの足りない","この酒を一人たうべんが<b>さうざうしけれ</b>ば、","徒然草","この酒を一人で飲みますようなことが【　】ので、","もの足りない"],
+[264,"すきずきし","形・シク活用","好き好きし","師走","形容詞","①好色めいている。色好みだ。②風流だ。","好色めいている／風流だ","初めのこと、<b>すきずきしく</b>とも申しはべらむ。","源氏物語","（私の恋愛の）初めのころのことを、【　】ても申し上げましょう。","好色めいてい"],
+[265,"たのし","形・シク活用","","師走","形容詞","①裕福だ。","裕福だ","堀河相国は、美男の<b>楽しき</b>人にて、そのこととなく過差を好みたまひけり。","徒然草","堀河の太政大臣は、美男で【　】人であって、何事につけても贅沢を好みなさった。","裕福な"],
+[266,"つれなし","形・ク活用","","師走","形容詞","①さりげない。平然としている。②冷淡だ。薄情だ。","さりげない／冷淡だ","<b>つれなき</b>やうにて、人を遣りて見せければ、","大和物語","【　】様子で、人を行かせて見せたところ、","さりげない"],
+[267,"なめし","形・ク活用","","師走","形容詞","①失礼だ。無礼だ。","失礼だ。無礼だ","文ことば<b>なめき</b>人こそいと憎けれ。","枕草子","手紙の言葉遣いが【　】人は、たいそう憎らしい。","無礼な"],
+[268,"ねたし","形・ク活用","妬し・嫉し","師走","形容詞","①しゃくだ。腹立たしい。","しゃくだ。腹立たしい","打たせ給ふに、三番に一つ負けさせ給ひぬ。「<b>ねたき</b>わざかな」とて、","源氏物語","（碁を）打ちなさると、三番に一つ負けなさった。「【　】ことだなあ」と言って、","しゃくな"],
+[269,"やさし","形・シク活用","","師走","形容詞","①優雅だ。上品だ。②けなげだ。殊勝だ。感心だ。","優雅だ／殊勝だ","声、いと若やかに愛敬づき、<b>やさしき</b>ところ添ひたり。","源氏物語","声が、たいそう若々しく魅力的で、【　】ところも備わっている。","優雅な"],
+[270,"あからめ","名","傍目","師走","名詞","①わき見。よそ見。②浮気。他の人に心を移すこと。","わき見／浮気","花の本には、ねぢ寄り立ち寄り、<b>あからめ</b>もせず、まもりて、","徒然草","桜の花の下には、にじり寄って近寄って、【　】もせず、じっと見つめて、","わき見"],
+[271,"あない","名","案内","師走","名詞","①（物事の）事情。内情。②文書の内容。文案。③取り次ぎ（を頼むこと）。来意を告げること。","事情／取り次ぎ","大臣にも、変はらぬ姿今一度見え、かくと<b>案内</b>申して、必ず参り侍らむ。","大鏡","（父の）大臣にも、（出家前の）変わらない姿をもう一度見ていただき、このようだと【　】を申し上げて、必ず（ここに）参りましょう。","事情"],
+[272,"あるじ","名","主・饗","師走","名詞","①主人。一家の長。②主人としてもてなすこと。ごちそうすること。饗応。","主人としてもてなすこと","すさまじきもの。…方違へに行きたるに、<b>あるじ</b>せぬ所。","枕草子","興ざめなもの。…方違へ（のために他の家）に行ったのに、【　】をしない所。","もてなし"],
+[273,"すゑ","名","末","師走","名詞","①先端。末端。②終わり。果て。③（和歌の）下の句。④将来。未来。⑤子孫。","下の句／子孫","歌どもの本を仰せられて、「これが<b>末</b>はいかに」と問はせ給ふに、","枕草子","（定子様が）いくつかの歌の上の句をおっしゃって、（私たちに）「これの【　】は何か」とお尋ねになるが、","下の句"],
+[274,"そらごと","名","虚言・空言","師走","名詞","①嘘。偽り。","嘘。偽り","かくあさましき<b>そらごと</b>にてありければ、はやとく返したまへ。","竹取物語","このように予想を超える【　】であったので、（この蓬萊の玉の枝は）もはやさっさとお返しになってください。","嘘"],
+[275,"たまのを","名","玉の緒","師走","名詞","①（細くて切れやすいことから、恋人と過ごす）時間の短さのたとえ。②（「玉」に「魂」をかけ、つなぎとめる物として）命。","命","<b>玉の緒</b>よ絶えなば絶えね長らへば忍ぶることの弱りもぞする","新古今和歌集","私の【　】よ。絶えてしまうのならば、絶えてしまえ。（このまま）生き長らえるならば、耐え忍ぶ気力が弱っ（て秘めた恋心が現れ）たら困る（ので）。","命"],
+];
+
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const D=W.map(w=>({no:w[0],w:w[1],pos:w[2],kj:w[3],m:w[4],g:w[5],mean:w[6],key:w[7],ex:w[8],src:w[9],yaku:w[10],ans:w[11]}));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(){try{return JSON.parse(localStorage.getItem('kobun365v3')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('kobun365v3',JSON.stringify(v))}catch(e){}}};
+const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/[・（）()]/g,'、'));u.lang='ja-JP';u.rate=.85;speechSynthesis.speak(u)}catch(e){}};
+const GROUPS=[];D.forEach(d=>{const k=d.m+'｜'+d.g;if(!GROUPS.includes(k))GROUPS.push(k)});
+
+// 範囲
+let h='';['神無月','霜月','師走'].forEach(m=>{
+ h+=`<div class="gh">${m}<button type="button" data-m="${m}">全部はずす</button></div>`;
+ GROUPS.filter(k=>k.startsWith(m)).forEach(k=>{const ds=D.filter(d=>d.m+'｜'+d.g===k);
+  h+=`<label><input type="checkbox" value="${k}" data-m="${m}" checked> ${k.split('｜')[1]}（${ds[0].no}〜${ds[ds.length-1].no}・${ds.length}語）</label>`})});
+$('#sel').innerHTML=h;
+const picked=()=>{const ks=[...document.querySelectorAll('#sel input:checked')].map(x=>x.value);return D.filter(d=>ks.includes(d.m+'｜'+d.g))};
+const order=a=>document.querySelector('input[name="ord"]:checked').value==='shuf'?shuffle(a):a;
+const upd=()=>$('#cnt').textContent=`えらんだ語：${picked().length}語`;
+document.querySelectorAll('#sel input').forEach(x=>x.onchange=upd);
+document.querySelectorAll('#sel .gh button').forEach(b=>b.onclick=()=>{const xs=document.querySelectorAll(`#sel input[data-m="${b.dataset.m}"]`);const all=[...xs].every(x=>x.checked);xs.forEach(x=>x.checked=!all);b.textContent=all?'全部えらぶ':'全部はずす';upd()});
+upd();
+
+function tab(t){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));
+ if(t==='miss')renderMiss();if(t==='rank')renderRank();if(t==='card'&&!C)startCard();if(t==='quiz'&&!Q)startQuiz();scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{if(!picked().length){alert('範囲をえらんでください');return}
+ if(b.dataset.go==='card'){C=null;tab('card')}else{Q=null;tab('quiz')}});
+
+const exHTML=d=>d.ex?`<div class="ex">${d.ex} <span class="src">（${d.src}）</span><div class="yaku">訳　${d.yaku.replace('【　】',`<em>【${d.ans.split('／')[0]}】</em>`).replace('【　】',`<em>【${d.ans.split('／')[1]||''}】</em>`)}</div></div>`:'';
+const head=d=>`<div class="word">${d.w}<button class="say" onclick="say('${d.w}')">🔊</button></div><div class="meta">No.${d.no}　［${d.pos}］${d.kj?'《'+d.kj+'》':''}</div>`;
+
+// カード
+let C=null;
+function startCard(){C={list:order(picked()),i:0};showCard()}
+function showCard(){
+ const d=C.list[C.i];
+ $('#card').innerHTML=`<div class="card"><div class="qhead"><span>${d.m}・${d.g}</span><span>${C.i+1} / ${C.list.length}</span></div>${head(d)}
+ <div class="back" id="bk"><div class="mean">${d.mean.replace(/([①-⑤])/g,'<br>$1').replace(/^<br>/,'')}</div>${exHTML(d)}</div>
+ <button class="btn" id="flip">意味を見る</button>
+ <div class="twob"><button class="btn ghost" id="pv">← 前へ</button><button class="btn sub" id="nx">次へ →</button></div></div>`;
+ $('#flip').onclick=()=>{$('#bk').classList.toggle('show');$('#flip').textContent=$('#bk').classList.contains('show')?'意味をかくす':'意味を見る'};
+ $('#pv').onclick=()=>{if(C.i>0){C.i--;showCard()}};
+ $('#nx').onclick=()=>{if(C.i<C.list.length-1){C.i++;showCard()}else{alert('最後の語です。おつかれさま！');C.i=0;showCard()}};
+}
+
+// 4択（意味／例文）
+let Q=null,miss=[];
+function startQuiz(list){
+ const base=list||order(picked());
+ Q={list:base,i:0,ok:0,mode:Q&&Q.mode||'imi'};miss=[];
+ $('#quiz').innerHTML=`<div class="card"><h2>どちらで出題する？</h2>
+ <button class="btn" id="qm1">意味をえらぶ（見出し語 → 意味）</button>
+ <button class="btn sub" id="qm2">例文の訳の【　】をうめる</button>
+ <p class="note" style="margin-top:8px">例文モードは、本の「問」と同じ形です。（${base.length}語）</p></div>`;
+ $('#qm1').onclick=()=>{Q.mode='imi';showQ()};
+ $('#qm2').onclick=()=>{Q.mode='rei';Q.list=Q.list.filter(d=>d.ex);showQ()};
+}
+function distract(d,field){
+ const same=D.filter(x=>x!==d&&x[field]&&x[field]!==d[field]&&x.pos.split('・')[0]===d.pos.split('・')[0]);
+ const pool=shuffle(same.length>=3?same:D.filter(x=>x!==d&&x[field]&&x[field]!==d[field]));
+ const out=[];for(const x of pool){if(!out.includes(x[field]))out.push(x[field]);if(out.length===3)break}return out;
+}
+function showQ(){
+ const d=Q.list[Q.i];const f=Q.mode==='imi'?'key':'ans';
+ const ch=shuffle([d[f],...distract(d,f)]);
+ const body=Q.mode==='imi'?head(d)+`<p class="note" style="text-align:center;margin:8px 0">意味をえらぼう</p>`
+  :`<div class="ex">${d.ex} <span class="src">（${d.src}）</span></div><div class="yaku" style="margin:10px 2px">訳　${d.yaku.replace(/【　】/g,'<em>【　？　】</em>')}</div><p class="note">太字の語：<b>${d.w}</b>（No.${d.no}）</p>`;
+ $('#quiz').innerHTML=`<div class="card"><div class="qhead"><span>${d.m}・${d.g}</span><span>${Q.i+1} / ${Q.list.length}　⭕${Q.ok}</span></div>${body}
+ ${ch.map(c=>`<button class="choice">${c}</button>`).join('')}<div id="fb"></div></div>`;
+ let done=false;
+ document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(done)return;done=true;
+  const ok=b.textContent===d[f];
+  document.querySelectorAll('.choice').forEach(x=>{if(x.textContent===d[f])x.classList.add('ok')});if(!ok)b.classList.add('ng');
+  if(ok)Q.ok++;else{if(!miss.includes(d))miss.push(d);const r=store.get();r[d.no]=(r[d.no]||0)+1;store.set(r)}
+  $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><span class="mk">${ok?'⭕ 正解！':'❌ ざんねん'}</span><div><b>${d.w}</b>：${d.mean}</div>${Q.mode==='imi'?exHTML(d):''}</div>
+  <button class="btn" id="nq">${Q.i+1<Q.list.length?'次へ':'結果を見る'}</button><button class="btn ghost" id="qq">やめる</button>`;
+  $('#nq').onclick=()=>{Q.i++;Q.i<Q.list.length?showQ():result()};$('#qq').onclick=result;
+  if(ok)say(d.w);
+ });
+}
+function result(){
+ $('#quiz').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${Q.ok} / ${Math.min(Q.i+1,Q.list.length)}</div>
+ ${miss.length?`<button class="btn" id="rt">まちがえた語だけもう一度</button>`:'<p style="text-align:center">全問正解！</p>'}
+ <button class="btn sub" id="again">最初から</button><button class="btn ghost" id="toSet">範囲えらびへ</button></div>`;
+ if(miss.length)$('#rt').onclick=()=>{const m=Q.mode;const l=shuffle(miss);Q={list:l,i:0,ok:0,mode:m};miss=[];showQ()};
+ $('#again').onclick=()=>{Q=null;startQuiz()};$('#toSet').onclick=()=>tab('set');
+}
+function renderMiss(){$('#misslist').innerHTML=miss.length?miss.map(d=>`<div class="li"><span class="w">${d.w}</span>　No.${d.no}<br>${d.mean}</div>`).join(''):'<p class="note">まだありません。</p>';$('#missretry').style.display=miss.length?'':'none'}
+$('#missretry').onclick=()=>{const l=shuffle(miss);const m=Q?Q.mode:'imi';Q={list:l,i:0,ok:0,mode:m};miss=[];tab('quiz');showQ()};
+function renderRank(){const r=store.get();const ids=Object.keys(r).sort((a,b)=>r[b]-r[a]);
+ $('#ranklist').innerHTML=ids.length?ids.slice(0,40).map(id=>{const d=D.find(x=>x.no==id);return d?`<div class="li"><span class="n">${r[id]}回</span><span class="w">${d.w}</span>　No.${d.no}<br>${d.mean}</div>`:''}).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('#rankquiz').onclick=()=>{const r=store.get();const l=D.filter(d=>r[d.no]);if(!l.length){alert('まだ記録がありません');return}Q={mode:'imi'};startQuiz(shuffle(l));tab('quiz')};
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+
+// プリント
+$('#pgo').onclick=()=>{
+ const kind=document.querySelector('input[name="pk"]:checked').value;
+ let L=order(picked());if(kind==='rei')L=L.filter(d=>d.ex);
+ if(!L.length){alert('範囲をえらんでください');return}
+ const title={imi:'意味テスト',rei:'例文の穴うめテスト',list:'覚える用一覧'}[kind];
+ let h=`<div class="ph"><h1>古文単語365　神無月・霜月・師走　${title}</h1><div class="nm">名前（　　　　　　　）　${kind==='list'?'':'　　／'+L.length}</div></div>`;
+ if(kind==='imi'){h+=`<table class="pt"><tr><th style="width:8%">No.</th><th style="width:30%">古語</th><th>意味</th></tr>${L.map(d=>`<tr><td>${d.no}</td><td>${d.w}</td><td style="height:10mm"></td></tr>`).join('')}</table>`;
+  if($('#pans').checked)h+=`<div class="pans"><div class="ph"><h1>解答</h1></div><table class="pt">${L.map(d=>`<tr><td>${d.no}</td><td>${d.w}</td><td>${d.mean}</td></tr>`).join('')}</table></div>`}
+ if(kind==='rei'){h+=L.map((d,i)=>`<div class="pq">(${i+1}) ${d.ex}（${d.src}）<br><span class="y">訳　${d.yaku}</span></div>`).join('');
+  if($('#pans').checked)h+=`<div class="pans"><div class="ph"><h1>解答</h1></div>${L.map((d,i)=>`<div class="pq">(${i+1}) ${d.w}　→　${d.ans}</div>`).join('')}</div>`}
+ if(kind==='list')h+=`<table class="pt"><tr><th style="width:7%">No.</th><th style="width:24%">古語</th><th>意味</th></tr>${L.map(d=>`<tr><td>${d.no}</td><td>${d.w}<br><span style="font-size:8pt;font-family:sans-serif">［${d.pos}］${d.kj?'《'+d.kj+'》':''}</span></td><td>${d.mean}</td></tr>`).join('')}</table>`;
+ $('#printArea').innerHTML=h;setTimeout(()=>window.print(),200);
+};
+</script></body></html>
