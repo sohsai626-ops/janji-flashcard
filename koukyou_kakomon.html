@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>公共 共通テスト過去問マスター</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f1f5f2;color:#1d2a24;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:#2e6b4f;color:#fff}
+.top{display:flex;align-items:center;padding:10px 12px;gap:8px}
+.top h1{flex:1;font-size:16px}
+.top button{background:#fff;color:#2e6b4f;border:none;border-radius:16px;padding:6px 12px;font-size:14px;font-weight:700}
+.tabs{display:flex}
+.tabs button{flex:1;background:none;border:none;color:#cfe5d9;padding:9px 0;font-size:15px;font-weight:700;border-bottom:3px solid transparent}
+.tabs button.on{color:#fff;border-bottom-color:#f2c14e}
+main{max-width:600px;margin:0 auto;padding:12px 12px 60px}
+.view{display:none}.view.on{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,50,30,.08);margin-bottom:12px}
+h2{font-size:18px;margin-bottom:8px}
+p{font-size:15px;line-height:1.75}
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:800;margin:8px 0}
+.b1{background:#2e6b4f;color:#fff}.b2{background:#e3efe8;color:#2e6b4f}.b3{background:#f2c14e;color:#3d2c00}
+.seg{display:flex;gap:6px;margin:6px 0 10px}
+.seg button{flex:1;border:2px solid #b9d3c4;background:#fff;border-radius:10px;padding:9px 4px;font-size:14px;font-weight:700;color:#2e6b4f}
+.seg button.on{background:#2e6b4f;color:#fff;border-color:#2e6b4f}
+.meta{font-size:13px;color:#5b7468;margin-bottom:6px}
+.tag{display:inline-block;font-size:12px;font-weight:800;border-radius:8px;padding:2px 8px;margin-right:4px}
+.coko{background:#ffe1d2;color:#c2410c}.ng{background:#fde2e2;color:#b91c1c}
+.qtext{font-size:16px;line-height:1.75;font-weight:700;white-space:pre-wrap;margin-bottom:10px}
+.qtext .not{color:#c62828;text-decoration:underline}
+.ch{display:block;width:100%;text-align:left;background:#f7faf8;border:2px solid #cfe0d6;border-radius:10px;padding:10px 12px;font-size:15px;line-height:1.65;margin:7px 0;color:#1d2a24}
+.ch.ok{background:#e4f5e7;border-color:#3f9a52}
+.ch.bad{background:#fde6e3;border-color:#d0402b}
+.ch .ex{display:none;margin-top:6px;font-size:14px;color:#334;border-top:1px dashed #b9c9bf;padding-top:6px}
+.done .ch .ex{display:block}
+.done .ch .ex:empty{display:none}
+.res{font-size:18px;font-weight:800;margin:6px 0}
+.prog{font-size:14px;color:#5b7468;text-align:right}
+.point{background:#fff7dc;border-left:5px solid #f2c14e;border-radius:8px;padding:10px 12px;margin:10px 0;font-size:14.5px;line-height:1.75}
+table.t{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+table.t th,table.t td{border:1px solid #c7d8ce;padding:6px;text-align:left;vertical-align:top}
+table.t th{background:#e3efe8}
+.list li{font-size:14.5px;line-height:1.8;margin-left:18px}
+.chk{display:flex;align-items:center;gap:8px;font-size:15px;margin:6px 0}
+.chk input{width:20px;height:20px}
+#help{display:none;position:fixed;inset:0;background:rgba(0,30,20,.55);z-index:20;overflow:auto;padding:16px}
+#help.on{display:block}
+#help .box{background:#fff;border-radius:16px;max-width:540px;margin:16px auto;padding:18px}
+#help h3{color:#2e6b4f;font-size:19px;margin-bottom:6px}#help h4{font-size:16px;margin:12px 0 4px}
+#help li{font-size:14.5px;line-height:1.75;margin-left:20px}
+#printArea{display:none}
+@media print{
+ body{background:#fff}header,main,#help{display:none!important}
+ #printArea{display:block;font-size:11pt;color:#000}
+ .pq{page-break-inside:avoid;margin:0 0 12pt}
+ .pq .qt{font-weight:700;white-space:pre-wrap;line-height:1.6}
+ .pq .c{margin-left:1em;line-height:1.6}
+ .pq .ans{border:1px solid #888;padding:4pt 6pt;margin-top:4pt}
+ h1.ph{font-size:14pt;margin-bottom:8pt}.pb{page-break-before:always}
+ .nm{text-align:right;margin-bottom:8pt}
+}
+</style></head><body>
+<header><div class="top"><h1>⚖️ 公共 共通テスト過去問</h1><button id="helpBtn">❓使い方</button></div>
+<div class="tabs"><button data-v="home" class="on">出題</button><button data-v="matome">まとめ</button><button data-v="miss">ミス</button><button data-v="print">印刷</button></div></header>
+<main>
+<section class="view on" id="v-home">
+ <div class="card" id="setup">
+  <h2>問題をえらぶ</h2>
+  <div class="meta">はんい</div>
+  <div class="seg" id="segRange"><button data-r="coko" class="on">ココ!だけ（11問）</button><button data-r="all">全部（16問）</button></div>
+  <div class="meta">プリント</div>
+  <div id="setChecks"></div>
+  <div class="meta">じゅんばん</div>
+  <div class="seg" id="segOrder"><button data-o="seq" class="on">プリントの順</button><button data-o="rnd">シャッフル</button></div>
+  <button class="btn b1" id="start">スタート</button>
+ </div>
+ <div id="play" style="display:none">
+  <div class="prog" id="prog"></div>
+  <div class="card" id="qcard"></div>
+  <button class="btn b3" id="nextBtn" style="display:none">次の問題 ▶</button>
+  <button class="btn b2" id="quitBtn">やめて最初にもどる</button>
+ </div>
+ <div class="card" id="result" style="display:none"></div>
+</section>
+
+<section class="view" id="v-matome">
+ <div class="card"><h2>① 大統領制と議院内閣制</h2>
+ <table class="t"><tr><th></th><th>アメリカ（大統領制）</th><th>イギリス（議院内閣制）</th></tr>
+ <tr><td>トップ</td><td>大統領（国民が選ぶ）</td><td>首相（下院の議員から）</td></tr>
+ <tr><td>議会の議席</td><td><b>もたない</b></td><td><b>もつ</b></td></tr>
+ <tr><td>不信任決議</td><td><b>ない</b>（大統領を辞めさせるのは弾劾だけ）</td><td>下院が内閣に出せる</td></tr>
+ <tr><td>解散</td><td><b>ない</b></td><td>首相が<b>下院</b>を解散できる（上院は解散なし）</td></tr>
+ <tr><td>その他</td><td>大統領は法案の<b>拒否権</b>をもつ／任期4年・<b>3選禁止</b>／下院は人口比例、上院は各州2名</td><td>上院＝貴族院、下院＝庶民院</td></tr></table>
+ <div class="point">合言葉：アメリカは<b>「きっちり分ける」</b>ので、議席・不信任・解散が<b>全部「ない」</b>。</div></div>
+
+ <div class="card"><h2>② 法の支配と社会契約説の人物</h2>
+ <table class="t"><tr><th>人物</th><th>キーワード</th></tr>
+ <tr><td>コーク（クック）</td><td>コモン・ロー、「国王も法に従う」＝<b>法の支配</b></td></tr>
+ <tr><td>モンテスキュー</td><td><b>三権分立</b>（立法・行政・司法）</td></tr>
+ <tr><td>ロック</td><td>生命・自由・財産、<b>抵抗権</b>（革命権）</td></tr>
+ <tr><td>ホッブズ</td><td>自然権を主権者に<b>譲渡</b>する</td></tr>
+ <tr><td>ボーダン</td><td>主権論、<b>絶対王政</b>を支えた（権力分立ではない）</td></tr></table>
+ <div class="point">・<b>法の支配</b>（英米）＝慣習法・判例（コモン・ロー）重視、法の<b>中身</b>が正しいこと<br>・<b>法治主義</b>（ドイツ）＝<b>成文法</b>重視、法律の<b>形式</b>があればよい<br>・<b>マグナ・カルタ</b>（1215年、イギリス）＝国王と<b>貴族（バロン）</b>の約束。「国民の平等」ではない</div></div>
+
+ <div class="card"><h2>③ 人権宣言・憲法の見分け方</h2>
+ <table class="t"><tr><th>文書</th><th>見分けるキーワード</th></tr>
+ <tr><td>アメリカ独立宣言（1776）</td><td>「すべての人は<b>平等に造られ</b>」「幸福追求」</td></tr>
+ <tr><td>フランス人権宣言（1789）</td><td>「<b>権力の分立</b>が規定されない社会は憲法をもたない」</td></tr>
+ <tr><td>ワイマール憲法（1919）</td><td>「<b>人間たるに値する生活</b>」＝社会権（生存権）</td></tr>
+ <tr><td>国際連合憲章（1945）</td><td>「人種、性、言語又は宗教による差別なく<b>すべての者のために</b>」</td></tr></table></div>
+
+ <div class="card"><h2>④ 大日本帝国憲法と日本国憲法</h2>
+ <table class="t"><tr><th></th><th>大日本帝国憲法</th><th>日本国憲法</th></tr>
+ <tr><td>主権</td><td>天皇</td><td>国民（天皇は<b>象徴</b>）</td></tr>
+ <tr><td>人権</td><td>法律の範囲内（臣民の権利）</td><td>侵すことのできない永久の権利</td></tr>
+ <tr><td>議会</td><td>貴族院＋衆議院（<b>衆議院は選挙</b>あり）</td><td>参議院＋衆議院（どちらも選挙）</td></tr>
+ <tr><td>内閣</td><td><b>規定なし</b>（国務大臣が天皇を輔弼）</td><td>規定あり</td></tr>
+ <tr><td>地方自治</td><td><b>規定なし</b></td><td>第8章で規定</td></tr></table></div>
+
+ <div class="card"><h2>⑤ 憲法改正（第96条）の流れ</h2>
+ <p>① <b>各議院の総議員の3分の2以上</b>の賛成で国会が<b>発議</b><br>　（両院協議会は<b>ない</b>）<br>② <b>国民投票で過半数</b>の賛成で承認<br>③ <b>天皇</b>が国民の名で<b>公布</b>（内閣総理大臣ではない）</p>
+ <div class="point">ついでに：国務大臣を<b>罷免</b>できるのは<b>内閣総理大臣</b>（国会ではない）。</div></div>
+
+ <div class="card"><h2>⑥ 日本の農業・市場開放</h2>
+ <table class="t">
+ <tr><td>食糧管理制度</td><td>高く買って安く売る「逆ざや」→ 会計は<b>赤字</b></td></tr>
+ <tr><td>減反政策</td><td>コメを作る<b>面積</b>を減らす（休耕・転作）</td></tr>
+ <tr><td>農業基本法（1961）</td><td>農業と工業の<b>格差をなくす</b>のが目的（自由化ではない）</td></tr>
+ <tr><td>新食糧法（1995）</td><td>コメの流通を<b>自由化</b>へ、政府の管理を縮小</td></tr>
+ <tr><td>牛肉・オレンジ</td><td>1988年決着 → 1991年輸入自由化</td></tr>
+ <tr><td>ウルグアイ・ラウンド</td><td>農業も交渉した → コメの<b>ミニマム・アクセス</b>（1995）→ 関税化（1999）</td></tr>
+ <tr><td>日米構造協議／包括経済協議</td><td>1989〜90年／1993年〜</td></tr>
+ <tr><td>トレーサビリティ</td><td>食品の生産・流通の<b>履歴</b>がわかる制度（導入済み）</td></tr>
+ <tr><td>今の状況</td><td>農家数は<b>減少</b>、食料自給率は約4割で先進国の中で<b>低い</b></td></tr></table></div>
+</section>
+
+<section class="view" id="v-miss"><div class="card"><h2>まちがえた問題</h2><div id="missList"></div>
+<button class="btn b1" id="missStart">ミスした問題だけ出題</button><button class="btn b2" id="missClear">ミスの記録を消す</button></div></section>
+
+<section class="view" id="v-print"><div class="card"><h2>プリントを作る</h2>
+ <div class="meta">はんい</div>
+ <div class="seg" id="segPR"><button data-r="coko" class="on">ココ!だけ</button><button data-r="all">全部</button><button data-r="miss">ミスだけ</button></div>
+ <label class="chk"><input type="checkbox" id="pAns" checked>解答・解説を最後のページにつける</label>
+ <button class="btn b1" id="printBtn">🖨 印刷する</button>
+ <p style="font-size:13px;color:#5b7468">iPhone・iPadでは、印刷画面で「PDFとして保存」や「共有」も選べます。</p></div></section>
+</main>
+<div id="printArea"></div>
+
+<div id="help"><div class="box">
+<h3>❓ 使い方（取扱説明書）</h3>
+<h4>このアプリは何？</h4>
+<ul><li>公共のプリント（演習7・12・演習13・演習14）の共通テスト過去問を解くアプリです。</li>
+<li>先生が「ココ!」と印をつけた11問が中心です。</li></ul>
+<h4>出題</h4>
+<ul><li>「ココ!だけ」か「全部」をえらび、プリントにチェックを入れて「スタート」を押します。</li>
+<li>答えをタップすると、<b>すべての選択肢に「○・×とその理由」</b>が出ます。正解した問題でも、ほかの選択肢がなぜちがうのかを必ず読んでください。</li>
+<li>「適当でないもの」を選ぶ問題は、問題文の<b style="color:#c62828">赤い下線</b>が目印です。</li></ul>
+<h4>まとめ</h4>
+<ul><li>問題に出てくるポイントを表にまとめました。問題を解く前と後に読むと効果的です。</li></ul>
+<h4>ミス</h4>
+<ul><li>まちがえた問題は自動で記録されます。「ミスした問題だけ出題」でやり直せます。</li>
+<li>次に正解すると、その問題は記録から消えます。</li></ul>
+<h4>印刷</h4>
+<ul><li>はんいをえらんで「印刷する」を押すと、問題プリントが作れます。解答・解説を最後につけることもできます。</li></ul>
+<h4>おすすめの使い方</h4>
+<ul><li>① まとめを読む → ② ココ!だけを解く → ③ ミスだけをやり直す → ④ 全部を解く。</li></ul>
+<button class="btn b1" id="helpClose">閉じる</button></div></div>
+
+<script>
+const SETS=[{"id":"7","title":"【演習7】中小企業と農業","qs":[{"n":1,"c":false,"src":"2014 政経・本","type":"正","q":"日本の中小企業に関する記述として最も適当なものを選べ。","ch":["製造業における従業員一人当たりの生産性は、従業員20〜29人の企業の方が、従業員300〜499人のそれよりも高い。","中小企業の従業員数は、全企業の従業員数の約99パーセントを占める。","製造業における従業員一人当たりの賃金は、従業員20〜29人の企業の方が、従業員300〜499人のそれよりも低い。","製造業では、中小企業の出荷額は全企業の約70パーセントに及ぶ。"],"a":3,"e":["×　生産性は大企業の方が高い（二重構造）。","×　約99％は「企業数」。従業員数は約7割。","○　賃金も中小企業の方が低い。","×　出荷額は約5割。※模範解答「④の正誤判断は難しいので、①〜③で見極めること」"]},{"n":2,"c":true,"src":"2000 現社・追","type":"正","q":"日本における農業の問題や農村の現状に関する記述として最も適当なものを選べ。","ch":["食糧管理制度は消費者よりの農家の保護に重点を置いて運営されるようになっていたので、食糧管理特別会計は黒字であった。","国内林業の保護及び国際的な熱帯雨林保全活動への協力のために、日本は東南アジア諸国からの木材の輸入を禁止している。","新食糧法により、コメを市場で自由に販売できるように、価格決定や国内流通などについての政府管理が縮小された。","コメの減反政策とは、単位面積あたりの収穫量を減少させることで生産量を抑制する政策のことである。"],"a":3,"e":["×　高く買って安く売る「逆ざや」のため、食管会計は赤字だった。","×　木材の輸入は禁止していない（むしろ大量に輸入）。","○　1995年の新食糧法で、コメの流通が自由化に向かった。","×　減反は「作付面積」を減らす政策（休耕・転作）。"]},{"n":3,"c":true,"src":"2008 現社・本","type":"誤","q":"日本の市場開放に関する記述として適当でないものを選べ。","ch":["1980年代末に日米牛肉・オレンジ交渉が決着し、その結果、牛肉とオレンジの輸入自由化が行われた。","1990年代の半ばに、コメは、ミニマム・アクセスによる輸入が開始され、その後関税化が実施された。","1980年代後半から90年代にかけて、日本の市場開放を協議する日米構造協議や日米包括経済協議が開かれた。","1980年代半ばに始まったウルグアイ・ラウンドでは、日本や発展途上国の主張が認められ、農業分野の交渉はテーマから除外された。"],"a":4,"e":["正しい（1988年決着→1991年自由化）。","正しい（1995年ミニマム・アクセス→1999年関税化）。","正しい（日米構造協議1989〜90年、日米包括経済協議1993年〜）。","← これが誤り。ウルグアイ・ラウンドでは農業も交渉の対象で、その結果コメのミニマム・アクセスが決まった。"]},{"n":4,"c":true,"src":"2021 現社・第2日程","type":"正","q":"日本の農業や食の安全に関する記述として最も適当なものを選べ。","ch":["農業基本法の成立により、コメの価格と流通に関しては原則的に自由化された。","現在、総農家数は、1990年代半ばにおけるそれと比較すると増加している。","食品の生産や流通の履歴を消費者が知ることのできるトレーサビリティ制度が導入されている。","現在、日本の食料自給率(カロリーベース)は、先進国中で最も高い水準にある。"],"a":3,"e":["×　農業基本法（1961年）は農業と工業の格差是正が目的。コメの自由化は新食糧法（1995年）。","×　農家数は減り続けている。","○　牛肉・米などでトレーサビリティ制度がある。","×　約4割弱で、先進国の中で最低水準。"]}]},{"id":"12","title":"12 民主政治の成立＆基本的人権の確立","qs":[{"n":1,"c":false,"src":"2013 政経・追","type":"組","q":"人物A〜C（A コーク　B モンテスキュー　C ロック）とその主張ア〜ウの組合せとして最も適当なものを選べ。\nア　人民の自由の保障のため、国家権力を、立法権、行政権、司法権の三権に分け、相互の抑制と均衡を図るべきである。\nイ　政府が人民の生命、自由、財産に対する権利を侵害する場合、人民には、これに抵抗する権利がある。\nウ　国王といえども、コモン・ローの支配下にあるのであって、法に従うべきである。","ch":["A―ア　B―イ　C―ウ","A―ア　B―ウ　C―イ","A―イ　B―ア　C―ウ","A―イ　B―ウ　C―ア","A―ウ　B―ア　C―イ","A―ウ　B―イ　C―ア"],"a":5,"e":["","","","","○　コーク＝法の支配（ウ）、モンテスキュー＝三権分立（ア）、ロック＝抵抗権（イ）。",""]},{"n":2,"c":false,"src":"2012 政経・本","type":"正","q":"近代の社会契約説についての記述として最も適当なものを選べ。","ch":["政府と人民の関係は、神と人間、親と子、夫と妻の間にみられるような愛情と信頼に由来する。","ホッブズによれば、各人は自らの生命と安全を確保するために、主権者に自然権を譲渡することなく国家の運営に参加する必要がある。","国家は人為的な産物ではなく、歴史の中で長く受け継がれてきた伝統を通じて形成される。","ロックによれば、人民の信託を受けた政府が人民の生命・自由・財産の権利を侵害した場合、人民には政府に抵抗する権利がある。"],"a":4,"e":["×　社会契約説は「契約」で国家ができると考える。愛情・信頼ではない。","×　ホッブズは自然権を主権者に「譲渡する」と考えた。","×　社会契約説は国家を人が契約で作った「人為的なもの」と考える。","○　ロックの抵抗権（革命権）。"]},{"n":3,"c":true,"src":"2007 政経・本","type":"正","q":"法の支配に関連する記述として最も適当なものを選べ。","ch":["コークは、コモン・ローの伝統を重視し、国王といえども法に従わなくてはならないと主張した。","ボーダンは、国王の絶対的支配を否定し、権力分立に基づく国家権力の抑制の必要を説いた。","マグナ・カルタは、国民の平等な権利を認め、統治者が法に拘束される法の支配の思想を示した。","英米における法の支配は、ドイツで発達した法治主義と比べ、成文法重視の思想であった。"],"a":1,"e":["○　コーク（クック）は「国王といえども神と法の下にある」と主張した。","×　ボーダンは主権論を唱え、絶対王政を支えた。権力分立はモンテスキュー。","×　マグナ・カルタは貴族（バロン）の特権を国王に認めさせたもの。「国民の平等な権利」ではない。","×　逆。法の支配は慣習法・判例（コモン・ロー）重視。成文法重視はドイツの法治主義。"]},{"n":4,"c":false,"src":"2005 政経・本","type":"正","q":"マグナ・カルタについての記述として最も適当なものを選べ。","ch":["13世紀イギリスにおける、国王とバロン(諸侯)らとの封建的契約である。","16世紀フランスにおける、国王が信仰の自由を保障した勅令である。","17世紀ドイツで、三十年戦争直後に結ばれた条約である。","19世紀アメリカで、南北戦争中に出された宣言である。"],"a":1,"e":["○　1215年、イギリス。","×　これはナントの勅令（1598年）。","×　これはウェストファリア条約（1648年）。","×　これは奴隷解放宣言（1863年）。"]},{"n":5,"c":true,"src":"2002 現社・追","type":"組","q":"次のA〜Dの出典をア〜エから選び、その組合せとして正しいものを選べ。\nA「…人種、性、言語又は宗教による差別なくすべての者のために人権及び基本的自由を尊重するように助長奨励すること…」\nB「権利の保障が確保されず、権力の分立が規定されないすべての社会は、憲法をもつものでない。」\nC「経済生活の秩序は、すべての人間に人間たるに値する生活を保障する目的をもつ正義の原則に適合しなければならない。この限界内で個人の経済的自由は、確保されなければならない。」\nD「すべての人は平等に造られ、…天賦の権利を付与され、そのなかに生命、自由および幸福追求の含まれていることを信ずる。」\nア アメリカ独立宣言　イ フランス人権宣言　ウ ワイマール憲法　エ 国際連合憲章","ch":["A―ア　B―イ　C―ウ　D―エ","A―ウ　B―エ　C―イ　D―ア","A―エ　B―ア　C―イ　D―ウ","A―ウ　B―ア　C―イ　D―エ","A―エ　B―イ　C―ウ　D―ア"],"a":5,"e":["","","","","○　A「すべての者のため」＝国際連合憲章、B「権力の分立」＝フランス人権宣言、C「人間たるに値する生活」＝ワイマール憲法（社会権）、D「すべての人は平等に造られ」＝アメリカ独立宣言。"]},{"n":6,"c":true,"src":"2009 現社・追","type":"正","q":"社会的意思決定の方式の一つとして多数決があるが、これに関する記述として最も適当なものを選べ。","ch":["議会では、これ以上の意思決定方法は取り得ない。","民主政治での意思決定においてこれを採用する場合は、少数意見を尊重することが課題とされる。","意思決定方式としてこれを採用することは、構成員による討議を保障することと矛盾する。","司法判断に向かない意思決定方式のため、裁判では取り得ない。"],"a":2,"e":["×　議会でも「3分の2以上」などの特別多数決がある。","○　多数決では少数意見の尊重が大切。","×　十分に話し合ったうえで多数決をとる。矛盾しない。","×　裁判官が複数の裁判（合議制）では多数決で決める。"]}]},{"id":"13","title":"【演習13】国民主権と民主政治の発展","qs":[{"n":1,"c":false,"same":"12-1","src":"2013 政経・追","type":"組","q":"（12の問1と同じ問題）","ch":[],"a":5,"e":[]},{"n":2,"c":false,"same":"12-6","src":"2009 現社・追","type":"正","q":"（12の問6と同じ問題）","ch":[],"a":2,"e":[]},{"n":3,"c":true,"src":"2012 現社・本","type":"誤","q":"アメリカの政治制度に関する記述として適当でないものを選べ。","ch":["連邦議会の下院議員の定数は、各州の人口に比例して配分される。","連邦議会は、不信任決議によって大統領を罷免する権限をもつ。","大統領は、連邦議会が可決した法案に対して拒否権をもつ。","大統領の任期は4年であり、3選は禁止されている。"],"a":2,"e":["正しい（上院は各州2名、下院は人口比例）。","← これが誤り。アメリカの議会は大統領の不信任決議ができない（大統領も議会を解散できない）。","正しい。","正しい。"]},{"n":4,"c":true,"src":"2017 現社・本","type":"正","q":"外国の政治制度に関する記述として最も適当なものを選べ。","ch":["イギリスの議院内閣制では、首相に上院の解散権がある。","アメリカの大統領制では、議会に大統領の不信任決議権がある。","イギリスの議院内閣制では、首相は議会に議席をもたない。","アメリカの大統領制では、大統領は議会に議席をもたない。"],"a":4,"e":["×　解散できるのは下院（庶民院）。上院（貴族院）は解散がない。","×　アメリカには不信任決議がない。","×　イギリスの首相は下院の議員で、議席をもつ。","○　アメリカは厳格な三権分立。大統領は議員ではない。"]}]},{"id":"14","title":"【演習14】日本国憲法の成立","qs":[{"n":1,"c":true,"src":"2002 政経・本","type":"誤","q":"大日本帝国憲法から日本国憲法への変化についての記述として適当でないものを選べ。","ch":["大日本帝国憲法で統治権を総攬するとされた天皇は、日本国憲法では日本国と日本国民統合の象徴とされた。","大日本帝国憲法では臣民の権利が法律の範囲内で与えられたが、日本国憲法では基本的人権が侵すことのできない永久の権利として保障された。","大日本帝国憲法では皇族・華族・勅任議員からなる貴族院が置かれていたが、日本国憲法では公選の参議院が設けられた。","大日本帝国憲法で規定されていた地方自治は、日本国憲法ではいっそう拡充され、地方特別法を制定する場合、事前に住民投票を行う制度が導入された。"],"a":4,"e":["正しい。","正しい（「法律の留保」→「永久の権利」）。","正しい。","← これが誤り。大日本帝国憲法には地方自治の規定がなかった。日本国憲法で初めて第8章「地方自治」が置かれた。"]},{"n":2,"c":false,"src":"2006 現社・本","type":"誤","q":"1946年に公布された日本国憲法に関する記述として適当でないものを選べ。","ch":["天皇又は摂政及び国務大臣、国会議員、裁判官その他の公務員は、憲法を尊重し擁護する義務を負う。","内閣は行政権の行使に関して国会に対する連帯責任を負い、他方、国会は各国務大臣を罷免する権限を有する。","国政は、国民の信託によるものであり、その権威は国民に由来し、その権力は国民の代表者が行使する。","裁判所は違憲立法審査権を有しており、最高裁判所はその終審裁判所である。"],"a":2,"e":["正しい（第99条）。","← これが誤り。国務大臣を罷免できるのは内閣総理大臣（第68条）。国会ではない。","正しい（前文）。","正しい（第81条）。"]},{"n":3,"c":true,"src":"2006 現社・本","type":"正","q":"日本国憲法の改正手続は憲法96条で決められている。その改正手続に関する記述として最も適当なものを選べ。","ch":["憲法改正の公布は、国民の名において内閣総理大臣が行う。","憲法改正の発議は、衆参両院ともに総議員の過半数の賛成で行う。","憲法改正の発議に際して、参議院の賛成が得られない場合は、両院協議会において3分の2以上の賛成が必要となる。","憲法改正の承認には、特別の国民投票又は国会の定める選挙の際に行われる投票において過半数の賛成を必要とする。"],"a":4,"e":["×　公布するのは「天皇」（国民の名で）。","×　発議は各議院の総議員の「3分の2以上」。","×　憲法改正に両院協議会はない。両院それぞれで3分の2以上が必要。","○　国民投票で過半数の賛成。"]},{"n":4,"c":true,"src":"2019 政経・本","type":"組","q":"次の記述A〜Cのうち、大日本帝国憲法下の制度には当てはまらず、かつ日本国憲法下の制度に当てはまるものとして正しいものはどれか。正しい記述すべてを含むものを選べ。\nA　天皇の地位は主権の存する国民の総意に基づく。\nB　衆議院議員が選挙で選出される。\nC　内閣の規定が憲法におかれる。","ch":["A","B","C","AとB","AとC","BとC","AとBとC"],"a":5,"e":["","","","","○　A：明治憲法では天皇が主権者なので当てはまらない→正。B：衆議院議員は明治憲法下でも選挙で選ばれていた→×。C：明治憲法には「内閣」の規定がなく、国務大臣の輔弼だけ→正。","",""]}]}];
+// build question list (skip duplicates)
+const ALL=[];SETS.forEach(s=>s.qs.forEach(q=>{if(q.same)return;ALL.push(Object.assign({set:s.id,stitle:s.title,key:s.id+'-'+q.n},q))}));
+const MARK='①②③④⑤⑥⑦';
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function qhtml(q){let t=esc(q.q);if(q.type==='誤')t=t.replace('適当でないもの','<span class="not">適当でないもの</span>');return t}
+let miss={};try{miss=JSON.parse(localStorage.getItem('kkMiss')||'{}')}catch(e){}
+function saveMiss(){try{localStorage.setItem('kkMiss',JSON.stringify(miss))}catch(e){}}
+// tabs
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));if(b.dataset.v==='miss')renderMiss();window.scrollTo(0,0)});
+function seg(id){const el=document.getElementById(id);el.querySelectorAll('button').forEach(b=>b.onclick=()=>{el.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))});return()=>el.querySelector('.on').dataset}
+const gR=seg('segRange'),gO=seg('segOrder'),gP=seg('segPR');
+document.getElementById('setChecks').innerHTML=SETS.map(s=>`<label class="chk"><input type="checkbox" value="${s.id}" checked>${s.title}</label>`).join('');
+let list=[],idx=0,right=0;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function begin(qs){if(!qs.length){alert('問題がありません');return}list=qs;idx=0;right=0;document.getElementById('setup').style.display='none';document.getElementById('result').style.display='none';document.getElementById('play').style.display='block';
+ document.querySelectorAll('.tabs button')[0].click();show()}
+document.getElementById('start').onclick=()=>{const sets=[...document.querySelectorAll('#setChecks input:checked')].map(i=>i.value);let qs=ALL.filter(q=>sets.includes(q.set)&&(gR().r==='all'||q.c));if(gO().o==='rnd')qs=shuffle(qs.slice());begin(qs)};
+function show(){const q=list[idx];document.getElementById('prog').textContent=(idx+1)+' / '+list.length+'問';
+ const c=document.getElementById('qcard');c.className='card';
+ c.innerHTML=`<div class="meta"><span class="tag coko" style="${q.c?'':'display:none'}">ココ!</span>${q.stitle}　問${q.n}　[${q.src}]</div><div class="qtext">${qhtml(q)}</div>`+
+  q.ch.map((t,i)=>`<button class="ch" data-i="${i+1}"><b>${MARK[i]}</b>　${esc(t)}<div class="ex">${esc(q.e[i]||'')}</div></button>`).join('')+'<div id="fb"></div>';
+ c.querySelectorAll('.ch').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+ document.getElementById('nextBtn').style.display='none';window.scrollTo(0,0)}
+function answer(i){const c=document.getElementById('qcard');if(c.classList.contains('done'))return;c.classList.add('done');const q=list[idx];
+ c.querySelectorAll('.ch').forEach(b=>{const k=+b.dataset.i;if(k===q.a)b.classList.add('ok');else if(k===i)b.classList.add('bad')});
+ const ok=i===q.a;if(ok){right++;delete miss[q.key]}else miss[q.key]=(miss[q.key]||0)+1;saveMiss();
+ document.getElementById('fb').innerHTML=`<div class="res" style="color:${ok?'#2e7d32':'#c62828'}">${ok?'⭕ 正解！':'❌ 正解は '+MARK[q.a-1]}</div>`+(q.type==='誤'?'<p style="font-size:13px;color:#5b7468">※この問題は「まちがっている文」をえらぶ問題です。</p>':'');
+ const n=document.getElementById('nextBtn');n.style.display='block';n.textContent=idx<list.length-1?'次の問題 ▶':'結果を見る ▶'}
+document.getElementById('nextBtn').onclick=()=>{if(idx<list.length-1){idx++;show()}else finish()};
+function finish(){document.getElementById('play').style.display='none';const r=document.getElementById('result');r.style.display='block';
+ r.innerHTML=`<h2>結果</h2><p class="res">${list.length}問中 ${right}問 正解！${right===list.length?' 🎉':''}</p><p>${right===list.length?'完ぺきです。次は「全部」にも挑戦しましょう。':'まちがえた問題は「ミス」タブからやり直せます。'}</p><button class="btn b1" onclick="location.reload()">最初の画面へ</button>`}
+document.getElementById('quitBtn').onclick=()=>{document.getElementById('play').style.display='none';document.getElementById('setup').style.display='block'};
+function missQs(){return ALL.filter(q=>miss[q.key])}
+function renderMiss(){const m=missQs();document.getElementById('missList').innerHTML=m.length?'<ul class="list">'+m.map(q=>`<li>${q.stitle}　問${q.n}　<span class="tag ng">${miss[q.key]}回ミス</span></li>`).join('')+'</ul>':'<p>まちがえた問題はありません。</p>'}
+document.getElementById('missStart').onclick=()=>begin(missQs());
+document.getElementById('missClear').onclick=()=>{if(confirm('ミスの記録を消しますか？')){miss={};saveMiss();renderMiss()}};
+// print
+document.getElementById('printBtn').onclick=()=>{const r=gP().r;const qs=r==='miss'?missQs():ALL.filter(q=>r==='all'||q.c);if(!qs.length){alert('問題がありません');return}
+ let h='<h1 class="ph">公共 共通テスト過去問（'+(r==='coko'?'ココ!の問題':r==='all'?'全問題':'ミスした問題')+'）</h1><div class="nm">名前（　　　　　　　　）</div>';
+ qs.forEach((q,k)=>{h+=`<div class="pq"><div class="qt">${k+1}．${qhtml(q)}　[${q.src}]</div>`+q.ch.map((t,i)=>`<div class="c">${MARK[i]} ${esc(t)}</div>`).join('')+'<div class="c">答え（　　）</div></div>'});
+ if(document.getElementById('pAns').checked){h+='<div class="pb"></div><h1 class="ph">解答・解説</h1>';
+  qs.forEach((q,k)=>{h+=`<div class="pq"><div class="qt">${k+1}．正解 ${MARK[q.a-1]}（${q.stitle} 問${q.n}）</div><div class="ans">`+q.ch.map((t,i)=>q.e[i]?`<div>${MARK[i]} ${esc(q.e[i])}</div>`:'').join('')+'</div></div>'})}
+ document.getElementById('printArea').innerHTML=h;window.print()};
+document.getElementById('helpBtn').onclick=()=>document.getElementById('help').classList.add('on');
+document.getElementById('helpClose').onclick=()=>document.getElementById('help').classList.remove('on');
+</script></body></html>
