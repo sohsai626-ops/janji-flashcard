@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>モルってなに？｜絵で見る化学基礎</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:#eef4fb;color:#1d2a3a;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:#1f5fa8;color:#fff;display:flex;align-items:center;gap:8px;padding:10px 12px}
+header h1{font-size:16px;flex:1;font-weight:700}
+header button{background:#fff;color:#1f5fa8;border:none;border-radius:16px;padding:6px 12px;font-size:14px;font-weight:700}
+.bar{height:6px;background:#cfe0f3}
+.bar i{display:block;height:100%;background:#f2a922;width:0;transition:width .3s}
+main{max-width:560px;margin:0 auto;padding:14px 12px 110px}
+.page{display:none;animation:fade .3s}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:#fff;border-radius:16px;padding:16px 16px 18px;box-shadow:0 2px 8px rgba(0,40,90,.08);margin-bottom:12px}
+.no{display:inline-block;background:#1f5fa8;color:#fff;font-size:12px;font-weight:700;border-radius:10px;padding:2px 10px;margin-bottom:6px}
+h2{font-size:21px;line-height:1.4;margin-bottom:10px}
+p{font-size:16px;line-height:1.8;margin:8px 0}
+.big{font-size:22px;font-weight:800;text-align:center;margin:12px 0;line-height:1.5}
+.em{color:#d0402b;font-weight:800}
+.blue{color:#1f5fa8;font-weight:800}
+.mark{background:linear-gradient(transparent 60%,#ffe27a 60%);font-weight:700}
+svg{display:block;width:100%;height:auto;margin:6px 0}
+.point{background:#fff6dc;border-left:6px solid #f2a922;border-radius:8px;padding:10px 12px;margin:12px 0;font-size:15.5px;line-height:1.75}
+.point b{color:#9a5b00}
+table.t{width:100%;border-collapse:collapse;margin:8px 0;font-size:15.5px}
+table.t th,table.t td{border:1px solid #c9d7e8;padding:7px 6px;text-align:center}
+table.t th{background:#e4eefa}
+.reveal{margin:10px 0}
+.reveal button{width:100%;background:#1f5fa8;color:#fff;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700}
+.reveal .ans{display:none;background:#eef7ee;border:2px solid #5aa95a;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:16px;line-height:1.8}
+.reveal.open .ans{display:block}
+.reveal.open button{background:#8aa6c6}
+.step{border:2px solid #c9d7e8;border-radius:12px;padding:10px 12px;margin:10px 0}
+.step .h{font-weight:800;color:#1f5fa8;margin-bottom:4px}
+.calc{font-size:18px;font-weight:700;text-align:center;margin:6px 0;line-height:1.6}
+sup{font-size:.65em}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #d5e1ef;display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:5}
+nav button{flex:1;border:none;border-radius:12px;padding:13px 0;font-size:16px;font-weight:800}
+#prev{background:#e4eefa;color:#1f5fa8}
+#next{background:#f2a922;color:#fff}
+nav button:disabled{opacity:.35}
+#pg{min-width:56px;text-align:center;font-size:14px;color:#56708f;font-weight:700}
+.q{border:2px solid #c9d7e8;border-radius:12px;padding:12px;margin:12px 0}
+.q .qt{font-weight:800;font-size:16px;line-height:1.6;margin-bottom:8px}
+.q .ch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q .ch button{background:#f4f8fd;border:2px solid #c9d7e8;border-radius:10px;padding:10px 4px;font-size:16px;font-weight:700;color:#1d2a3a}
+.q .ch button.ok{background:#e3f4e3;border-color:#4a9e4a;color:#20702a}
+.q .ch button.ng{background:#fde8e5;border-color:#d0402b;color:#a32a19}
+.q .fb{display:none;margin-top:8px;font-size:15px;line-height:1.7}
+.q.done .fb{display:block}
+#score{font-size:20px;font-weight:800;text-align:center;margin:10px 0}
+.toc{display:grid;gap:6px;margin-top:8px}
+.toc button{text-align:left;background:#f4f8fd;border:1px solid #c9d7e8;border-radius:10px;padding:9px 12px;font-size:15px;color:#1d2a3a}
+/* help */
+#help{display:none;position:fixed;inset:0;background:rgba(10,25,45,.55);z-index:20;padding:16px;overflow:auto}
+#help.on{display:block}
+#help .box{background:#fff;border-radius:16px;max-width:520px;margin:20px auto;padding:18px}
+#help h3{font-size:19px;margin-bottom:8px;color:#1f5fa8}
+#help h4{font-size:16px;margin:14px 0 4px}
+#help li{font-size:15px;line-height:1.75;margin-left:20px}
+#help .close{width:100%;margin-top:16px;background:#1f5fa8;color:#fff;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+</svg>
+<header><h1>🧪 モルってなに？</h1><button id="tocBtn">目次</button><button id="helpBtn">❓使い方</button></header>
+<div class="bar"><i id="barI"></i></div>
+<main id="main">
+
+<!-- 1 -->
+<section class="page" data-t="はじめに">
+<div class="card">
+<span class="no">はじめに</span>
+<h2>モルは「数え方の単位」です</h2>
+<p>「モル（mol）がわからない」という人は多いですが、じつは考え方はとてもシンプルです。</p>
+<svg viewBox="0 0 320 150">
+<rect x="10" y="20" width="135" height="110" rx="14" fill="#e4eefa"/>
+<text x="77" y="50" font-size="16" text-anchor="middle" font-weight="700" fill="#1f5fa8">ふだんの生活</text>
+<text x="77" y="82" font-size="15" text-anchor="middle">鉛筆 12本</text>
+<text x="77" y="108" font-size="17" text-anchor="middle" font-weight="800" fill="#d0402b">＝1ダース</text>
+<text x="160" y="82" font-size="26" text-anchor="middle" fill="#f2a922">⇔</text>
+<rect x="175" y="20" width="135" height="110" rx="14" fill="#fff1d6"/>
+<text x="242" y="50" font-size="16" text-anchor="middle" font-weight="700" fill="#9a5b00">化学の世界</text>
+<text x="242" y="82" font-size="14" text-anchor="middle">粒 6.0×10²³個</text>
+<text x="242" y="108" font-size="17" text-anchor="middle" font-weight="800" fill="#d0402b">＝1 mol</text>
+</svg>
+<p>この教材では、<span class="mark">絵を見ながら</span>モルの考え方を順番に確かめます。</p>
+<p>下の「次へ ▶」で進んでください。</p>
+<div class="point"><b>ゴール：</b>最後のページの「モルの交差点」の図が、<b>自分で描けるようになること</b>です。</div>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="page" data-t="まとめて数える">
+<div class="card">
+<span class="no">1</span>
+<h2>まとめて数える単位</h2>
+<p>たくさんある物は、1個ずつ数えると大変なので<span class="mark">「ひとまとまり」</span>で数えます。</p>
+<svg viewBox="0 0 320 170">
+<g id="pen">
+<rect x="0" y="0" width="9" height="70" rx="2" fill="#f2c94c" stroke="#b8901f"/>
+<polygon points="0,70 9,70 4.5,84" fill="#f5d9a8" stroke="#b8901f"/>
+<polygon points="2.6,79 6.4,79 4.5,84" fill="#333"/>
+</g>
+<g transform="translate(22,18)">
+<use href="#pen" x="0"/><use href="#pen" x="13"/><use href="#pen" x="26"/><use href="#pen" x="39"/><use href="#pen" x="52"/><use href="#pen" x="65"/>
+<use href="#pen" x="78"/><use href="#pen" x="91"/><use href="#pen" x="104"/><use href="#pen" x="117"/><use href="#pen" x="130"/><use href="#pen" x="143"/>
+</g>
+<rect x="14" y="12" width="168" height="98" rx="8" fill="none" stroke="#1f5fa8" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="98" y="135" font-size="15" text-anchor="middle">鉛筆 12本</text>
+<text x="210" y="70" font-size="26" fill="#f2a922">→</text>
+<rect x="240" y="35" width="72" height="60" rx="10" fill="#1f5fa8"/>
+<text x="276" y="72" font-size="17" text-anchor="middle" fill="#fff" font-weight="800">1ダース</text>
+</svg>
+<table class="t">
+<tr><th>物</th><th>まとまり</th><th>単位</th></tr>
+<tr><td>鉛筆</td><td>12本</td><td>1ダース</td></tr>
+<tr><td>コピー用紙</td><td>500枚</td><td>1束（1連）</td></tr>
+<tr><td>原子・分子</td><td class="em">6.0×10<sup>23</sup>個</td><td class="em">1 mol</td></tr>
+</table>
+<div class="point"><b>ポイント：</b>「2ダース」と聞いたら「12×2＝24本」とすぐわかりますね。<br>モルも同じで、<b>「2 mol」＝「6.0×10<sup>23</sup>×2個」</b>です。</div>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="page" data-t="なぜ6.0×10²³個？">
+<div class="card">
+<span class="no">2</span>
+<h2>なぜそんなに大きな数なの？</h2>
+<p>原子や分子は<span class="mark">ものすごく小さい</span>からです。</p>
+<svg viewBox="0 0 320 190">
+<path d="M90 25 C 60 75, 45 100, 45 125 a45 45 0 0 0 90 0 C 135 100, 120 75, 90 25 Z" fill="#9fd0f5" stroke="#3a86c8" stroke-width="3"/>
+<g fill="#1f5fa8">
+<circle cx="75" cy="105" r="3"/><circle cx="90" cy="98" r="3"/><circle cx="105" cy="108" r="3"/><circle cx="68" cy="125" r="3"/><circle cx="84" cy="120" r="3"/><circle cx="100" cy="126" r="3"/><circle cx="115" cy="122" r="3"/><circle cx="75" cy="143" r="3"/><circle cx="92" cy="140" r="3"/><circle cx="108" cy="145" r="3"/><circle cx="90" cy="80" r="3"/>
+</g>
+<text x="90" y="185" font-size="14" text-anchor="middle">水 1滴</text>
+<text x="165" y="70" font-size="15">この中に水分子が</text>
+<text x="165" y="100" font-size="20" font-weight="800" fill="#d0402b">約1.7×10²¹個</text>
+<text x="165" y="128" font-size="14">（17の後ろに0が20個！）</text>
+<text x="165" y="160" font-size="14" fill="#56708f">1個ずつ数えるのは</text>
+<text x="165" y="180" font-size="14" fill="#56708f">とても無理…</text>
+</svg>
+<p>そこで化学では、<span class="blue">6.0×10<sup>23</sup>個</span>をひとまとまりにして<span class="em">1 mol</span>と呼ぶことにしました。</p>
+<p>この数を<span class="mark">アボガドロ定数</span>といいます。</p>
+<div class="big">6.0×10<sup>23</sup>個 ＝ 1 mol</div>
+<p style="font-size:14px;color:#56708f;text-align:center">（アボガドロ定数 6.0×10<sup>23</sup>/mol）</p>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="page" data-t="6.0×10²³の大きさ">
+<div class="card">
+<span class="no">3</span>
+<h2>6.0×10<sup>23</sup> ってどれくらい？</h2>
+<p>「10<sup>23</sup>」は「1の後ろに0が23個」という意味です。</p>
+<p style="font-size:15px;word-break:break-all;background:#f4f8fd;border-radius:10px;padding:10px;font-family:monospace;line-height:1.6">6<span class="em">00,000,000,000,000,000,000,000</span></p>
+<p>「1兆の1兆倍」（10<sup>24</sup>）の0.6倍。想像できないほど大きい数です。</p>
+<div class="point"><b>指数の読み方の練習</b><br>
+・3.0×10<sup>23</sup>個 ＝ 0.50 mol（1 molの半分）<br>
+・1.2×10<sup>24</sup>個 ＝ 2.0 mol（1 molの2倍）<br>
+<span style="font-size:14px">※ 1.2×10<sup>24</sup> ＝ 12×10<sup>23</sup> ＝ 6.0×10<sup>23</sup>×2</span></div>
+<div class="reveal"><button>やってみよう：1.8×10<sup>24</sup>個は何mol？</button>
+<div class="ans">1.8×10<sup>24</sup> ÷ (6.0×10<sup>23</sup>)<br>＝ 18×10<sup>23</sup> ÷ (6.0×10<sup>23</sup>)<br>＝ <b class="em">3.0 mol</b></div></div>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="page" data-t="1molの重さ">
+<div class="card">
+<span class="no">4</span>
+<h2>1 mol の重さ（質量）</h2>
+<p>1 mol の重さは、<span class="mark">原子量・分子量に g をつけるだけ</span>です。</p>
+<svg viewBox="0 0 320 200">
+<g>
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#555"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">C 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">12 g</text>
+</g>
+<g transform="translate(110,0)">
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#3a86c8"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">H₂O 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">18 g</text>
+</g>
+<g transform="translate(210,0)">
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#c0392b"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">Fe 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">56 g</text>
+</g>
+<text x="160" y="172" font-size="14" text-anchor="middle">粒の数は同じでも、粒1個の重さがちがうので</text>
+<text x="160" y="192" font-size="14" text-anchor="middle">1 mol の重さはちがいます</text>
+</svg>
+<table class="t">
+<tr><th>物質</th><th>原子量・分子量</th><th>1 molの質量</th></tr>
+<tr><td>炭素 C</td><td>12</td><td class="em">12 g</td></tr>
+<tr><td>水 H₂O</td><td>18</td><td class="em">18 g</td></tr>
+<tr><td>鉄 Fe</td><td>56</td><td class="em">56 g</td></tr>
+</table>
+<div class="point"><b>言葉：</b>1 molあたりの質量を<b>モル質量</b>といいます。単位は <b>g/mol</b>です。<br>（例）水のモル質量 ＝ 18 g/mol</div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="page" data-t="分子量の求め方">
+<div class="card">
+<span class="no">5</span>
+<h2>分子量・式量の求め方</h2>
+<p>化学式に出てくる原子の<span class="mark">原子量をすべて足す</span>だけです。</p>
+<div class="step"><div class="h">例：水 H₂O</div>
+<svg viewBox="0 0 320 90">
+<circle cx="160" cy="45" r="28" fill="#d0402b"/><text x="160" y="51" font-size="17" text-anchor="middle" fill="#fff" font-weight="800">O</text>
+<circle cx="112" cy="62" r="17" fill="#8aa6c6"/><text x="112" y="68" font-size="15" text-anchor="middle" fill="#fff" font-weight="800">H</text>
+<circle cx="208" cy="62" r="17" fill="#8aa6c6"/><text x="208" y="68" font-size="15" text-anchor="middle" fill="#fff" font-weight="800">H</text>
+</svg>
+<div class="calc">H が2個、O が1個<br>1.0×<span class="em">2</span> ＋ 16 ＝ <span class="em">18</span></div></div>
+<p style="font-size:14px;color:#56708f">原子量：H＝1.0　C＝12　O＝16　Na＝23　Cl＝35.5</p>
+<div class="reveal"><button>二酸化炭素 CO₂ の分子量は？</button>
+<div class="ans">C が1個、O が2個<br>12 ＋ 16×2 ＝ <b class="em">44</b>　→ 1 molは 44 g</div></div>
+<div class="reveal"><button>塩化ナトリウム NaCl の式量は？</button>
+<div class="ans">Na が1個、Cl が1個<br>23 ＋ 35.5 ＝ <b class="em">58.5</b>　→ 1 molは 58.5 g<br><span style="font-size:14px">※ NaClはイオンでできているので「分子量」ではなく「式量」といいます。求め方は同じです。</span></div></div>
+<div class="reveal"><button>酸素 O₂ の分子量は？</button>
+<div class="ans">16×2 ＝ <b class="em">32</b>　→ 1 molは 32 g<br><span style="font-size:14px">※ 酸素は O が2個くっついた分子です。16 ではなく 32 なので注意！</span></div></div>
+</div>
+</section>
+
+<!-- 7 -->
+<section class="page" data-t="気体1molの体積">
+<div class="card">
+<span class="no">6</span>
+<h2>気体 1 mol の体積</h2>
+<p>気体は、<span class="mark">種類に関係なく</span> 1 molで <span class="em">22.4 L</span> です。</p>
+<p style="font-size:14px;color:#56708f">（0℃、1.013×10<sup>5</sup> Pa のとき）</p>
+<svg viewBox="0 0 320 200">
+<g>
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<g fill="#8aa6c6"><circle cx="35" cy="45" r="5"/><circle cx="70" cy="52" r="5"/><circle cx="50" cy="80" r="5"/><circle cx="82" cy="95" r="5"/><circle cx="30" cy="105" r="5"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">H₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">2.0 g</text>
+</g>
+<g transform="translate(103,0)">
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#fde8e5" stroke="#d0402b" stroke-width="2"/>
+<g fill="#d0402b"><circle cx="35" cy="45" r="7"/><circle cx="70" cy="52" r="7"/><circle cx="50" cy="80" r="7"/><circle cx="82" cy="95" r="7"/><circle cx="30" cy="105" r="7"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">O₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">32 g</text>
+</g>
+<g transform="translate(206,0)">
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#eee" stroke="#555" stroke-width="2"/>
+<g fill="#555"><circle cx="35" cy="45" r="8"/><circle cx="70" cy="52" r="8"/><circle cx="50" cy="80" r="8"/><circle cx="82" cy="95" r="8"/><circle cx="30" cy="105" r="8"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">CO₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">44 g</text>
+</g>
+</svg>
+<p>気体の粒どうしはとても離れて飛び回っているので、<b>粒の大きさに関係なく</b>、同じ数なら同じ体積になります。</p>
+<div class="point"><b>注意：</b>重さ（g）は物質ごとにちがいますが、<b>体積（22.4 L）はどの気体でも同じ</b>です。<br>※ 22.4 Lが使えるのは<b>気体だけ</b>です。水（液体）や鉄（固体）には使えません。</div>
+</div>
+</section>
+
+<!-- 8 -->
+<section class="page" data-t="モルの交差点">
+<div class="card">
+<span class="no">7</span>
+<h2>モルの交差点（いちばん大事な図）</h2>
+<p>ここまでの3つをまとめると、この図になります。<span class="mark">mol がまん中</span>にあります。</p>
+<svg viewBox="0 0 320 330">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f5fa8"/></marker>
+<marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d0402b"/></marker></defs>
+<!-- center -->
+<circle cx="160" cy="150" r="46" fill="#f2a922"/>
+<text x="160" y="146" font-size="22" text-anchor="middle" font-weight="800" fill="#fff">物質量</text>
+<text x="160" y="172" font-size="20" text-anchor="middle" font-weight="800" fill="#fff">mol</text>
+<!-- left: mass -->
+<rect x="4" y="122" width="72" height="56" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="40" y="146" font-size="15" text-anchor="middle" font-weight="800">質量</text>
+<text x="40" y="168" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">g</text>
+<line x1="80" y1="138" x2="110" y2="138" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="110" y1="164" x2="80" y2="164" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="96" y="120" font-size="12" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷モル質量</text>
+<text x="96" y="188" font-size="12" text-anchor="middle" fill="#d0402b" font-weight="700">×モル質量</text>
+<!-- right: number -->
+<rect x="244" y="122" width="72" height="56" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="280" y="146" font-size="15" text-anchor="middle" font-weight="800">粒子の数</text>
+<text x="280" y="168" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">個</text>
+<line x1="240" y1="138" x2="210" y2="138" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="210" y1="164" x2="240" y2="164" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="226" y="112" font-size="11.5" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷6.0×10²³</text>
+<text x="226" y="192" font-size="11.5" text-anchor="middle" fill="#d0402b" font-weight="700">×6.0×10²³</text>
+<!-- bottom: volume -->
+<rect x="112" y="252" width="96" height="60" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="160" y="276" font-size="15" text-anchor="middle" font-weight="800">気体の体積</text>
+<text x="160" y="300" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">L</text>
+<line x1="146" y1="248" x2="146" y2="202" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="174" y1="202" x2="174" y2="248" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="138" y="230" font-size="12" text-anchor="end" fill="#1f5fa8" font-weight="700">÷22.4</text>
+<text x="182" y="230" font-size="12" fill="#d0402b" font-weight="700">×22.4</text>
+<!-- legend -->
+<text x="160" y="30" font-size="13" text-anchor="middle" fill="#1f5fa8" font-weight="700">青の矢印：mol に「直す」（わり算）</text>
+<text x="160" y="52" font-size="13" text-anchor="middle" fill="#d0402b" font-weight="700">赤の矢印：mol から「出す」（かけ算）</text>
+</svg>
+<div class="point"><b>覚え方：</b>mol に向かうときは<b>わり算</b>、mol から出るときは<b>かけ算</b>です。</div>
+<div class="point" style="background:#fde8e5;border-color:#d0402b"><b style="color:#a32a19">合言葉：「まず mol に直す」</b><br>g → 個 や L → g のように、<b>端から端へ直接は行けません</b>。<br>必ず<b>まん中の mol を通ります</b>。</div>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="page" data-t="例題① g→個">
+<div class="card">
+<span class="no">8</span>
+<h2>例題①　質量 → 個数</h2>
+<p class="big" style="font-size:18px">水 H₂O 9.0 g に含まれる<br>水分子は何個？</p>
+<svg viewBox="0 0 320 80">
+<rect x="5" y="20" width="80" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="45" y="46" font-size="15" text-anchor="middle" font-weight="800">9.0 g</text>
+<line x1="88" y1="40" x2="118" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="103" y="16" font-size="11" text-anchor="middle" fill="#1f5fa8" font-weight="700">Step1</text>
+<circle cx="160" cy="40" r="32" fill="#f2a922"/><text x="160" y="46" font-size="15" text-anchor="middle" font-weight="800" fill="#fff">? mol</text>
+<line x1="194" y1="40" x2="224" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="209" y="16" font-size="11" text-anchor="middle" fill="#d0402b" font-weight="700">Step2</text>
+<rect x="228" y="20" width="88" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="272" y="46" font-size="15" text-anchor="middle" font-weight="800">? 個</text>
+</svg>
+<div class="reveal"><button>Step 0：H₂O のモル質量は？</button>
+<div class="ans">1.0×2 ＋ 16 ＝ 18　→ <b class="em">18 g/mol</b></div></div>
+<div class="reveal"><button>Step 1：まず mol に直す</button>
+<div class="ans">g → mol は「÷モル質量」<br>9.0 ÷ 18 ＝ <b class="em">0.50 mol</b></div></div>
+<div class="reveal"><button>Step 2：mol から個数を出す</button>
+<div class="ans">mol → 個 は「×6.0×10<sup>23</sup>」<br>0.50 × 6.0×10<sup>23</sup> ＝ <b class="em">3.0×10<sup>23</sup> 個</b></div></div>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="page" data-t="例題② L→g">
+<div class="card">
+<span class="no">9</span>
+<h2>例題②　体積 → 質量</h2>
+<p class="big" style="font-size:18px">0℃、1.013×10<sup>5</sup> Pa で<br>酸素 O₂ 4.48 L は何 g？</p>
+<svg viewBox="0 0 320 80">
+<rect x="5" y="20" width="80" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="45" y="46" font-size="15" text-anchor="middle" font-weight="800">4.48 L</text>
+<line x1="88" y1="40" x2="118" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="103" y="16" font-size="11" text-anchor="middle" fill="#1f5fa8" font-weight="700">Step1</text>
+<circle cx="160" cy="40" r="32" fill="#f2a922"/><text x="160" y="46" font-size="15" text-anchor="middle" font-weight="800" fill="#fff">? mol</text>
+<line x1="194" y1="40" x2="224" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="209" y="16" font-size="11" text-anchor="middle" fill="#d0402b" font-weight="700">Step2</text>
+<rect x="228" y="20" width="88" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="272" y="46" font-size="15" text-anchor="middle" font-weight="800">? g</text>
+</svg>
+<div class="reveal"><button>Step 1：まず mol に直す</button>
+<div class="ans">L → mol は「÷22.4」<br>4.48 ÷ 22.4 ＝ <b class="em">0.200 mol</b></div></div>
+<div class="reveal"><button>Step 2：mol から質量を出す</button>
+<div class="ans">O₂ のモル質量は 16×2 ＝ 32 g/mol<br>mol → g は「×モル質量」<br>0.200 × 32 ＝ <b class="em">6.4 g</b></div></div>
+<div class="point"><b>よくあるミス：</b>O₂ のモル質量を 16 にしてしまうこと。酸素は O が2個なので <b>32</b> です。</div>
+</div>
+</section>
+
+<!-- 11 -->
+<section class="page" data-t="確認クイズ">
+<div class="card">
+<span class="no">10</span>
+<h2>確認クイズ</h2>
+<p>答えをタップしてください。</p>
+<div id="quiz"></div>
+<div id="score"></div>
+<div class="reveal" style="margin-top:4px"><button id="retry">もう一度やる（順番を入れかえ）</button></div>
+</div>
+</section>
+
+<!-- 12 -->
+<section class="page" data-t="まとめ">
+<div class="card">
+<span class="no">まとめ</span>
+<h2>今日おぼえる3つの数</h2>
+<table class="t">
+<tr><th>1 mol あたり</th><th>数</th></tr>
+<tr><td>粒子の数</td><td class="em">6.0×10<sup>23</sup> 個</td></tr>
+<tr><td>質量</td><td class="em">原子量・分子量に g</td></tr>
+<tr><td>気体の体積</td><td class="em">22.4 L</td></tr>
+</table>
+<div class="point" style="background:#fde8e5;border-color:#d0402b"><b style="color:#a32a19">合言葉：「まず mol に直す」</b><br>どんな問題も<br>① わかっている量を mol に直す<br>② mol から聞かれている量を出す<br>の2ステップで解けます。</div>
+<p><b>最後のチャレンジ：</b>紙に「モルの交差点」の図を、何も見ないで描いてみましょう。描けたら、前のページの図と見比べてください。</p>
+<button class="tocjump" data-to="7" style="width:100%;background:#e4eefa;color:#1f5fa8;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700;margin-top:6px">交差点の図を見る</button>
+<p style="margin-top:14px;font-size:14px;color:#56708f">次は、教材の問題（ドリル・基本問題・標準問題）を Step 1・Step 2 に分けて解く練習アプリです。</p>
+</div>
+</section>
+
+</main>
+
+<nav><button id="prev">◀ 前へ</button><span id="pg"></span><button id="next">次へ ▶</button></nav>
+
+<!-- 目次 -->
+<div id="toc" style="display:none;position:fixed;inset:0;background:rgba(10,25,45,.55);z-index:20;padding:16px;overflow:auto">
+<div style="background:#fff;border-radius:16px;max-width:520px;margin:20px auto;padding:18px">
+<h3 style="font-size:19px;color:#1f5fa8;margin-bottom:6px">目次</h3>
+<div class="toc" id="tocList"></div>
+<button id="tocClose" style="width:100%;margin-top:14px;background:#1f5fa8;color:#fff;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700">閉じる</button>
+</div></div>
+
+<!-- 使い方 -->
+<div id="help"><div class="box">
+<h3>❓ 使い方（取扱説明書）</h3>
+<h4>このアプリは何？</h4>
+<ul><li>「モル（mol）」の考え方を、絵を見ながら順番に理解するための教材です。</li>
+<li>全12ページです。最後に確認クイズがあります。</li></ul>
+<h4>進め方</h4>
+<ul><li>画面下の<b>「次へ ▶」「◀ 前へ」</b>でページを移動します。</li>
+<li>右上の<b>「目次」</b>から、好きなページへ飛べます。</li>
+<li>青いボタン（例：「Step 1：まず mol に直す」）は、<b>先に自分で考えてから</b>タップしてください。答えが出ます。</li></ul>
+<h4>確認クイズ</h4>
+<ul><li>4つの中から答えをタップします。正解は緑、まちがいは赤になり、解説が出ます。</li>
+<li>「もう一度やる」を押すと、問題の順番が入れかわります。</li></ul>
+<h4>おすすめの使い方</h4>
+<ul><li>1回目：全部のページを順番に読む（10分くらい）。</li>
+<li>2回目：答えを見る前に、紙に計算を書いてから確かめる。</li>
+<li>最後に「モルの交差点」の図を何も見ないで描けたら合格です。</li></ul>
+<h4>うまく動かないとき</h4>
+<ul><li>ページを再読み込みしてください。</li>
+<li>このアプリはインターネットにつながっていなくても使えます（一度開いた後）。</li></ul>
+<button class="close" id="helpClose">閉じる</button>
+</div></div>
+
+<script>
+var pages=[].slice.call(document.querySelectorAll('.page'));
+var cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(pages.length-1,i));
+  pages.forEach(function(p,k){p.classList.toggle('on',k===cur)});
+  document.getElementById('pg').textContent=(cur+1)+' / '+pages.length;
+  document.getElementById('prev').disabled=cur===0;
+  document.getElementById('next').disabled=cur===pages.length-1;
+  document.getElementById('barI').style.width=((cur+1)/pages.length*100)+'%';
+  window.scrollTo(0,0);
+  try{localStorage.setItem('molEhonPage',cur)}catch(e){}
+}
+document.getElementById('prev').onclick=function(){show(cur-1)};
+document.getElementById('next').onclick=function(){show(cur+1)};
+// reveal buttons
+document.querySelectorAll('.reveal button').forEach(function(b){
+  if(b.id==='retry')return;
+  b.onclick=function(){b.parentNode.classList.toggle('open')};
+});
+// toc
+var tl=document.getElementById('tocList');
+pages.forEach(function(p,k){
+  var b=document.createElement('button');
+  b.textContent=(k+1)+'. '+p.getAttribute('data-t');
+  b.onclick=function(){document.getElementById('toc').style.display='none';show(k)};
+  tl.appendChild(b);
+});
+document.getElementById('tocBtn').onclick=function(){document.getElementById('toc').style.display='block'};
+document.getElementById('tocClose').onclick=function(){document.getElementById('toc').style.display='none'};
+document.querySelectorAll('.tocjump').forEach(function(b){b.onclick=function(){show(+b.getAttribute('data-to'))}});
+// help
+document.getElementById('helpBtn').onclick=function(){document.getElementById('help').classList.add('on')};
+document.getElementById('helpClose').onclick=function(){document.getElementById('help').classList.remove('on')};
+// quiz
+var Q=[
+ {q:'1 mol の粒子の数は？',c:['6.0×10²³ 個','22.4 個','12 個','6.0×10²² 個'],a:0,e:'1 mol ＝ 6.0×10²³ 個（アボガドロ定数）です。'},
+ {q:'水 H₂O 1 mol の質量は？（H＝1.0、O＝16）',c:['18 g','17 g','34 g','10 g'],a:0,e:'1.0×2＋16＝18 なので 18 g です。'},
+ {q:'0℃、1.013×10⁵ Pa で、気体 1 mol の体積は？',c:['22.4 L','6.0 L','18 L','気体の種類で変わる'],a:0,e:'気体なら種類に関係なく 22.4 L です。'},
+ {q:'「◯g は何個？」を解くとき、最初にすることは？',c:['mol に直す','6.0×10²³ をかける','22.4 でわる','そのまま個数にする'],a:0,e:'合言葉は「まず mol に直す」。g ÷ モル質量 で mol にします。'},
+ {q:'二酸化炭素 CO₂ 2.0 mol は何 g？（C＝12、O＝16）',c:['88 g','44 g','56 g','22 g'],a:0,e:'CO₂＝12＋16×2＝44。44×2.0＝88 g です。'},
+ {q:'酸素 O₂ 3.2 g は何 mol？（O＝16）',c:['0.10 mol','0.20 mol','2.0 mol','10 mol'],a:0,e:'O₂＝32。3.2÷32＝0.10 mol。16でわらないように注意！'},
+ {q:'1.2×10²⁴ 個の分子は何 mol？',c:['2.0 mol','0.50 mol','20 mol','1.2 mol'],a:0,e:'1.2×10²⁴÷(6.0×10²³)＝12×10²³÷(6.0×10²³)＝2.0 mol です。'},
+ {q:'mol から g を出すときの計算は？',c:['× モル質量','÷ モル質量','× 22.4','÷ 6.0×10²³'],a:0,e:'mol から「出す」ときはかけ算。mol × モル質量 ＝ g です。'}
+];
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var right=0,answered=0;
+function buildQuiz(){
+  var box=document.getElementById('quiz');box.innerHTML='';right=0;answered=0;
+  document.getElementById('score').textContent='';
+  shuffle(Q.slice()).forEach(function(it,n){
+    var d=document.createElement('div');d.className='q';
+    d.innerHTML='<div class="qt">Q'+(n+1)+'. '+it.q+'</div><div class="ch"></div><div class="fb"></div>';
+    var ch=d.querySelector('.ch');
+    var order=shuffle([0,1,2,3]);
+    order.forEach(function(k){
+      var b=document.createElement('button');b.textContent=it.c[k];
+      b.onclick=function(){
+        if(d.classList.contains('done'))return;
+        d.classList.add('done');answered++;
+        if(k===it.a){b.classList.add('ok');right++;d.querySelector('.fb').innerHTML='⭕ 正解！ '+it.e}
+        else{b.classList.add('ng');ch.children[order.indexOf(it.a)].classList.add('ok');d.querySelector('.fb').innerHTML='❌ 正解は「'+it.c[it.a]+'」。'+it.e}
+        if(answered===Q.length){document.getElementById('score').textContent=Q.length+'問中 '+right+'問 正解！'+(right===Q.length?' 🎉 完ぺき！':' 赤い問題を見直そう')}
+      };
+      ch.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+document.getElementById('retry').onclick=function(){buildQuiz();document.getElementById('quiz').scrollIntoView()};
+buildQuiz();
+var start=0;try{start=+localStorage.getItem('molEhonPage')||0}catch(e){}
+show(start);
+</script>
+</body>
+</html>
