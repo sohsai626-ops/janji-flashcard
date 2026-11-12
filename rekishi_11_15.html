@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>歴史総合 一問一答（No.11〜15）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f6f1ea;color:#2a2118;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:#7a3e1d;color:#fff}
+.top{display:flex;align-items:center;padding:10px 12px;gap:8px}.top h1{flex:1;font-size:16px}
+.top button{background:#fff;color:#7a3e1d;border:none;border-radius:16px;padding:6px 12px;font-size:14px;font-weight:700}
+.tabs{display:flex}.tabs button{flex:1;background:none;border:none;color:#ecd2c0;padding:9px 0;font-size:15px;font-weight:700;border-bottom:3px solid transparent}
+.tabs button.on{color:#fff;border-bottom-color:#f2c14e}
+main{max-width:600px;margin:0 auto;padding:12px 12px 60px}
+.view{display:none}.view.on{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(60,30,10,.08);margin-bottom:12px}
+h2{font-size:18px;margin-bottom:8px}p{font-size:15px;line-height:1.75}
+.meta{font-size:13px;color:#7b6656;margin:8px 0 4px}
+.seg{display:flex;gap:6px;margin:4px 0 6px}
+.seg button{flex:1;border:2px solid #dcc3b0;background:#fff;border-radius:10px;padding:9px 4px;font-size:14px;font-weight:700;color:#7a3e1d}
+.seg button.on{background:#7a3e1d;color:#fff;border-color:#7a3e1d}
+.chk{display:flex;align-items:center;gap:8px;font-size:15px;margin:5px 0}.chk input{width:20px;height:20px}
+.mini{display:flex;gap:6px}.mini button{flex:1;font-size:13px;padding:6px;border-radius:8px;border:1px solid #dcc3b0;background:#faf5ef;color:#7a3e1d}
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:800;margin:8px 0}
+.b1{background:#7a3e1d;color:#fff}.b2{background:#f1e4d8;color:#7a3e1d}.b3{background:#f2c14e;color:#3d2c00}
+.prog{display:flex;justify-content:space-between;font-size:14px;color:#7b6656;margin-bottom:6px}
+.bar{height:6px;background:#eadccf;border-radius:3px;margin-bottom:10px}.bar i{display:block;height:100%;background:#d0812f;border-radius:3px}
+.src{font-size:13px;color:#7b6656;margin-bottom:6px}
+.q{font-size:18px;line-height:1.75;font-weight:700;min-height:90px}
+.q .ref{color:#9a6a4a;font-weight:500;font-size:15px}
+.ans{display:none;margin-top:12px;background:#fff6dc;border:2px solid #f2c14e;border-radius:12px;padding:12px;font-size:22px;font-weight:800;text-align:center;color:#a33b10}
+.ans.on{display:block}
+.row{display:flex;gap:8px}.row .btn{flex:1}
+.ok{background:#3f9a52;color:#fff}.ng{background:#d0402b;color:#fff}
+.ch{display:block;width:100%;text-align:left;background:#faf5ef;border:2px solid #e3d0c0;border-radius:10px;padding:12px;font-size:16px;font-weight:700;margin:7px 0;color:#2a2118}
+.ch.good{background:#e4f5e7;border-color:#3f9a52}.ch.bad{background:#fde6e3;border-color:#d0402b}
+.res{font-size:20px;font-weight:800;margin:6px 0}
+.list li{font-size:14.5px;line-height:1.7;margin:4px 0 4px 18px}
+.tag{display:inline-block;font-size:12px;font-weight:800;border-radius:8px;padding:1px 7px;background:#fde2e2;color:#b91c1c}
+#help{display:none;position:fixed;inset:0;background:rgba(30,15,5,.55);z-index:20;overflow:auto;padding:16px}#help.on{display:block}
+#help .box{background:#fff;border-radius:16px;max-width:540px;margin:16px auto;padding:18px}
+#help h3{color:#7a3e1d;font-size:19px;margin-bottom:6px}#help h4{font-size:16px;margin:12px 0 4px}#help li{font-size:14.5px;line-height:1.75;margin-left:20px}
+#printArea{display:none}
+@media print{body{background:#fff}header,main,#help{display:none!important}#printArea{display:block;color:#000;font-size:10.5pt}
+ h1.ph{font-size:13pt;margin:0 0 4pt}.nm{text-align:right;margin-bottom:6pt}h2.ps{page-break-after:avoid;font-size:11.5pt;margin:8pt 0 3pt;border-bottom:1px solid #000}
+ table.pt{width:100%;border-collapse:collapse}table.pt td{border:1px solid #999;padding:3pt 4pt;vertical-align:top;line-height:1.45}
+ table.pt td.n{width:2.2em;text-align:center}table.pt td.a{width:34%}.pb{page-break-before:always}tr{page-break-inside:avoid}}
+</style></head><body>
+<header><div class="top"><h1>📜 歴史総合 一問一答</h1><button id="helpBtn">❓使い方</button></div>
+<div class="tabs"><button data-v="home" class="on">出題</button><button data-v="miss">ミス</button><button data-v="print">印刷</button></div></header>
+<main>
+<section class="view on" id="v-home">
+ <div class="card" id="setup">
+  <h2>問題をえらぶ</h2>
+  <div class="meta">プリント</div><div id="sets"></div>
+  <div class="mini"><button id="allOn">全部えらぶ</button><button id="allOff">全部はずす</button></div>
+  <div class="meta">やり方</div>
+  <div class="seg" id="segMode"><button data-m="card" class="on">📇 カード（自分で○×）</button><button data-m="mc">🔢 4択</button></div>
+  <div class="meta">じゅんばん</div>
+  <div class="seg" id="segOrder"><button data-o="seq" class="on">プリントの順</button><button data-o="rnd">シャッフル</button></div>
+  <button class="btn b1" id="start">スタート</button>
+  <p id="cnt" style="font-size:13px;color:#7b6656;text-align:center"></p>
+ </div>
+ <div id="play" style="display:none">
+  <div class="prog"><span id="pn"></span><span id="ps"></span></div><div class="bar"><i id="pb"></i></div>
+  <div class="card"><div class="src" id="src"></div><div class="q" id="qt"></div><div id="choices"></div><div class="ans" id="ans"></div></div>
+  <div id="ctrl"></div>
+  <button class="btn b2" id="quit">やめて最初にもどる</button>
+ </div>
+ <div class="card" id="result" style="display:none"></div>
+</section>
+<section class="view" id="v-miss"><div class="card"><h2>まちがえた問題</h2><div id="missList"></div>
+ <button class="btn b1" id="missCard">ミスだけ（カード）</button><button class="btn b1" id="missMc">ミスだけ（4択）</button><button class="btn b2" id="missClear">ミスの記録を消す</button></div></section>
+<section class="view" id="v-print"><div class="card"><h2>プリントを作る</h2>
+ <p style="font-size:14px">「出題」タブでえらんだプリントの問題を印刷します。</p>
+ <div class="meta">はんい</div>
+ <div class="seg" id="segPR"><button data-r="sel" class="on">えらんだプリント</button><button data-r="miss">ミスだけ</button></div>
+ <div class="meta">じゅんばん</div>
+ <div class="seg" id="segPO"><button data-o="seq" class="on">プリントの順</button><button data-o="rnd">シャッフル</button></div>
+ <label class="chk"><input type="checkbox" id="pAns" checked>解答を最後のページにつける</label>
+ <button class="btn b1" id="printBtn">🖨 印刷する</button>
+ <p style="font-size:13px;color:#7b6656">iPhone・iPadでは、印刷画面で「PDFとして保存」や「共有」も選べます。</p></div></section>
+</main>
+<div id="printArea"></div>
+<div id="help"><div class="box">
+<h3>❓ 使い方（取扱説明書）</h3>
+<h4>このアプリは何？</h4><ul><li>歴史総合の小テストプリント No.11〜No.15（6枚・119問）を、くり返し練習するアプリです。</li></ul>
+<h4>出題のしかた</h4><ul>
+<li><b>プリント</b>にチェックを入れて、<b>やり方</b>と<b>じゅんばん</b>をえらび、「スタート」を押します。</li>
+<li><b>📇 カード</b>：問題を見て、頭の中（または紙）で答えてから「答えを見る」を押します。合っていたら「⭕ 正解」、ちがったら「❌ まちがい」を押します。<b>漢字まで書けたら正解</b>にしましょう。</li>
+<li><b>🔢 4択</b>：4つの中から答えをえらびます。最初はこちらで覚えて、仕上げはカードがおすすめです。</li>
+<li>シャッフルのときは「問2の事件」などがわかるように、（ ）の中にその答えを入れてあります。</li></ul>
+<h4>ミス</h4><ul><li>まちがえた問題は自動で記録されます。「ミスだけ」でやり直せます。次に正解すると記録から消えます。</li></ul>
+<h4>印刷</h4><ul><li>えらんだプリント、またはミスだけの問題を、解答らん付きで印刷できます。</li></ul>
+<h4>おすすめの使い方</h4><ul><li>① 1枚ずつ4択で覚える → ② カードで答えを言えるか確かめる → ③ ミスだけを毎日くり返す → ④ 全部シャッフルで仕上げ。</li></ul>
+<button class="btn b1" id="helpClose">閉じる</button></div></div>
+<script>
+const SETS=[{"id": "11", "title": "条約改正と日清戦争", "qs": [["1882年、大院君の支持を受けた兵士たちが政府高官や日本公使館を襲撃した事件を何というか。", "壬午事変（壬午軍乱）"], ["1884年、朝鮮の急進開化派の官僚らが日本公使館の支援を受けて起こしたクーデタを何というか。", "甲申事変（甲申政変）"], ["問2の事件の中心となった、朝鮮の急進開化派の官僚は誰か。", "金玉均"], ["1885年、伊藤博文と清の李鴻章との間で結ばれた、両国の朝鮮からの撤退などを定めた条約は何か。", "天津条約"], ["問2の事件の後に、福沢諭吉が『時事新報』に掲載した、朝鮮に対する強硬論を唱えた論文は何か。", "脱亜論"], ["第一回帝国議会において、「利益線」保護のための軍備拡張を唱えた首相は誰か。", "山県有朋"], ["ロシアが東アジア進出のために建設した鉄道は何か。", "シベリア鉄道"], ["1891年、来日したロシア皇太子が警備の巡査に切りつけられた事件を何というか。", "大津事件"], ["問8の事件の責任をとって辞任した外務大臣は誰か。", "青木周蔵"], ["1894年、イギリスとの間に領事裁判権の撤廃を実現した条約は何か。", "日英通商航海条約"], ["問10の条約を結んだ時の外務大臣は誰か。", "陸奥宗光"], ["1894年、朝鮮で東学の信徒を中心に起こった反乱を、漢字6文字で答えなさい。", "甲午農民戦争"], ["日清戦争の講和条約は何か。", "下関条約"], ["問13の条約で、清から日本へと割譲された地域をすべて答えなさい。", "遼東半島、台湾、澎湖諸島"], ["三国干渉後、ロシアとの戦いを想定して国内で唱えられた標語は何か。", "臥薪嘗胆"], ["地租の増徴に反対する自由党と進歩党が合同して結成された政党は何か。", "憲政党"], ["問16の政党を基盤として、初の政党内閣を組織した首相は誰か。", "大隈重信"], ["第2次山県有朋内閣が定めた、陸・海軍大臣を現役の軍人に限定する制度を何というか。", "軍部大臣現役武官制"], ["1900年、伊藤博文を中心に結成された政党は何か。", "立憲政友会"], ["第4次伊藤内閣の次に政権を担った、官僚・貴族院勢力を代表する人物は誰か。", "桂太郎"]]}, {"id": "12", "title": "日本の産業革命と教育の普及", "qs": [["欧米の技術を積極的に導入して産業の近代化をはかる、明治初期の経済政策のスローガンは何か。", "殖産興業"], ["大蔵卿の松方正義が、1882年に中央銀行として設立した機関は何か。", "日本銀行"], ["1886年から、鉄道・紡績業を中心に株式会社がさかんに設立されたことを何というか。", "企業勃興"], ["1897年に、日清戦争の賠償金を利用して採用した貨幣制度は何か。", "金本位制"], ["1881年に、華族の出資により設立された鉄道会社は何か。", "日本鉄道会社"], ["1889年に新橋・神戸間が全通した鉄道の路線は何か。", "東海道線"], ["1906年に制定された、民間鉄道の買収を定めた法律は何か。", "鉄道国有法"], ["1885年、三菱と半官半民の共同運輸会社が合併してできた会社は何か。", "日本郵船会社"], ["1882年に設立され、翌83年から開業し、輸入機械を導入して綿糸の大規模生産を実現した会社は何か。", "大阪紡績会社"], ["綿糸の輸出量が輸入量を上回ったのは、西暦何年か。", "1897年"], ["国産の力織機を発明した人物は誰か。", "豊田佐吉"], ["明治期の外貨獲得の中心産業となった、まゆから生糸を生産する工業は何か。", "製糸業"], ["政商は、政府からの官営事業の払い下げを受けて発展していき、何と呼ばれたか。", "財閥"], ["日清戦争後、鉄鋼の国産化を目指して北九州に設立された、官営の製鉄所は何か。", "八幡製鉄所"], ["1897年に結成された、労働組合の結成や労働運動を指導する組織は何か。", "労働組合期成会"], ["足尾銅山の鉱毒被害の救済のために運動した衆議院議員は誰か。", "田中正造"], ["1900年に制定された、労働運動を取り締まるための法律は何か。", "治安警察法"], ["1911年に制定された、初の労働者保護法は何か。", "工場法"], ["みずからは農業に従事せず、土地を集積して小作人からの小作料収入に依存する地主を何というか。", "寄生地主"], ["1882年に大隈重信が創設し、のちに早稲田大学へと発展した私立学校は何か。", "東京専門学校"]]}, {"id": "13", "title": "帝国主義と列強の展開", "qs": [["1880年代以降、各国政府が植民地獲得に乗り出し、激しく競い合う政策を何というか。", "帝国主義"], ["カナダやオーストラリアなど、白人が入植した植民地にイギリスが認めた地位は何か。", "自治領"], ["20世紀初頭に成立したイギリスの労働者政党は何か。", "労働党"], ["自治・独立を求めるアイルランドに対して、1914年に成立したが、第一次大戦を理由に延期された法律は何か。", "アイルランド自治法"], ["フランス軍のユダヤ系将校に対する冤罪事件を何というか。", "ドレフュス事件"], ["20世紀初めに成立したフランスの労働者政党は何か。", "社会党"], ["1888年に即位し、ビスマルクと対立したドイツ皇帝は誰か。", "ヴィルヘルム2世"], ["問7の皇帝が展開した帝国主義政策を何と呼んだか。", "世界政策"], ["社会主義者鎮圧法の廃止をうけて勢力を伸ばし、1912年には帝国議会の第一党となったドイツの労働者政党は何か。", "社会民主党"], ["革命ではなく、議会での活動を主要な課題とした問9の政党の理論家は誰か。", "ベルンシュタイン"], ["1891年に起工された、ロシアの東方進出のための鉄道は何か。", "シベリア鉄道"], ["義和団事件をきっかけに、ロシアが占領した中国東北部は何と呼ばれたか。", "満洲"], ["日露戦争のときのロシア皇帝は誰か。", "ニコライ2世"], ["1905年革命のきっかけとなった、民衆のデモに対する軍の発砲事件は何か。", "血の日曜日事件"], ["ロシア社会民主労働党の分裂後、革命家だけの党をめざす多数派を何と呼んだか。", "ボリシェヴィキ"], ["同じく、大衆政党をめざす少数派を何と呼んだか。", "メンシェヴィキ"], ["アメリカ＝スペイン（米西）戦争に勝利して、スペインから獲得した東南アジアの植民地はどこか。", "フィリピン"], ["セオドア＝ローズヴェルト大統領がカリブ海諸国に対して行った外交を何と呼んだか。", "棍棒外交"], ["1869年に開通した、地中海と紅海を結ぶ運河は何か。", "スエズ運河"], ["1914年に開通した、大西洋と太平洋を結ぶ運河は何か。", "パナマ運河"]]}, {"id": "14", "title": "世界分割と列強の対立", "qs": [["19世紀半ばにアフリカを探検したイギリス人宣教師は誰か。", "リヴィングストン"], ["アフリカ植民地化の原則などを定め、ヨーロッパ列強によるアフリカ分割が激化するきっかけとなった会議は何か。", "ベルリン会議（ベルリン＝コンゴ会議）"], ["1880年代初めに、イギリスが占領・事実上の保護国化した北アフリカの国はどこか。", "エジプト"], ["金・ダイヤモンドをめぐって、1899年からイギリスとブール人との間で起こった戦争は何か。", "南アフリカ戦争（ブール戦争）"], ["イギリスの3C政策はどこを結ぶものであったか。カイロ以外の2つの地名を答えなさい。", "ケープタウン、カルカッタ"], ["イギリスの縦断政策とフランスの横断政策が衝突して、1898年に起こった事件は何か。", "ファショダ事件"], ["問6の事件後、両国の関係改善によって1904年に結ばれたものは何か。", "英仏協商"], ["イタリアを撃退して独立を守ったアフリカの帝国はどこか。", "エチオピア帝国"], ["20世紀初頭までにヨーロッパ列強の植民地とならなかったアフリカの国は、問8ともう一つはどこか。", "リベリア"], ["オーストラリアの先住民は何というか。", "アボリジニ（アボリジニー）"], ["ニュージーランドの先住民は何というか。", "マオリ"], ["ハワイ王国の最後の女王となったのは誰か。", "リリウオカラニ"], ["1911年の独裁政権打倒に始まり、1917年に民主的な憲法制定に至る革命が起きた国はどこか。", "メキシコ"], ["問13の国の革命で、農民運動の指導者として活躍した人物は誰か。", "ビリャ（ビジャ）"], ["ヴィルヘルム2世が更新を拒否したことがロシアとの関係悪化のきっかけとなった条約は何か。", "再保障条約（独露再保障条約）"], ["ドイツが展開した、ベルリン・バグダード・ビザンティウムを鉄道で結ぼうとする政策を何というか。", "3B政策"], ["19世紀のイギリスの、ヨーロッパ大陸から距離をおき列強と提携しないという外交方針を何というか。", "光栄ある孤立"], ["イランにおけるイギリスとロシアの勢力範囲を画定するために、1907年に両国が結んだものは何か。", "英露協商"], ["1882年に、ドイツ・オーストリア・イタリアの間に結ばれた同盟は何か。", "三国同盟"]]}, {"id": "15-1", "title": "日露戦争とその影響（1）", "qs": [["1898年にドイツが清国から租借した地域はどこか。", "膠州湾"], ["アメリカが、中国の機会均等・領土保全とともに諸国に呼びかけたことは何か。", "門戸開放"], ["日本の近代化にならい、根本的な制度改革を主張した変法派の中心人物は誰か。", "康有為"], ["変法を認めた当時の清国の皇帝は誰か。", "光緒帝"], ["変法派の改革に反対した保守派の中心人物は誰か。", "西太后"], ["変法を終わらせた保守派によるクーデタを何というか。", "戊戌の政変"], ["鉄道やキリスト教の教会などを襲撃した、山東省の宗教的武術集団を何というか。", "義和団"], ["問7の集団のスローガンは何か。", "扶清滅洋"], ["8カ国連合軍に敗れた清が、賠償金の支払いや外国軍隊の北京駐留などを認めたものは何か。", "北京議定書（辛丑和約）"], ["日英同盟協約が結ばれたのは、西暦何年か。", "1902年"], ["日露戦争に対して非戦論を唱えたキリスト教徒は誰か。", "内村鑑三"], ["同じく非戦論を唱えた社会主義者は誰か。", "幸徳秋水"], ["日露戦争の開戦直後、韓国に対して国内での軍事行動を認めさせたものは何か。", "日韓議定書"], ["日本の海軍がロシアのバルチック艦隊を打ち破った海戦は何か。", "日本海海戦"], ["日露間の講和を仲介したアメリカ大統領は誰か。", "セオドア＝ローズヴェルト"], ["ポーツマス条約における、日本の全権代表は誰か。", "小村寿太郎"], ["同じく、ロシアの全権代表は誰か。", "ウィッテ"], ["ポーツマス条約で、清からの租借権を譲り受けた地域はどこか。", "旅順・大連"], ["ロシアから北緯50度以南を譲り受けた地域はどこか。", "樺太南部"], ["講和条約に反対して民衆が起こした暴動を何というか。", "日比谷焼き打ち事件"]]}, {"id": "15-2", "title": "日露戦争とその影響（2）", "qs": [["アメリカのフィリピン支配と日本の韓国保護を相互に認めた協定を何というか。", "桂・タフト協定"], ["第2次日韓協約で漢城に置かれた、韓国の外交を監督する機関は何か。", "統監府"], ["高宗が第2回万国平和会議で韓国の窮状を訴えようとした事件を何というか。", "ハーグ密使事件"], ["第3次日韓協約後に活発化した、韓国民衆の抗日運動を何というか。", "義兵闘争"], ["韓国の植民地支配を行うために置かれた機関は何か。", "朝鮮総督府"], ["満州における租借地の軍事・行政を管理するために、旅順に置かれた機関は何か。", "関東都督府"], ["1910年に、天皇暗殺を企てたとして、幸徳秋水ら社会主義者が処刑された事件を何というか。", "大逆事件"], ["義和団戦争後に清政府が行った、科挙の廃止や憲法大綱の発表などの制度改革を何というか。", "光緒新政"], ["1905年に孫文が東京で組織した革命団体は何か。", "中国同盟会"], ["孫文が掲げた革命の理念を何というか。", "三民主義"], ["清朝が滅亡して中華民国が成立することとなった革命を何というか。", "辛亥革命"], ["問11の革命のきっかけとなった、幹線鉄道の国有化に反対する暴動はどこで起こったか。", "四川"], ["もとは清朝の軍人であったが、清を見限って孫文から臨時大総統の地位を譲り受けた人物は誰か。", "袁世凱"], ["清朝の最後の皇帝は誰か。", "宣統帝（愛新覚羅溥儀）"], ["1885年に結成され、インドの民族運動の中心となった組織は何か。", "インド国民会議（インド国民会議派）"], ["反英運動の中心地であり、1905年に分割令が発表された地域はどこか。", "ベンガル地方"], ["フランスからの独立を目指し、ベトナムの民族運動を指導した人物は誰か。", "潘佩珠（ファン＝ボイ＝チャウ）"], ["問17の人物らを中心に展開した、日本へ留学生を派遣する運動を何というか。", "東遊運動（ドンズー運動）"], ["フィリピン革命を主導した人物は誰か。", "アギナルド"], ["オスマン帝国で、知識人や青年将校が中心となって立憲政の回復を目指した革命を何というか。", "青年トルコ人革命"]]}];
+const main=a=>a.split('（')[0];
+const ALL=[];
+SETS.forEach(s=>s.qs.forEach((x,i)=>{
+ const q=x[0].replace(/問(\d+)(の|と)/g,(m,n,p)=>{const r=s.qs[+n-1];return '問'+n+'<span class="ref">（'+main(r[1])+'）</span>'+p});
+ const kind=/西暦何年/.test(x[0])?'y':/誰か/.test(x[0])?'p':/どこ|地域|地方/.test(x[0])?'l':/条約|協約|協定|協商|同盟|議定書|宣言|法/.test(x[1])?'t':'o';
+ ALL.push({set:s.id,title:s.title,n:i+1,q,a:x[1],kind,key:s.id+'-'+(i+1)})}));
+let miss={};try{miss=JSON.parse(localStorage.getItem('rkMiss')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('rkMiss',JSON.stringify(miss))}catch(e){}};
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));if(b.dataset.v==='miss')renderMiss();scrollTo(0,0)});
+function seg(id){const el=$(id);el.querySelectorAll('button').forEach(b=>b.onclick=()=>el.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)));return()=>el.querySelector('.on').dataset}
+const gM=seg('segMode'),gO=seg('segOrder'),gPR=seg('segPR'),gPO=seg('segPO');
+$('sets').innerHTML=SETS.map(s=>`<label class="chk"><input type="checkbox" value="${s.id}" checked>No.${s.id.replace('-1','－①').replace('-2','－②')}　${s.title}（${s.qs.length}問）</label>`).join('');
+const selQs=()=>{const v=[...document.querySelectorAll('#sets input:checked')].map(i=>i.value);return ALL.filter(q=>v.includes(q.set))};
+const upd=()=>$('cnt').textContent=selQs().length+'問';document.querySelectorAll('#sets input').forEach(i=>i.onchange=upd);upd();
+$('allOn').onclick=()=>{document.querySelectorAll('#sets input').forEach(i=>i.checked=true);upd()};
+$('allOff').onclick=()=>{document.querySelectorAll('#sets input').forEach(i=>i.checked=false);upd()};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let list=[],idx=0,right=0,mode='card',answered=false;
+function begin(qs,m){if(!qs.length){alert('問題がありません');return}list=qs;idx=0;right=0;mode=m;
+ $('setup').style.display='none';$('result').style.display='none';$('play').style.display='block';document.querySelector('.tabs button').click();show()}
+$('start').onclick=()=>{let qs=selQs();if(gO().o==='rnd')qs=shuffle(qs.slice());begin(qs,gM().m)};
+function distract(q){if(q.kind==='y'){const y=parseInt(q.a);return shuffle([y-5,y-3,y+2,y+4,y+8]).slice(0,3).map(v=>v+'年')}let pool=ALL.filter(x=>x.a!==q.a&&main(x.a)!==main(q.a)&&x.kind===q.kind);if(pool.length<3)pool=ALL.filter(x=>x.a!==q.a);
+ const t=main(q.a).slice(-1),sc=x=>(main(x.a).slice(-1)===t?0:2)+(x.set===q.set?0:1);const ord=shuffle(pool.slice()).sort((a,b)=>sc(a)-sc(b));const out=[];
+ for(const x of ord){if(out.length>=3)break;if(!out.includes(x.a))out.push(x.a)}return out}
+function show(){const q=list[idx];answered=false;
+ $('pn').textContent=(idx+1)+' / '+list.length+'問';$('ps').textContent='正解 '+right;$('pb').style.width=(idx/list.length*100)+'%';
+ $('src').innerHTML=`No.${q.set.replace('-1','－①').replace('-2','－②')} ${q.title}　問${q.n}`+(miss[q.key]?' <span class="tag">ミス'+miss[q.key]+'回</span>':'');
+ $('qt').innerHTML=q.q;$('ans').className='ans';$('ans').textContent=q.a;$('choices').innerHTML='';
+ if(mode==='card'){$('ctrl').innerHTML='<button class="btn b3" id="show">答えを見る</button>';$('show').onclick=()=>{$('ans').classList.add('on');
+   $('ctrl').innerHTML='<div class="row"><button class="btn ok" id="okb">⭕ 正解</button><button class="btn ng" id="ngb">❌ まちがい</button></div>';$('okb').onclick=()=>mark(true);$('ngb').onclick=()=>mark(false)}}
+ else{$('ctrl').innerHTML='';const ch=shuffle([q.a].concat(distract(q)));
+  $('choices').innerHTML=ch.map(c=>`<button class="ch">${c}</button>`).join('');
+  document.querySelectorAll('#choices .ch').forEach(b=>b.onclick=()=>{if(answered)return;answered=true;const ok=b.textContent===q.a;
+   document.querySelectorAll('#choices .ch').forEach(x=>{if(x.textContent===q.a)x.classList.add('good')});if(!ok)b.classList.add('bad');
+   rec(ok);$('ctrl').innerHTML=`<p class="res" style="color:${ok?'#2e7d32':'#c62828'}">${ok?'⭕ 正解！':'❌ ざんねん'}</p><button class="btn b3" id="nx">${idx<list.length-1?'次の問題 ▶':'結果を見る ▶'}</button>`;$('nx').onclick=next})}
+ scrollTo(0,0)}
+function rec(ok){const q=list[idx];if(ok){right++;delete miss[q.key]}else miss[q.key]=(miss[q.key]||0)+1;save()}
+function mark(ok){rec(ok);next()}
+function next(){if(idx<list.length-1){idx++;show()}else finish()}
+function finish(){$('play').style.display='none';const r=$('result');r.style.display='block';const wrong=list.filter(q=>miss[q.key]);
+ r.innerHTML=`<h2>結果</h2><p class="res">${list.length}問中 ${right}問 正解！${right===list.length?' 🎉':''}</p>`+
+ (wrong.length?'<p>まちがえた問題：</p><ul class="list">'+wrong.map(q=>`<li>${q.q.replace(/<[^>]+>/g,'')}<br><b style="color:#a33b10">→ ${q.a}</b></li>`).join('')+'</ul>':'<p>完ぺきです！</p>')+
+ '<button class="btn b1" onclick="location.reload()">最初の画面へ</button>'}
+$('quit').onclick=()=>{$('play').style.display='none';$('setup').style.display='block'};
+const missQs=()=>ALL.filter(q=>miss[q.key]);
+function renderMiss(){const m=missQs();$('missList').innerHTML=m.length?'<p>'+m.length+'問</p><ul class="list">'+m.map(q=>`<li>${q.a} <span class="tag">${miss[q.key]}回</span></li>`).join('')+'</ul>':'<p>まちがえた問題はありません。</p>'}
+$('missCard').onclick=()=>begin(shuffle(missQs()),'card');$('missMc').onclick=()=>begin(shuffle(missQs()),'mc');
+$('missClear').onclick=()=>{if(confirm('ミスの記録を消しますか？')){miss={};save();renderMiss()}};
+$('printBtn').onclick=()=>{let qs=gPR().r==='miss'?missQs():selQs();if(!qs.length){alert('問題がありません');return}const rnd=gPO().o==='rnd';if(rnd)qs=shuffle(qs.slice());
+ let h='<h1 class="ph">歴史総合 一問一答'+(gPR().r==='miss'?'（ミスした問題）':'')+'</h1><div class="nm">名前（　　　　　　　　）</div>';
+ const block=(arr,withAns)=>'<table class="pt">'+arr.map((q,k)=>`<tr><td class="n">${k+1}</td><td>${q.q.replace(/<[^>]+>/g,'')}</td><td class="a">${withAns?q.a:''}</td></tr>`).join('')+'</table>';
+ if(rnd)h+=block(qs,false);else SETS.forEach(s=>{const a=qs.filter(q=>q.set===s.id);if(a.length)h+=`<h2 class="ps">No.${s.id} ${s.title}</h2>`+block(a,false)});
+ if($('pAns').checked){h+='<div class="pb"></div><h1 class="ph">解答</h1>';if(rnd)h+=block(qs,true);else SETS.forEach(s=>{const a=qs.filter(q=>q.set===s.id);if(a.length)h+=`<h2 class="ps">No.${s.id} ${s.title}</h2>`+block(a,true)})}
+ $('printArea').innerHTML=h;print()};
+$('helpBtn').onclick=()=>$('help').classList.add('on');$('helpClose').onclick=()=>$('help').classList.remove('on');
+</script></body></html>
