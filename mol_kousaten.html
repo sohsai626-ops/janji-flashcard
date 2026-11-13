@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>モルの交差点｜化学基礎</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#eef4fb;color:#1d2a3a;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:#1f5fa8;color:#fff}
+.top{display:flex;align-items:center;gap:6px;padding:10px 12px}.top h1{flex:1;font-size:16px}
+.top button{background:#fff;color:#1f5fa8;border:none;border-radius:16px;padding:6px 10px;font-size:13px;font-weight:700}
+.tabs{display:flex}.tabs button{flex:1;background:none;border:none;color:#cfe0f3;padding:9px 0;font-size:15px;font-weight:700;border-bottom:3px solid transparent}
+.tabs button.on{color:#fff;border-bottom-color:#f2a922}
+main{max-width:600px;margin:0 auto;padding:12px 12px 70px}
+.view{display:none}.view.on{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,40,90,.08);margin-bottom:12px}
+h2{font-size:18px;margin-bottom:8px}p{font-size:15px;line-height:1.75}
+.lv{display:block;width:100%;text-align:left;border:none;border-radius:14px;padding:14px;margin:8px 0;background:#fff;box-shadow:0 2px 8px rgba(0,40,90,.08)}
+.lv b{font-size:18px;color:#1f5fa8}.lv span{display:block;font-size:13px;color:#56708f;margin-top:2px}
+.lv .pb{height:6px;background:#dce8f5;border-radius:3px;margin-top:8px}.lv .pb i{display:block;height:100%;background:#4caf50;border-radius:3px}
+.plist button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:1px solid #d5e1ef;border-radius:12px;padding:11px 12px;margin:6px 0;font-size:15px;color:#1d2a3a}
+.plist .no{min-width:38px;height:38px;border-radius:50%;background:#e4eefa;color:#1f5fa8;font-weight:800;display:flex;align-items:center;justify-content:center}
+.plist .st{margin-left:auto;font-size:13px;color:#56708f;white-space:nowrap}
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:800;margin:8px 0}
+.b1{background:#1f5fa8;color:#fff}.b2{background:#e4eefa;color:#1f5fa8}.b3{background:#f2a922;color:#fff}
+.stem{white-space:pre-wrap;font-size:14.5px;line-height:1.7;background:#f4f8fd;border-radius:10px;padding:10px;margin-bottom:10px}
+.sq{font-size:17px;font-weight:800;line-height:1.6;white-space:pre-wrap}
+.route{display:flex;align-items:center;gap:6px;margin:8px 0;flex-wrap:wrap}
+.route span{padding:4px 10px;border-radius:14px;background:#e4eefa;font-weight:800;font-size:14px;color:#1f5fa8}
+.route span.m{background:#f2a922;color:#fff}.route i{font-style:normal;color:#56708f}
+.step{border:2px solid #c9d7e8;border-radius:12px;padding:10px;margin:10px 0}
+.step .h{font-weight:800;color:#1f5fa8;margin-bottom:6px;font-size:15.5px}
+.step.ok{border-color:#4a9e4a}.step.ng{border-color:#d0402b}
+.ch{display:block;width:100%;text-align:left;background:#f7fafd;border:2px solid #d5e1ef;border-radius:10px;padding:10px 12px;font-size:16px;margin:6px 0;color:#1d2a3a;line-height:1.5}
+.ch.good{background:#e3f4e3;border-color:#4a9e4a;font-weight:700}.ch.bad{background:#fde8e5;border-color:#d0402b}
+.ch:disabled{opacity:1}
+.ex{background:#fff6dc;border-left:5px solid #f2a922;border-radius:8px;padding:8px 10px;font-size:14.5px;line-height:1.7;margin-top:6px}
+.final{background:#eef7ee;border:2px solid #5aa95a;border-radius:12px;padding:12px;margin-top:10px;font-size:17px;font-weight:800;text-align:center}
+.final small{display:block;font-size:13.5px;font-weight:500;margin-top:4px;color:#335}
+.prog{display:flex;justify-content:space-between;font-size:13.5px;color:#56708f;margin-bottom:6px}
+.res{font-size:16px;font-weight:800;margin:6px 0}
+.list li{font-size:14.5px;line-height:1.7;margin:4px 0 4px 18px}
+.tag{display:inline-block;font-size:12px;font-weight:800;border-radius:8px;padding:1px 7px;background:#fde2e2;color:#b91c1c}
+.ov{display:none;position:fixed;inset:0;background:rgba(10,25,45,.55);z-index:20;overflow:auto;padding:16px}.ov.on{display:block}
+.ov .box{background:#fff;border-radius:16px;max-width:540px;margin:16px auto;padding:16px}
+.ov h3{color:#1f5fa8;font-size:19px;margin-bottom:6px}.ov h4{font-size:16px;margin:12px 0 4px}.ov li{font-size:14.5px;line-height:1.75;margin-left:20px}
+svg{display:block;width:100%;height:auto}
+#printArea{display:none}
+@media print{body{background:#fff}header,main,.ov{display:none!important}#printArea{display:block;color:#000;font-size:10.5pt}
+ h1.ph{font-size:13pt;margin-bottom:4pt}.nm{text-align:right;margin-bottom:6pt}.pp{page-break-inside:avoid;margin:0 0 9pt}
+ .pp .t{font-weight:700}.pp .s{white-space:pre-wrap;margin:2pt 0 2pt 1em;line-height:1.5}.pp .w{height:34pt}.pb{page-break-before:always}}
+#v-ehon .page{display:none;animation:fade .3s}
+#v-ehon .page.on{display:block}
+#v-ehon .card{background:#fff;border-radius:16px;padding:16px 16px 18px;box-shadow:0 2px 8px rgba(0,40,90,.08);margin-bottom:12px}
+#v-ehon .no{display:inline-block;background:#1f5fa8;color:#fff;font-size:12px;font-weight:700;border-radius:10px;padding:2px 10px;margin-bottom:6px}
+#v-ehon h2{font-size:21px;line-height:1.4;margin-bottom:10px}
+#v-ehon p{font-size:16px;line-height:1.8;margin:8px 0}
+#v-ehon .big{font-size:22px;font-weight:800;text-align:center;margin:12px 0;line-height:1.5}
+#v-ehon .em{color:#d0402b;font-weight:800}
+#v-ehon .blue{color:#1f5fa8;font-weight:800}
+#v-ehon .mark{background:linear-gradient(transparent 60%,#ffe27a 60%);font-weight:700}
+#v-ehon svg{display:block;width:100%;height:auto;margin:6px 0}
+#v-ehon .point{background:#fff6dc;border-left:6px solid #f2a922;border-radius:8px;padding:10px 12px;margin:12px 0;font-size:15.5px;line-height:1.75}
+#v-ehon .point b{color:#9a5b00}
+#v-ehon table.t{width:100%;border-collapse:collapse;margin:8px 0;font-size:15.5px}
+#v-ehon table.t th,#v-ehon table.t td{border:1px solid #c9d7e8;padding:7px 6px;text-align:center}
+#v-ehon table.t th{background:#e4eefa}
+#v-ehon .reveal{margin:10px 0}
+#v-ehon .reveal button{width:100%;background:#1f5fa8;color:#fff;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700}
+#v-ehon .reveal .ans{display:none;background:#eef7ee;border:2px solid #5aa95a;border-radius:12px;padding:10px 12px;margin-top:8px;font-size:16px;line-height:1.8}
+#v-ehon .reveal.open .ans{display:block}
+#v-ehon .reveal.open button{background:#8aa6c6}
+#v-ehon .step{border:2px solid #c9d7e8;border-radius:12px;padding:10px 12px;margin:10px 0}
+#v-ehon .step .h{font-weight:800;color:#1f5fa8;margin-bottom:4px}
+#v-ehon .calc{font-size:18px;font-weight:700;text-align:center;margin:6px 0;line-height:1.6}
+#v-ehon sup{font-size:.65em}
+#v-ehon .q{border:2px solid #c9d7e8;border-radius:12px;padding:12px;margin:12px 0}
+#v-ehon .q .qt{font-weight:800;font-size:16px;line-height:1.6;margin-bottom:8px}
+#v-ehon .q .ch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#v-ehon .q .ch button{background:#f4f8fd;border:2px solid #c9d7e8;border-radius:10px;padding:10px 4px;font-size:16px;font-weight:700;color:#1d2a3a}
+#v-ehon .q .ch button.ok{background:#e3f4e3;border-color:#4a9e4a;color:#20702a}
+#v-ehon .q .ch button.ng{background:#fde8e5;border-color:#d0402b;color:#a32a19}
+#v-ehon .q .fb{display:none;margin-top:8px;font-size:15px;line-height:1.7}
+#v-ehon .q.done .fb{display:block}
+#v-ehon #score{font-size:20px;font-weight:800;text-align:center;margin:10px 0}
+#v-ehon /* help */
+#help{display:none;position:fixed;inset:0;background:rgba(10,25,45,.55);z-index:20;padding:16px;overflow:auto}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+#v-ehon .enav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #d5e1ef;display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:5}
+#v-ehon .enav button{flex:1;border:none;border-radius:12px;padding:13px 0;font-size:16px;font-weight:800}
+#v-ehon #prev{background:#e4eefa;color:#1f5fa8}#v-ehon #next{background:#f2a922;color:#fff}#v-ehon .enav button:disabled{opacity:.35}
+#v-ehon #pg{min-width:56px;text-align:center;font-size:14px;color:#56708f;font-weight:700}
+#v-ehon{padding-bottom:40px}.tocl button{display:block;width:100%;text-align:left;background:#f4f8fd;border:1px solid #c9d7e8;border-radius:10px;padding:9px 12px;font-size:15px;margin:5px 0;color:#1d2a3a}
+</style></head><body>
+<header><div class="top"><h1>🧪 モルの交差点</h1><button id="mapBtn">🗺 交差点</button><button id="helpBtn">❓使い方</button></div>
+<div class="tabs"><button data-v="ehon" class="on">解説</button><button data-v="home">問題</button><button data-v="miss">ミス</button><button data-v="print">印刷</button></div></header>
+<main>
+<section class="view on" id="v-ehon"><svg width="0" height="0" style="position:absolute"><defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+</svg>
+ <div class="eh-top"><button class="btn b2" id="ehToc" style="margin:0 0 10px">📖 目次</button></div>
+
+<!-- 1 -->
+<section class="page" data-t="はじめに">
+<div class="card">
+<span class="no">はじめに</span>
+<h2>モルは「数え方の単位」です</h2>
+<p>「モル（mol）がわからない」という人は多いですが、じつは考え方はとてもシンプルです。</p>
+<svg viewBox="0 0 320 150">
+<rect x="10" y="20" width="135" height="110" rx="14" fill="#e4eefa"/>
+<text x="77" y="50" font-size="16" text-anchor="middle" font-weight="700" fill="#1f5fa8">ふだんの生活</text>
+<text x="77" y="82" font-size="15" text-anchor="middle">鉛筆 12本</text>
+<text x="77" y="108" font-size="17" text-anchor="middle" font-weight="800" fill="#d0402b">＝1ダース</text>
+<text x="160" y="82" font-size="26" text-anchor="middle" fill="#f2a922">⇔</text>
+<rect x="175" y="20" width="135" height="110" rx="14" fill="#fff1d6"/>
+<text x="242" y="50" font-size="16" text-anchor="middle" font-weight="700" fill="#9a5b00">化学の世界</text>
+<text x="242" y="82" font-size="14" text-anchor="middle">粒 6.0×10²³個</text>
+<text x="242" y="108" font-size="17" text-anchor="middle" font-weight="800" fill="#d0402b">＝1 mol</text>
+</svg>
+<p>この教材では、<span class="mark">絵を見ながら</span>モルの考え方を順番に確かめます。</p>
+<p>下の「次へ ▶」で進んでください。</p>
+<div class="point"><b>ゴール：</b>最後のページの「モルの交差点」の図が、<b>自分で描けるようになること</b>です。</div>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="page" data-t="まとめて数える">
+<div class="card">
+<span class="no">1</span>
+<h2>まとめて数える単位</h2>
+<p>たくさんある物は、1個ずつ数えると大変なので<span class="mark">「ひとまとまり」</span>で数えます。</p>
+<svg viewBox="0 0 320 170">
+<g id="pen">
+<rect x="0" y="0" width="9" height="70" rx="2" fill="#f2c94c" stroke="#b8901f"/>
+<polygon points="0,70 9,70 4.5,84" fill="#f5d9a8" stroke="#b8901f"/>
+<polygon points="2.6,79 6.4,79 4.5,84" fill="#333"/>
+</g>
+<g transform="translate(22,18)">
+<use href="#pen" x="0"/><use href="#pen" x="13"/><use href="#pen" x="26"/><use href="#pen" x="39"/><use href="#pen" x="52"/><use href="#pen" x="65"/>
+<use href="#pen" x="78"/><use href="#pen" x="91"/><use href="#pen" x="104"/><use href="#pen" x="117"/><use href="#pen" x="130"/><use href="#pen" x="143"/>
+</g>
+<rect x="14" y="12" width="168" height="98" rx="8" fill="none" stroke="#1f5fa8" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="98" y="135" font-size="15" text-anchor="middle">鉛筆 12本</text>
+<text x="210" y="70" font-size="26" fill="#f2a922">→</text>
+<rect x="240" y="35" width="72" height="60" rx="10" fill="#1f5fa8"/>
+<text x="276" y="72" font-size="17" text-anchor="middle" fill="#fff" font-weight="800">1ダース</text>
+</svg>
+<table class="t">
+<tr><th>物</th><th>まとまり</th><th>単位</th></tr>
+<tr><td>鉛筆</td><td>12本</td><td>1ダース</td></tr>
+<tr><td>コピー用紙</td><td>500枚</td><td>1束（1連）</td></tr>
+<tr><td>原子・分子</td><td class="em">6.0×10<sup>23</sup>個</td><td class="em">1 mol</td></tr>
+</table>
+<div class="point"><b>ポイント：</b>「2ダース」と聞いたら「12×2＝24本」とすぐわかりますね。<br>モルも同じで、<b>「2 mol」＝「6.0×10<sup>23</sup>×2個」</b>です。</div>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="page" data-t="なぜ6.0×10²³個？">
+<div class="card">
+<span class="no">2</span>
+<h2>なぜそんなに大きな数なの？</h2>
+<p>原子や分子は<span class="mark">ものすごく小さい</span>からです。</p>
+<svg viewBox="0 0 320 190">
+<path d="M90 25 C 60 75, 45 100, 45 125 a45 45 0 0 0 90 0 C 135 100, 120 75, 90 25 Z" fill="#9fd0f5" stroke="#3a86c8" stroke-width="3"/>
+<g fill="#1f5fa8">
+<circle cx="75" cy="105" r="3"/><circle cx="90" cy="98" r="3"/><circle cx="105" cy="108" r="3"/><circle cx="68" cy="125" r="3"/><circle cx="84" cy="120" r="3"/><circle cx="100" cy="126" r="3"/><circle cx="115" cy="122" r="3"/><circle cx="75" cy="143" r="3"/><circle cx="92" cy="140" r="3"/><circle cx="108" cy="145" r="3"/><circle cx="90" cy="80" r="3"/>
+</g>
+<text x="90" y="185" font-size="14" text-anchor="middle">水 1滴</text>
+<text x="165" y="70" font-size="15">この中に水分子が</text>
+<text x="165" y="100" font-size="20" font-weight="800" fill="#d0402b">約1.7×10²¹個</text>
+<text x="165" y="128" font-size="14">（17の後ろに0が20個！）</text>
+<text x="165" y="160" font-size="14" fill="#56708f">1個ずつ数えるのは</text>
+<text x="165" y="180" font-size="14" fill="#56708f">とても無理…</text>
+</svg>
+<p>そこで化学では、<span class="blue">6.0×10<sup>23</sup>個</span>をひとまとまりにして<span class="em">1 mol</span>と呼ぶことにしました。</p>
+<p>この数を<span class="mark">アボガドロ定数</span>といいます。</p>
+<div class="big">6.0×10<sup>23</sup>個 ＝ 1 mol</div>
+<p style="font-size:14px;color:#56708f;text-align:center">（アボガドロ定数 6.0×10<sup>23</sup>/mol）</p>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="page" data-t="6.0×10²³の大きさ">
+<div class="card">
+<span class="no">3</span>
+<h2>6.0×10<sup>23</sup> ってどれくらい？</h2>
+<p>「10<sup>23</sup>」は「1の後ろに0が23個」という意味です。</p>
+<p style="font-size:15px;word-break:break-all;background:#f4f8fd;border-radius:10px;padding:10px;font-family:monospace;line-height:1.6">6<span class="em">00,000,000,000,000,000,000,000</span></p>
+<p>「1兆の1兆倍」（10<sup>24</sup>）の0.6倍。想像できないほど大きい数です。</p>
+<div class="point"><b>指数の読み方の練習</b><br>
+・3.0×10<sup>23</sup>個 ＝ 0.50 mol（1 molの半分）<br>
+・1.2×10<sup>24</sup>個 ＝ 2.0 mol（1 molの2倍）<br>
+<span style="font-size:14px">※ 1.2×10<sup>24</sup> ＝ 12×10<sup>23</sup> ＝ 6.0×10<sup>23</sup>×2</span></div>
+<div class="reveal"><button>やってみよう：1.8×10<sup>24</sup>個は何mol？</button>
+<div class="ans">1.8×10<sup>24</sup> ÷ (6.0×10<sup>23</sup>)<br>＝ 18×10<sup>23</sup> ÷ (6.0×10<sup>23</sup>)<br>＝ <b class="em">3.0 mol</b></div></div>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="page" data-t="1molの重さ">
+<div class="card">
+<span class="no">4</span>
+<h2>1 mol の重さ（質量）</h2>
+<p>1 mol の重さは、<span class="mark">原子量・分子量に g をつけるだけ</span>です。</p>
+<svg viewBox="0 0 320 200">
+<g>
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#555"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">C 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">12 g</text>
+</g>
+<g transform="translate(110,0)">
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#3a86c8"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">H₂O 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">18 g</text>
+</g>
+<g transform="translate(210,0)">
+<rect x="20" y="20" width="80" height="62" rx="12" fill="#c0392b"/>
+<text x="60" y="46" font-size="13" text-anchor="middle" fill="#fff">Fe 1mol</text>
+<text x="60" y="68" font-size="11" text-anchor="middle" fill="#ddd">6.0×10²³個</text>
+<rect x="10" y="88" width="100" height="10" rx="4" fill="#8aa6c6"/>
+<rect x="25" y="98" width="70" height="44" rx="8" fill="#e4eefa" stroke="#8aa6c6"/>
+<text x="60" y="127" font-size="18" text-anchor="middle" font-weight="800" fill="#d0402b">56 g</text>
+</g>
+<text x="160" y="172" font-size="14" text-anchor="middle">粒の数は同じでも、粒1個の重さがちがうので</text>
+<text x="160" y="192" font-size="14" text-anchor="middle">1 mol の重さはちがいます</text>
+</svg>
+<table class="t">
+<tr><th>物質</th><th>原子量・分子量</th><th>1 molの質量</th></tr>
+<tr><td>炭素 C</td><td>12</td><td class="em">12 g</td></tr>
+<tr><td>水 H₂O</td><td>18</td><td class="em">18 g</td></tr>
+<tr><td>鉄 Fe</td><td>56</td><td class="em">56 g</td></tr>
+</table>
+<div class="point"><b>言葉：</b>1 molあたりの質量を<b>モル質量</b>といいます。単位は <b>g/mol</b>です。<br>（例）水のモル質量 ＝ 18 g/mol</div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="page" data-t="分子量の求め方">
+<div class="card">
+<span class="no">5</span>
+<h2>分子量・式量の求め方</h2>
+<p>化学式に出てくる原子の<span class="mark">原子量をすべて足す</span>だけです。</p>
+<div class="step"><div class="h">例：水 H₂O</div>
+<svg viewBox="0 0 320 90">
+<circle cx="160" cy="45" r="28" fill="#d0402b"/><text x="160" y="51" font-size="17" text-anchor="middle" fill="#fff" font-weight="800">O</text>
+<circle cx="112" cy="62" r="17" fill="#8aa6c6"/><text x="112" y="68" font-size="15" text-anchor="middle" fill="#fff" font-weight="800">H</text>
+<circle cx="208" cy="62" r="17" fill="#8aa6c6"/><text x="208" y="68" font-size="15" text-anchor="middle" fill="#fff" font-weight="800">H</text>
+</svg>
+<div class="calc">H が2個、O が1個<br>1.0×<span class="em">2</span> ＋ 16 ＝ <span class="em">18</span></div></div>
+<p style="font-size:14px;color:#56708f">原子量：H＝1.0　C＝12　O＝16　Na＝23　Cl＝35.5</p>
+<div class="reveal"><button>二酸化炭素 CO₂ の分子量は？</button>
+<div class="ans">C が1個、O が2個<br>12 ＋ 16×2 ＝ <b class="em">44</b>　→ 1 molは 44 g</div></div>
+<div class="reveal"><button>塩化ナトリウム NaCl の式量は？</button>
+<div class="ans">Na が1個、Cl が1個<br>23 ＋ 35.5 ＝ <b class="em">58.5</b>　→ 1 molは 58.5 g<br><span style="font-size:14px">※ NaClはイオンでできているので「分子量」ではなく「式量」といいます。求め方は同じです。</span></div></div>
+<div class="reveal"><button>酸素 O₂ の分子量は？</button>
+<div class="ans">16×2 ＝ <b class="em">32</b>　→ 1 molは 32 g<br><span style="font-size:14px">※ 酸素は O が2個くっついた分子です。16 ではなく 32 なので注意！</span></div></div>
+</div>
+</section>
+
+<!-- 7 -->
+<section class="page" data-t="気体1molの体積">
+<div class="card">
+<span class="no">6</span>
+<h2>気体 1 mol の体積</h2>
+<p>気体は、<span class="mark">種類に関係なく</span> 1 molで <span class="em">22.4 L</span> です。</p>
+<p style="font-size:14px;color:#56708f">（0℃、1.013×10<sup>5</sup> Pa のとき）</p>
+<svg viewBox="0 0 320 200">
+<g>
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<g fill="#8aa6c6"><circle cx="35" cy="45" r="5"/><circle cx="70" cy="52" r="5"/><circle cx="50" cy="80" r="5"/><circle cx="82" cy="95" r="5"/><circle cx="30" cy="105" r="5"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">H₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">2.0 g</text>
+</g>
+<g transform="translate(103,0)">
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#fde8e5" stroke="#d0402b" stroke-width="2"/>
+<g fill="#d0402b"><circle cx="35" cy="45" r="7"/><circle cx="70" cy="52" r="7"/><circle cx="50" cy="80" r="7"/><circle cx="82" cy="95" r="7"/><circle cx="30" cy="105" r="7"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">O₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">32 g</text>
+</g>
+<g transform="translate(206,0)">
+<rect x="12" y="20" width="90" height="100" rx="6" fill="#eee" stroke="#555" stroke-width="2"/>
+<g fill="#555"><circle cx="35" cy="45" r="8"/><circle cx="70" cy="52" r="8"/><circle cx="50" cy="80" r="8"/><circle cx="82" cy="95" r="8"/><circle cx="30" cy="105" r="8"/></g>
+<text x="57" y="140" font-size="14" text-anchor="middle" font-weight="700">CO₂ 1mol</text>
+<text x="57" y="162" font-size="15" text-anchor="middle" font-weight="800" fill="#d0402b">22.4 L</text>
+<text x="57" y="184" font-size="13" text-anchor="middle" fill="#56708f">44 g</text>
+</g>
+</svg>
+<p>気体の粒どうしはとても離れて飛び回っているので、<b>粒の大きさに関係なく</b>、同じ数なら同じ体積になります。</p>
+<div class="point"><b>注意：</b>重さ（g）は物質ごとにちがいますが、<b>体積（22.4 L）はどの気体でも同じ</b>です。<br>※ 22.4 Lが使えるのは<b>気体だけ</b>です。水（液体）や鉄（固体）には使えません。</div>
+</div>
+</section>
+
+<!-- 8 -->
+<section class="page" data-t="モルの交差点">
+<div class="card">
+<span class="no">7</span>
+<h2>モルの交差点（いちばん大事な図）</h2>
+<p>ここまでの3つをまとめると、この図になります。<span class="mark">mol がまん中</span>にあります。</p>
+<svg viewBox="0 0 320 330">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f5fa8"/></marker>
+<marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d0402b"/></marker></defs>
+<!-- center -->
+<circle cx="160" cy="150" r="46" fill="#f2a922"/>
+<text x="160" y="146" font-size="22" text-anchor="middle" font-weight="800" fill="#fff">物質量</text>
+<text x="160" y="172" font-size="20" text-anchor="middle" font-weight="800" fill="#fff">mol</text>
+<!-- left: mass -->
+<rect x="4" y="122" width="72" height="56" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="40" y="146" font-size="15" text-anchor="middle" font-weight="800">質量</text>
+<text x="40" y="168" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">g</text>
+<line x1="80" y1="138" x2="110" y2="138" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="110" y1="164" x2="80" y2="164" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="96" y="120" font-size="12" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷モル質量</text>
+<text x="96" y="188" font-size="12" text-anchor="middle" fill="#d0402b" font-weight="700">×モル質量</text>
+<!-- right: number -->
+<rect x="244" y="122" width="72" height="56" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="280" y="146" font-size="15" text-anchor="middle" font-weight="800">粒子の数</text>
+<text x="280" y="168" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">個</text>
+<line x1="240" y1="138" x2="210" y2="138" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="210" y1="164" x2="240" y2="164" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="226" y="112" font-size="11.5" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷6.0×10²³</text>
+<text x="226" y="192" font-size="11.5" text-anchor="middle" fill="#d0402b" font-weight="700">×6.0×10²³</text>
+<!-- bottom: volume -->
+<rect x="112" y="252" width="96" height="60" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/>
+<text x="160" y="276" font-size="15" text-anchor="middle" font-weight="800">気体の体積</text>
+<text x="160" y="300" font-size="15" text-anchor="middle" font-weight="800" fill="#1f5fa8">L</text>
+<line x1="146" y1="248" x2="146" y2="202" stroke="#1f5fa8" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="174" y1="202" x2="174" y2="248" stroke="#d0402b" stroke-width="3" marker-end="url(#ah2)"/>
+<text x="138" y="230" font-size="12" text-anchor="end" fill="#1f5fa8" font-weight="700">÷22.4</text>
+<text x="182" y="230" font-size="12" fill="#d0402b" font-weight="700">×22.4</text>
+<!-- legend -->
+<text x="160" y="30" font-size="13" text-anchor="middle" fill="#1f5fa8" font-weight="700">青の矢印：mol に「直す」（わり算）</text>
+<text x="160" y="52" font-size="13" text-anchor="middle" fill="#d0402b" font-weight="700">赤の矢印：mol から「出す」（かけ算）</text>
+</svg>
+<div class="point"><b>覚え方：</b>mol に向かうときは<b>わり算</b>、mol から出るときは<b>かけ算</b>です。</div>
+<div class="point" style="background:#fde8e5;border-color:#d0402b"><b style="color:#a32a19">合言葉：「まず mol に直す」</b><br>g → 個 や L → g のように、<b>端から端へ直接は行けません</b>。<br>必ず<b>まん中の mol を通ります</b>。</div>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="page" data-t="例題① g→個">
+<div class="card">
+<span class="no">8</span>
+<h2>例題①　質量 → 個数</h2>
+<p class="big" style="font-size:18px">水 H₂O 9.0 g に含まれる<br>水分子は何個？</p>
+<svg viewBox="0 0 320 80">
+<rect x="5" y="20" width="80" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="45" y="46" font-size="15" text-anchor="middle" font-weight="800">9.0 g</text>
+<line x1="88" y1="40" x2="118" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="103" y="16" font-size="11" text-anchor="middle" fill="#1f5fa8" font-weight="700">Step1</text>
+<circle cx="160" cy="40" r="32" fill="#f2a922"/><text x="160" y="46" font-size="15" text-anchor="middle" font-weight="800" fill="#fff">? mol</text>
+<line x1="194" y1="40" x2="224" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="209" y="16" font-size="11" text-anchor="middle" fill="#d0402b" font-weight="700">Step2</text>
+<rect x="228" y="20" width="88" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="272" y="46" font-size="15" text-anchor="middle" font-weight="800">? 個</text>
+</svg>
+<div class="reveal"><button>Step 0：H₂O のモル質量は？</button>
+<div class="ans">1.0×2 ＋ 16 ＝ 18　→ <b class="em">18 g/mol</b></div></div>
+<div class="reveal"><button>Step 1：まず mol に直す</button>
+<div class="ans">g → mol は「÷モル質量」<br>9.0 ÷ 18 ＝ <b class="em">0.50 mol</b></div></div>
+<div class="reveal"><button>Step 2：mol から個数を出す</button>
+<div class="ans">mol → 個 は「×6.0×10<sup>23</sup>」<br>0.50 × 6.0×10<sup>23</sup> ＝ <b class="em">3.0×10<sup>23</sup> 個</b></div></div>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="page" data-t="例題② L→g">
+<div class="card">
+<span class="no">9</span>
+<h2>例題②　体積 → 質量</h2>
+<p class="big" style="font-size:18px">0℃、1.013×10<sup>5</sup> Pa で<br>酸素 O₂ 4.48 L は何 g？</p>
+<svg viewBox="0 0 320 80">
+<rect x="5" y="20" width="80" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="45" y="46" font-size="15" text-anchor="middle" font-weight="800">4.48 L</text>
+<line x1="88" y1="40" x2="118" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="103" y="16" font-size="11" text-anchor="middle" fill="#1f5fa8" font-weight="700">Step1</text>
+<circle cx="160" cy="40" r="32" fill="#f2a922"/><text x="160" y="46" font-size="15" text-anchor="middle" font-weight="800" fill="#fff">? mol</text>
+<line x1="194" y1="40" x2="224" y2="40" stroke="#555" stroke-width="3" marker-end="url(#ah3)"/>
+<text x="209" y="16" font-size="11" text-anchor="middle" fill="#d0402b" font-weight="700">Step2</text>
+<rect x="228" y="20" width="88" height="40" rx="8" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="272" y="46" font-size="15" text-anchor="middle" font-weight="800">? g</text>
+</svg>
+<div class="reveal"><button>Step 1：まず mol に直す</button>
+<div class="ans">L → mol は「÷22.4」<br>4.48 ÷ 22.4 ＝ <b class="em">0.200 mol</b></div></div>
+<div class="reveal"><button>Step 2：mol から質量を出す</button>
+<div class="ans">O₂ のモル質量は 16×2 ＝ 32 g/mol<br>mol → g は「×モル質量」<br>0.200 × 32 ＝ <b class="em">6.4 g</b></div></div>
+<div class="point"><b>よくあるミス：</b>O₂ のモル質量を 16 にしてしまうこと。酸素は O が2個なので <b>32</b> です。</div>
+</div>
+</section>
+
+<!-- 11 -->
+<section class="page" data-t="確認クイズ">
+<div class="card">
+<span class="no">10</span>
+<h2>確認クイズ</h2>
+<p>答えをタップしてください。</p>
+<div id="quiz"></div>
+<div id="score"></div>
+<div class="reveal" style="margin-top:4px"><button id="retry">もう一度やる（順番を入れかえ）</button></div>
+</div>
+</section>
+
+<!-- 12 -->
+<section class="page" data-t="まとめ">
+<div class="card">
+<span class="no">まとめ</span>
+<h2>今日おぼえる3つの数</h2>
+<table class="t">
+<tr><th>1 mol あたり</th><th>数</th></tr>
+<tr><td>粒子の数</td><td class="em">6.0×10<sup>23</sup> 個</td></tr>
+<tr><td>質量</td><td class="em">原子量・分子量に g</td></tr>
+<tr><td>気体の体積</td><td class="em">22.4 L</td></tr>
+</table>
+<div class="point" style="background:#fde8e5;border-color:#d0402b"><b style="color:#a32a19">合言葉：「まず mol に直す」</b><br>どんな問題も<br>① わかっている量を mol に直す<br>② mol から聞かれている量を出す<br>の2ステップで解けます。</div>
+<p><b>最後のチャレンジ：</b>紙に「モルの交差点」の図を、何も見ないで描いてみましょう。描けたら、前のページの図と見比べてください。</p>
+<button class="tocjump" data-to="7" style="width:100%;background:#e4eefa;color:#1f5fa8;border:none;border-radius:12px;padding:12px;font-size:16px;font-weight:700;margin-top:6px">交差点の図を見る</button>
+<button class="btn b3" id="goProb" style="margin-top:14px">✏️ 問題にチャレンジする ▶</button>
+</div>
+</section>
+
+
+ <div class="enav"><button id="prev">◀ 前へ</button><span id="pg"></span><button id="next">次へ ▶</button></div>
+</section>
+<section class="view" id="v-home">
+ <div id="levels"></div>
+ <div id="plistBox" style="display:none"><button class="btn b2" id="backLv">◀ レベルえらびにもどる</button><div class="card"><h2 id="lvTitle"></h2><div class="plist" id="plist"></div></div></div>
+ <div id="play" style="display:none">
+  <div class="prog"><span id="pinfo"></span><span id="pcount"></span></div>
+  <div class="card"><div class="stem" id="stem"></div><div class="sq" id="sq"></div><div class="route" id="route"></div><div id="steps"></div><div id="fin"></div></div>
+  <div id="ctrl"></div>
+  <button class="btn b2" id="quit">やめて問題リストへ</button>
+ </div>
+</section>
+<section class="view" id="v-miss"><div class="card"><h2>まちがえた小問</h2><div id="missList"></div>
+ <button class="btn b1" id="missStart">ミスだけやり直す</button><button class="btn b2" id="missClear">ミスの記録を消す</button></div></section>
+<section class="view" id="v-print"><div class="card"><h2>プリントを作る</h2>
+ <div id="pLv"></div>
+ <label style="display:flex;gap:8px;align-items:center;margin:8px 0;font-size:15px"><input type="checkbox" id="pAns" checked style="width:20px;height:20px">答えを最後のページにつける</label>
+ <button class="btn b1" id="printBtn">🖨 印刷する</button>
+ <p style="font-size:13px;color:#56708f">iPhone・iPadでは、印刷画面で「PDFとして保存」も選べます。</p></div></section>
+</main>
+<div id="printArea"></div>
+
+<div class="ov" id="toc"><div class="box"><h3>📖 解説の目次</h3><div class="tocl" id="tocList"></div><button class="btn b1" data-close>閉じる</button></div></div>
+<div class="ov" id="map"><div class="box"><h3>🗺 モルの交差点</h3>
+<svg viewBox="0 0 320 300"><defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#1f5fa8"/></marker><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#d0402b"/></marker></defs>
+<circle cx="160" cy="130" r="44" fill="#f2a922"/><text x="160" y="126" font-size="19" text-anchor="middle" font-weight="800" fill="#fff">物質量</text><text x="160" y="150" font-size="18" text-anchor="middle" font-weight="800" fill="#fff">mol</text>
+<rect x="4" y="104" width="72" height="52" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="40" y="126" font-size="14" text-anchor="middle" font-weight="800">質量</text><text x="40" y="146" font-size="14" text-anchor="middle" font-weight="800" fill="#1f5fa8">g</text>
+<line x1="80" y1="118" x2="112" y2="118" stroke="#1f5fa8" stroke-width="3" marker-end="url(#a1)"/><line x1="112" y1="144" x2="80" y2="144" stroke="#d0402b" stroke-width="3" marker-end="url(#a2)"/>
+<text x="96" y="100" font-size="11" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷モル質量</text><text x="96" y="166" font-size="11" text-anchor="middle" fill="#d0402b" font-weight="700">×モル質量</text>
+<rect x="244" y="104" width="72" height="52" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="280" y="126" font-size="14" text-anchor="middle" font-weight="800">粒子の数</text><text x="280" y="146" font-size="14" text-anchor="middle" font-weight="800" fill="#1f5fa8">個</text>
+<line x1="240" y1="118" x2="208" y2="118" stroke="#1f5fa8" stroke-width="3" marker-end="url(#a1)"/><line x1="208" y1="144" x2="240" y2="144" stroke="#d0402b" stroke-width="3" marker-end="url(#a2)"/>
+<text x="224" y="98" font-size="10.5" text-anchor="middle" fill="#1f5fa8" font-weight="700">÷6.0×10²³</text><text x="224" y="168" font-size="10.5" text-anchor="middle" fill="#d0402b" font-weight="700">×6.0×10²³</text>
+<rect x="112" y="228" width="96" height="56" rx="10" fill="#e4eefa" stroke="#1f5fa8" stroke-width="2"/><text x="160" y="250" font-size="14" text-anchor="middle" font-weight="800">気体の体積</text><text x="160" y="272" font-size="14" text-anchor="middle" font-weight="800" fill="#1f5fa8">L</text>
+<line x1="146" y1="224" x2="146" y2="180" stroke="#1f5fa8" stroke-width="3" marker-end="url(#a1)"/><line x1="174" y1="180" x2="174" y2="224" stroke="#d0402b" stroke-width="3" marker-end="url(#a2)"/>
+<text x="138" y="206" font-size="11" text-anchor="end" fill="#1f5fa8" font-weight="700">÷22.4</text><text x="182" y="206" font-size="11" fill="#d0402b" font-weight="700">×22.4</text>
+<text x="160" y="24" font-size="12.5" text-anchor="middle" fill="#1f5fa8" font-weight="700">青：mol に「直す」（わり算）</text><text x="160" y="44" font-size="12.5" text-anchor="middle" fill="#d0402b" font-weight="700">赤：mol から「出す」（かけ算）</text></svg>
+<ul><li><b>合言葉：まず mol に直す。</b>端から端へ直接は行けない。</li>
+<li>モル濃度：mol/L ＝ mol ÷ L　→　mol ＝ mol/L × L（mL は L に直す）</li>
+<li>密度：モル質量 ＝ 密度[g/L] × 22.4</li></ul>
+<button class="btn b1" data-close>閉じる</button></div></div>
+
+<div class="ov" id="help"><div class="box"><h3>❓ 使い方（取扱説明書）</h3>
+<h4>このアプリは何？</h4><ul><li>化学基礎の問題集で先生が○をつけた問題を、<b>Step（段階）に分けて</b>解く練習アプリです。</li>
+<li>上のタブで「解説」「問題」「ミス」「印刷」を切りかえます。</li></ul>
+<h4>解説（まずここから）</h4><ul><li>「モルってなに？」を絵で説明した12ページです。画面下の「次へ ▶」「◀ 前へ」で進みます。「📖 目次」から好きなページへ飛べます。</li>
+<li>青いボタンは、<b>先に自分で考えてから</b>タップすると答えが出ます。10ページ目に確認クイズがあります。</li>
+<li>最後のページの「問題にチャレンジする」から、問題へ進めます。</li></ul><h4>問題</h4><ul>
+<li>① ドリル → ② 基本問題 → ③ 標準問題 の順におすすめします。</li>
+<li>レベルをえらぶと問題番号が出ます。タップすると、小問が1つずつ出ます。</li>
+<li>どの問題も <b>Step 1：まず mol に直す → Step 2：mol から答えを出す</b> の順に、4つの式から正しいものをえらびます。</li>
+<li><b>答える前に、ノートに自分で式を書いてから</b>えらぶと力がつきます。</li>
+<li>えらぶと、正しい式と「なぜそうなるか」が出ます。</li></ul>
+<h4>🗺 交差点</h4><ul><li>右上の「🗺 交差点」で、いつでも g・mol・個・L の関係図を見られます。迷ったら見てください。</li></ul>
+<h4>ミス・印刷</h4><ul><li>1つでもまちがえた小問は「ミス」に記録されます。全部のStepを正解すると消えます。</li>
+<li>「印刷」で、問題プリント（解答らん付き）と答えのページを作れます。</li></ul>
+<h4>マークの意味</h4><ul><li>問題リストの「✅」は全部の小問が正解済み、「3/5」は5問中3問正解済みという意味です。</li></ul>
+<button class="btn b1" data-close>閉じる</button></div></div>
+
+<script>
+// ===== helper =====
+const NA=6.0e23;
+const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+function fmt(x,sig){if(!isFinite(x))return '?';let s=Number(x).toPrecision(sig);
+ if(Math.abs(x)>=1e4&&!s.includes('e')){s=Number(x).toExponential(sig-1)}
+ if(Math.abs(x)<1e-3&&x!==0&&!s.includes('e')){s=Number(x).toExponential(sig-1)}
+ if(s.includes('e')){let [m,e]=s.split('e');e=String(parseInt(e));return m+'×10'+e.split('').map(c=>SUP[c]).join('')}return s}
+const FS={NA:'6.0×10²³',V:'22.4'};
+// 単位→mol の式を4択にする
+function toMol(vs,v,from,M,Ms,sig,lab){
+ const ops={g:[['÷',M,Ms],['×',M,Ms],['÷',22.4,'22.4'],['÷',NA,FS.NA]],
+            L:[['÷',22.4,'22.4'],['×',22.4,'22.4'],['÷',NA,FS.NA],M?['÷',M,Ms]:['×',NA,FS.NA]],
+            '個':[['÷',NA,FS.NA],['×',NA,FS.NA],['÷',22.4,'22.4'],M?['÷',M,Ms]:['×',22.4,'22.4']]}[from];
+ const ch=[];ops.forEach(o=>{const r=o[0]==='÷'?v/o[1]:v*o[1];const t=`${vs} ${o[0]} ${o[2]} ＝ ${fmt(r,sig)} mol`;if(!ch.includes(t))ch.push(t)});
+ const why={g:'g → mol は「÷ モル質量」',L:'L → mol は「÷ 22.4」（気体だけ）','個':'個 → mol は「÷ 6.0×10²³」'}[from];
+ return {q:(lab||'Step 1')+'：まず mol に直す',ch,ex:why,route:[from,'mol']}}
+// mol→単位
+function fromMol(ns,n,to,M,Ms,sig,lab){
+ const ops={g:[['×',M,Ms],['÷',M,Ms],['×',22.4,'22.4'],['×',NA,FS.NA]],
+            L:[['×',22.4,'22.4'],['÷',22.4,'22.4'],['×',NA,FS.NA],M?['×',M,Ms]:['÷',NA,FS.NA]],
+            '個':[['×',NA,FS.NA],['÷',NA,FS.NA],['×',22.4,'22.4'],M?['×',M,Ms]:['÷',22.4,'22.4']]}[to];
+ const ch=[];ops.forEach(o=>{const r=o[0]==='÷'?n/o[1]:n*o[1];const t=`${ns} ${o[0]} ${o[2]} ＝ ${fmt(r,sig)} ${to}`;if(!ch.includes(t))ch.push(t)});
+ const why={g:'mol → g は「× モル質量」',L:'mol → L は「× 22.4」（気体だけ）','個':'mol → 個 は「× 6.0×10²³」'}[to];
+ return {q:(lab||'Step 2')+'：mol から'+{g:'質量 g',L:'体積 L','個':'粒子の数'}[to]+'を出す',ch,ex:why,route:['mol',to]}}
+// 自由な4択（最初が正解）
+const C=(q,ch,ex)=>({q,ch,ex});
+
+// ===== 問題 =====
+const LEVELS=[
+{id:'d',name:'① ドリル',sub:'p.46〜49',probs:[
+{no:3,title:'物質 1 mol の質量',stem:'表の空欄に入る数値を答えよ。（H＝1.0　O＝16　Na＝23　Al＝27　Cl＝35.5）',subs:[
+ {q:'（ア）水 H₂O の分子量',ans:'18',steps:[C('H が2個、O が1個。分子量は？',['1.0×2 ＋ 16 ＝ 18','1.0 ＋ 16 ＝ 17','(1.0 ＋ 16)×2 ＝ 34','1.0×2×16 ＝ 32'],'化学式の原子量をすべて足す。H₂O は H が2個なので 1.0×2。')]},
+ {q:'（イ）塩化ナトリウム NaCl の式量',ans:'58.5',steps:[C('Na と Cl が1個ずつ。式量は？',['23 ＋ 35.5 ＝ 58.5','35.5 − 23 ＝ 12.5','23×2 ＋ 35.5 ＝ 81.5','23 ＋ 35 ＝ 58'],'足すだけ。イオンでできた物質は「分子量」ではなく「式量」と呼ぶが、求め方は同じ。')]},
+ {q:'（ウ）黒鉛（炭素 C）1 mol の質量',ans:'12 g',steps:[C('炭素の原子量は 12。1 mol の質量は？',['12 g','6.0×10²³ g','22.4 g','1 g'],'1 mol の質量 ＝ 原子量・分子量・式量に g をつけたもの。')]},
+ {q:'（エ）水 1 mol の質量',ans:'18 g',steps:[C('水の分子量は 18。1 mol の質量は？',['18 g','22.4 g','1 g','6.0×10²³ g'],'分子量 18 に g をつけて 18 g。22.4 は気体の体積（L）の数なので関係ない。')]},
+ {q:'（オ）アルミニウム 1 mol の質量',ans:'27 g',steps:[C('Al の原子量は 27。1 mol の質量は？',['27 g','13 g','54 g','22.4 g'],'原子量 27 に g をつけて 27 g。')]}]},
+{no:4,title:'物質量',stem:'図の空欄に入る数値を答えよ。（気体は 0℃、1.013×10⁵ Pa）',subs:[
+ {q:'（ア）粒子 1.2×10²⁴ 個は何 mol？',ans:'2.0 mol',steps:[toMol('1.2×10²⁴',1.2e24,'個',0,'',2,'Step')]},
+ {q:'（イ）0.50 mol は何個？',ans:'3.0×10²³ 個',steps:[fromMol('0.50',0.5,'個',0,'',2,'Step')]},
+ {q:'（ウ）水 9.0 g は何 mol？（H₂O＝18）',ans:'0.50 mol',steps:[toMol('9.0',9,'g',18,'18',2,'Step')]},
+ {q:'（エ）水 18 g は何 mol？',ans:'1.0 mol',steps:[toMol('18',18,'g',18,'18',2,'Step')]},
+ {q:'（オ）水 2.0 mol は何 g？',ans:'36 g',steps:[fromMol('2.0',2,'g',18,'18',2,'Step')]},
+ {q:'（カ）酸素 0.500 mol は何 L？',ans:'11.2 L',steps:[fromMol('0.500',0.5,'L',0,'',3,'Step')]},
+ {q:'（キ）気体 44.8 L は何 mol？',ans:'2.00 mol',steps:[toMol('44.8',44.8,'L',0,'',3,'Step')]}]},
+{no:5,title:'単位の換算',stem:'空欄に入る単位を答えよ。（単位は分数のように約分できる）',subs:[
+ {q:'(1) 質量[g] ÷ モル質量[g/mol] ＝ 物質量［　］',ans:'mol',steps:[C('g ÷ (g/mol) の単位は？',['mol','g','L','g/mol'],'g ÷ g/mol ＝ g × mol/g ＝ mol（g が約分で消える）。')]},
+ {q:'(2) 気体のモル体積[L/mol] × 物質量[mol] ＝ 気体の体積［　］',ans:'L',steps:[C('(L/mol) × mol の単位は？',['L','mol','L/mol','g'],'mol が約分で消えて L。')]},
+ {q:'(3) 気体の密度[g/L] × 気体のモル体積[L/mol] ＝ モル質量［　］',ans:'g/mol',steps:[C('(g/L) × (L/mol) の単位は？',['g/mol','g','mol','g/L'],'L が約分で消えて g/mol。')]},
+ {q:'(4) 溶液のモル濃度［　］ × 溶液の体積[L] ＝ 溶質の物質量[mol]',ans:'mol/L',steps:[C('［　］× L ＝ mol になる単位は？',['mol/L','mol','L/mol','g/L'],'mol/L × L ＝ mol。')]},
+ {q:'(5) アボガドロ定数［　］ × 物質量[mol] ＝ 粒子の個数',ans:'/mol',steps:[C('［　］× mol ＝ 個数 になる単位は？',['/mol','mol','個','g/mol'],'6.0×10²³ /mol は「1 mol あたり 6.0×10²³ 個」という意味。/mol × mol ＝（個数）。')]}]},
+{no:6,title:'物質量と粒子の数 (1)',stem:'各物質の物質量［mol］を求めよ。',subs:[
+ {q:'(1) 6.0×10²⁴ 個の水素分子 H₂',ans:'10 mol',steps:[toMol('6.0×10²⁴',6e24,'個',0,'',2,'Step')]},
+ {q:'(2) 1.5×10²³ 個の炭素原子 C',ans:'0.25 mol',steps:[toMol('1.5×10²³',1.5e23,'個',0,'',2,'Step')]},
+ {q:'(3) 9.0×10²³ 個の酸素分子 O₂',ans:'1.5 mol',steps:[toMol('9.0×10²³',9e23,'個',0,'',2,'Step')]},
+ {q:'(4) 1.8×10²⁴ 個のアルミニウムイオン Al³⁺',ans:'3.0 mol',steps:[toMol('1.8×10²⁴',1.8e24,'個',0,'',2,'Step')]}]},
+{no:7,title:'物質量と粒子の数 (2)',stem:'各物質に含まれる粒子の数を求めよ。',subs:[
+ {q:'(1) 0.50 mol のアルミニウム Al に含まれる Al 原子',ans:'3.0×10²³ 個',steps:[fromMol('0.50',0.5,'個',0,'',2,'Step')]},
+ {q:'(2) 0.25 mol の水 H₂O に含まれる水分子',ans:'1.5×10²³ 個',steps:[fromMol('0.25',0.25,'個',0,'',2,'Step')]},
+ {q:'(3) 1.0 mol の塩化ナトリウム NaCl に含まれる Na⁺',ans:'6.0×10²³ 個',steps:[C('NaCl 1単位に Na⁺ は何個？',['1個','2個','0個','6.0×10²³個'],'NaCl は Na⁺ と Cl⁻ が1個ずつ。だから Na⁺ も 1.0 mol。'),fromMol('1.0',1,'個',0,'',2,'Step 2')]}]},
+{no:12,title:'物質量と気体の体積 (2)',stem:'次の気体の体積［L］を求めよ。（0℃、1.013×10⁵ Pa）',subs:[
+ {q:'(1) 2.00 mol の水素 H₂',ans:'44.8 L',steps:[fromMol('2.00',2,'L',0,'',3,'Step')]},
+ {q:'(2) 0.25 mol の酸素 O₂',ans:'5.6 L',steps:[fromMol('0.25',0.25,'L',0,'',2,'Step')]},
+ {q:'(3) 0.500 mol の二酸化炭素 CO₂',ans:'11.2 L',steps:[fromMol('0.500',0.5,'L',0,'',3,'Step')]}]},
+{no:14,title:'質量と粒子の数',stem:'次の各問いに答えよ。',subs:[
+ {q:'(1) 8.0 g のメタン CH₄（分子量16）中のメタン分子は何個か',ans:'3.0×10²³ 個',steps:[toMol('8.0',8,'g',16,'16',2),fromMol('0.50',0.5,'個',16,'16',2)]},
+ {q:'(2) 56 g の窒素 N₂（分子量28）中の窒素分子は何個か',ans:'1.2×10²⁴ 個',steps:[toMol('56',56,'g',28,'28',2),fromMol('2.0',2,'個',28,'28',2)]},
+ {q:'(3) 3.0×10²³ 個の硫黄原子 S（原子量32）は何 g か',ans:'16 g',steps:[toMol('3.0×10²³',3e23,'個',32,'32',2),fromMol('0.50',0.5,'g',32,'32',2)]},
+ {q:'(4) 9.0×10²³ 個の水分子 H₂O（分子量18）は何 g か',ans:'27 g',steps:[toMol('9.0×10²³',9e23,'個',18,'18',2),fromMol('1.5',1.5,'g',18,'18',2)]}]},
+{no:15,title:'質量と気体の体積',stem:'次の各問いに答えよ。（0℃、1.013×10⁵ Pa）',subs:[
+ {q:'(1) 0.50 g の水素 H₂（分子量2.0）は何 L か',ans:'5.6 L',steps:[toMol('0.50',0.5,'g',2,'2.0',2),fromMol('0.25',0.25,'L',2,'2.0',2)]},
+ {q:'(2) 14 g の窒素 N₂（分子量28）は何 L か',ans:'11 L',steps:[toMol('14',14,'g',28,'28',2),fromMol('0.50',0.5,'L',28,'28',2)],note:'0.50 は有効数字2桁なので、11.2 → 11 L。'},
+ {q:'(3) 5.6 L の酸素 O₂（分子量32）は何 g か',ans:'8.0 g',steps:[toMol('5.6',5.6,'L',32,'32',2),fromMol('0.25',0.25,'g',32,'32',2)]},
+ {q:'(4) 1.12 L の二酸化炭素 CO₂（分子量44）は何 g か',ans:'2.2 g',steps:[toMol('1.12',1.12,'L',44,'44',3),fromMol('0.0500',0.05,'g',44,'44',2)]}]},
+{no:16,title:'気体の体積と粒子の数',stem:'次の各問いに答えよ。（0℃、1.013×10⁵ Pa）',subs:[
+ {q:'(1) 33.6 L の水素 H₂ に含まれる水素分子は何個か',ans:'9.0×10²³ 個',steps:[toMol('33.6',33.6,'L',0,'',3),fromMol('1.50',1.5,'個',0,'',2)]},
+ {q:'(2) 5.6 L のメタン CH₄ に含まれるメタン分子は何個か',ans:'1.5×10²³ 個',steps:[toMol('5.6',5.6,'L',0,'',2),fromMol('0.25',0.25,'個',0,'',2)]},
+ {q:'(3) 6.0×10²² 個のアルゴン Ar は何 L か',ans:'2.24 L（2.2 L）',steps:[toMol('6.0×10²²',6e22,'個',0,'',2),fromMol('0.10',0.1,'L',0,'',3)]},
+ {q:'(4) 3.0×10²³ 個のエタン C₂H₆ は何 L か',ans:'11.2 L（11 L）',steps:[toMol('3.0×10²³',3e23,'個',0,'',2),fromMol('0.50',0.5,'L',0,'',3)]}]},
+{no:17,title:'気体の密度と分子量',stem:'次の各問いに答えよ。（0℃、1.013×10⁵ Pa）　モル質量 ＝ 密度[g/L] × 22.4[L/mol]',subs:[
+ {q:'(1) 密度が 0.72 g/L の気体のモル質量は何 g/mol か',ans:'16 g/mol',steps:[C('1 mol（＝22.4 L）の質量を求める式は？',['0.72 × 22.4 ＝ 16 g/mol','0.72 ÷ 22.4 ＝ 0.032 g/mol','22.4 ÷ 0.72 ＝ 31 g/mol','0.72 × 6.0×10²³ ＝ 4.3×10²³ g/mol'],'密度は「1 L あたりの質量」。1 mol は 22.4 L なので、22.4 L 分の質量 ＝ 0.72×22.4。')]},
+ {q:'(2) 密度が 2.6 g/L の気体のモル質量は何 g/mol か',ans:'58 g/mol',steps:[C('式は？',['2.6 × 22.4 ＝ 58 g/mol','2.6 ÷ 22.4 ＝ 0.12 g/mol','22.4 ÷ 2.6 ＝ 8.6 g/mol','2.6 × 6.0×10²³ ＝ 1.6×10²⁴ g/mol'],'1 L で 2.6 g → 22.4 L では 2.6×22.4 ＝ 58 g。')]},
+ {q:'(3) モル質量が 32 g/mol の気体の密度は何 g/L か',ans:'1.4 g/L',steps:[C('式は？',['32 ÷ 22.4 ＝ 1.4 g/L','32 × 22.4 ＝ 7.2×10² g/L','22.4 ÷ 32 ＝ 0.70 g/L','32 ÷ 6.0×10²³ ＝ 5.3×10⁻²³ g/L'],'22.4 L で 32 g → 1 L あたりは 32÷22.4。')]}]},
+{no:19,title:'モル濃度',stem:'次の各問いに答えよ。　モル濃度[mol/L] ＝ 溶質の物質量[mol] ÷ 水溶液の体積[L]',subs:[
+ {q:'(1) 酢酸 0.50 mol を溶かして 500 mL にした水溶液は何 mol/L か',ans:'1.0 mol/L',steps:[C('500 mL は何 L？',['0.500 L','500 L','5.00 L','0.0500 L'],'1 L ＝ 1000 mL なので 500÷1000。'),C('モル濃度は？',['0.50 ÷ 0.500 ＝ 1.0 mol/L','0.50 × 0.500 ＝ 0.25 mol/L','0.50 ÷ 500 ＝ 0.0010 mol/L','0.500 ÷ 0.50 ＝ 1.0 L/mol'],'mol ÷ L。体積は必ず L に直してから割る。')]},
+ {q:'(2) 5.85 g の NaCl（モル質量58.5 g/mol）を溶かして 200 mL にした水溶液は何 mol/L か',ans:'0.500 mol/L',steps:[toMol('5.85',5.85,'g',58.5,'58.5',3),C('Step 2：0.200 L で割る',['0.100 ÷ 0.200 ＝ 0.500 mol/L','0.100 × 0.200 ＝ 0.0200 mol/L','0.100 ÷ 200 ＝ 5.00×10⁻⁴ mol/L','5.85 ÷ 0.200 ＝ 29.3 mol/L'],'まず mol に直してから、L で割る。g のまま割らないこと。')]},
+ {q:'(3) 4.0 g の NaOH（モル質量40 g/mol）を溶かして 1.0 L にした水溶液は何 mol/L か',ans:'0.10 mol/L',steps:[toMol('4.0',4,'g',40,'40',2),C('Step 2：1.0 L で割る',['0.10 ÷ 1.0 ＝ 0.10 mol/L','4.0 ÷ 1.0 ＝ 4.0 mol/L','0.10 × 40 ＝ 4.0 mol/L','1.0 ÷ 0.10 ＝ 10 mol/L'],'0.10 mol が 1.0 L に入っているので 0.10 mol/L。')]},
+ {q:'(4) 0.20 mol/L の NaCl 水溶液 50 mL には何 mol の NaCl が含まれるか',ans:'0.010 mol',steps:[C('物質量の式は？',['0.20 × 0.050 ＝ 0.010 mol','0.20 × 50 ＝ 10 mol','0.20 ÷ 0.050 ＝ 4.0 mol','0.050 ÷ 0.20 ＝ 0.25 mol'],'mol ＝ mol/L × L。50 mL ＝ 0.050 L に直してかける。')]},
+ {q:'(5) 1.0 mol/L の塩酸 1.0 L には何 g の HCl（モル質量36.5 g/mol）が含まれるか',ans:'36.5 g（有効数字2桁なら 37 g）',steps:[C('Step 1：物質量は？',['1.0 × 1.0 ＝ 1.0 mol','1.0 ÷ 36.5 ＝ 0.027 mol','1.0 × 22.4 ＝ 22.4 mol','1.0 ÷ 1.0 ＝ 1.0 L'],'mol/L × L ＝ mol。'),fromMol('1.0',1,'g',36.5,'36.5',3)]}]}
+]},
+{id:'b',name:'② 基本問題',sub:'p.52〜54',probs:[
+{no:73,title:'物質量（表）',stem:'表の空欄に入る数値を答えよ。体積は 0℃、1.013×10⁵ Pa。\nメタン CH₄：分子量（ア）、物質量 0.50 mol、質量（イ）、分子の数（ウ）、体積（エ）\n酸素 O₂：分子量（オ）、物質量（カ）、質量 8.0 g、分子の数（キ）、体積（ク）\n硝酸 HNO₃：分子量 63、物質量（ケ）、質量（コ）、分子の数 1.2×10²⁴',subs:[
+ {q:'（ア）CH₄ の分子量',ans:'16',steps:[C('式は？',['12 ＋ 1.0×4 ＝ 16','12 ＋ 1.0 ＝ 13','12×4 ＋ 1.0 ＝ 49','(12 ＋ 1.0)×4 ＝ 52'],'C 1個 ＋ H 4個。')]},
+ {q:'（イ）0.50 mol の CH₄ の質量',ans:'8.0 g',steps:[fromMol('0.50',0.5,'g',16,'16',2,'Step')]},
+ {q:'（ウ）0.50 mol の CH₄ の分子の数',ans:'3.0×10²³ 個',steps:[fromMol('0.50',0.5,'個',16,'16',2,'Step')]},
+ {q:'（エ）0.50 mol の CH₄ の体積',ans:'11 L',steps:[fromMol('0.50',0.5,'L',16,'16',2,'Step')],note:'0.50 が有効数字2桁なので 11.2 → 11 L。'},
+ {q:'（オ）O₂ の分子量',ans:'32',steps:[C('式は？',['16 × 2 ＝ 32','16','16 ＋ 1.0 ＝ 17','16 ÷ 2 ＝ 8'],'酸素は O が2個くっついた分子。')]},
+ {q:'（カ）8.0 g の O₂ の物質量',ans:'0.25 mol',steps:[toMol('8.0',8,'g',32,'32',2,'Step')]},
+ {q:'（キ）O₂ の分子の数',ans:'1.5×10²³ 個',steps:[fromMol('0.25',0.25,'個',32,'32',2,'Step')]},
+ {q:'（ク）O₂ の体積',ans:'5.6 L',steps:[fromMol('0.25',0.25,'L',32,'32',2,'Step')]},
+ {q:'（ケ）1.2×10²⁴ 個の HNO₃ の物質量',ans:'2.0 mol',steps:[toMol('1.2×10²⁴',1.2e24,'個',63,'63',2,'Step')]},
+ {q:'（コ）HNO₃ の質量',ans:'1.3×10² g（126 g）',steps:[fromMol('2.0',2,'g',63,'63',2,'Step')],note:'有効数字2桁なので 126 g → 1.3×10² g。'}]},
+{no:76,title:'気体の分子量',stem:'(1)〜(3)の気体の分子量を求め、(ア) H₂　(イ) Ne　(ウ) N₂　(エ) CO₂　(オ) SO₂ のどれか答えよ。（0℃、1.013×10⁵ Pa）\n原子量：H＝1.0　N＝14　O＝16　Ne＝20　S＝32',subs:[
+ {q:'(1) 1.12 L の質量が 1.0 g である気体',ans:'分子量 20 → (イ) Ne',steps:[toMol('1.12',1.12,'L',0,'',3),C('Step 2：1 mol あたりの質量（モル質量）は？',['1.0 ÷ 0.0500 ＝ 20 g/mol','1.0 × 0.0500 ＝ 0.050 g/mol','0.0500 ÷ 1.0 ＝ 0.050 g/mol','1.0 × 22.4 ＝ 22 g/mol'],'モル質量 ＝ 質量[g] ÷ 物質量[mol]。'),C('Step 3：分子量 20 の気体は？',['(イ) Ne','(ア) H₂','(ウ) N₂','(エ) CO₂'],'Ne ＝ 20。')]},
+ {q:'(2) 密度が 1.25 g/L である気体',ans:'分子量 28 → (ウ) N₂',steps:[C('Step 1：1 mol（22.4 L）の質量は？',['1.25 × 22.4 ＝ 28 g','1.25 ÷ 22.4 ＝ 0.056 g','22.4 ÷ 1.25 ＝ 18 g','1.25 × 6.0×10²³ g'],'密度 × 22.4 ＝ モル質量。'),C('Step 2：分子量 28 の気体は？',['(ウ) N₂','(エ) CO₂','(イ) Ne','(オ) SO₂'],'N₂ ＝ 14×2 ＝ 28。')]},
+ {q:'(3) ある体積の質量が同体積の酸素の質量の 2.0 倍の気体',ans:'分子量 64 → (オ) SO₂',steps:[C('Step 1：同じ体積なら物質量（mol）は？',['同じ','2.0 倍','半分','わからない'],'0℃、1.013×10⁵ Pa では、同じ体積の気体は同じ物質量（アボガドロの法則）。だから質量の比 ＝ 分子量の比。'),C('Step 2：分子量は？',['32 × 2.0 ＝ 64','16 × 2.0 ＝ 32','32 ÷ 2.0 ＝ 16','22.4 × 2.0 ＝ 45'],'O₂ ＝ 32 の 2.0 倍。'),C('Step 3：分子量 64 の気体は？',['(オ) SO₂','(エ) CO₂','(ウ) N₂','(イ) Ne'],'SO₂ ＝ 32 ＋ 16×2 ＝ 64。')]}]},
+{no:77,title:'混合気体',stem:'空気を、窒素と酸素が体積比 4：1 で混合した気体として、次の各問いに答えよ。（N₂＝28　O₂＝32）',subs:[
+ {q:'(1) 空気の平均分子量はいくらか',ans:'28.8（約29）',steps:[C('体積比 4：1 ＝ 物質量の比 4：1。平均分子量の式は？',['28 × 4/5 ＋ 32 × 1/5 ＝ 28.8','(28 ＋ 32) ÷ 2 ＝ 30','28 × 4 ＋ 32 × 1 ＝ 144','28 × 1/5 ＋ 32 × 4/5 ＝ 31.2'],'「割合をかけて足す」。窒素が 4/5、酸素が 1/5。')]},
+ {q:'(2) 0℃、1.013×10⁵ Pa で 5.6 L の空気の質量は何 g か',ans:'7.2 g',steps:[toMol('5.6',5.6,'L',28.8,'28.8',2),fromMol('0.25',0.25,'g',28.8,'28.8',2)],note:'空気のモル質量は (1) の 28.8 g/mol を使う。'},
+ {q:'(3) 空気よりも軽い気体は？　(ア) Cl₂　(イ) CO₂　(ウ) NH₃　(エ) Ar',ans:'(ウ) NH₃',steps:[C('分子量が 28.8 より小さいものは？',['(ウ) NH₃ ＝ 17','(エ) Ar ＝ 40','(イ) CO₂ ＝ 44','(ア) Cl₂ ＝ 71'],'同じ体積なら、分子量が小さいほど軽い。')]}]},
+{no:78,title:'粒子の質量と粒子の数',stem:'（Mg＝24　H₂O＝18　SO₄²⁻＝96　Na＝23　C＝12　He＝4.0　Al＝27　Fe＝56）',subs:[
+ {q:'(1)(ア) マグネシウム原子 Mg 1個の質量［g］',ans:'4.0×10⁻²³ g',steps:[C('1 mol（6.0×10²³ 個）で 24 g。1個では？',['24 ÷ 6.0×10²³ ＝ 4.0×10⁻²³ g','24 × 6.0×10²³ ＝ 1.4×10²⁵ g','6.0×10²³ ÷ 24 ＝ 2.5×10²² g','24 ÷ 22.4 ＝ 1.1 g'],'1個の質量 ＝ モル質量 ÷ 6.0×10²³。とても小さい数になる。')]},
+ {q:'(1)(イ) 水分子 H₂O 1個の質量［g］',ans:'3.0×10⁻²³ g',steps:[C('式は？',['18 ÷ 6.0×10²³ ＝ 3.0×10⁻²³ g','18 × 6.0×10²³ ＝ 1.1×10²⁵ g','6.0×10²³ ÷ 18 ＝ 3.3×10²² g','18 ÷ 22.4 ＝ 0.80 g'],'18 g を 6.0×10²³ 個で分ける。')]},
+ {q:'(1)(ウ) 硫酸イオン SO₄²⁻ 1個の質量［g］',ans:'1.6×10⁻²² g',steps:[C('式は？',['96 ÷ 6.0×10²³ ＝ 1.6×10⁻²² g','96 × 6.0×10²³ ＝ 5.8×10²⁵ g','6.0×10²³ ÷ 96 ＝ 6.3×10²¹ g','96 ÷ 22.4 ＝ 4.3 g'],'16×10⁻²³ ＝ 1.6×10⁻²²。')]},
+ {q:'(2) 1 g ずつとったとき、原子の数が最も多いもの・最も少ないもの　(ア) Na　(イ) C　(ウ) He　(エ) Al　(オ) Fe',ans:'最も多い：(ウ) He　最も少ない：(オ) Fe',steps:[C('同じ 1 g なら、物質量 1/M が大きいのは？',['原子量が小さいもの','原子量が大きいもの','どれも同じ','気体だけ'],'物質量 ＝ 1 ÷ 原子量。割る数が小さいほど mol（＝個数）が大きい。'),C('最も多いのは？',['(ウ) He（4.0）','(オ) Fe（56）','(イ) C（12）','(ア) Na（23）'],'He が一番軽いので、1 g の中の原子の数が一番多い。'),C('最も少ないのは？',['(オ) Fe（56）','(ウ) He（4.0）','(エ) Al（27）','(ア) Na（23）'],'Fe が一番重いので、原子の数が一番少ない。')]}]},
+{no:80,title:'金属元素の原子量',stem:'次の各問いに答えよ。（O＝16）',subs:[
+ {q:'(1) 化合物 MO 中に M が質量の割合で 60% 含まれる。M の原子量は？',ans:'24',steps:[C('M の原子量を x とすると、MO の式量は？',['x ＋ 16','16x','x ＋ 8','2x ＋ 16'],'M 1個 ＋ O 1個。'),C('式を立てると？',['x ÷ (x＋16) ＝ 60/100','16 ÷ (x＋16) ＝ 60/100','x ÷ 16 ＝ 60/100','(x＋16) ÷ x ＝ 60/100'],'M の割合 ＝ M の原子量 ÷ MO の式量。'),C('解くと？',['x ＝ 24','x ＝ 9.6','x ＝ 40','x ＝ 10'],'100x ＝ 60x ＋ 960 → 40x ＝ 960 → x ＝ 24。')]},
+ {q:'(2) 化合物 M₂O₃ 中に M が質量の割合で 70% 含まれる。M の原子量は？',ans:'56',steps:[C('M₂O₃ の式量は？',['2x ＋ 48','x ＋ 48','2x ＋ 16','3x ＋ 32'],'M が2個、O が3個（16×3＝48）。'),C('式を立てると？',['2x ÷ (2x＋48) ＝ 70/100','x ÷ (2x＋48) ＝ 70/100','48 ÷ (2x＋48) ＝ 70/100','2x ÷ 48 ＝ 70/100'],'M は 2個あるので分子は 2x。'),C('解くと？',['x ＝ 56','x ＝ 112','x ＝ 28','x ＝ 34'],'200x ＝ 140x ＋ 3360 → 60x ＝ 3360 → x ＝ 56（鉄）。')]}]},
+{no:82,title:'モル濃度',stem:'水酸化ナトリウム NaOH（モル質量 40 g/mol）水溶液について答えよ。',subs:[
+ {q:'(1) 0.10 mol の NaOH を水に溶かして 500 mL にした水溶液は何 mol/L か',ans:'0.20 mol/L',steps:[C('式は？',['0.10 ÷ 0.500 ＝ 0.20 mol/L','0.10 ÷ 500 ＝ 2.0×10⁻⁴ mol/L','0.10 × 0.500 ＝ 0.050 mol/L','0.500 ÷ 0.10 ＝ 5.0 mol/L'],'500 mL ＝ 0.500 L。mol ÷ L。')]},
+ {q:'(2) 4.0 g の NaOH を水に溶かして 200 mL にした水溶液は何 mol/L か',ans:'0.50 mol/L',steps:[toMol('4.0',4,'g',40,'40',2),C('Step 2：0.200 L で割る',['0.10 ÷ 0.200 ＝ 0.50 mol/L','4.0 ÷ 0.200 ＝ 20 mol/L','0.10 × 0.200 ＝ 0.020 mol/L','0.10 ÷ 200 ＝ 5.0×10⁻⁴ mol/L'],'まず mol、次に L で割る。')]},
+ {q:'(3) 0.50 mol/L の水溶液 400 mL に溶けている NaOH は何 mol か',ans:'0.20 mol',steps:[C('式は？',['0.50 × 0.400 ＝ 0.20 mol','0.50 × 400 ＝ 2.0×10² mol','0.50 ÷ 0.400 ＝ 1.3 mol','0.400 ÷ 0.50 ＝ 0.80 mol'],'mol ＝ mol/L × L。')]},
+ {q:'(4) 0.20 mol/L の水溶液 500 mL をつくるのに必要な NaOH は何 g か',ans:'4.0 g',steps:[C('Step 1：必要な物質量は？',['0.20 × 0.500 ＝ 0.10 mol','0.20 × 500 ＝ 1.0×10² mol','0.20 ÷ 0.500 ＝ 0.40 mol','0.20 × 40 ＝ 8.0 mol'],'mol/L × L。'),fromMol('0.10',0.1,'g',40,'40',2)]}]},
+{no:85,title:'物質量と文字式',stem:'アボガドロ定数を N_A［/mol］、気体のモル体積を V_m［L/mol］として答えよ。（文字式も、単位を分数のように考える）',subs:[
+ {q:'(1) 金属原子が n［個］あり、その質量は w［g］。モル質量は何 g/mol か',ans:'N_A w / n［g/mol］',steps:[C('Step 1：n 個は何 mol？',['n / N_A［mol］','n × N_A［mol］','N_A / n［mol］','n / V_m［mol］'],'個 → mol は「÷ アボガドロ定数」。'),C('Step 2：モル質量 ＝ 質量 ÷ 物質量',['w ÷ (n/N_A) ＝ N_A w / n','w × n / N_A','n w / N_A','w / (n N_A)'],'分数で割る ＝ ひっくり返してかける。')]},
+ {q:'(2) モル質量 M［g/mol］の気体の質量が w［g］。体積は何 L か',ans:'V_m w / M［L］',steps:[C('Step 1：物質量は？',['w / M［mol］','w M［mol］','M / w［mol］','w / V_m［mol］'],'g → mol は「÷ モル質量」。'),C('Step 2：体積は？',['V_m × w/M ＝ V_m w / M','w / (M V_m)','M V_m / w','w V_m M'],'mol → L は「× V_m」。')]},
+ {q:'(3) モル質量 M［g/mol］の気体の密度は何 g/L か',ans:'M / V_m［g/L］',steps:[C('1 mol で考えると？',['M［g］÷ V_m［L］＝ M / V_m','V_m / M','M V_m','M / N_A'],'1 mol の質量は M g、体積は V_m L。密度 ＝ g ÷ L。')]},
+ {q:'(4) モル質量 M の溶質を溶かした c［mol/L］の水溶液を V［L］とったとき、溶質の質量は何 g か',ans:'cMV［g］',steps:[C('Step 1：物質量は？',['cV［mol］','c / V［mol］','V / c［mol］','cM［mol］'],'mol/L × L ＝ mol。'),C('Step 2：質量は？',['cV × M ＝ cMV［g］','cV / M','M / (cV)','cV × V_m'],'mol → g は「× モル質量」。')]}]}
+]},
+{id:'s',name:'③ 標準問題',sub:'p.56〜57（センター・共通テストなど）',probs:[
+{no:86,title:'分子の存在割合',stem:'塩素 Cl には質量数 35 と 37 の同位体があり、存在比は 35 が 76%、37 が 24% である。Cl 原子2個からなる Cl₂ 分子のうち、質量数の総和 M が 70 の分子の割合は何%か。\n① 5.8　② 18　③ 24　④ 36　⑤ 58　⑥ 76',subs:[
+ {q:'M＝70 の Cl₂ の割合',ans:'⑤ 58%',steps:[C('Step 1：M＝70 になる組み合わせは？',['³⁵Cl と ³⁵Cl','³⁵Cl と ³⁷Cl','³⁷Cl と ³⁷Cl','³⁵Cl が1個だけ'],'35＋35＝70。（35＋37＝72、37＋37＝74）'),C('Step 2：その確率は？',['0.76 × 0.76 ＝ 0.5776 → 58%','0.76 × 0.24 ＝ 0.18 → 18%','0.76 × 2 ＝ 1.52','0.76 ÷ 2 ＝ 0.38 → 38%'],'1個目も 35 で、2個目も 35。どちらも 76% なので かけ算。→ ⑤')]}]},
+{no:87,title:'アボガドロ定数の測定',stem:'① ステアリン酸（モル質量 284 g/mol）7.10 mg をヘキサンに溶かして 100 mL にした。② その溶液 0.640 mL を水面に滴下した。③ ステアリン酸分子がすき間なく並んだ単分子膜ができ、面積は 220 cm² だった。',subs:[
+ {q:'(1) 滴下した 0.640 mL 中のステアリン酸は何 mol か',ans:'1.60×10⁻⁷ mol',steps:[C('Step 1：7.10 mg は何 mol？（1 mg＝10⁻³ g）',['7.10×10⁻³ ÷ 284 ＝ 2.50×10⁻⁵ mol','7.10 ÷ 284 ＝ 2.50×10⁻² mol','7.10×10⁻³ × 284 ＝ 2.02 mol','284 ÷ 7.10×10⁻³ ＝ 4.00×10⁴ mol'],'mg を g に直してから ÷ モル質量。これが 100 mL 中に入っている。'),C('Step 2：0.640 mL 中には？',['2.50×10⁻⁵ × 0.640/100 ＝ 1.60×10⁻⁷ mol','2.50×10⁻⁵ × 0.640 ＝ 1.60×10⁻⁵ mol','2.50×10⁻⁵ ÷ 0.640 ＝ 3.91×10⁻⁵ mol','2.50×10⁻⁵ × 100/0.640 ＝ 3.91×10⁻³ mol'],'100 mL のうち 0.640 mL だけ使ったので、0.640/100 倍。')]},
+ {q:'(2) 分子1個の面積が 2.20×10⁻¹⁵ cm² のとき、膜の中の分子の数は？',ans:'1.00×10¹⁷ 個',steps:[C('式は？',['220 ÷ 2.20×10⁻¹⁵ ＝ 1.00×10¹⁷ 個','220 × 2.20×10⁻¹⁵ ＝ 4.84×10⁻¹³ 個','2.20×10⁻¹⁵ ÷ 220 ＝ 1.00×10⁻¹⁷ 個','220 ÷ 6.0×10²³ ＝ 3.67×10⁻²² 個'],'全体の面積 ÷ 1個の面積 ＝ 個数（タイルの枚数と同じ）。')]},
+ {q:'(3) この実験から求められるアボガドロ定数［/mol］は？',ans:'6.25×10²³ /mol',steps:[C('1 mol あたりの個数は？',['1.00×10¹⁷ ÷ 1.60×10⁻⁷ ＝ 6.25×10²³ /mol','1.00×10¹⁷ × 1.60×10⁻⁷ ＝ 1.60×10¹⁰ /mol','1.60×10⁻⁷ ÷ 1.00×10¹⁷ ＝ 1.60×10⁻²⁴ /mol','6.0×10²³ /mol（決まった値）'],'アボガドロ定数 ＝ 個数 ÷ 物質量。10¹⁷ ÷ 10⁻⁷ ＝ 10²⁴。')]}]},
+{no:89,title:'合金',stem:'青銅は Cu と Sn の合金。2.8 kg の青銅 A（Sn 4.0%）と 1.2 kg の青銅 B（Sn 30%）を混ぜて 4.0 kg の青銅 C をつくった。1.0 kg の青銅 C に含まれる Sn は何 mol か。（Sn＝119）\n① 0.12　② 0.47　③ 0.99　④ 4.0　⑤ 12',subs:[
+ {q:'1.0 kg の青銅 C 中の Sn の物質量',ans:'③ 0.99 mol',steps:[C('Step 1：A と B に含まれる Sn の質量の合計は？',['2.8×10³×4.0/100 ＋ 1.2×10³×30/100 ＝ 472 g','(4.0 ＋ 30) ÷ 2 ＝ 17 g','4.0×10³ × 34/100 ＝ 1360 g','2.8×10³×30/100 ＋ 1.2×10³×4.0/100 ＝ 888 g'],'混ぜてもスズの量は変わらない。A：112 g、B：360 g。kg は g に直す。'),C('Step 2：1.0 kg の C 中の Sn は？',['472 × 1.0/4.0 ＝ 118 g','472 × 4.0 ＝ 1888 g','472 ÷ 1.0 ＝ 472 g','472 − 1.0×10³ ＝ −528 g'],'4.0 kg 中に 472 g → 1.0 kg 中はその 1/4。'),toMol('118',118,'g',119,'119',2,'Step 3')]}]},
+{no:90,title:'物質量',stem:'次の物質量のうち、最も多いものは？\n① 7.8×10²³ 個のネオン原子\n② 0.50 mol の MgCl₂ に含まれる塩化物イオン\n③ 0℃、1.013×10⁵ Pa で 5.6 L のメタン CH₄ に含まれる水素原子\n④ 2.0 mol/L のグルコース水溶液 500 mL 中のグルコース分子\n⑤ 32 g のカルシウム中のカルシウム原子（Ca＝40）\n⑥ 0℃、1.013×10⁵ Pa で 22.4 L の空気中の気体分子の全物質量',subs:[
+ {q:'①〜⑥をすべて mol にして比べる',ans:'① 1.3 mol',steps:[toMol('7.8×10²³',7.8e23,'個',0,'',2,'①'),
+  C('②：MgCl₂ 1単位に Cl⁻ は2個',['0.50 × 2 ＝ 1.0 mol','0.50 mol','0.50 ÷ 2 ＝ 0.25 mol','0.50 × 3 ＝ 1.5 mol'],'MgCl₂ には Cl⁻ が2個。'),
+  C('③：CH₄ 中の H 原子',['5.6÷22.4 ＝ 0.25 mol、× 4 ＝ 1.0 mol','5.6÷22.4 ＝ 0.25 mol','5.6 × 4 ＝ 22 mol','0.25 ÷ 4 ＝ 0.063 mol'],'CH₄ 1分子に H は4個。'),
+  C('④：グルコース',['2.0 × 0.500 ＝ 1.0 mol','2.0 × 500 ＝ 1.0×10³ mol','2.0 ÷ 0.500 ＝ 4.0 mol','2.0 mol'],'mol/L × L。'),
+  toMol('32',32,'g',40,'40',2,'⑤'),
+  C('⑥：空気 22.4 L の全物質量',['1.0 mol（気体は種類によらず 22.4 L で 1 mol）','2.0 mol（N₂ と O₂ の2種類だから）','28.8 mol','わからない'],'混合気体でも、全部合わせて 1 mol。'),
+  C('最も多いのは？',['① 1.3 mol','② 1.0 mol','⑤ 0.80 mol','⑥ 1.0 mol'],'① 1.3、②③④ 1.0、⑤ 0.80、⑥ 1.0 → ① が最大。')]}]},
+{no:91,title:'気体の密度',stem:'窒素と水素からなる混合気体の密度は、0℃、1.013×10⁵ Pa で 0.300 g/L であった。（N₂＝28　H₂＝2.0）',subs:[
+ {q:'(1) この混合気体の平均分子量は？',ans:'6.72',steps:[C('式は？',['0.300 × 22.4 ＝ 6.72','0.300 ÷ 22.4 ＝ 0.0134','22.4 ÷ 0.300 ＝ 74.7','(28 ＋ 2.0) ÷ 2 ＝ 15'],'1 mol（22.4 L）の質量 ＝ 平均のモル質量。')]},
+ {q:'(2) この混合気体 22.4 L 中の窒素は何 mol か',ans:'0.182 mol',steps:[C('Step 1：窒素を x mol とすると、水素は？',['1 − x mol','x mol','2x mol','22.4 − x mol'],'22.4 L は全部で 1 mol。'),C('Step 2：質量の式は？',['28x ＋ 2.0(1 − x) ＝ 6.72','28x ＋ 2.0x ＝ 6.72','28(1 − x) ＋ 2.0x ＝ 6.72','28x ＝ 6.72'],'1 mol の質量が 6.72 g。'),C('Step 3：解くと？',['x ＝ 0.182 mol','x ＝ 0.240 mol','x ＝ 0.818 mol','x ＝ 0.224 mol'],'26x ＝ 4.72 → x ＝ 0.1815… ≒ 0.182。')]}]},
+{no:92,title:'混合気体',stem:'次の各問いに答えよ。空気は窒素と酸素の体積比 4：1 の混合気体とする。（N₂＝28　O₂＝32　He＝4.0）',subs:[
+ {q:'(1) ある体積の空気の質量は 0.29 g、同体積の別の気体は 0.58 g。この気体は？\n① Ar　② Xe　③ C₃H₈　④ C₄H₁₀　⑤ CO₂',ans:'④ ブタン C₄H₁₀',steps:[C('Step 1：空気の平均分子量は？',['28×4/5 ＋ 32×1/5 ＝ 28.8 ≒ 29','(28＋32)÷2 ＝ 30','28','32'],'割合をかけて足す。'),C('Step 2：同じ体積 ＝ 同じ物質量。気体の分子量は？',['29 × 0.58/0.29 ＝ 58','29 ÷ 2 ＝ 15','29 ＋ 0.58 ＝ 30','0.58 × 22.4 ＝ 13'],'質量が 2.0 倍 → 分子量も 2.0 倍。'),C('Step 3：分子量 58 は？',['④ C₄H₁₀ ＝ 58','③ C₃H₈ ＝ 44','⑤ CO₂ ＝ 44','① Ar ＝ 40'],'C₄H₁₀ ＝ 12×4 ＋ 1.0×10 ＝ 58。')]},
+ {q:'(2) He と N₂ の混合気体 1.00 mol の質量が 10.0 g。He の物質量の割合は何%か',ans:'75%',steps:[C('Step 1：He を x mol とすると、式は？',['4.0x ＋ 28(1.00 − x) ＝ 10.0','4.0x ＋ 28x ＝ 10.0','4.0(1.00 − x) ＋ 28x ＝ 10.0','4.0x ＝ 10.0'],'N₂ は残りの (1.00 − x) mol。'),C('Step 2：解くと？',['x ＝ 0.75 mol → 75%','x ＝ 0.25 mol → 25%','x ＝ 2.5 mol','x ＝ 0.36 mol → 36%'],'−24x ＝ −18 → x ＝ 0.75。')]}]},
+{no:93,title:'硫酸銅(Ⅱ)水溶液の調製',stem:'硫酸銅(Ⅱ)五水和物 CuSO₄・5H₂O の結晶を水に溶かして、0.20 mol/L の水溶液を 50 mL つくる方法として最も適切なものは？（CuSO₄＝160、H₂O＝18）\n① 50 mL の水に結晶 1.6 g を溶かす\n② 50 mL の水に結晶 2.5 g を溶かす\n③ 50 mL の水に結晶 5.0 g を溶かす\n④ 結晶 1.6 g を少量の水に溶かしたのち、水を加えて 50 mL にする\n⑤ 結晶 2.5 g を少量の水に溶かしたのち、水を加えて 50 mL にする\n⑥ 結晶 5.0 g を少量の水に溶かしたのち、水を加えて 50 mL にする',subs:[
+ {q:'正しい方法',ans:'⑤',steps:[C('Step 1：必要な CuSO₄ の物質量は？',['0.20 × 0.050 ＝ 0.010 mol','0.20 × 50 ＝ 10 mol','0.20 ÷ 0.050 ＝ 4.0 mol','0.050 ÷ 0.20 ＝ 0.25 mol'],'mol/L × L。'),C('Step 2：結晶 CuSO₄・5H₂O のモル質量は？',['160 ＋ 18×5 ＝ 250 g/mol','160 g/mol','160 ＋ 18 ＝ 178 g/mol','160 × 5 ＝ 800 g/mol'],'結晶には水 5 個分もくっついている。結晶 1 mol 中に CuSO₄ は 1 mol。'),fromMol('0.010',0.01,'g',250,'250',2,'Step 3'),C('Step 4：正しい溶かし方は？',['少量の水に溶かしてから、水を加えて全体を 50 mL にする','50 mL の水に溶かす','100 mL の水に溶かす','結晶に水を 50 g 加える'],'モル濃度は「溶液全体の体積」で割る。50 mL の水に溶かすと 50 mL より多くなってしまう。→ ⑤')]}]},
+{no:95,title:'溶液の濃度の変換',stem:'次の各問いに答えよ。（NH₃＝17）',subs:[
+ {q:'(1) 14 mol/L のアンモニア水（密度 0.90 g/cm³）の質量パーセント濃度は？\n① 2.1　② 2.4　③ 2.6　④ 21　⑤ 24　⑥ 26',ans:'⑥ 26%',steps:[C('Step 1：溶液 1 L（1000 cm³）の質量は？',['0.90 × 1000 ＝ 900 g','0.90 g','1000 g','0.90 ÷ 1000 ＝ 9.0×10⁻⁴ g'],'質量 ＝ 密度 × 体積。濃度の変換は「溶液 1 L」で考える。'),C('Step 2：その中の NH₃ の質量は？',['17 × 14 ＝ 238 g','14 g','17 g','14 ÷ 17 ＝ 0.82 g'],'1 L 中に 14 mol。mol → g は × 17。'),C('Step 3：質量パーセント濃度は？',['238 ÷ 900 × 100 ＝ 26%','238 ÷ 1000 × 100 ＝ 24%','14 ÷ 900 × 100 ＝ 1.6%','900 ÷ 238 ＝ 3.8%'],'溶質 ÷ 溶液 × 100。溶液の質量は 1000 g ではなく 900 g。→ ⑥')]},
+ {q:'(2) 分子量 M の化合物の x%の水溶液（密度 d g/cm³）のモル濃度は？\n① 10dx/M　② dx/10M　③ dx/100M　④ 10x/dM　⑤ x/10dM　⑥ x/100dM',ans:'① 10dx/M',steps:[C('Step 1：溶液 1 L の質量は？',['1000d g','d g','1000/d g','100d g'],'密度 × 1000 cm³。'),C('Step 2：溶質の質量は？',['1000d × x/100 ＝ 10dx g','1000d × x ＝ 1000dx g','1000d ÷ x g','dx/100 g'],'x% なので x/100 をかける。'),C('Step 3：物質量（＝1 L あたりなのでモル濃度）は？',['10dx / M［mol/L］','10dx × M','M / 10dx','dx / 10M'],'g → mol は ÷ M。→ ①')]}]}
+]}
+];
+
+let st={done:{},miss:{}};try{st=Object.assign(st,JSON.parse(localStorage.getItem('molStep')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('molStep',JSON.stringify(st))}catch(e){}};
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ALLSUBS=[];LEVELS.forEach(L=>L.probs.forEach(p=>p.subs.forEach((s,i)=>ALLSUBS.push({L,p,s,i,key:p.no+'-'+i}))));
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));if(b.dataset.v==='miss')renderMiss();scrollTo(0,0)});
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('.ov').classList.remove('on'));
+$('mapBtn').onclick=()=>$('map').classList.add('on');$('helpBtn').onclick=()=>$('help').classList.add('on');
+function renderLevels(){$('levels').innerHTML='<div class="card"><p>レベルをえらんでください。<b>まず mol に直す</b>が合言葉です。</p></div>'+LEVELS.map((L,k)=>{const subs=ALLSUBS.filter(x=>x.L===L);const d=subs.filter(x=>st.done[x.key]).length;
+ return `<button class="lv" data-k="${k}"><b>${L.name}</b><span>${L.sub}　問題 ${L.probs.map(p=>p.no).join('・')}</span><span>${d} / ${subs.length} 小問 正解済み</span><div class="pb"><i style="width:${d/subs.length*100}%"></i></div></button>`}).join('');
+ document.querySelectorAll('.lv').forEach(b=>b.onclick=()=>openLevel(+b.dataset.k))}
+let curL=0;
+function openLevel(k){curL=k;const L=LEVELS[k];$('levels').style.display='none';$('play').style.display='none';$('plistBox').style.display='block';$('lvTitle').textContent=L.name+'（'+L.sub+'）';
+ $('plist').innerHTML=L.probs.map((p,j)=>{const d=p.subs.filter((s,i)=>st.done[p.no+'-'+i]).length;const m=p.subs.some((s,i)=>st.miss[p.no+'-'+i]);
+  return `<button data-j="${j}"><span class="no">${p.no}</span><span>${p.title}</span><span class="st">${d===p.subs.length?'✅':d+'/'+p.subs.length}${m?' <span class="tag">ミス</span>':''}</span></button>`}).join('');
+ document.querySelectorAll('#plist button').forEach(b=>b.onclick=()=>{const p=L.probs[+b.dataset.j];start(p.subs.map((s,i)=>({L,p,s,i,key:p.no+'-'+i})))});scrollTo(0,0)}
+$('backLv').onclick=()=>{$('plistBox').style.display='none';$('levels').style.display='block';renderLevels()};
+let Q=[],qi=0,si=0,wrong=false,mode='prob';
+function start(list,m){Q=list;qi=0;mode=m||'prob';$('levels').style.display='none';$('plistBox').style.display='none';$('play').style.display='block';document.querySelector('.tabs button[data-v=home]').click();showSub()}
+function routeOf(s){const r=[];s.steps.forEach(x=>{if(x.route)x.route.forEach(u=>{if(r[r.length-1]!==u)r.push(u)})});return new Set(r).size===r.length?r:[]}
+function showSub(){const x=Q[qi];si=0;wrong=false;
+ $('pinfo').textContent=x.L.name+'　問題 '+x.p.no+'「'+x.p.title+'」';$('pcount').textContent=(qi+1)+' / '+Q.length;
+ $('stem').textContent=x.p.stem;$('sq').textContent=x.s.q;const r=routeOf(x.s);
+ $('route').innerHTML=r.length>1?'道すじ：'+r.map(u=>`<span class="${u==='mol'?'m':''}">${u}</span>`).join('<i>→</i>'):'';
+ $('steps').innerHTML='';$('fin').innerHTML='';$('ctrl').innerHTML='';showStep();scrollTo(0,0)}
+function showStep(){const x=Q[qi],stp=x.s.steps[si],correct=stp.ch[0];
+ const d=document.createElement('div');d.className='step';d.innerHTML=`<div class="h">${stp.q}</div>`;
+ shuffle(stp.ch).forEach(c=>{const b=document.createElement('button');b.className='ch';b.textContent=c;b.onclick=()=>{if(d.dataset.done)return;d.dataset.done=1;const ok=c===correct;if(!ok)wrong=true;
+   d.querySelectorAll('.ch').forEach(y=>{y.disabled=true;if(y.textContent===correct)y.classList.add('good')});if(!ok)b.classList.add('bad');
+   d.classList.add(ok?'ok':'ng');const e=document.createElement('div');e.className='ex';e.innerHTML=(ok?'⭕ 正解！　':'❌ 正しいのは緑の式。　')+stp.ex;d.appendChild(e);
+   si++;if(si<x.s.steps.length){$('ctrl').innerHTML='<button class="btn b3" id="nx">次の Step ▶</button>';$('nx').onclick=()=>{$('ctrl').innerHTML='';showStep()}}else finishSub()};d.appendChild(b)});
+ $('steps').appendChild(d);d.scrollIntoView({behavior:'smooth',block:'start'})}
+function finishSub(){const x=Q[qi];
+ if(wrong){st.miss[x.key]=(st.miss[x.key]||0)+1;delete st.done[x.key]}else{st.done[x.key]=true;delete st.miss[x.key]}save();
+ $('fin').innerHTML=`<div class="final">答え：${x.s.ans}${x.s.note?'<small>'+x.s.note+'</small>':''}</div>`;
+ const last=qi>=Q.length-1;$('ctrl').innerHTML=`<p class="res" style="color:${wrong?'#c62828':'#2e7d32'}">${wrong?'まちがいがありました。「ミス」に記録しました。':'全部のStepが正解！ 🎉'}</p><button class="btn b3" id="nx">${last?'おわり ▶':'次の小問 ▶'}</button>`;
+ $('nx').onclick=()=>{if(last)endPlay();else{qi++;showSub()}}}
+function endPlay(){$('play').style.display='none';if(mode==='miss'){document.querySelector('.tabs button[data-v=miss]').click()}else openLevel(LEVELS.indexOf(Q[0].L))}
+$('quit').onclick=endPlay;
+function renderMiss(){const m=ALLSUBS.filter(x=>st.miss[x.key]);$('missList').innerHTML=m.length?'<ul class="list">'+m.map(x=>`<li>問題${x.p.no}　${x.s.q.split('\n')[0]} <span class="tag">${st.miss[x.key]}回</span></li>`).join('')+'</ul>':'<p>まちがえた小問はありません。</p>'}
+$('missStart').onclick=()=>{const m=ALLSUBS.filter(x=>st.miss[x.key]);if(!m.length){alert('ミスはありません');return}start(shuffle(m),'miss')};
+$('missClear').onclick=()=>{if(confirm('ミスと正解の記録を消しますか？')){st={done:{},miss:{}};save();renderMiss();renderLevels()}};
+$('pLv').innerHTML=LEVELS.map((L,k)=>`<label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:15px"><input type="checkbox" value="${k}" checked style="width:20px;height:20px">${L.name}</label>`).join('')+`<label style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:15px"><input type="checkbox" id="pMiss" style="width:20px;height:20px">ミスした小問だけ</label>`;
+$('printBtn').onclick=()=>{const ks=[...document.querySelectorAll('#pLv input[value]:checked')].map(i=>+i.value);const onlyMiss=$('pMiss').checked;
+ let h='<h1 class="ph">化学基礎　モルのステップ問題</h1><div class="nm">名前（　　　　　　　　）</div>',a='<div class="pb"></div><h1 class="ph">答え</h1>',cnt=0;
+ ks.forEach(k=>LEVELS[k].probs.forEach(p=>{const subs=p.subs.map((s,i)=>({s,i})).filter(o=>!onlyMiss||st.miss[p.no+'-'+o.i]);if(!subs.length)return;cnt++;
+  h+=`<div class="pp"><div class="t">問題 ${p.no}　${p.title}</div><div class="s">${p.stem}</div>`+subs.map(o=>`<div class="s">${o.s.q}</div><div class="w"></div>`).join('')+'</div>';
+  a+=`<div class="pp"><div class="t">問題 ${p.no}</div>`+subs.map(o=>`<div class="s">${o.s.q.split('\n')[0]}　→ <b>${o.s.ans}</b></div>`).join('')+'</div>'}));
+ if(!cnt){alert('問題がありません');return}$('printArea').innerHTML=h+($('pAns').checked?a:'');print()};
+renderLevels();
+
+var pages=[].slice.call(document.querySelectorAll('#v-ehon .page'));var cur=0;
+function show(i){cur=Math.max(0,Math.min(pages.length-1,i));pages.forEach(function(p,k){p.classList.toggle('on',k===cur)});
+ $('pg').textContent=(cur+1)+' / '+pages.length;$('prev').disabled=cur===0;$('next').disabled=cur===pages.length-1;scrollTo(0,0);try{localStorage.setItem('molEhonPage',cur)}catch(e){}}
+$('prev').onclick=function(){show(cur-1)};$('next').onclick=function(){show(cur+1)};
+document.querySelectorAll('#v-ehon .reveal button').forEach(function(b){if(b.id==='retry')return;b.onclick=function(){b.parentNode.classList.toggle('open')}});
+pages.forEach(function(p,k){var b=document.createElement('button');b.textContent=(k+1)+'. '+p.getAttribute('data-t');b.onclick=function(){$('toc').classList.remove('on');show(k)};$('tocList').appendChild(b)});
+$('ehToc').onclick=function(){$('toc').classList.add('on')};
+document.querySelectorAll('#v-ehon .tocjump').forEach(function(b){b.onclick=function(){show(+b.getAttribute('data-to'))}});
+$('goProb').onclick=function(){document.querySelector('.tabs button[data-v=home]').click()};
+var EQ=[
+ {q:'1 mol の粒子の数は？',c:['6.0×10²³ 個','22.4 個','12 個','6.0×10²² 個'],a:0,e:'1 mol ＝ 6.0×10²³ 個（アボガドロ定数）です。'},
+ {q:'水 H₂O 1 mol の質量は？（H＝1.0、O＝16）',c:['18 g','17 g','34 g','10 g'],a:0,e:'1.0×2＋16＝18 なので 18 g です。'},
+ {q:'0℃、1.013×10⁵ Pa で、気体 1 mol の体積は？',c:['22.4 L','6.0 L','18 L','気体の種類で変わる'],a:0,e:'気体なら種類に関係なく 22.4 L です。'},
+ {q:'「◯g は何個？」を解くとき、最初にすることは？',c:['mol に直す','6.0×10²³ をかける','22.4 でわる','そのまま個数にする'],a:0,e:'合言葉は「まず mol に直す」。g ÷ モル質量 で mol にします。'},
+ {q:'二酸化炭素 CO₂ 2.0 mol は何 g？（C＝12、O＝16）',c:['88 g','44 g','56 g','22 g'],a:0,e:'CO₂＝12＋16×2＝44。44×2.0＝88 g です。'},
+ {q:'酸素 O₂ 3.2 g は何 mol？（O＝16）',c:['0.10 mol','0.20 mol','2.0 mol','10 mol'],a:0,e:'O₂＝32。3.2÷32＝0.10 mol。16でわらないように注意！'},
+ {q:'1.2×10²⁴ 個の分子は何 mol？',c:['2.0 mol','0.50 mol','20 mol','1.2 mol'],a:0,e:'1.2×10²⁴÷(6.0×10²³)＝12×10²³÷(6.0×10²³)＝2.0 mol です。'},
+ {q:'mol から g を出すときの計算は？',c:['× モル質量','÷ モル質量','× 22.4','÷ 6.0×10²³'],a:0,e:'mol から「出す」ときはかけ算。mol × モル質量 ＝ g です。'}
+];
+function eshuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var right=0,answered=0;
+function buildQuiz(){
+  var box=document.getElementById('quiz');box.innerHTML='';right=0;answered=0;
+  document.getElementById('score').textContent='';
+  eshuffle(EQ.slice()).forEach(function(it,n){
+    var d=document.createElement('div');d.className='q';
+    d.innerHTML='<div class="qt">Q'+(n+1)+'. '+it.q+'</div><div class="ch"></div><div class="fb"></div>';
+    var ch=d.querySelector('.ch');
+    var order=eshuffle([0,1,2,3]);
+    order.forEach(function(k){
+      var b=document.createElement('button');b.textContent=it.c[k];
+      b.onclick=function(){
+        if(d.classList.contains('done'))return;
+        d.classList.add('done');answered++;
+        if(k===it.a){b.classList.add('ok');right++;d.querySelector('.fb').innerHTML='⭕ 正解！ '+it.e}
+        else{b.classList.add('ng');ch.children[order.indexOf(it.a)].classList.add('ok');d.querySelector('.fb').innerHTML='❌ 正解は「'+it.c[it.a]+'」。'+it.e}
+        if(answered===EQ.length){document.getElementById('score').textContent=EQ.length+'問中 '+right+'問 正解！'+(right===EQ.length?' 🎉 完ぺき！':' 赤い問題を見直そう')}
+      };
+      ch.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+document.getElementById('retry').onclick=function(){buildQuiz();document.getElementById('quiz').scrollIntoView()};
+buildQuiz();
+var start0=0;try{start0=+localStorage.getItem('molEhonPage')||0}catch(e){}show(start0);
+</script></body></html>
