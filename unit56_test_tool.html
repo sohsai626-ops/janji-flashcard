@@ -73,7 +73,7 @@ textarea{width:100%;font-size:17px;font-family:Georgia,serif;padding:10px;border
 <header><div style="display:flex;align-items:center;gap:8px"><h1 style="flex:1">Unit 5・6 英語 テスト対策（塾教材＋単語＋文法）</h1><button id="helpBtn" style="border:0;background:#fff;color:#3a2a6b;font-weight:900;border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap">❓ 使い方</button></div><div class="sub">書いて覚える：穴うめ・並べかえ・英作文・単語のつづり</div>
 <nav><button data-t="home" class="on">📋 範囲</button><button data-t="play">✏️ 問題</button><button data-t="word">🔤 単語</button><button data-t="guide">📘 しくみ</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
 
-<div class="tab show" id="home"><div class="card">
+<div class="tab show" id="home"><div class="card" id="resumeBox" style="display:none;border:3px solid #f2a922"></div><div class="card">
  <h2>問題の範囲をえらぶ</h2>
  <div class="sel" id="secSel"></div>
  <h3>問題の種類</h3>
@@ -114,6 +114,7 @@ textarea{width:100%;font-size:17px;font-family:Georgia,serif;padding:10px;border
 <tr><td style="white-space:nowrap">❗ ミス</td><td>今回まちがえた問題の一覧（解いている途中でも見られる）</td></tr>
 <tr><td style="white-space:nowrap">🏆 苦手</td><td>これまでにまちがえた回数が多い問題・単語</td></tr>
 <tr><td style="white-space:nowrap">🖨 印刷</td><td>問題プリント・単語テストを作る（解答つき）</td></tr></table></div>
+<div class="card"><h2>📌 途中で止まったら</h2><p>解いている途中の位置は、1問ごとに自動で保存されます。画面が消えたり、最初の画面にもどったりしたときは、「📋 範囲」のいちばん上に出る <b>「▶ 続きから再開」</b> を押してください。単語のつづり練習も、「🔤 単語」で同じように続きから再開できます。</p></div>
 
 <div class="card"><h2>🎒 生徒のみなさんへ：おすすめの順番</h2><ol style="padding-left:1.3em">
 <li><b>📘 しくみ</b> で、文法のポイントを読む</li>
@@ -203,16 +204,22 @@ const ordered=a=>document.querySelector('input[name="ord"]:checked').value==='sh
 
 // ---------- タブ ----------
 function tab(t){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));
- if(t==='miss')renderMiss();if(t==='rank')renderRank();if(t==='play'&&!S)$('#play').innerHTML='<div class="card"><p>「📋 範囲」で範囲をえらんで、スタートを押してください。</p></div>';if(t==='word'&&!WS)wordHome();scrollTo(0,0)}
+ if(t==='home')showResume();if(t==='miss')renderMiss();if(t==='rank')renderRank();if(t==='play'&&!S)$('#play').innerHTML='<div class="card"><p>「📋 範囲」で範囲をえらんで、スタートを押してください。</p></div>';if(t==='word'&&!WS)wordHome();scrollTo(0,0)}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $('#helpBtn').onclick=()=>tab('help');
 
 // ---------- 出題 ----------
 let S=null,miss=[];
 $('#go').onclick=()=>{const l=ordered(picked());if(!l.length){alert('範囲と種類をえらんでください');return}start(l)};
-function start(list){S={list,i:0,ok:0,first:0,retry:$('#untilAll').checked,missed:new Set()};miss=[];tab('play');showQ()}
+function saveProg(){if(!S)return;store.set('u56prog',{keys:S.list.map(q=>q.key),i:S.i,ok:S.ok,first:S.first,retry:S.retry,missed:[...S.missed],miss:miss.map(q=>q.key),t:Date.now()})}
+function clearProg(){try{localStorage.removeItem('u56prog')}catch(e){}}
+function start(list){S={list,i:0,ok:0,first:0,retry:$('#untilAll').checked,missed:new Set()};miss=[];saveProg();tab('play');showQ()}
+function resumeProg(){const p=store.get('u56prog');if(!p.keys)return false;const byK={};Q.forEach(q=>byK[q.key]=q);const list=p.keys.map(k=>byK[k]).filter(Boolean);if(!list.length||p.i>=list.length)return false;
+ S={list,i:p.i,ok:p.ok,first:p.first,retry:p.retry,missed:new Set(p.missed||[])};miss=(p.miss||[]).map(k=>byK[k]).filter(Boolean);tab('play');showQ();return true}
+function showResume(){const p=store.get('u56prog');const el=$('#resumeBox');if(!el)return;if(p.keys&&p.i<p.keys.length){el.style.display='';el.innerHTML=`<h2>📌 前回の続きがあります</h2><p>${p.i+1}問目 / ${p.keys.length}問（正解 ${p.ok}）</p><button class="btn" id="rsGo">▶ 続きから再開</button><button class="btn ghost" id="rsDel">最初からやり直す（記録を消す）</button>`;
+ $('#rsGo').onclick=()=>{if(!resumeProg()){alert('続きを読み込めませんでした');clearProg();showResume()}};$('#rsDel').onclick=()=>{if(confirm('続きの記録を消しますか？')){clearProg();showResume()}}}else el.style.display='none'}
 function record(q,ok){const r=store.get('u56rank');if(!ok){r[q.key]=(r[q.key]||0)+1;store.set('u56rank',r);if(!miss.includes(q))miss.push(q);
-  if(S.retry&&!S.missed.has(q.key)){S.missed.add(q.key);S.list.push(q)}}}
+  if(S.retry&&!S.missed.has(q.key)){S.missed.add(q.key);S.list.push(q)}}saveProg()}
 function header(q){return `<div class="qhead"><span><span class="pill ${q.sec==='復習'?'r':''}">${secLabel(q.sec)}</span> ${q.page?'p.'+q.page:''} ${q.src||''}${q.rev?'（'+q.rev+'）':''}</span><span>${S.i+1} / ${S.list.length}</span></div>${q.ins?`<div class="ins">${esc(q.ins)}</div>`:''}`}
 function showQ(){
  const q=S.list[S.i],p=$('#play');let done=false;
@@ -260,7 +267,7 @@ function showQ(){
  }
  scrollTo(0,0);
 }
-function next(){S.i++;S.i<S.list.length?showQ():result()}
+function next(){S.i++;if(S.i<S.list.length){saveProg();showQ()}else{clearProg();result()}}
 function result(){const tot=Math.min(S.i+1,S.list.length);
  $('#play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${tot}</div><p style="text-align:center">${miss.length?'まちがえた問題は「❗ ミス」で確認しよう':'全問正解！すばらしい！'}</p>
  ${miss.length?'<button class="btn" id="rt">まちがえた問題だけ もう一度</button>':''}<button class="btn sub" id="bk">範囲えらびへ</button></div>`;
@@ -283,10 +290,13 @@ function wordHome(){WS=null;
  <button class="btn" id="wgo">🔤 つづり練習スタート</button><button class="btn ghost" id="wlist">一覧で見て覚える</button></div>`;
  const pick=()=>{const s=[...document.querySelectorAll('#word .sel input:checked')].map(x=>x.value);let l=W.filter(w=>s.includes(w.sec));if($('#wonly').checked){const r=store.get('u56wrank');l=l.filter(w=>r[w.key]>0)}return l};
  $('#wgo').onclick=()=>{const l=pick();if(!l.length){alert('語がありません');return}WS={list:shuffle(l),i:0,ok:0,missed:new Set(),say:$('#wpr').checked};wordQ()};
+ const wp=store.get('u56wprog');if(wp.keys&&wp.i<wp.keys.length){$('#word').insertAdjacentHTML('afterbegin',`<div class="card" style="border:3px solid #f2a922"><h2>📌 単語の続きがあります</h2><p>${wp.i+1}語目 / ${wp.keys.length}語</p><button class="btn" id="wrs">▶ 続きから再開</button><button class="btn ghost" id="wrd">記録を消す</button></div>`);
+  $('#wrs').onclick=()=>{const byK={};W.forEach(w=>byK[w.key]=w);const l=wp.keys.map(k=>byK[k]).filter(Boolean);WS={list:l,i:wp.i,ok:wp.ok,missed:new Set(wp.missed||[]),say:wp.say};wordQ()};
+  $('#wrd').onclick=()=>{try{localStorage.removeItem('u56wprog')}catch(e){}wordHome()}}
  $('#wlist').onclick=()=>{const l=pick();$('#word').innerHTML=`<div class="card"><h2>一覧（${l.length}語）</h2><table>${l.map(w=>`<tr><td class="en" style="font-size:16px">${esc(w.en)} <button class="hintbar" style="border:0;background:none" onclick="say('${w.en.replace(/'/g,"\\'")}')">🔊</button></td><td>${esc(w.ja)}</td></tr>`).join('')}</table><button class="btn sub" onclick="wordHome()">もどる</button></div>`};
 }
 function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/[～~]/g,'').replace(/-/g,', '));u.lang='en-US';u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
-function wordQ(){const w=WS.list[WS.i];let done=false,hl=0;const target=w.en.replace(/\s*[～~]\s*/g,' ').trim();
+function wordQ(){if(WS)store.set('u56wprog',{keys:WS.list.map(w=>w.key),i:WS.i,ok:WS.ok,missed:[...WS.missed],say:WS.say});const w=WS.list[WS.i];let done=false,hl=0;const target=w.en.replace(/\s*[～~]\s*/g,' ').trim();
  $('#word').innerHTML=`<div class="card"><div class="qhead"><span>${secLabel(w.sec)}</span><span>${WS.i+1} / ${WS.list.length}　⭕${WS.ok}</span></div>
  <div class="qtext" style="text-align:center;font-weight:800">${esc(w.ja)}</div>
  <input class="wordin" id="wi" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="英語で">
@@ -303,7 +313,7 @@ function wordQ(){const w=WS.list[WS.i];let done=false,hl=0;const target=w.en.rep
   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><span class="mk">${ok?(hl?'⭕ 正解（ヒントあり→あとでもう一度）':'⭕ 正解！'):'❌ ざんねん'}</span>
   ${ok?'':`<p>あなた：${wi.value?diffHTML(wi.value,target):'（空らん）'}</p>`}<p>正解：<span class="ans">${esc(w.en)}</span></p></div><button class="btn" id="wn">${WS.i+1<WS.list.length?'次へ':'結果'}</button><button class="btn ghost small" id="wq">やめる</button>`;
   $('#wn').onclick=()=>{WS.i++;WS.i<WS.list.length?wordQ():wordRes()};$('#wq').onclick=wordRes;$('#wn').focus()};}
-function wordRes(){$('#word').innerHTML=`<div class="card"><h2>単語の結果</h2><div class="score">${WS.ok} / ${new Set(WS.list.map(w=>w.key)).size}</div><p class="note" style="text-align:center">まちがえた語・ヒントを使った語は、最後にもう一度出ました。</p><button class="btn sub" onclick="wordHome()">もどる</button></div>`}
+function wordRes(){try{localStorage.removeItem('u56wprog')}catch(e){}$('#word').innerHTML=`<div class="card"><h2>単語の結果</h2><div class="score">${WS.ok} / ${new Set(WS.list.map(w=>w.key)).size}</div><p class="note" style="text-align:center">まちがえた語・ヒントを使った語は、最後にもう一度出ました。</p><button class="btn sub" onclick="wordHome()">もどる</button></div>`}
 
 // ---------- しくみ ----------
 (function(){let h='';
@@ -327,4 +337,5 @@ $('#pgo').onclick=()=>{const kind=document.querySelector('input[name="pk"]:check
    else{h+=`<div class="pq">(${n}) ${q.ins?'['+esc(q.ins)+'] ':''}${esc(q.q)}<div class="line"></div></div>`;key.push(`(${n}) ${show(q.a)}`)}});
   if($('#pans').checked)h+=`<div class="pans"><div class="ph"><h1>解答</h1></div>${key.map(k=>`<div class="pq">${k}</div>`).join('')}</div>`;}
  $('#printArea').innerHTML=h;setTimeout(()=>window.print(),200);};
+showResume();
 </script></body></html>
