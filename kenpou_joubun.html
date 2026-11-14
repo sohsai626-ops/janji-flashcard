@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>憲法条文トレーニング</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#fdf4f2;color:#2d2326;-webkit-text-size-adjust:100%}
+header{background:#9c2f4a;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.9;margin:2px 0 8px}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700;padding:9px 2px;border-radius:10px 10px 0 0}
+nav button.on{background:#fdf4f2;color:#9c2f4a}
+.tab{display:none;padding:14px;max-width:720px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(120,40,60,.12)}
+h2{font-size:16px;color:#9c2f4a;margin-bottom:8px}
+.chap{display:inline-block;background:#9c2f4a;color:#fff;font-weight:800;font-size:13px;border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.art{font-weight:800;color:#9c2f4a}
+.law{font-size:16px;line-height:1.95;margin:6px 0 10px}
+.bk{display:inline-block;min-width:3.2em;text-align:center;border-bottom:2px solid #9c2f4a;color:#9c2f4a;font-weight:900;padding:0 4px;margin:0 2px;cursor:pointer;border-radius:4px}
+.bk .num{font-size:11px;color:#fff;background:#9c2f4a;border-radius:999px;padding:0 5px;margin-right:3px;font-weight:700}
+.hide .bk .w{visibility:hidden}
+.bk.peek .w{visibility:visible!important}
+.bk.target{background:#ffe9a8;border-color:#e0a000;color:#7a5600}
+.toolbar{display:flex;gap:8px;margin-bottom:10px}
+.toolbar button{flex:1;font-size:14px;font-weight:700;border:2px solid #9c2f4a;background:#fff;color:#9c2f4a;border-radius:10px;padding:9px}
+.toolbar button.on{background:#9c2f4a;color:#fff}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 4px;border-bottom:1px solid #f0e4e2}
+.sel input{width:22px;height:22px;flex:none}
+.sel .gh{display:flex;justify-content:flex-end}
+.sel .gh button{font-size:12px;border:1px solid #9c2f4a;background:#fff;color:#9c2f4a;border-radius:8px;padding:3px 8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;min-width:130px;display:flex;align-items:center;gap:6px;font-size:14px;background:#fbecef;border-radius:10px;padding:10px}
+.btn{display:block;width:100%;border:0;background:#9c2f4a;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#4a3a3d}.btn.ghost{background:#fff;color:#9c2f4a;border:2px solid #9c2f4a}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#8a7570;margin-bottom:8px}
+.ansbox{font-size:26px;font-weight:900;color:#9c2f4a;text-align:center;padding:14px;background:#fbecef;border-radius:12px;margin:10px 0}
+.choice{display:block;width:100%;text-align:left;font-size:18px;border:2px solid #ead6d9;background:#fff;border-radius:12px;padding:12px;margin:8px 0;color:#2d2326}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:10px 12px;margin-top:8px;font-size:15px;line-height:1.6}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.score{font-size:42px;font-weight:900;color:#9c2f4a;text-align:center}
+.bar{height:8px;background:#f0e4e2;border-radius:4px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:#9c2f4a}
+.mist{border-bottom:1px solid #f0e4e2;padding:9px 0;font-size:14px;line-height:1.6}
+.mist .a{color:#2e7d32;font-weight:800}
+.mist .n{float:right;background:#9c2f4a;color:#fff;border-radius:999px;padding:0 9px;font-weight:800;margin-left:6px}
+.note{font-size:13px;color:#8a7570;line-height:1.6}
+.quiz{background:#fff6e0;border-radius:10px;padding:10px;margin-top:6px;font-size:15px}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}header,.tab{display:none!important}
+ #printArea{display:block;color:#000;font-size:10.5pt;line-height:1.85}
+ #printArea h1{font-size:14pt;border-bottom:2px solid #000;margin-bottom:3mm;display:flex;justify-content:space-between}
+ #printArea h1 span{font-size:10pt;font-weight:400}
+ .pc{font-weight:800;margin:2.5mm 0 .5mm;border-left:4px solid #000;padding-left:2mm}
+ .pa{break-inside:avoid;margin-bottom:1mm}
+ .pb{display:inline-block;min-width:22mm;border-bottom:1px solid #000;text-align:left;font-size:8pt;padding-left:1mm}
+ .pans{page-break-before:always;columns:3;font-size:10pt}
+}
+</style></head><body>
+<header><h1>📜 憲法条文トレーニング</h1><div class="sub">公民の学習 p.48〜49 ／ 前文と主要条文の［　］をおぼえる</div>
+<nav><button data-t="read" class="on">📖 条文</button><button data-t="home">✏️ 練習</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
+
+<div class="tab show" id="read">
+ <div class="toolbar"><button id="hideBtn">🟥 赤シート（答えをかくす）</button></div>
+ <p class="note" style="margin-bottom:10px">赤シートをONにすると答えが消えます。思い出してから、［　］をタップすると答えが見えます。</p>
+ <div id="lawlist"></div>
+</div>
+
+<div class="tab" id="home">
+ <div id="setup">
+  <div class="card"><h2>範囲をえらぶ</h2><div class="sel" id="qsel"></div></div>
+  <div class="card"><h2>やり方</h2>
+   <div class="row"><label class="opt"><input type="radio" name="mode" value="mc" checked> 4択</label><label class="opt"><input type="radio" name="mode" value="card"> 📝 思い出す（○×を自分で）</label></div>
+   <div class="row"><label class="opt"><input type="radio" name="ord" value="seq" checked> 順番どおり</label><label class="opt"><input type="radio" name="ord" value="shuf"> シャッフル</label></div>
+   <button class="btn" id="go">スタート</button>
+   <p class="note" style="margin-top:10px">おすすめ：①「📖 条文」を読む → ②4択 → ③「思い出す」 → ④❌の問題だけ、全問正解するまでくり返す</p>
+  </div>
+ </div>
+ <div id="play" style="display:none"></div>
+</div>
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた問題</h2><div id="misslist"></div></div></div>
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">まちがえた回数が多い順（このスマホに記録）</p><div id="ranklist"></div><button class="btn" id="rankgo">苦手な問題だけ練習</button><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+<div class="tab" id="print"><div class="card"><h2>プリントを作る</h2>
+ <p class="note">条文の［　］に書きこむプリントを作ります（解答付き）。</p>
+ <div class="row"><label class="opt"><input type="checkbox" id="pans" checked> 解答ページを付ける</label></div>
+ <button class="btn sub" id="pgo">印刷する</button>
+ <p class="note" style="margin-top:8px">iPhoneでは印刷画面を2本指で広げるとPDFとして保存・共有できます。</p></div></div>
+<div id="printArea"></div>
+
+<script>
+// 答え（番号 → 語句）
+const ANS={1:'国会',2:'国民',3:'象徴',4:'主権',5:'国事',6:'内閣',7:'国権',8:'武力',9:'放棄',10:'戦力',11:'交戦権',12:'公共の福祉',13:'法の下',14:'差別',15:'健康',16:'文化的',17:'普通教育',18:'無償',19:'権利',20:'義務',21:'団結',22:'最高機関',23:'立法機関',24:'衆議院',25:'参議院',26:'3分の2以上',27:'責任',28:'国会議員',29:'総辞職',30:'良心',31:'独立',32:'法律',33:'憲法',34:'地方自治',35:'3分の2以上',36:'国会',37:'国民投票',38:'過半数'};
+const LAWS=[
+{c:'前文',a:'前文',t:'日本国民は、正当に選挙された{1}における代表者を通じて行動し、われらとわれらの子孫のために、諸国民との協和による成果と、わが国全土にわたつて自由のもたらす恵沢を確保し、政府の行為によつて再び戦争の惨禍が起ることのないやうにすることを決意し、ここに主権が{2}に存することを宣言し、この憲法を確定する。……'},
+{c:'第1章 天皇',a:'第1条',t:'天皇は、日本国の{3}であり日本国民統合の{3}であつて、この地位は、{4}の存する日本国民の総意に基く。'},
+{c:'第1章 天皇',a:'第3条',t:'天皇の{5}に関するすべての行為には、{6}の助言と承認を必要とし、{6}が、その責任を負ふ。'},
+{c:'第2章 戦争の放棄',a:'第9条①',t:'日本国民は、正義と秩序を基調とする国際平和を誠実に希求し、{7}の発動たる戦争と、{8}による威嚇又は{8}の行使は、国際紛争を解決する手段としては、永久にこれを{9}する。'},
+{c:'第2章 戦争の放棄',a:'第9条②',t:'前項の目的を達するため、陸海空軍その他の{10}は、これを保持しない。国の{11}は、これを認めない。'},
+{c:'第3章 国民の権利及び義務',a:'第12条',t:'この憲法が国民に保障する自由及び権利は、国民の不断の努力によつて、これを保持しなければならない。又、国民は、これを濫用してはならないのであつて、常に{12}のためにこれを利用する責任を負ふ。'},
+{c:'第3章 国民の権利及び義務',a:'第14条①',t:'すべて国民は、{13}に平等であつて、人種、信条、性別、社会的身分又は門地により、政治的、経済的又は社会的関係において、{14}されない。'},
+{c:'第3章 国民の権利及び義務',a:'第25条①',t:'すべて国民は、{15}で{16}な最低限度の生活を営む権利を有する。',mq:{q:'第25条①で保障された権利を何という？',a:'生存権'}},
+{c:'第3章 国民の権利及び義務',a:'第26条②',t:'すべて国民は、法律の定めるところにより、その保護する子女に{17}を受けさせる義務を負ふ。義務教育は、これを{18}とする。'},
+{c:'第3章 国民の権利及び義務',a:'第27条①',t:'すべて国民は、勤労の{19}を有し、{20}を負ふ。'},
+{c:'第3章 国民の権利及び義務',a:'第28条',t:'勤労者の{21}する権利及び団体交渉その他の団体行動をする権利は、これを保障する。',mq:{q:'第28条で保障された3つの権利をまとめて何という？',a:'労働基本権'}},
+{c:'第4章 国会',a:'第41条',t:'国会は、国権の{22}であつて、国の唯一の{23}である。'},
+{c:'第4章 国会',a:'第59条②',t:'{24}で可決し、{25}でこれと異なつた議決をした法律案は、衆議院で出席議員の{26}の多数で再び可決したときは、法律となる。'},
+{c:'第5章 内閣',a:'第66条③',t:'内閣は、行政権の行使について、国会に対し連帯して{27}を負ふ。'},
+{c:'第5章 内閣',a:'第68条①',t:'内閣総理大臣は、国務大臣を任命する。但し、その過半数は、{28}の中から選ばれなければならない。'},
+{c:'第5章 内閣',a:'第69条',t:'内閣は、衆議院で不信任の決議案を可決し、又は信任の決議案を否決したときは、10日以内に衆議院が解散されない限り、{29}をしなければならない。'},
+{c:'第6章 司法',a:'第76条③',t:'すべて裁判官は、その{30}に従ひ{31}してその職権を行ひ、この憲法及び{32}にのみ拘束される。'},
+{c:'第6章 司法',a:'第81条',t:'最高裁判所は、一切の法律、命令、規則又は処分が{33}に適合するかしないかを決定する権限を有する終審裁判所である。',mq:{q:'第81条から、最高裁判所を何と呼ぶ？',a:'憲法の番人'}},
+{c:'第8章 地方自治',a:'第92条',t:'地方公共団体の組織及び運営に関する事項は、{34}の本旨に基いて、法律でこれを定める。'},
+{c:'第9章 改正',a:'第96条①',t:'この憲法の改正は、各議院の総議員の{35}の賛成で、{36}が、これを発議し、国民に提案してその承認を経なければならない。この承認には、特別の{37}又は国会の定める選挙の際行はれる投票において、その{38}の賛成を必要とする。'},
+];
+const CHAPS=[...new Set(LAWS.map(l=>l.c))];
+// 問題を作る：［ ］1つ（番号）ごとに1問＋ミニクイズ
+const Q=[];
+LAWS.forEach((L,li)=>{
+ const nums=[...new Set([...L.t.matchAll(/\{(\d+)\}/g)].map(m=>+m[1]))];
+ nums.forEach(n=>Q.push({id:Q.length,li,c:L.c,no:'［'+n+'］',n,a:ANS[n]}));
+ if(L.mq)Q.push({id:Q.length,li,c:L.c,no:'ミニクイズ',mq:L.mq.q,a:L.mq.a});
+});
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(){try{return JSON.parse(localStorage.getItem('kenpou_rank')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('kenpou_rank',JSON.stringify(v))}catch(e){}}};
+
+// 条文表示（target=今の問題の番号 → ？にする）
+function lawHTML(L,target){
+ return L.t.replace(/\{(\d+)\}/g,(m,n)=>{n=+n;
+  if(target!==undefined){return n===target?`<span class="bk target"><span class="num">${n}</span>？</span>`:`<span class="bk"><span class="num">${n}</span>${ANS[n]}</span>`}
+  return `<span class="bk" onclick="this.classList.toggle('peek')"><span class="num">${n}</span><span class="w">${ANS[n]}</span></span>`;
+ });
+}
+let lastC='',h='';
+LAWS.forEach(L=>{
+ if(L.c!==lastC){if(lastC)h+='</div>';h+=`<div class="card"><span class="chap">${L.c}</span>`;lastC=L.c}
+ h+=`<div class="law"><span class="art">${L.a==='前文'?'':L.a+'　'}</span>${lawHTML(L)}</div>`;
+ if(L.mq)h+=`<div class="quiz">❓ ${L.mq.q}<br><span class="bk" onclick="this.classList.toggle('peek')"><span class="w">${L.mq.a}</span></span></div>`;
+});
+$('#lawlist').innerHTML=h+'</div>';
+$('#hideBtn').onclick=e=>{const on=$('#read').classList.toggle('hide');e.target.classList.toggle('on',on);e.target.textContent=on?'🟥 赤シート ON（タップで答え）':'🟥 赤シート（答えをかくす）';document.querySelectorAll('.bk.peek').forEach(x=>x.classList.remove('peek'))};
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+ if(b.dataset.t==='miss')renderMiss(); if(b.dataset.t==='rank')renderRank(); window.scrollTo(0,0);
+});
+
+const sel=$('#qsel');
+sel.innerHTML=`<div class="gh"><button type="button" id="allb">全部はずす</button></div>`+CHAPS.map(c=>`<label><input type="checkbox" name="qu" value="${c}" checked> ${c}（${Q.filter(q=>q.c===c).length}問）</label>`).join('');
+$('#allb').onclick=()=>{const bs=sel.querySelectorAll('input');const all=[...bs].every(x=>x.checked);bs.forEach(x=>x.checked=!all);$('#allb').textContent=all?'全部えらぶ':'全部はずす'};
+const radio=n=>document.querySelector(`input[name="${n}"]:checked`).value;
+
+let S=null,sessionMiss=[];
+function start(qs,mode){
+ if(!qs.length){alert('範囲をえらんでください');return}
+ S={qs,i:0,ok:0,mode};sessionMiss=[];
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==='home'));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id==='home'));
+ $('#setup').style.display='none';$('#play').style.display='block';show();
+}
+$('#go').onclick=()=>{const cs=[...document.querySelectorAll('input[name="qu"]:checked')].map(x=>x.value);let qs=Q.filter(q=>cs.includes(q.c));if(radio('ord')==='shuf')qs=shuffle(qs);start(qs,radio('mode'))};
+function record(q,ok){if(ok){S.ok++;return}if(!sessionMiss.includes(q))sessionMiss.push(q);const r=store.get();r[q.id]=(r[q.id]||0)+1;store.set(r)}
+function body(q){const L=LAWS[q.li];
+ if(q.mq)return `<div class="law"><span class="art">${L.a}　</span>${lawHTML(L,-1)}</div><div class="quiz" style="font-size:17px">❓ ${q.mq}</div>`;
+ return `<div class="law"><span class="art">${L.a==='前文'?'前文　':L.a+'　'}</span>${lawHTML(L,q.n)}</div><p class="note">黄色の［？］に入る語句は？</p>`}
+function head(){const q=S.qs[S.i];return `<div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><div class="qhead"><span>${q.c}　${q.no}</span><span>${S.i+1} / ${S.qs.length}</span></div>`}
+function show(){
+ const q=S.qs[S.i],p=$('#play');p.dataset.done='0';
+ if(S.mode==='card'){
+  p.innerHTML=`<div class="card">${head()}${body(q)}<div id="area"><button class="btn sub" id="reveal">答えを見る</button></div></div>`;
+  $('#reveal').onclick=()=>{
+   $('#area').innerHTML=`<div class="ansbox">${q.a}</div><div class="two"><button class="btn ok" id="o">⭕ できた</button><button class="btn ng" id="x">❌ できなかった</button></div>`;
+   const fin=ok=>{if(p.dataset.done==='1')return;p.dataset.done='1';record(q,ok);S.i++;S.i<S.qs.length?show():result()};
+   $('#o').onclick=()=>fin(true);$('#x').onclick=()=>fin(false);
+  };
+ }else{
+  const pool=q.mq?['生存権','労働基本権','憲法の番人','社会権','参政権','国権の最高機関','団体交渉権','平等権']:Object.values(ANS);
+  const ds=shuffle([...new Set(pool)].filter(x=>x!==q.a)).slice(0,3);
+  const ch=shuffle([q.a,...ds]);
+  p.innerHTML=`<div class="card">${head()}${body(q)}${ch.map(c=>`<button class="choice">${c}</button>`).join('')}<div id="fb"></div></div>`;
+  p.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+   if(p.dataset.done==='1')return;p.dataset.done='1';const ok=b.textContent===q.a;record(q,ok);
+   p.querySelectorAll('.choice').forEach(x=>{if(x.textContent===q.a)x.classList.add('ok')});if(!ok)b.classList.add('ng');
+   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ 正解は「'+q.a+'」'}</b></div><button class="btn" id="nx">${S.i+1<S.qs.length?'次の問題へ':'結果を見る'}</button><button class="btn ghost" id="qt">やめる</button>`;
+   $('#nx').onclick=()=>{S.i++;S.i<S.qs.length?show():result()};$('#qt').onclick=result;
+  });
+ }
+ window.scrollTo(0,0);
+}
+function result(){
+ const n=Math.min(S.i+(S.mode==='mc'&&$('#play').dataset.done==='1'&&S.i<S.qs.length?1:0),S.qs.length);
+ $('#play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${n}</div>
+ <p style="text-align:center;margin:6px 0">${n&&S.ok===n?'🎉 全問正解！すばらしい！':'まちがえた問題を、全問正解するまでくり返そう！'}</p>
+ ${sessionMiss.length?`<button class="btn" id="re">❌の問題だけもう一度（${sessionMiss.length}問）</button>`:''}
+ <button class="btn sub" id="bk">範囲えらびにもどる</button></div>`;
+ if(sessionMiss.length)$('#re').onclick=()=>start(shuffle(sessionMiss),S.mode);
+ $('#bk').onclick=()=>{$('#play').style.display='none';$('#setup').style.display='block';window.scrollTo(0,0)};
+}
+function line(q){const L=LAWS[q.li];return `<div>${L.a}　${q.mq?q.mq:q.no}</div><div class="a">→ ${q.a}</div>`}
+function renderMiss(){$('#misslist').innerHTML=sessionMiss.length?sessionMiss.map(q=>`<div class="mist">${line(q)}</div>`).join(''):'<p class="note">まだありません。</p>'}
+function rankIds(){const r=store.get();return Object.keys(r).sort((a,b)=>r[b]-r[a])}
+function renderRank(){const r=store.get(),ids=rankIds();$('#ranklist').innerHTML=ids.length?ids.map(id=>`<div class="mist"><span class="n">${r[id]}回</span>${line(Q[id])}</div>`).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('#rankgo').onclick=()=>{const ids=rankIds();if(!ids.length){alert('まだ記録がありません');return}start(shuffle(ids.map(id=>Q[id])),'card')};
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+
+$('#pgo').onclick=()=>{
+ let h=`<h1>憲法条文トレーニング<span>名前（　　　　　　　　）　　／41</span></h1>`,last='';
+ LAWS.forEach(L=>{
+  if(L.c!==last){h+=`<div class="pc">${L.c}</div>`;last=L.c}
+  h+=`<div class="pa"><b>${L.a==='前文'?'':L.a+'　'}</b>${L.t.replace(/\{(\d+)\}/g,(m,n)=>`<span class="pb">${n}</span>`)}</div>`;
+  if(L.mq)h+=`<div class="pa">❓ ${L.mq.q}（　　　　　　　　　）</div>`;
+ });
+ if($('#pans').checked){h+=`<div class="pans"><h1>解答</h1>`+Object.keys(ANS).map(n=>`<div>${n}　${ANS[n]}</div>`).join('')+LAWS.filter(L=>L.mq).map(L=>`<div>${L.mq.q.slice(0,6)}…　${L.mq.a}</div>`).join('')+`</div>`}
+ $('#printArea').innerHTML=h;setTimeout(()=>window.print(),200);
+};
+</script></body></html>
