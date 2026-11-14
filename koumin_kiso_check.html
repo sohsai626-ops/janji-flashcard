@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>公民 基本用語チェック</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#fdf4f2;color:#2d2326;-webkit-text-size-adjust:100%}
+header{background:#b8423a;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.9;margin:2px 0 8px}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700;padding:9px 2px;border-radius:10px 10px 0 0}
+nav button.on{background:#fdf4f2;color:#b8423a}
+.tab{display:none;padding:14px;max-width:720px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(120,40,30,.12)}
+h2{font-size:16px;color:#b8423a;margin-bottom:8px}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 4px;border-bottom:1px solid #f0e4e2}
+.sel input{width:22px;height:22px;flex:none}
+.sel .gh{font-weight:800;color:#b8423a;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.sel .gh button{font-size:12px;border:1px solid #b8423a;background:#fff;color:#b8423a;border-radius:8px;padding:3px 8px}
+.pg{font-size:12px;color:#8a7570}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;min-width:130px;display:flex;align-items:center;gap:6px;font-size:14px;background:#fbeceb;border-radius:10px;padding:10px}
+.btn{display:block;width:100%;border:0;background:#b8423a;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#4a3a3d}.btn.ghost{background:#fff;color:#b8423a;border:2px solid #b8423a}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#8a7570;margin-bottom:8px}
+.qtext{font-size:19px;line-height:1.65;margin:6px 0 12px}
+.ansbox{font-size:24px;font-weight:900;color:#b8423a;text-align:center;padding:14px;background:#fbeceb;border-radius:12px;margin:10px 0}
+.ansbox small{display:block;font-size:13px;color:#8a7570;font-weight:400;margin-top:4px}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.choice{display:block;width:100%;text-align:left;font-size:17px;border:2px solid #ead6d3;background:#fff;border-radius:12px;padding:12px;margin:8px 0;color:#2d2326}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:10px 12px;margin-top:8px;font-size:15px;line-height:1.6}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.score{font-size:42px;font-weight:900;color:#b8423a;text-align:center}
+.bar{height:8px;background:#f0e4e2;border-radius:4px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:#b8423a}
+.mist{border-bottom:1px solid #f0e4e2;padding:9px 0;font-size:14px;line-height:1.6}
+.mist .a{color:#2e7d32;font-weight:800}
+.mist .n{float:right;background:#b8423a;color:#fff;border-radius:999px;padding:0 9px;font-weight:800;margin-left:6px}
+.note{font-size:13px;color:#8a7570;line-height:1.6}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}header,.tab{display:none!important}
+ #printArea{display:block;color:#000;font-size:10.5pt}
+ #printArea h1{font-size:14pt;border-bottom:2px solid #000;margin-bottom:3mm;display:flex;justify-content:space-between}
+ #printArea h1 span{font-size:10pt;font-weight:400}
+ .ps{font-weight:800;margin:3mm 0 1mm;border-left:4px solid #000;padding-left:2mm}
+ .pq{display:flex;gap:3mm;line-height:1.5;margin-bottom:1.4mm;break-inside:avoid}
+ .pq .t{flex:1}.pq .l{width:52mm;border-bottom:1px solid #000;flex:none}
+ .pans{page-break-before:always}.pans .pq{margin-bottom:.6mm;font-size:9.5pt}
+}
+</style></head><body>
+<header><h1>📕 公民 基本用語チェック</h1><div class="sub">公民の学習 p.88〜92 ／ 答えを思い出してから「答えを見る」</div>
+<nav><button data-t="home" class="on">✏️ 練習</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
+
+<div class="tab show" id="home">
+ <div id="setup">
+  <div class="card"><h2>範囲をえらぶ</h2><div class="sel" id="qsel"></div></div>
+  <div class="card"><h2>やり方</h2>
+   <div class="row"><label class="opt"><input type="radio" name="mode" value="card" checked> 📝 思い出す（○×を自分で）</label><label class="opt"><input type="radio" name="mode" value="mc"> 4択</label></div>
+   <div class="row"><label class="opt"><input type="radio" name="ord" value="shuf" checked> シャッフル</label><label class="opt"><input type="radio" name="ord" value="seq"> 順番どおり</label></div>
+   <button class="btn" id="go">スタート</button>
+   <p class="note" style="margin-top:10px">おすすめ：①まず「4択」で全体を確認 → ②「思い出す」で答えを言えるように → ③まちがえた問題だけ、全問正解するまでくり返す</p>
+  </div>
+ </div>
+ <div id="play" style="display:none"></div>
+</div>
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた問題</h2><div id="misslist"></div></div></div>
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">まちがえた回数が多い順（このスマホに記録）</p><div id="ranklist"></div><button class="btn" id="rankgo">苦手な問題だけ練習</button><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+<div class="tab" id="print"><div class="card"><h2>プリントを作る</h2><div class="sel" id="psel"></div>
+ <div class="row"><label class="opt"><input type="radio" name="pord" value="seq" checked> 順番どおり</label><label class="opt"><input type="radio" name="pord" value="shuf"> シャッフル</label></div>
+ <div class="row"><label class="opt"><input type="checkbox" id="pans" checked> 解答ページを付ける</label></div>
+ <button class="btn sub" id="pgo">印刷する</button>
+ <p class="note" style="margin-top:8px">iPhoneでは印刷画面を2本指で広げるとPDFとして保存・共有できます。</p></div></div>
+<div id="printArea"></div>
+
+<script>
+const UNITS=[
+{id:'1a',g:'1 現代社会と私たち',name:'現代社会の特色・文化',pg:'教p.8〜23'},
+{id:'1b',g:'1 現代社会と私たち',name:'現代社会の見方や考え方',pg:'教p.24〜31'},
+{id:'2a',g:'2 個人の尊重と日本国憲法',name:'人権と日本国憲法①',pg:'教p.40〜43'},
+{id:'2b',g:'2 個人の尊重と日本国憲法',name:'人権と日本国憲法②',pg:'教p.44〜49'},
+{id:'2c',g:'2 個人の尊重と日本国憲法',name:'人権と共生社会',pg:'教p.50〜63'},
+{id:'2d',g:'2 個人の尊重と日本国憲法',name:'これからの人権保障',pg:'教p.64〜69'},
+{id:'3a',g:'3 現代の民主政治と社会',name:'現代の民主政治①',pg:'教p.80〜83'},
+{id:'3b',g:'3 現代の民主政治と社会',name:'現代の民主政治②',pg:'教p.84〜89'},
+{id:'3c',g:'3 現代の民主政治と社会',name:'国の政治の仕組み①（国会）',pg:'教p.92〜97'},
+{id:'3d',g:'3 現代の民主政治と社会',name:'国の政治の仕組み②（内閣）',pg:'教p.98〜101'},
+{id:'3e',g:'3 現代の民主政治と社会',name:'国の政治の仕組み③（裁判所）',pg:'教p.102〜105'},
+{id:'3f',g:'3 現代の民主政治と社会',name:'国の政治の仕組み④（三権分立）',pg:'教p.106〜111'},
+{id:'3g',g:'3 現代の民主政治と社会',name:'地方自治と私たち①',pg:'教p.112〜115'},
+{id:'3h',g:'3 現代の民主政治と社会',name:'地方自治と私たち②',pg:'教p.116〜119'},
+];
+// [unit, 番号, 問題, 答え, 別解(任意)]
+const RAW=[
+['1a','1-①','人・物・お金・情報などが国境をこえ、世界に広がっていくこと。','グローバル化'],
+['1a','1-②','生活のさまざまな場面で、情報が大きな役割を果たすようになること。','情報化'],
+['1a','1-③','子どもの数が減少し、人口にしめる高齢者の割合が増加していくこと。','少子高齢化'],
+['1a','1-④','将来と現在の世代の両方が幸福でいられる社会。','持続可能な社会'],
+['1a','1-⑤','長い歴史の中で人々に受けつがれてきた文化。','伝統文化'],
+['1a','1-⑥','さまざまな文化をもつ人々がともに生活していくこと。','多文化共生'],
+['1b','1-⑦','時間、お金、労力などの無駄を省くという意味で使う考え方。','効率'],
+['1b','1-⑧','特定の人が不当な扱いを受けることがないという意味で使う考え方。','公正'],
+['1b','1-⑨','みんなが納得し、反対者がいない案を採用する決まりの決め方。','全会一致'],
+['1b','1-⑩','賛成者がより多い案を採用する決まりの決め方。','多数決'],
+['2a','2-①','1776年にアメリカで出された、イギリスからの独立を宣言した文書。','独立宣言','アメリカ独立宣言'],
+['2a','2-②','1789年にフランスで出された、「人は生まれながら、自由で平等な権利をもつ」という内容が盛りこまれた宣言。','人権宣言','フランス人権宣言'],
+['2a','2-③','1919年にドイツで制定された、社会権を保障した憲法。','ワイマール憲法'],
+['2a','2-④','1889年に日本で発布された、主権者を天皇と定めた憲法。','大日本帝国憲法'],
+['2a','2-⑤','『法の精神』で、三権分立を説いたフランスの思想家。','モンテスキュー'],
+['2a','2-⑥','国民の権利を守るために、憲法で政治権力を制限するという考え方。','立憲主義'],
+['2a','2-⑦','【日本国憲法の基本原理】国の政治は国民が決定権をもち、国民の意思に従い行うという原理。','国民主権'],
+['2a','2-⑧','【日本国憲法の基本原理】戦争を放棄し、恒久の平和のために努力するという原理。','平和主義'],
+['2a','2-⑨','【日本国憲法の基本原理】個人を尊重し、人としての権利を保障するという原理。','基本的人権の尊重'],
+['2b','2-⑩','憲法改正の流れ：国会の各議院で総議員の（　）の賛成で発議する。','3分の2以上'],
+['2b','2-⑪','憲法改正の流れ：（　）で有効投票の過半数の賛成で承認される。','国民投票'],
+['2b','2-⑫','日本が他国から攻撃された時の、アメリカとの共同防衛を定めた条約。','日米安全保障条約','日米安保条約'],
+['2b','2-⑬','核兵器を「持たず、作らず、持ちこませず」という原則。','非核三原則'],
+['2b','2-⑭','1989年に国連で採択された、子どもの人権を守ることを目的とした条約。','子どもの権利条約','児童の権利に関する条約'],
+['2c','2-⑮','【基本的人権】すべての人が平等に扱われる権利。','平等権'],
+['2c','2-⑯','【自由権】思想・良心の自由、信教の自由など。','精神の自由','精神活動の自由'],
+['2c','2-⑰','【自由権】法定手続きの保障、拷問の禁止など。','生命・身体の自由','身体の自由'],
+['2c','2-⑱','【自由権】居住・移転の自由、財産権の保障など。','経済活動の自由'],
+['2c','2-⑲','【基本的人権】生存権・教育を受ける権利・勤労の権利・労働基本権をまとめて何という？','社会権'],
+['2c','2-⑳','【社会権】健康で文化的な最低限度の生活を営む権利。','生存権'],
+['2c','2-㉑','【基本的人権】政治に参加する権利。選挙権や被選挙権など。','参政権'],
+['2c','2-㉒','【請求権】無罪判決を受けた人が補償を求める権利。','刑事補償請求権'],
+['2c','2-㉓','自分の考えを言ったり、考えをまとめた本を出版したりする自由のこと。（精神の自由にふくまれる）','表現の自由'],
+['2c','2-㉔','好きな職業を選べる自由のこと。（経済活動の自由にふくまれる）','職業選択の自由'],
+['2c','2-㉕','【男女平等にかかわる法律】雇用における男女の平等をめざした法律。','男女雇用機会均等法'],
+['2c','2-㉖','【男女平等にかかわる法律】男女が対等な立場で、社会のさまざまな活動に参加し、利益や責任を分かち合う社会の実現をめざした法律。','男女共同参画社会基本法'],
+['2c','2-㉗','障がいのある人などにとっての社会の中の障壁を取り除くという考え。','バリアフリー'],
+['2c','2-㉘','【労働基本権】労働者が団結して行動するために、労働組合をつくる権利。','団結権'],
+['2c','2-㉙','【労働基本権】労働組合が労働条件の改善を求めて、使用者と交渉する権利。','団体交渉権'],
+['2c','2-㉚','【労働基本権】要求の実現のため、労働者がストライキなどをする権利。','団体行動権','争議権'],
+['2c','2-㉛','他人の人権を侵害する場合や社会全体の利益のために、人権保障を制約する場合があるという人権保障の限界のこと。','公共の福祉'],
+['2c','2-㉜〜㉞','国民の三大義務を3つ答えよう。','子どもに普通教育を受けさせる義務・勤労の義務・納税の義務'],
+['2d','2-㉟','開発の際、環境への影響を事前に調査すること。','環境アセスメント','環境影響評価'],
+['2d','2-㊱','自分の生き方や生活のしかたを、自分の意思で自由に決める権利。','自己決定権'],
+['2d','2-㊲','新しい人権の1つで、政治にかかわる情報を入手する権利。','知る権利'],
+['2d','2-㊳','行政機関がもつ情報の開示を請求できる制度。','情報公開制度'],
+['2d','2-㊴','新しい人権の1つで、個人の生活や情報を公開されない権利。','プライバシーの権利'],
+['2d','2-㊵','情報を管理する者に個人情報の慎重な管理を義務づけた制度。','個人情報保護制度'],
+['2d','2-㊶','1948年に国連総会で採択された、各国の人権保障の手本とされる宣言。','世界人権宣言'],
+['2d','2-㊷','1966年に国連総会で採択された、締約国に人権保障の実施を義務づけた条約。','国際人権規約'],
+['2d','2-㊸','国境をこえて社会貢献を行う民間団体。','NGO','非政府組織'],
+['3a','3-①','国民や住民が代表者を選挙し、代表者が議会で話し合う方法で行われる政治のしくみ。','間接民主制','議会制民主主義'],
+['3a','3-②','【選挙の4原則】一定年齢以上のすべての国民に選挙権を保障する原則。','普通選挙'],
+['3a','3-③','【選挙の4原則】1人につき1票の投票権があるという原則。','平等選挙'],
+['3a','3-④','【選挙の4原則】有権者が代表を直接選ぶという原則。','直接選挙'],
+['3a','3-⑤','【選挙の4原則】無記名で投票するという原則。','秘密選挙'],
+['3a','3-⑥','1つの選挙区において、1人を選ぶ選挙制度。','小選挙区制'],
+['3a','3-⑦','政党の得票数に応じて各政党へ議席を配分する選挙制度。','比例代表制'],
+['3a','3-⑧','衆議院議員の選挙制度。','小選挙区比例代表並立制'],
+['3b','3-⑨','政権を担当する政党。','与党'],
+['3b','3-⑩','政権を担当せず、内閣を監視・批判する政党。','野党'],
+['3b','3-⑪','複数の政党が協力して内閣を組織する政権。','連立政権','連立内閣'],
+['3b','3-⑫','各政党が選挙の際に発表する、政権を担当した場合に実施する政策や数値目標、達成期限、財源などを明らかにしたもの。','政権公約','マニフェスト'],
+['3b','3-⑬','多くの人のまとまった意見。','世論'],
+['3c','3-⑭','国の唯一の立法機関で、国権の最高機関。','国会'],
+['3c','3-⑮','【二院制】任期が4年で、解散がある議院。','衆議院'],
+['3c','3-⑯','【二院制】任期が6年で、解散がなく、3年ごとに半数が改選される議院。','参議院'],
+['3c','3-⑰','予算の先議権や議決の優先権など、衆議院を優先させるしくみ。','衆議院の優越'],
+['3c','3-⑱','法律案の議決で、衆議院と参議院の議決が異なった場合、衆議院で再可決するために必要な出席議員の賛成数。（分数で）','3分の2以上'],
+['3c','3-⑲','参議院議員の被選挙権年齢。','30歳以上'],
+['3c','3-⑳','両議院が異なる議決をした場合に開かれることがある協議会。','両院協議会'],
+['3c','3-㉑','【国会の種類】毎年1回、1月に召集される国会。会期は150日間で延長もできる。','常会','通常国会'],
+['3c','3-㉒','【国会の種類】内閣の要求や一方の議院の総議員の4分の1以上の要求で召集される国会。','臨時会','臨時国会'],
+['3c','3-㉓','【国会の種類】衆議院の解散後の総選挙から30日以内に召集される国会。','特別会','特別国会'],
+['3c','3-㉔','法律ができるまでの流れで、本会議の前に少数の議員で審査する会。','委員会'],
+['3c','3-㉕','衆議院と参議院がもつ、政治の状況を調査する権限。','国政調査権'],
+['3c','3-㉖','国会が設置する、裁判官を辞めさせるかどうかを決める裁判所。','弾劾裁判所'],
+['3d','3-㉗','国会の中から指名され、内閣の中心となる人。','内閣総理大臣','首相'],
+['3d','3-㉘','内閣総理大臣が任命・罷免し、過半数は国会議員から選ばれる内閣の構成員。','国務大臣'],
+['3d','3-㉙','国会（衆議院）が内閣に対して行う「内閣信任・（　）の決議」。','不信任'],
+['3d','3-㉚','内閣が行う「衆議院の（　）の決定」。','解散'],
+['3d','3-㉛','内閣が国会の選んだ内閣総理大臣を中心に組織され、国会に対して連帯して責任を負うというしくみ。','議院内閣制'],
+['3d','3-㉜','内閣が政治の運営のことを全会一致で決めるために開く会議。','閣議'],
+['3d','3-㉝','内閣のすべての構成員が職を辞めること。衆議院議員総選挙後や内閣不信任決議後などに行われる。','総辞職'],
+['3d','3-㉞','行政を担当する職員。','公務員'],
+['3d','3-㉟','行政の無駄を省き、簡素で効率的な行政をめざす改革。','行政改革'],
+['3d','3-㊱','自由な経済活動をうながすために、行政のもつ許認可権を見直して規制を緩めること。','規制緩和'],
+['3e','3-㊲','【裁判所の図】いちばん上にある、唯一の終審裁判所。','最高裁判所'],
+['3e','3-㊳','【裁判所の図】最高裁判所に対して、それ以外の裁判所をまとめた呼び名。','下級裁判所'],
+['3e','3-㊴','【裁判所の図】最高裁判所のすぐ下にある裁判所。','高等裁判所'],
+['3e','3-㊵','【裁判所の図】簡易裁判所の民事裁判の控訴を受ける裁判所。','地方裁判所'],
+['3e','3-㊶','【裁判所の図】いちばん下にある、軽い事件をあつかう裁判所。','簡易裁判所'],
+['3e','3-㊷','第一審の判決に不服で、第二審の裁判所にうったえること。','控訴'],
+['3e','3-㊸','第二審の判決に不服で、さらに上の裁判所にうったえること。','上告'],
+['3e','3-㊹','慎重な裁判で人権を守るため、同じ事件において3段階で裁判を行えるしくみ。','三審制'],
+['3e','3-㊺','裁判官は、外部に干渉されず、自らの良心に従い、憲法と法律にのみ拘束されるという原則。','司法権の独立'],
+['3e','3-㊻','【裁判の種類】私人の間の争いを扱う裁判。','民事裁判'],
+['3e','3-㊼','【裁判の種類】犯罪行為を扱う裁判。','刑事裁判'],
+['3e','3-㊽','民事裁判で自分の権利を侵害されたとして、裁判所に訴えた人のこと。','原告'],
+['3e','3-㊾','裁判所に起訴された、犯罪行為が疑われている人。','被告人'],
+['3e','3-㊿','裁判で法に基づき判決を下す役割を負う人。令状を発する権限ももつ。','裁判官'],
+['3e','3-51','刑事裁判で犯罪行為の疑いのある人を裁判所に起訴し、有罪を主張して刑罰を求める役割を負う人。','検察官'],
+['3e','3-52','民事裁判の争いの当事者や、刑事裁判で犯罪行為が疑われている人の利益を守る代理人や弁護人として活動する役割を負う人。','弁護士'],
+['3f','3-53','身近で利用しやすい裁判制度をめざした改革。','司法制度改革'],
+['3f','3-54','重大な犯罪事件を扱う刑事裁判に、国民が裁判官とともに公判に出席して、有罪かどうかや、刑罰の内容を決める制度。','裁判員制度'],
+['3f','3-55','検察官が起訴しなかったことのよしあしを審査する機関。抽選された国民で構成される。','検察審査会'],
+['3f','3-56','【国の三権】国会が担う権力。','立法権'],
+['3f','3-57','【国の三権】内閣が担う権力。','行政権'],
+['3f','3-58','【国の三権】裁判所が担う権力。','司法権'],
+['3f','3-59','国民の人権を守るために、国の権力を3つの独立した機関に分けるしくみ。','三権分立','権力分立'],
+['3f','3-60','最高裁判所の裁判官を辞めさせるかどうかを国民が投票する制度。','国民審査'],
+['3f','3-61','法律や国の行為が憲法に違反していないか、裁判所が審査する制度。','違憲審査制','違憲立法審査権'],
+['3g','3-62','地方の政治は、住民の意思に基づき、国から自立して行われるという原則。「民主主義の学校」といわれる。','地方自治'],
+['3g','3-63','地方公共団体独自の活動のため、仕事や財源を国から地方へ移す動き。','地方分権'],
+['3g','3-64','地域の住民が直接選挙で選んだ知事や市（区）町村長のこと。','首長'],
+['3g','3-65','地域の住民が直接選挙で選んだ議員からなる機関。（都道府県議会・市（区）町村議会）','地方議会'],
+['3g','3-66','首長と地方議会の議員という、2種類の代表を住民が直接選ぶ制度。','二元代表制'],
+['3g','3-67','法律の範囲内で定められる、地方公共団体独自の決まり。','条例'],
+['3g','3-68','条例の制定・改廃や議会の解散などを、住民が直接求める権利。','直接請求権'],
+['3g','3-69','条例の制定・改廃を求める際に必要な有権者の署名数。（分数で）','50分の1以上'],
+['3g','3-70','住民投票によって、知事や市（区）町村長、議員などを辞めさせること。','解職請求','リコール'],
+['3h','3-71','地方公共団体の自主財源で、地方公共団体に納める税金。','地方税'],
+['3h','3-72','地方公共団体間の財政格差をなくすために国から交付される財源。','地方交付税交付金','地方交付税'],
+['3h','3-73','特定の事業を行うために国から支給される財源。','国庫支出金'],
+['3h','3-74','複数の市町村がまとまって1つの地方公共団体になる動き。','市町村合併'],
+['3h','3-75','地域の重要課題について、住民の意思を明らかにするために行われる投票。','住民投票'],
+['3h','3-76','自発的に社会貢献活動を行うこと。','ボランティア'],
+['3h','3-77','利益を目的としないで社会貢献活動を行う団体。','NPO','非営利組織'],
+];
+const Q=RAW.map((r,i)=>({id:i,u:r[0],no:r[1],q:r[2],a:r[3],alt:r[4]||''}));
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const uName=id=>{const u=UNITS.find(x=>x.id===id);return u.name};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ansText=q=>q.a+(q.alt?`<small>（${q.alt} でもOK）</small>`:'');
+const store={get(){try{return JSON.parse(localStorage.getItem('koumin_kiso_rank')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('koumin_kiso_rank',JSON.stringify(v))}catch(e){}}};
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+ if(b.dataset.t==='miss')renderMiss(); if(b.dataset.t==='rank')renderRank(); window.scrollTo(0,0);
+});
+
+function buildSel(el,name){
+ let h='';
+ [...new Set(UNITS.map(u=>u.g))].forEach(g=>{
+  h+=`<div class="gh">${g}<button type="button" data-g="${g}">全部はずす</button></div>`;
+  UNITS.filter(u=>u.g===g).forEach(u=>{h+=`<label><input type="checkbox" name="${name}" value="${u.id}" data-g="${g}" checked><span>${u.name}（${Q.filter(q=>q.u===u.id).length}問）<br><span class="pg">${u.pg}</span></span></label>`});
+ });
+ el.innerHTML=h;
+ el.querySelectorAll('.gh button').forEach(b=>b.onclick=()=>{
+  const bs=el.querySelectorAll(`input[data-g="${b.dataset.g}"]`);const all=[...bs].every(x=>x.checked);
+  bs.forEach(x=>x.checked=!all);b.textContent=all?'全部えらぶ':'全部はずす';
+ });
+}
+buildSel($('#qsel'),'qu');buildSel($('#psel'),'pu');
+const picked=n=>[...document.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
+const radio=n=>document.querySelector(`input[name="${n}"]:checked`).value;
+
+let S=null,sessionMiss=[];
+function start(qs,mode){
+ if(!qs.length){alert('範囲をえらんでください');return}
+ S={qs,i:0,ok:0,mode};sessionMiss=[];
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==='home'));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id==='home'));
+ $('#setup').style.display='none';$('#play').style.display='block';show();
+}
+$('#go').onclick=()=>{let qs=Q.filter(q=>picked('qu').includes(q.u));if(radio('ord')==='shuf')qs=shuffle(qs);start(qs,radio('mode'))};
+
+function record(q,ok){if(ok){S.ok++;return}if(!sessionMiss.includes(q))sessionMiss.push(q);const r=store.get();r[q.id]=(r[q.id]||0)+1;store.set(r)}
+function head(){const q=S.qs[S.i];return `<div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><div class="qhead"><span>${q.no}　${uName(q.u)}</span><span>${S.i+1} / ${S.qs.length}</span></div>`}
+function nextBtns(){return `<button class="btn" id="nx">${S.i+1<S.qs.length?'次の問題へ':'結果を見る'}</button><button class="btn ghost" id="qt">やめる</button>`}
+function bindNext(){$('#nx').onclick=()=>{S.i++;S.i<S.qs.length?show():result()};$('#qt').onclick=result}
+function show(){
+ const q=S.qs[S.i],p=$('#play');p.dataset.done='0';
+ if(S.mode==='card'){
+  p.innerHTML=`<div class="card">${head()}<div class="qtext">${q.q}</div><div id="area"><button class="btn sub" id="reveal">答えを見る</button></div></div>`;
+  $('#reveal').onclick=()=>{
+   $('#area').innerHTML=`<div class="ansbox">${ansText(q)}</div><p class="note" style="text-align:center">言えた？書けた？</p><div class="two"><button class="btn ok" id="o">⭕ できた</button><button class="btn ng" id="x">❌ できなかった</button></div>`;
+   const fin=ok=>{if(p.dataset.done==='1')return;p.dataset.done='1';record(q,ok);S.i++;S.i<S.qs.length?show():result()};
+   $('#o').onclick=()=>fin(true);$('#x').onclick=()=>fin(false);
+  };
+ }else{
+  const same=Q.filter(x=>x.id!==q.id&&x.a!==q.a&&x.u[0]===q.u[0]);
+  const near=shuffle(same.filter(x=>x.u===q.u));const far=shuffle(same.filter(x=>x.u!==q.u));
+  const ds=[];[...near,...far].forEach(x=>{if(ds.length<3&&!ds.includes(x.a))ds.push(x.a)});
+  const ch=shuffle([q.a,...ds]);
+  p.innerHTML=`<div class="card">${head()}<div class="qtext">${q.q}</div>${ch.map(c=>`<button class="choice">${c}</button>`).join('')}<div id="fb"></div></div>`;
+  p.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+   if(p.dataset.done==='1')return;p.dataset.done='1';const ok=b.textContent===q.a;record(q,ok);
+   p.querySelectorAll('.choice').forEach(x=>{if(x.textContent===q.a)x.classList.add('ok')});if(!ok)b.classList.add('ng');
+   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ 正解は「'+q.a+'」'}</b>${q.alt?`<br>（${q.alt} とも言う）`:''}</div>${nextBtns()}`;bindNext();
+  });
+ }
+ window.scrollTo(0,0);
+}
+function result(){
+ const tot=S.i+(S.mode==='mc'&&$('#play').dataset.done==='1'&&S.i<S.qs.length?1:0);const n=Math.min(tot,S.qs.length);
+ $('#play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${n}</div>
+ <p style="text-align:center;margin:6px 0">${n&&S.ok===n?'🎉 全問正解！すばらしい！':'まちがえた問題を、全問正解するまでくり返そう！'}</p>
+ ${sessionMiss.length?`<button class="btn" id="re">❌の問題だけもう一度（${sessionMiss.length}問）</button>`:''}
+ <button class="btn sub" id="bk">範囲えらびにもどる</button></div>`;
+ if(sessionMiss.length)$('#re').onclick=()=>start(shuffle(sessionMiss),S.mode);
+ $('#bk').onclick=()=>{$('#play').style.display='none';$('#setup').style.display='block';window.scrollTo(0,0)};
+}
+function line(q){return `<div>${q.no}　${q.q}</div><div class="a">→ ${q.a}${q.alt?'（'+q.alt+'）':''}</div>`}
+function renderMiss(){$('#misslist').innerHTML=sessionMiss.length?sessionMiss.map(q=>`<div class="mist">${line(q)}</div>`).join(''):'<p class="note">まだありません。</p>'}
+function rankIds(){const r=store.get();return Object.keys(r).sort((a,b)=>r[b]-r[a])}
+function renderRank(){const r=store.get(),ids=rankIds();$('#ranklist').innerHTML=ids.length?ids.slice(0,40).map(id=>`<div class="mist"><span class="n">${r[id]}回</span>${line(Q[id])}</div>`).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('#rankgo').onclick=()=>{const ids=rankIds();if(!ids.length){alert('まだ記録がありません');return}start(shuffle(ids.map(id=>Q[id])),'card')};
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+
+$('#pgo').onclick=()=>{
+ let qs=Q.filter(q=>picked('pu').includes(q.u));if(!qs.length){alert('範囲をえらんでください');return}
+ const shuf=radio('pord')==='shuf';if(shuf)qs=shuffle(qs);
+ let h=`<h1>公民 基本用語チェック<span>名前（　　　　　　　　）　　／${qs.length}</span></h1>`,last=null,key=[];
+ qs.forEach((q,k)=>{
+  if(!shuf&&q.u!==last){h+=`<div class="ps">${uName(q.u)}</div>`;last=q.u}
+  h+=`<div class="pq"><div class="t">(${k+1}) ${q.q}</div><div class="l"></div></div>`;
+  key.push(`<div class="pq"><div class="t">(${k+1}) ${q.a}${q.alt?'（'+q.alt+'）':''}</div></div>`);
+ });
+ if($('#pans').checked)h+=`<div class="pans"><h1>解答</h1>${key.join('')}</div>`;
+ $('#printArea').innerHTML=h;setTimeout(()=>window.print(),200);
+};
+</script></body></html>
