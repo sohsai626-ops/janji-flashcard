@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>例文漢字3 P.34〜43</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#f1f6fb;color:#1f2a36;-webkit-text-size-adjust:100%}
+header{background:#1f4e79;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.9;margin:2px 0 8px}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700;padding:9px 2px;border-radius:10px 10px 0 0}
+nav button.on{background:#f1f6fb;color:#1f4e79}
+.tab{display:none;padding:14px;max-width:720px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(20,50,90,.12)}
+h2{font-size:16px;color:#1f4e79;margin-bottom:8px}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 4px;border-bottom:1px solid #e3ebf3}
+.sel input{width:22px;height:22px;flex:none}
+.pg{font-size:12px;color:#6b7c8f}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;min-width:120px;display:flex;align-items:center;gap:6px;font-size:14px;background:#e6eff8;border-radius:10px;padding:10px}
+.btn{display:block;width:100%;border:0;background:#1f4e79;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#3d4b5a}.btn.ghost{background:#fff;color:#1f4e79;border:2px solid #1f4e79}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#6b7c8f;margin-bottom:8px}
+.kind{display:inline-block;font-size:12px;font-weight:800;color:#fff;border-radius:6px;padding:1px 8px;margin-bottom:8px}
+.kind.k{background:#1f4e79}.kind.y{background:#2e7d32}.kind.p{background:#b5651d}
+.qtext{font-size:23px;line-height:1.8;margin:6px 0 4px}
+.qtext em{font-style:normal;font-weight:900;color:#c0392b;border-bottom:3px solid #c0392b;padding:0 2px}
+.mean{font-size:13px;color:#6b7c8f;margin-bottom:8px}
+.ansbox{font-size:34px;font-weight:900;color:#1f4e79;text-align:center;padding:14px;background:#e6eff8;border-radius:12px;margin:10px 0;font-family:"Hiragino Mincho ProN","Noto Serif CJK JP",serif}
+.ansbox small{display:block;font-size:13px;color:#6b7c8f;font-weight:400;font-family:sans-serif;margin-top:4px}
+.score{font-size:42px;font-weight:900;color:#1f4e79;text-align:center}
+.bar{height:8px;background:#e3ebf3;border-radius:4px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:#1f4e79}
+.mist{border-bottom:1px solid #e3ebf3;padding:9px 0;font-size:15px;line-height:1.6}
+.mist .a{color:#2e7d32;font-weight:800;font-size:17px}
+.mist .n{float:right;background:#1f4e79;color:#fff;border-radius:999px;padding:0 9px;font-weight:800;margin-left:6px}
+.note{font-size:13px;color:#6b7c8f;line-height:1.6}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}header,.tab{display:none!important}
+ #printArea{display:block;color:#000;font-size:11pt;columns:2;column-gap:8mm}
+ #printArea h1{font-size:13pt;border-bottom:2px solid #000;margin-bottom:3mm;column-span:all}
+ #printArea h1 span{font-size:10pt;font-weight:400;float:right}
+ .pq{display:flex;gap:2mm;line-height:1.5;margin-bottom:2mm;break-inside:avoid}
+ .pq .t{flex:1}.pq .l{width:22mm;border-bottom:1px solid #000;flex:none}
+ .pq em{font-style:normal;font-weight:700;text-decoration:underline}
+ .pans{break-before:column;column-span:all;page-break-before:always;columns:4;font-size:10pt}
+}
+</style></head><body>
+<header><h1>✍️ 例文漢字3（P.34〜43）</h1><div class="sub">紙に書いてから「答えを見る」→ ⭕／❌ ／ ❌だけくり返す</div>
+<nav><button data-t="home" class="on">✏️ 練習</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button><button data-t="print">🖨 印刷</button></nav></header>
+
+<div class="tab show" id="home">
+ <div id="setup">
+  <div class="card"><h2>範囲をえらぶ</h2><div class="sel" id="qsel"></div></div>
+  <div class="card"><h2>問題の種類</h2>
+   <div class="row"><label class="opt"><input type="checkbox" name="kd" value="k" checked> 書き（確認問題）</label><label class="opt"><input type="checkbox" name="kd" value="p" checked> 書き（余白・入試漢字）</label><label class="opt"><input type="checkbox" name="kd" value="y" checked> 読み</label></div>
+   <div class="row"><label class="opt"><input type="radio" name="ord" value="shuf" checked> シャッフル</label><label class="opt"><input type="radio" name="ord" value="seq"> 順番どおり</label></div>
+   <button class="btn" id="go">スタート</button>
+   <p class="note" style="margin-top:10px">💡 必ず紙に書いてから答えを見よう。送りがなまで正しく書けたら⭕。❌の問題は、全問⭕になるまでくり返そう。</p>
+  </div>
+ </div>
+ <div id="play" style="display:none"></div>
+</div>
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた問題</h2><div id="misslist"></div></div></div>
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">まちがえた回数が多い順（このスマホに記録）</p><div id="ranklist"></div><button class="btn" id="rankgo">苦手な問題だけ練習</button><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+<div class="tab" id="print"><div class="card"><h2>テストプリントを作る</h2><div class="sel" id="psel"></div>
+ <div class="row"><label class="opt"><input type="checkbox" name="pkd" value="k" checked> 書き（確認）</label><label class="opt"><input type="checkbox" name="pkd" value="p" checked> 書き（余白）</label><label class="opt"><input type="checkbox" name="pkd" value="y" checked> 読み</label></div>
+ <div class="row"><label class="opt"><input type="checkbox" id="pshuf" checked> シャッフル</label><label class="opt"><input type="checkbox" id="pans" checked> 解答ページを付ける</label></div>
+ <button class="btn sub" id="pgo">印刷する</button>
+ <p class="note" style="margin-top:8px">iPhoneでは印刷画面を2本指で広げるとPDFとして保存・共有できます。</p></div></div>
+<div id="printArea"></div>
+
+<script>
+const UNITS=[
+{id:'U1',name:'「故郷」の漢字（宰）',pg:'P.34〜35'},
+{id:'U2',name:'君待つと（緒・荘）',pg:'P.36〜37'},
+{id:'U3',name:'拘・掌のページ',pg:'P.38〜39'},
+{id:'U4',name:'漢字のまとめ(2)（劾・坑・軒…）',pg:'P.40〜41'},
+{id:'U5',name:'漢字のまとめ(3)（唄・窮・糾…）',pg:'P.42〜43'},
+];
+// [単元, 種類(k=書き確認 p=書き余白 y=読み), 問題（【 】が答える部分）, 答え, 意味(任意)]
+const RAW=[
+// ===== U1 故郷 =====
+['U1','k','【シンラツ】な批評。','辛辣','非常に手厳しい様子'],
+['U1','k','雨の日は【ユウウツ】だ。','憂鬱','気持ちが晴れない様子'],
+['U1','k','悪政に【フンガイ】する。','憤慨','はげしく怒ること'],
+['U1','k','【はなはだ】残念だ。','甚だ','非常に'],
+['U1','k','【イカン】に思う。','遺憾','残念に思うこと'],
+['U1','k','【シュウチ】を覚える。','羞恥','はじらい'],
+['U1','k','工夫を【こらす】。','凝らす'],
+['U1','k','【イショウ】を施す。','意匠','工夫をめぐらすこと'],
+['U1','k','資料を【テンプ】する。','添付','つけそえること'],
+['U1','k','【テンプ】の才能。','天賦','天が与えた生まれつきの資質'],
+['U1','k','家族を【フヨウ】する。','扶養','助けやしなうこと'],
+['U1','k','彼は【カモク】な人だ。','寡黙','口数が少ない様子'],
+['U1','k','【テキギ】休憩する。','適宜','その時々に応じて'],
+['U1','k','【ガクセイリョウ】に入る。','学生寮'],
+['U1','k','劇団を【シュサイ】する。','主宰','中心となって全体をまとめること'],
+['U1','k','【セイジャク】を破る。','静寂','しずかでひっそりとしていること'],
+['U1','k','【ジヨウ】に富む料理。','滋養','えいよう'],
+['U1','k','【サイエン】と名高い。','才媛','教よう・さいのうを持つ女性'],
+['U1','k','【テンジョウ】からつるす。','天井'],
+['U1','k','【ジョウモン】時代の土器。','縄文'],
+['U1','p','【同音異義語】劇団を【シュサイ】する。','主宰','人々の中心となって団体を運営すること'],
+['U1','p','【同音異義語】大会の【シュサイ】者。','主催','会合や行事などを中心になって開くこと'],
+['U1','y','日本の【宰相】。','さいしょう'],
+// ===== U2 君待つと =====
+['U2','k','【コキン】和歌集','古今'],
+['U2','k','【とうとい（たっとい）】経験。','貴い','きちょうである'],
+['U2','k','天を【あおぐ】。','仰ぐ'],
+['U2','k','月が雲に【かくれる】。','隠れる'],
+['U2','k','支払いが【とどこおる】。','滞る'],
+['U2','k','雪が屋根に【つもる】。','積もる'],
+['U2','k','知恵を【しぼる】。','絞る'],
+['U2','k','下駄の【はなお】。','鼻緒','足にかけるひもの部分'],
+['U2','k','交流が【たえる】。','絶える'],
+['U2','k','【ショウガイ】忘れない。','生涯'],
+['U2','k','【トチュウ】で投げ出す。','途中'],
+['U2','k','ほつれを【つくろう】。','繕う'],
+['U2','k','家を建て【かえる】。','替える'],
+['U2','k','席を【ゆずる】。','譲る'],
+['U2','k','【ベッソウ】で過ごす。','別荘'],
+['U2','k','【はなやか】ドレス。','華やか','はでで美しいさま'],
+['U2','k','【かどで】を祝う。','門出','新しい生活を始めること'],
+['U2','k','けがの【コウミョウ】。','功名','手柄を立て、めいよを得ること'],
+['U2','k','ふとんを【しく】。','敷く'],
+['U2','k','【クウキョ】な生活。','空虚','何もなく、むなしいこと'],
+['U2','p','【音訓強化】【ジョウチョ（ジョウショ）】豊かな作品だ。','情緒','物事のおもむき'],
+['U2','p','【音訓強化】意見が【イッショ】になる。','一緒'],
+['U2','p','【似た字形】【ソウチョウ】な雰囲気。','荘重','おごそかでおもおもしいさま'],
+['U2','p','【似た字形】【ソウダイ】な音楽。','壮大','おおきくて立派なさま'],
+['U2','y','【由緒】ある寺。','ゆいしょ'],
+['U2','y','下駄の【緒】。','お'],
+['U2','y','【入試漢字】家業を【継ぐ】。','つぐ'],
+['U2','y','【入試漢字】セーターを【編む】。','あむ'],
+['U2','y','【入試漢字】水を口に【含む】。','ふくむ'],
+['U2','y','【入試漢字】絵の具を【塗る】。','ぬる'],
+['U2','y','【入試漢字】内容を【把握】する。','はあく'],
+['U2','y','【入試漢字】食欲が【旺盛】だ。','おうせい'],
+['U2','y','【入試漢字】【口調】が柔らかい。','くちょう'],
+['U2','y','【入試漢字】【激励】を受ける。','げきれい'],
+['U2','p','【入試漢字】暑さが【きびしい】。','厳しい'],
+['U2','p','【入試漢字】ごみを【すてる】。','捨てる'],
+['U2','p','【入試漢字】作戦を【ねる】。','練る'],
+['U2','p','【入試漢字】公園で【あそぶ】。','遊ぶ'],
+['U2','p','【入試漢字】【ジョウケン】が整う。','条件'],
+['U2','p','【入試漢字】【キケン】が伴う。','危険'],
+['U2','p','【入試漢字】【ヒョウカ】が高い。','評価'],
+['U2','p','【入試漢字】【フタン】が増える。','負担'],
+// ===== U3 拘・掌 =====
+['U3','k','戯曲の【コウガイ】を話す。','梗概','あらすじ'],
+['U3','k','【はしげた】が壊れる。','橋桁'],
+['U3','k','【サン】ばしを歩く。','桟','（桟橋）'],
+['U3','k','【ドンヨク】な好奇心。','貪欲','非常によくが深いこと'],
+['U3','k','【シュウワイ】罪の事例。','収賄','わいろを受け取ること'],
+['U3','k','商品を【コウニュウ】する。','購入'],
+['U3','k','【エツラク】に浸る。','悦楽','喜びたのしむこと'],
+['U3','k','【オンネン】を晴らす。','怨念','うらみに思う気持ち'],
+['U3','k','選手を【イロウ】する。','慰労','くろうをねぎらうこと'],
+['U3','k','【サギ】の手口。','詐欺','だまして損をさせること'],
+['U3','k','【フホウ】が届く。','訃報','死去の知らせ'],
+['U3','k','語源を【センサク】する。','詮索','細かく調べ求めること'],
+['U3','k','熊を【ホカク】する。','捕獲'],
+['U3','k','【コウソク】時間が長い。','拘束','自由を制限すること'],
+['U3','k','権力を【ショウアク】する。','掌握'],
+['U3','k','【くれない】にそまった空。','紅','鮮やかな赤色'],
+['U3','k','夕日に【そまる】空。','染まる'],
+['U3','k','【コウチャ】を注ぐ。','紅茶'],
+['U3','k','寝ぼけ【まなこ】で見る。','眼'],
+['U3','k','【うじがみ】様の祭り。','氏神','その土地に住んでいる人を守るかみ'],
+['U3','y','ルールに【拘泥】する。','こうでい'],
+['U3','y','【合掌】造りの家。','がっしょう'],
+// ===== U4 まとめ(2) =====
+['U4','k','【ダンガイ】裁判を行う。','弾劾','不正や罪を明らかにして責任を問うこと'],
+['U4','k','【ガイトウ】者なし。','該当','条件にあてはまること'],
+['U4','k','権力に【テイコウ】する。','抵抗','はむかうこと'],
+['U4','k','【タンコウ】を進む。','炭坑','せきたんを掘るための穴'],
+['U4','k','【のきした】で休む。','軒下','屋根の突き出した部分のした'],
+['U4','k','【ゾウゲ】細工','象牙'],
+['U4','k','【ユウテン】の低い物質。','融点','固体が溶けて液体になる温度'],
+['U4','k','【シット】心をあおる。','嫉妬','ねたむこと'],
+['U4','k','【シキシダイ】を決める。','式次第','しきてんの順序'],
+['U4','k','【イッチョウイッセキ】','一朝一夕','わずかな時間'],
+['U4','k','【ボウジャクブジン】','傍若無人','周りを気にせず、自分勝手に振る舞うこと'],
+['U4','k','【ありうる】話だ。','あり得る'],
+['U4','k','【おい立ち】を語る。','生い立ち'],
+['U4','k','戦争の【キョウイ】。','脅威','おびやかされること'],
+['U4','k','【キョウイ】的な記録。','驚異','おどろくほどすばらしいこと'],
+['U4','k','師を【おそれ】敬う。','畏れ'],
+['U4','k','時間を【ついやす】。','費やす'],
+['U4','k','書き【ぞめ】をする。','初め','（書き初め）'],
+['U4','k','お言葉を【たまわる】。','賜る','いただく'],
+['U4','k','会社を【やめる】。','辞める'],
+['U4','p','【音訓強化】家が【よんケン】並ぶ。','四軒'],
+['U4','p','【音訓強化】【イケイ】の念を抱く。','畏敬','おそれうやまうこと'],
+['U4','p','【似た字形】大統領の【ダンガイ】。','弾劾'],
+['U4','p','【似た字形】出発する【ジコク】だ。','時刻'],
+['U4','p','【似た字形】【キンユウ】機関で働く。','金融'],
+['U4','p','【似た字形】【カクゼツ】された世界。','隔絶','遠くはなれていること'],
+['U4','y','【坑道】を掘る。','こうどう'],
+['U4','y','【数軒】先の飲食店。','すうけん'],
+['U4','y','【軒先】に水をまく。','のきさき'],
+['U4','y','猛獣の鋭い【牙】。','きば'],
+['U4','y','東西文化の【融合】。','ゆうごう'],
+['U4','y','【畏怖】の念を抱く。','いふ'],
+['U4','y','【畏れ】多い。','おそれ'],
+['U4','y','ご協力を【賜る】。','たまわる'],
+['U4','y','【新出音訓】【夕】（音読み）　例：一朝一夕','セキ'],
+['U4','y','【新出音訓】【若】（音読み）　例：傍若無人','ジャク'],
+['U4','y','【新出音訓】【得る】（訓読み）　例：あり得る','うる'],
+['U4','y','【新出音訓】【生い】立ち','おい'],
+['U4','y','【入試漢字】【速やか】に対応する。','すみやか'],
+['U4','y','【入試漢字】神社の【境内】。','けいだい'],
+['U4','p','【入試漢字】一線を【しりぞく】。','退く'],
+['U4','p','【入試漢字】事件の【ハイケイ】。','背景'],
+// ===== U5 まとめ(3) =====
+['U5','k','【ながうた】を習う。','長唄'],
+['U5','k','【キュウジョウ】を訴える。','窮状','困り苦しんでいるじょうたい'],
+['U5','k','不正を【キュウダン】する。','糾弾','罪や責任を問いただして責めること'],
+['U5','k','【ガング】で遊ぶ。','玩具','おもちゃ'],
+['U5','k','【ガク】ぶちを掛ける。','額','（額縁）'],
+['U5','k','大井川の【なかす】。','中州'],
+['U5','k','相手を【ホンロウ】する。','翻弄','もてあそぶこと'],
+['U5','k','【こがね】色に光る。','黄金'],
+['U5','k','神社の【かんぬし】。','神主'],
+['U5','k','【しない】を振る。','竹刀'],
+['U5','k','【テンポ】を構える。','店舗'],
+['U5','k','【しにせ】の旅館。','老舗','何代も続いた伝統あるみせ'],
+['U5','k','【でこぼこ】な地面。','凸凹'],
+['U5','k','【じゃり】の多い道。','砂利'],
+['U5','k','【なごり】惜しい。','名残','別れの際の心のこり'],
+['U5','k','【もより】のバス停。','最寄り','すぐちかく'],
+['U5','k','【ハイハンチケン】','廃藩置県'],
+['U5','k','【ゲカシュジュツ】','外科手術'],
+['U5','k','【キンキ】地方の天気。','近畿'],
+['U5','k','武者【シュギョウ】に出る。','修行'],
+['U5','p','【音訓強化】人の心を【もてあそぶ】。','弄ぶ'],
+['U5','p','【似た字形】非難が【フンキュウ】する。','紛糾','もつれる'],
+['U5','p','【似た字形】驚いて【ゼッキョウ】する。','絶叫'],
+['U5','p','【似た字形】五【キナイ】の制定。','畿内'],
+['U5','p','【似た字形】【キカガク】模様の服。','幾何学','図形に関するすうがくの分野'],
+['U5','y','【小唄】の師匠。','こうた'],
+['U5','y','【窮屈】に感じる。','きゅうくつ'],
+['U5','y','会議が【紛糾】する。','ふんきゅう'],
+['U5','y','【愛玩】動物','あいがん'],
+['U5','y','人を【愚弄】する。','ぐろう'],
+['U5','y','心を【弄ぶ】。','もてあそぶ'],
+['U5','y','五代目の【藩主】。','はんしゅ'],
+['U5','y','【畿内】に向かう。','きない'],
+['U5','y','【入試漢字】【厳か】な鐘の音。','おごそか'],
+['U5','y','【入試漢字】参加者を【募る】。','つのる'],
+['U5','y','【入試漢字】【顕著】に表れる。','けんちょ'],
+['U5','p','【入試漢字】農業を【いとなむ】。','営む'],
+['U5','p','【入試漢字】成功に【みちびく】。','導く'],
+['U5','p','【入試漢字】楽器を【エンソウ】する。','演奏'],
+];
+// 先頭の【音訓強化】などはラベル、それ以外の【 】が答える部分
+const Q=RAW.map((r,i)=>{
+ let t=r[2],label='';
+ const m=t.match(/^【(同音異義語|音訓強化|似た字形|入試漢字|新出音訓)】/);
+ if(m){label=m[1];t=t.slice(m[0].length)}
+ return {id:i,u:r[0],k:r[1],label,t,a:r[3],mean:r[4]||''};
+});
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(){try{return JSON.parse(localStorage.getItem('kanji3_rank')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('kanji3_rank',JSON.stringify(v))}catch(e){}}};
+const KN={k:'書き（確認問題）',p:'書き（余白）',y:'読み'};
+const sent=q=>q.t.replace(/【(.+?)】/g,'<em>$1</em>');
+const plain=q=>q.t.replace(/【(.+?)】/g,'$1');
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+ if(b.dataset.t==='miss')renderMiss(); if(b.dataset.t==='rank')renderRank(); window.scrollTo(0,0);
+});
+const selHTML=n=>UNITS.map(u=>`<label><input type="checkbox" name="${n}" value="${u.id}" checked><span>${u.name}（${Q.filter(q=>q.u===u.id).length}問）<br><span class="pg">${u.pg}</span></span></label>`).join('');
+$('#qsel').innerHTML=selHTML('qu');$('#psel').innerHTML=selHTML('pu');
+const checked=n=>[...document.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
+let S=null,sessionMiss=[];
+function start(qs){
+ if(!qs.length){alert('範囲や種類をえらんでください');return}
+ S={qs,i:0,ok:0};sessionMiss=[];
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==='home'));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id==='home'));
+ $('#setup').style.display='none';$('#play').style.display='block';show();
+}
+$('#go').onclick=()=>{const us=checked('qu'),ks=checked('kd');let qs=Q.filter(q=>us.includes(q.u)&&ks.includes(q.k));if(document.querySelector('input[name="ord"]:checked').value==='shuf')qs=shuffle(qs);start(qs)};
+function record(q,ok){if(ok){S.ok++;return}if(!sessionMiss.includes(q))sessionMiss.push(q);const r=store.get();r[q.id]=(r[q.id]||0)+1;store.set(r)}
+function show(){
+ const q=S.qs[S.i],p=$('#play');p.dataset.done='0';
+ const instr=q.k==='y'?'赤い部分の読みを書こう':'赤い部分を漢字に直そう（送りがなも）';
+ p.innerHTML=`<div class="card"><div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div>
+ <div class="qhead"><span>${UNITS.find(u=>u.id===q.u).name}</span><span>${S.i+1} / ${S.qs.length}</span></div>
+ <span class="kind ${q.k}">${q.label||KN[q.k]}</span><div class="note">${instr}</div>
+ <div class="qtext">${sent(q)}</div>${q.mean?`<div class="mean">意味：${q.mean}</div>`:''}
+ <div id="area"><button class="btn sub" id="reveal">答えを見る</button></div></div>`;
+ $('#reveal').onclick=()=>{
+  $('#area').innerHTML=`<div class="ansbox">${q.a}<small>${plain(q)}</small></div><div class="two"><button class="btn ok" id="o">⭕ 書けた</button><button class="btn ng" id="x">❌ まちがえた</button></div>`;
+  const fin=ok=>{if(p.dataset.done==='1')return;p.dataset.done='1';record(q,ok);S.i++;S.i<S.qs.length?show():result()};
+  $('#o').onclick=()=>fin(true);$('#x').onclick=()=>fin(false);
+ };
+ window.scrollTo(0,0);
+}
+function result(){
+ const n=S.i;
+ $('#play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${n}</div>
+ <p style="text-align:center;margin:6px 0">${n&&S.ok===n?'🎉 全問正解！すばらしい！':'❌の漢字は、もう一度紙に3回書いてから再チャレンジ！'}</p>
+ ${sessionMiss.length?`<button class="btn" id="re">❌の問題だけもう一度（${sessionMiss.length}問）</button>`:''}
+ <button class="btn sub" id="bk">範囲えらびにもどる</button></div>`;
+ if(sessionMiss.length)$('#re').onclick=()=>start(shuffle(sessionMiss));
+ $('#bk').onclick=()=>{$('#play').style.display='none';$('#setup').style.display='block';window.scrollTo(0,0)};
+}
+function line(q){return `<div>${sent(q)}</div><div class="a">→ ${q.a}</div>`}
+function renderMiss(){$('#misslist').innerHTML=sessionMiss.length?sessionMiss.map(q=>`<div class="mist">${line(q)}</div>`).join(''):'<p class="note">まだありません。</p>'}
+function rankIds(){const r=store.get();return Object.keys(r).sort((a,b)=>r[b]-r[a])}
+function renderRank(){const r=store.get(),ids=rankIds();$('#ranklist').innerHTML=ids.length?ids.slice(0,50).map(id=>`<div class="mist"><span class="n">${r[id]}回</span>${line(Q[id])}</div>`).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('#rankgo').onclick=()=>{const ids=rankIds();if(!ids.length){alert('まだ記録がありません');return}start(shuffle(ids.map(id=>Q[id])))};
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+$('#pgo').onclick=()=>{
+ const us=checked('pu'),ks=checked('pkd');let qs=Q.filter(q=>us.includes(q.u)&&ks.includes(q.k));
+ if(!qs.length){alert('範囲や種類をえらんでください');return}
+ if($('#pshuf').checked)qs=shuffle(qs);
+ let h=`<h1>例文漢字3 確認テスト<span>名前（　　　　　　）　／${qs.length}</span></h1>`,key=[];
+ qs.forEach((q,k)=>{h+=`<div class="pq"><div class="t">(${k+1}) ${q.k==='y'?'［読］':''}${sent(q)}</div><div class="l"></div></div>`;key.push(`<div>(${k+1}) ${q.a}</div>`)});
+ if($('#pans').checked)h+=`<div class="pans"><h1>解答</h1>${key.join('')}</div>`;
+ $('#printArea').innerHTML=h;setTimeout(()=>window.print(),200);
+};
+</script></body></html>
