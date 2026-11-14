@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>理科 地学「太陽」</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#fff6ea;color:#2d2620;-webkit-text-size-adjust:100%}
+header{background:#d9661f;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.92;margin:2px 0 8px}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:700;padding:9px 2px;border-radius:10px 10px 0 0}
+nav button.on{background:#fff6ea;color:#d9661f}
+.tab{display:none;padding:14px;max-width:720px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(150,80,20,.13)}
+h2{font-size:16px;color:#d9661f;margin-bottom:8px}
+.card p,.card li{font-size:15px;line-height:1.75}
+.card ul{padding-left:1.2em}
+b{color:#c0392b}
+.fig{display:block;margin:8px auto;max-width:300px;width:100%}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 4px;border-bottom:1px solid #f3e6d8}
+.sel input{width:22px;height:22px;flex:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;min-width:130px;display:flex;align-items:center;gap:6px;font-size:14px;background:#fdeedd;border-radius:10px;padding:10px}
+.btn{display:block;width:100%;border:0;background:#d9661f;color:#fff;font-size:17px;font-weight:800;padding:14px;border-radius:12px;margin-top:10px}
+.btn.sub{background:#4a3d33}.btn.ghost{background:#fff;color:#d9661f;border:2px solid #d9661f}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#8a7868;margin-bottom:8px}
+.qtext{font-size:18px;line-height:1.7;margin:6px 0 10px;white-space:pre-line}
+.tag{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:#7b5ea7;border-radius:6px;padding:1px 7px;margin-right:4px}
+.ansbox{font-size:21px;font-weight:900;color:#d9661f;text-align:center;padding:14px;background:#fdeedd;border-radius:12px;margin:10px 0;line-height:1.5}
+.choice{display:block;width:100%;text-align:left;font-size:16px;border:2px solid #f0dcc6;background:#fff;border-radius:12px;padding:12px;margin:8px 0;color:#2d2620;line-height:1.5}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:10px 12px;margin-top:8px;font-size:15px;line-height:1.7}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.ex{background:#fff8e6;border-radius:10px;padding:10px;font-size:14px;line-height:1.7;margin-top:8px}
+.score{font-size:42px;font-weight:900;color:#d9661f;text-align:center}
+.bar{height:8px;background:#f3e6d8;border-radius:4px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:#d9661f}
+.mist{border-bottom:1px solid #f3e6d8;padding:9px 0;font-size:14px;line-height:1.6}
+.mist .a{color:#2e7d32;font-weight:800}
+.mist .n{float:right;background:#d9661f;color:#fff;border-radius:999px;padding:0 9px;font-weight:800;margin-left:6px}
+.note{font-size:13px;color:#8a7868;line-height:1.6}
+</style></head><body>
+<header><h1>☀️ 理科 地学「太陽」</h1><div class="sub">理科の学習 p.22〜23 ／ 教科書 p.50〜53</div>
+<nav><button data-t="guide" class="on">📘 まとめ</button><button data-t="home">✏️ 問題</button><button data-t="miss">❗ ミス</button><button data-t="rank">🏆 苦手</button></nav></header>
+
+<div class="tab show" id="guide">
+ <div class="card"><h2>① 太陽はどんな天体？</h2>
+  <ul><li>みずから光を出す天体＝<b>恒星</b></li>
+  <li>表面温度は約<b>6000℃</b>。太陽は<b>気体（ガス）</b>のかたまり</li>
+  <li>直径は地球の約<b>109倍</b>、質量は地球の約<b>33万倍</b></li></ul></div>
+ <div class="card"><h2>② 観察のしかた</h2>
+  <ul><li>太陽は強い光を出しているので、<b>直接見たり、望遠鏡で直接のぞいたりすると目をいためる</b></li>
+  <li>天体望遠鏡に<b>太陽投影板</b>をとりつけ、映った像を記録用紙にスケッチする</li>
+  <li>像が移動していく方向が<b>西</b></li></ul></div>
+ <div class="card"><h2>③ 黒点（こくてん）</h2>
+  <ul><li>まわりより<b>温度が低い</b>ので<b>暗く（黒く）</b>見える部分</li>
+  <li>太陽の活動が活発になると、黒点の数は<b>増える</b></li></ul>
+  <svg class="fig" viewBox="0 0 300 190"><text x="150" y="14" font-size="13" text-anchor="middle">北</text><text x="150" y="186" font-size="13" text-anchor="middle">南</text><text x="14" y="100" font-size="13">西</text><text x="272" y="100" font-size="13">東</text><circle cx="150" cy="95" r="72" fill="#ffe2b8" stroke="#555"/><g fill="#333"><ellipse cx="86" cy="95" rx="1.6" ry="4"/><ellipse cx="104" cy="95" rx="3" ry="4"/><ellipse cx="126" cy="95" rx="3.8" ry="4"/><circle cx="150" cy="95" r="4"/><ellipse cx="174" cy="95" rx="3.8" ry="4"/><ellipse cx="196" cy="95" rx="3" ry="4"/><ellipse cx="214" cy="95" rx="1.6" ry="4"/></g><text x="150" y="128" font-size="11" text-anchor="middle" fill="#c0392b">← 毎日少しずつ西へ動く</text></svg></div>
+ <div class="card"><h2>④ 黒点の観察からわかること</h2>
+  <p>🔄 黒点が<b>一方向に移動</b>する → 太陽は<b>自転</b>している</p>
+  <p>🌐 中央で円形の黒点が、周辺部では<b>縦に細長く</b>見える／黒点どうしの間隔が<b>端ほどせまく</b>なる → 太陽は<b>球形</b></p>
+  <p class="note">※太陽は気体なので自転の周期は場所でちがう（赤道付近で約25日、極付近で約29日）</p></div>
+ <div class="card"><h2>⑤ 太陽のようす</h2>
+  <ul><li><b>コロナ</b>：太陽をとり巻く高温のガスの層（皆既日食のときに見える）</li>
+  <li><b>プロミネンス（紅炎）</b>：表面で見られる炎のようなガスの動き</li></ul></div>
+ <div class="card"><h2>⑥ 計算（比例）</h2>
+  <p>図の長さと実際の長さは<b>比例</b>する。<br>太陽の像10cm（＝100mm）が地球の109倍<br>→ 黒点2.0mmは　2.0÷100×109＝<b>約2.2倍</b></p></div>
+</div>
+
+<div class="tab" id="home">
+ <div id="setup">
+  <div class="card"><h2>範囲をえらぶ</h2><div class="sel" id="qsel"></div></div>
+  <div class="card"><h2>やり方</h2>
+   <div class="row"><label class="opt"><input type="radio" name="mode" value="mc" checked> 4択</label><label class="opt"><input type="radio" name="mode" value="card"> 📝 思い出す（○×を自分で）</label></div>
+   <div class="row"><label class="opt"><input type="radio" name="ord" value="seq" checked> 順番どおり</label><label class="opt"><input type="radio" name="ord" value="shuf"> シャッフル</label></div>
+   <button class="btn" id="go">スタート</button>
+   <p class="note" style="margin-top:10px">おすすめ：①「📘 まとめ」を読む → ②4択 → ③「思い出す」で、ワークの答えを何も見ずに言えるように</p>
+  </div>
+ </div>
+ <div id="play" style="display:none"></div>
+</div>
+<div class="tab" id="miss"><div class="card"><h2>今回まちがえた問題</h2><div id="misslist"></div></div></div>
+<div class="tab" id="rank"><div class="card"><h2>苦手ランキング</h2><p class="note">まちがえた回数が多い順（このスマホに記録）</p><div id="ranklist"></div><button class="btn" id="rankgo">苦手な問題だけ練習</button><button class="btn ghost" id="rankreset">記録をリセット</button></div></div>
+
+<script>
+const FIG_MOVE=`<svg class="fig" viewBox="0 0 300 170"><text x="150" y="13" font-size="12" text-anchor="middle">北</text><text x="150" y="167" font-size="12" text-anchor="middle">南</text><text x="16" y="90" font-size="12">西</text><text x="272" y="90" font-size="12">東</text><circle cx="150" cy="86" r="66" fill="#fff" stroke="#555"/><g fill="#333"><ellipse cx="92" cy="86" rx="1.5" ry="3.5"/><ellipse cx="108" cy="86" rx="2.6" ry="3.5"/><ellipse cx="128" cy="86" rx="3.3" ry="3.5"/><circle cx="150" cy="86" r="3.5"/><ellipse cx="172" cy="86" rx="3.3" ry="3.5"/><ellipse cx="192" cy="86" rx="2.6" ry="3.5"/><ellipse cx="208" cy="86" rx="1.5" ry="3.5"/></g></svg>`;
+const FIG_10=`<svg class="fig" viewBox="0 0 220 150" style="max-width:200px"><text x="110" y="14" font-size="12" text-anchor="middle">10 cm</text><line x1="45" y1="20" x2="175" y2="20" stroke="#555"/><circle cx="110" cy="85" r="62" fill="#fff" stroke="#555"/><circle cx="110" cy="85" r="2" fill="#333"/><text x="150" y="140" font-size="11">黒点（2.0mm）</text></svg>`;
+const UNITS=[
+ {id:'A',name:'ステップA 基本（①〜④）'},
+ {id:'K',name:'観察1 太陽の表面の観察（a〜e）'},
+ {id:'B1',name:'ステップB ❶ 太陽の観察'},
+ {id:'B2',name:'ステップB ❷ 太陽の黒点'},
+ {id:'B3',name:'ステップB ❸ 太陽のようす'},
+ {id:'X',name:'理科クイズ・ひとくちメモ'},
+];
+// q:問題 a:答え ch:4択の選択肢（先頭が正解） ex:解説 tag:記述など
+const Q=[
+{u:'A',no:'A-①',q:'太陽のように、みずから光を出している天体を何というか。',a:'恒星',ch:['恒星','惑星','衛星','すい星'],ex:'みずから光を出す天体＝恒星。地球のように恒星のまわりを回る天体は惑星。'},
+{u:'A',no:'A-②',q:'太陽の表面に見られる、周囲より温度が低く、観測すると暗く見える部分を何というか。',a:'黒点',ch:['黒点','コロナ','プロミネンス','クレーター'],ex:'黒点はまわりより温度が低いので黒く見える。'},
+{u:'A',no:'A-③',q:'太陽は内部の軸を中心に回転している。このような運動を何というか。',a:'自転',ch:['自転','公転','日周運動','年周運動'],ex:'自分の軸のまわりを回る＝自転。'},
+{u:'A',no:'A-④',q:'太陽の活動が活発になると、太陽の表面の黒点の数はどうなるか。',a:'増える（多くなる）',ch:['増える（多くなる）','減る（少なくなる）','変わらない','なくなる'],ex:'太陽の活動が活発なほど、黒点の数は多くなる。'},
+{u:'K',no:'観察 a',q:'太陽を観察するときには、天体望遠鏡で直接見るのではなく、［ a ］板に映った像を見る。',a:'太陽投影（板）',ch:['太陽投影','記録用','反射','遮光'],ex:'天体望遠鏡に「太陽投影板」をとりつけて、映った像をスケッチする。'},
+{u:'K',no:'観察 b',q:'1週間ほど続けて観察した結果から、地球から見える黒点の位置は［ b ］。\nア．変わらない　イ．一方向に移動する',a:'イ（一方向に移動する）',ch:['イ（一方向に移動する）','ア（変わらない）'],ex:'黒点は毎日少しずつ、同じ方向（西）へ移動していく。'},
+{u:'K',no:'観察 c',q:'黒点が一方向に移動することから、太陽が［ c ］という運動をしていることがわかる。',a:'自転',ch:['自転','公転','膨張','収縮'],ex:'黒点が一方向へ動く → 太陽が回っている（自転）。'},
+{u:'K',no:'観察 d',q:'黒点の形を、太陽の中央部にあるときと周辺部にあるときで比べると、［ d ］のほうが縦に細長く見える。\nア．中央部　イ．周辺部',a:'イ（周辺部）',ch:['イ（周辺部）','ア（中央部）'],ex:'球の端の部分はななめから見ることになるので、細長く見える。'},
+{u:'K',no:'観察 e',q:'周辺部で黒点が縦に細長く見えることから、太陽の形が［ e ］であることがわかる。',a:'球形',ch:['球形','円形（平らな円）','だ円形','立方体'],ex:'平らな円なら形は変わらないはず。端で細長くなる → 太陽は球形。'},
+{u:'B1',no:'B❶(1)',tag:'記述',q:'太陽は、肉眼や望遠鏡で直接見てはいけない。これはなぜか。',a:'太陽は強い光を出しているので、目をいためるから。',ch:['太陽は強い光を出しているので、目をいためるから。','太陽は温度が低く、よく見えないから。','太陽は動いているので、見失うから。','黒点が小さすぎて見えないから。'],ex:'記述のポイント：「強い光」＋「目をいためる（失明のおそれがある）」の2つを入れる。'},
+{u:'B1',no:'B❶(2)',tag:'2つ選ぶ',q:'黒点の観察結果のうち、太陽が「球形」であることを示しているものを2つ選びなさい。\nア．黒点には色のこい部分とうすい部分がある。\nイ．黒点どうしの間隔は、端にいくほどせまくなる。\nウ．黒点の数は多くなったり少なくなったりする。\nエ．中央部では円形だった黒点が、周辺部では縦長の形になる。',a:'イ・エ',ch:['イ・エ','ア・ウ','ア・イ','ウ・エ'],ex:'球の端はななめから見るので、間隔がせまく、形が細長く見える → イとエ。'},
+{u:'B1',no:'B❶(3)',tag:'記述',q:'次の図（1日おきの同じ時刻の黒点）から、黒点の位置が毎日少しずつ移動していったことがわかる。このことから、太陽についてわかることを書きなさい。',fig:'move',a:'太陽は自転している。',ch:['太陽は自転している。','太陽は球形である。','太陽の表面温度は約6000℃である。','黒点は太陽の活動で増えたり減ったりする。'],ex:'「移動」→ 自転。「形が変わる・間隔がせまくなる」→ 球形。この2つを区別しよう。'},
+{u:'B2',no:'B❷(1)',q:'太陽のようにみずから光を出す天体を何というか。',a:'恒星',ch:['恒星','惑星','衛星','小惑星'],ex:'A-①と同じ。くり返し出るので必ず覚えよう。'},
+{u:'B2',no:'B❷(2)',tag:'計算',q:'図の太陽の像の直径は10cm、中央の黒点の長さは2.0mmだった。太陽の直径を地球の直径の約109倍とすると、この黒点の実際の長さは地球の直径の約何倍か。',fig:'ten',a:'イ（約2.2倍）',ch:['イ（約2.2倍）','ア（約0.45倍）','ウ（約4.5倍）','エ（約22倍）'],ex:'10cm＝100mm。黒点は太陽の 2.0÷100＝0.02倍。<br>地球の何倍？→ 0.02×109＝2.18 ≒ <b>約2.2倍</b>'},
+{u:'B3',no:'B❸(1)',q:'太陽の表面温度を選びなさい。',a:'6000℃',ch:['6000℃','100℃','1000℃','100万℃'],ex:'表面は約6000℃。100万℃以上になるのはコロナ。'},
+{u:'B3',no:'B❸(2)',q:'A（皆既日食の写真）は、太陽をとり巻く高温のガスの層である。これを何というか。',a:'コロナ',ch:['コロナ','プロミネンス','黒点','大気圏'],ex:'太陽のまわりに広がる高温のガスの層＝コロナ。'},
+{u:'B3',no:'B❸(3)',q:'Bは、太陽の表面で見られる炎状のガスの動きである。これを何というか。',a:'プロミネンス（紅炎）',ch:['プロミネンス（紅炎）','コロナ','黒点','フレア'],ex:'炎のようにふき出すガス＝プロミネンス（紅炎）。'},
+{u:'X',no:'理科クイズ',q:'太陽の半径は約70万kmで、地球の約109倍。では、太陽の質量は地球の約何倍か。',a:'イ（33万倍）',ch:['イ（33万倍）','ア（3000倍）','ウ（100万倍）'],ex:'太陽の質量は地球の約33万倍。'},
+{u:'X',no:'ひとくちメモ',q:'太陽は何のかたまりか。',a:'気体（ガス）',ch:['気体（ガス）','岩石','氷','金属'],ex:'太陽は気体のかたまりなので、自転周期が場所によってちがう。'},
+{u:'X',no:'ひとくちメモ',q:'太陽の自転周期は、赤道付近で約何日か。',a:'約25日',ch:['約25日','約1日','約29日','約365日'],ex:'赤道付近で約25日、極付近で約29日。'},
+];
+Q.forEach((q,i)=>q.id=i);
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(){try{return JSON.parse(localStorage.getItem('taiyou_rank')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('taiyou_rank',JSON.stringify(v))}catch(e){}}};
+const uName=id=>UNITS.find(u=>u.id===id).name;
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id===b.dataset.t));
+ if(b.dataset.t==='miss')renderMiss(); if(b.dataset.t==='rank')renderRank(); window.scrollTo(0,0);
+});
+$('#qsel').innerHTML=UNITS.map(u=>`<label><input type="checkbox" name="qu" value="${u.id}" checked> ${u.name}（${Q.filter(q=>q.u===u.id).length}問）</label>`).join('');
+const radio=n=>document.querySelector(`input[name="${n}"]:checked`).value;
+let S=null,sessionMiss=[];
+function start(qs,mode){
+ if(!qs.length){alert('範囲をえらんでください');return}
+ S={qs,i:0,ok:0,mode};sessionMiss=[];
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==='home'));
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('show',t.id==='home'));
+ $('#setup').style.display='none';$('#play').style.display='block';show();
+}
+$('#go').onclick=()=>{const us=[...document.querySelectorAll('input[name="qu"]:checked')].map(x=>x.value);let qs=Q.filter(q=>us.includes(q.u));if(radio('ord')==='shuf')qs=shuffle(qs);start(qs,radio('mode'))};
+function record(q,ok){if(ok){S.ok++;return}if(!sessionMiss.includes(q))sessionMiss.push(q);const r=store.get();r[q.id]=(r[q.id]||0)+1;store.set(r)}
+function head(){const q=S.qs[S.i];return `<div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><div class="qhead"><span>${q.no}</span><span>${S.i+1} / ${S.qs.length}</span></div>`}
+function qbody(q){return `<div class="qtext">${q.tag?`<span class="tag">${q.tag}</span>`:''}${q.q}</div>${q.fig==='move'?FIG_MOVE:q.fig==='ten'?FIG_10:''}`}
+function show(){
+ const q=S.qs[S.i],p=$('#play');p.dataset.done='0';
+ if(S.mode==='card'){
+  p.innerHTML=`<div class="card">${head()}${qbody(q)}<div id="area"><button class="btn sub" id="reveal">答えを見る</button></div></div>`;
+  $('#reveal').onclick=()=>{
+   $('#area').innerHTML=`<div class="ansbox">${q.a}</div><div class="ex">${q.ex}</div><div class="two"><button class="btn ok" id="o">⭕ できた</button><button class="btn ng" id="x">❌ できなかった</button></div>`;
+   const fin=ok=>{if(p.dataset.done==='1')return;p.dataset.done='1';record(q,ok);S.i++;S.i<S.qs.length?show():result()};
+   $('#o').onclick=()=>fin(true);$('#x').onclick=()=>fin(false);
+  };
+ }else{
+  const ch=shuffle(q.ch);
+  p.innerHTML=`<div class="card">${head()}${qbody(q)}${ch.map(c=>`<button class="choice">${c}</button>`).join('')}<div id="fb"></div></div>`;
+  p.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+   if(p.dataset.done==='1')return;p.dataset.done='1';const ok=b.textContent===q.ch[0];record(q,ok);
+   p.querySelectorAll('.choice').forEach(x=>{if(x.textContent===q.ch[0])x.classList.add('ok')});if(!ok)b.classList.add('ng');
+   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ 正解は「'+q.ch[0]+'」'}</b><br>${q.ex}</div><button class="btn" id="nx">${S.i+1<S.qs.length?'次の問題へ':'結果を見る'}</button><button class="btn ghost" id="qt">やめる</button>`;
+   $('#nx').onclick=()=>{S.i++;S.i<S.qs.length?show():result()};$('#qt').onclick=result;
+  });
+ }
+ window.scrollTo(0,0);
+}
+function result(){
+ const n=Math.min(S.i+(S.mode==='mc'&&$('#play').dataset.done==='1'&&S.i<S.qs.length?1:0),S.qs.length);
+ $('#play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${n}</div>
+ <p style="text-align:center;margin:6px 0">${n&&S.ok===n?'🎉 全問正解！テストでもここは満点だ！':'まちがえた問題を、全問正解するまでくり返そう！'}</p>
+ ${sessionMiss.length?`<button class="btn" id="re">❌の問題だけもう一度（${sessionMiss.length}問）</button>`:''}
+ <button class="btn sub" id="bk">範囲えらびにもどる</button></div>`;
+ if(sessionMiss.length)$('#re').onclick=()=>start(shuffle(sessionMiss),S.mode);
+ $('#bk').onclick=()=>{$('#play').style.display='none';$('#setup').style.display='block';window.scrollTo(0,0)};
+}
+function line(q){return `<div>${q.no}　${q.q.split('\n')[0]}</div><div class="a">→ ${q.a}</div>`}
+function renderMiss(){$('#misslist').innerHTML=sessionMiss.length?sessionMiss.map(q=>`<div class="mist">${line(q)}</div>`).join(''):'<p class="note">まだありません。</p>'}
+function rankIds(){const r=store.get();return Object.keys(r).sort((a,b)=>r[b]-r[a])}
+function renderRank(){const r=store.get(),ids=rankIds();$('#ranklist').innerHTML=ids.length?ids.map(id=>`<div class="mist"><span class="n">${r[id]}回</span>${line(Q[id])}</div>`).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('#rankgo').onclick=()=>{const ids=rankIds();if(!ids.length){alert('まだ記録がありません');return}start(shuffle(ids.map(id=>Q[id])),'card')};
+$('#rankreset').onclick=()=>{if(confirm('苦手の記録をすべて消しますか？')){store.set({});renderRank()}};
+</script></body></html>
