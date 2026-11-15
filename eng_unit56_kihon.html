@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Unit 5・6 英語 きほん</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#eef6f1;color:#1e2b24;-webkit-text-size-adjust:100%}
+header{background:#1f7a4d;color:#fff;padding:12px 14px 0;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;font-weight:800}
+header .sub{font-size:12px;opacity:.9;margin:2px 0 8px}
+nav{display:flex;gap:4px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:14px;font-weight:700;padding:10px 2px;border-radius:10px 10px 0 0}
+nav button.on{background:#eef6f1;color:#1f7a4d}
+.tab{display:none;padding:14px;max-width:640px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(20,80,50,.12)}
+h2{font-size:17px;color:#1f7a4d;margin-bottom:8px}
+.big{font-size:17px;line-height:1.8}
+.big b{color:#c0392b}
+.ex{font-family:Georgia,"Times New Roman",serif;font-size:18px;background:#eef6f1;border-radius:10px;padding:10px 12px;margin:8px 0;line-height:1.7}
+.ex b{color:#c0392b}
+.step{display:flex;align-items:center;gap:12px;width:100%;border:0;background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(20,80,50,.12);text-align:left;color:#1e2b24}
+.step .n{flex:none;width:40px;height:40px;border-radius:50%;background:#1f7a4d;color:#fff;font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.step .t{font-size:17px;font-weight:800}.step .s{font-size:13px;color:#5d6f65;margin-top:2px}
+.step .done{margin-left:auto;font-size:13px;font-weight:800;color:#1f7a4d}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:10px 4px;border-bottom:1px solid #e3eee8}
+.sel input{width:22px;height:22px}
+.btn{display:block;width:100%;border:0;background:#1f7a4d;color:#fff;font-size:18px;font-weight:800;padding:15px;border-radius:14px;margin-top:10px}
+.btn.sub{background:#34495e}.btn.ghost{background:#fff;color:#1f7a4d;border:2px solid #1f7a4d}
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#5d6f65;margin-bottom:6px}
+.bar{height:8px;background:#e3eee8;border-radius:4px;overflow:hidden;margin-bottom:10px}.bar i{display:block;height:100%;background:#1f7a4d}
+.qtext{font-size:21px;line-height:1.6;margin:8px 0;white-space:pre-line}
+.qtext.en{font-family:Georgia,"Times New Roman",serif}
+.hint{font-size:14px;color:#5d6f65;margin-bottom:8px}
+.choice{display:block;width:100%;text-align:left;font-size:19px;border:2px solid #cfe3d8;background:#fff;border-radius:14px;padding:14px;margin:9px 0;color:#1e2b24;line-height:1.45}
+.choice.en{font-family:Georgia,"Times New Roman",serif}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:12px;margin-top:8px;font-size:16px;line-height:1.7}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.fb .m{font-size:22px;font-weight:900}
+.score{font-size:46px;font-weight:900;color:#1f7a4d;text-align:center}
+.note{font-size:13px;color:#5d6f65;line-height:1.6}
+</style></head><body>
+<header><h1>🌱 Unit 5・6 英語 きほん</h1><div class="sub">ぜんぶ選ぶだけ！ 上から順番にやろう</div>
+<nav><button data-t="home" class="on">🏠 メニュー</button><button data-t="rule">📘 3つのルール</button><button data-t="play" id="playTab">✏️ 問題</button></nav></header>
+
+<div class="tab show" id="home">
+ <div class="card"><p class="big">まずは「📘 3つのルール」を読んでから、<b>①から順番に</b>やろう。<br>まちがえた問題は、最後に「❌だけもう一度」で全部⭕にしよう！</p></div>
+ <div id="steps"></div>
+ <div class="card"><h2>🔤 単語（範囲をえらぶ）</h2><p class="note">英語を見て、意味をえらぶ。1つずつやってもOK。</p><div class="sel" id="wsel"></div><button class="btn" id="wgo">単語スタート</button></div>
+</div>
+
+<div class="tab" id="rule">
+ <div class="card"><h2>ルール1　人は who、もの は which</h2>
+  <p class="big">名詞のうしろに、<b>who / which</b> から説明をくっつける。</p>
+  <div class="ex">a man <b>who</b> has influenced a lot of people<br>→ 多くの人に影響を与えてきた<b>人</b></div>
+  <div class="ex">a movie <b>which</b> makes people happy<br>→ 人々を幸せにする<b>映画</b></div>
+  <p class="big">前が<b>人</b>なら <b>who</b>、<b>もの・動物</b>なら <b>which</b>。<br>（that はどちらにも使える）</p></div>
+ <div class="card"><h2>ルール2　説明は「うしろから」</h2>
+  <p class="big">日本語は説明が前、英語は説明が<b>うしろ</b>。<br>うしろから訳すと意味がわかる！</p>
+  <div class="ex">a picture <b>I found on the internet</b><br>→ <b>私がインターネットで見つけた</b>写真</div>
+  <div class="ex">the boy <b>standing by me</b><br>→ <b>私のそばに立っている</b>少年</div></div>
+ <div class="card"><h2>ルール3　「〜ならいいのに」は1つ過去の形</h2>
+  <p class="big">本当はちがうことを言うときは、<b>過去の形</b>にする。</p>
+  <div class="ex">can → <b>could</b>　/　have → <b>had</b><br>am・is → <b>were</b>　/　will → <b>would</b></div>
+  <div class="ex">I wish I <b>could</b> go to school.<br>→ 学校に行けたらいいのに。</div>
+  <div class="ex">If I <b>were</b> you, I <b>would</b> ask my friends.<br>→ もし私があなたなら、友達にたのむだろう。</div></div>
+ <button class="btn" onclick="go('home')">メニューへ</button>
+</div>
+
+<div class="tab" id="play"><div id="pl"></div></div>
+
+<script>
+const WORDS=[{"en": "device", "ja": "装置", "sec": "U5 Real Life English 5"}, {"en": "decision", "ja": "決定、結論", "sec": "U5 Real Life English 5"}, {"en": "text", "ja": "携帯電話などでメッセージをおくる", "sec": "U5 Real Life English 5"}, {"en": "cross", "ja": "～を横切る、渡る", "sec": "U5 Real Life English 5"}, {"en": "ban", "ja": "～を禁止する", "sec": "U5 Real Life English 5"}, {"en": "bother", "ja": "面倒", "sec": "U5 Real Life English 5"}, {"en": "electronic", "ja": "電子の", "sec": "U5 Real Life English 5"}, {"en": "common", "ja": "ふつうの、共通の", "sec": "U5 Real Life English 5"}, {"en": "any", "ja": "[主に肯定文で]どんな～でも", "sec": "U5 Real Life English 5"}, {"en": "choose to ～", "ja": "～することに決める", "sec": "U5 Real Life English 5"}, {"en": "move", "ja": "～を感動させる", "sec": "U5 Stage Activity 2"}, {"en": "report", "ja": "報告、レポート", "sec": "U5 Stage Activity 2"}, {"en": "thought", "ja": "考え、意見", "sec": "U5 Stage Activity 2"}, {"en": "teammate", "ja": "チームメイト", "sec": "U5 Stage Activity 2"}, {"en": "chance", "ja": "機会、チャンス", "sec": "U5 Stage Activity 2"}, {"en": "spiker", "ja": "（バレーボールの）スパイカー", "sec": "U5 Stage Activity 2"}, {"en": "setter", "ja": "（バレーボールの）セッター", "sec": "U5 Stage Activity 2"}, {"en": "position", "ja": "位置、ポジション", "sec": "U5 Stage Activity 2"}, {"en": "few", "ja": "少しの", "sec": "U5 Stage Activity 2"}, {"en": "get the most out of ～", "ja": "～を最大限に活かす", "sec": "U5 Stage Activity 2"}, {"en": "be born", "ja": "生まれる", "sec": "U5 Part1"}, {"en": "person", "ja": "人、個人", "sec": "U5 Part1"}, {"en": "national", "ja": "国の", "sec": "U5 Part1"}, {"en": "on the internet", "ja": "インターネットで", "sec": "U5 Part1"}, {"en": "print", "ja": "～を印刷する", "sec": "U5 Part1"}, {"en": "note", "ja": "紙幣", "sec": "U5 Part1"}, {"en": "non-violence", "ja": "非暴力", "sec": "U5 Part1"}, {"en": "leader", "ja": "指導者、リーダー", "sec": "U5 Part1"}, {"en": "image", "ja": "肖像、印象", "sec": "U5 Part1"}, {"en": "greatly", "ja": "おおいに、非常に", "sec": "U5 Part1"}, {"en": "fight", "ja": "たたかう", "sec": "U5 Part2"}, {"en": "go on ～", "ja": "～をする、始める", "sec": "U5 Part2"}, {"en": "protest", "ja": "抗議する、抗議運動", "sec": "U5 Part2"}, {"en": "violence", "ja": "暴力", "sec": "U5 Part2"}, {"en": "right", "ja": "権利", "sec": "U5 Part2"}, {"en": "independence", "ja": "独立", "sec": "U5 Part2"}, {"en": "fast", "ja": "断食", "sec": "U5 Part2"}, {"en": "tough", "ja": "困難な", "sec": "U5 Part2"}, {"en": "little", "ja": "ほとんど～ない", "sec": "U5 Part2"}, {"en": "more", "ja": "もっと多くのもの[こと]", "sec": "U5 Part2"}, {"en": "human rights", "ja": "人権", "sec": "U5 Part2"}, {"en": "stand-stood", "ja": "立ち上がる[原形-過去形]", "sec": "U5 Read and Think1"}, {"en": "law", "ja": "法律", "sec": "U5 Read and Think1"}, {"en": "at that time", "ja": "その当時", "sec": "U5 Read and Think1"}, {"en": "go out", "ja": "外へ出る", "sec": "U5 Read and Think1"}, {"en": "even if ～", "ja": "たとえ～だとしても", "sec": "U5 Read and Think1"}, {"en": "lead", "ja": "～を導く", "sec": "U5 Read and Think1"}, {"en": "arrest", "ja": "～を逮捕する", "sec": "U5 Read and Think1"}, {"en": "accept", "ja": "～を受け入れる", "sec": "U5 Read and Think1"}, {"en": "rule", "ja": "支配、統治", "sec": "U5 Read and Think1"}, {"en": "movement", "ja": "（政治的・社会的な）運動", "sec": "U5 Read and Think1"}, {"en": "lawyer", "ja": "弁護士", "sec": "U5 Read and Think1"}, {"en": "jail", "ja": "刑務所", "sec": "U5 Read and Think1"}, {"en": "discrimination", "ja": "差別", "sec": "U5 Read and Think1"}, {"en": "effective", "ja": "効果的な", "sec": "U5 Read and Think1"}, {"en": "freely", "ja": "自由に", "sec": "U5 Read and Think1"}, {"en": "produce", "ja": "～を生産する", "sec": "U5 Read and Think2"}, {"en": "expensive", "ja": "高価な", "sec": "U5 Read and Think2"}, {"en": "way to ～", "ja": "～する方法", "sec": "U5 Read and Think2"}, {"en": "thousands of ～", "ja": "何千もの～", "sec": "U5 Read and Think2"}, {"en": "in those days", "ja": "そのころは、当時は", "sec": "U5 Read and Think2"}, {"en": "spread", "ja": "広がる、広まる", "sec": "U5 Read and Think2"}, {"en": "put", "ja": "（罪・責任などを）課す", "sec": "U5 Read and Think2"}, {"en": "tax", "ja": "税", "sec": "U5 Read and Think2"}, {"en": "legacy", "ja": "遺産", "sec": "U5 Read and Think2"}, {"en": "kilometer", "ja": "キロメートル", "sec": "U5 Read and Think2"}, {"en": "colony", "ja": "植民地", "sec": "U5 Read and Think2"}, {"en": "peaceful", "ja": "平和な", "sec": "U5 Read and Think2"}, {"en": "wish", "ja": "～であればよいのに", "sec": "U6 Part1"}, {"en": "felt", "ja": "feel（感じる）の過去分詞形", "sec": "U6 Part1"}, {"en": "abroad", "ja": "外国に[へ、で]", "sec": "U6 Part1"}, {"en": "run", "ja": "～を主催する", "sec": "U6 Part1"}, {"en": "donate", "ja": "～を寄付する", "sec": "U6 Part1"}, {"en": "supply-supplies", "ja": "必需品[単数形-複数形]", "sec": "U6 Part1"}, {"en": "backpack", "ja": "バックパック", "sec": "U6 Part1"}, {"en": "unused", "ja": "未使用の", "sec": "U6 Part1"}, {"en": "overseas", "ja": "外国へ[で]、海外へ[で]", "sec": "U6 Part1"}, {"en": "this way", "ja": "このように", "sec": "U6 Part1"}, {"en": "so far", "ja": "今まで(は)", "sec": "U6 Part2・Read and Think1"}, {"en": "Afghanistan", "ja": "アフガニスタン", "sec": "U6 Part2・Read and Think1"}, {"en": "definitely", "ja": "もちろん、確かに", "sec": "U6 Part2・Read and Think1"}, {"en": "imagine", "ja": "～を想像する", "sec": "U6 Part2・Read and Think1"}, {"en": "son", "ja": "息子", "sec": "U6 Part2・Read and Think1"}, {"en": "daughter", "ja": "娘", "sec": "U6 Part2・Read and Think1"}, {"en": "most of ～", "ja": "～の大部分", "sec": "U6 Part2・Read and Think1"}, {"en": "be ready for ～", "ja": "～の用意ができている", "sec": "U6 Part2・Read and Think1"}, {"en": "encourage A to B", "ja": "AにBするよう促す", "sec": "U6 Part2・Read and Think1"}, {"en": "connect", "ja": "～を結びつける、つなぐ", "sec": "U6 Part2・Read and Think1"}, {"en": "service", "ja": "サービス、公的事業", "sec": "U6 Part2・Read and Think1"}, {"en": "the globe", "ja": "地球", "sec": "U6 Part2・Read and Think1"}, {"en": "border", "ja": "国境", "sec": "U6 Part2・Read and Think1"}, {"en": "air", "ja": "空気、空中", "sec": "U6 Part2・Read and Think1"}, {"en": "illiterate", "ja": "読み書きのできない", "sec": "U6 Part2・Read and Think1"}, {"en": "through", "ja": "～ ～によって", "sec": "U6 Part2・Read and Think1"}, {"en": "in the open air", "ja": "屋外で", "sec": "U6 Part2・Read and Think1"}, {"en": "sell-sold", "ja": "売る[原形-過去形]", "sec": "U6 Read and Think2"}, {"en": "in fact", "ja": "実際に", "sec": "U6 Read and Think2"}, {"en": "depend on ～", "ja": "～に頼る", "sec": "U6 Read and Think2"}, {"en": "surround", "ja": "～を囲む", "sec": "U6 Read and Think2"}, {"en": "import", "ja": "～を輸入する", "sec": "U6 Read and Think2"}, {"en": "trade", "ja": "貿易", "sec": "U6 Read and Think2"}, {"en": "survival", "ja": "存続、生き残ること", "sec": "U6 Read and Think2"}, {"en": "relationship", "ja": "関係、結びつき", "sec": "U6 Read and Think2"}, {"en": "exception", "ja": "例外", "sec": "U6 Read and Think2"}, {"en": "coat", "ja": "上着、コート", "sec": "U6 Read and Think2"}, {"en": "third", "ja": "3分の1の", "sec": "U6 Read and Think2"}, {"en": "interdependent", "ja": "相互に依存している", "sec": "U6 Read and Think2"}, {"en": "daily", "ja": "日常の", "sec": "U6 Read and Think2"}, {"en": "quite", "ja": "かなり、相当", "sec": "U6 Read and Think2"}, {"en": "beyond", "ja": "～ ～をこえたところに[へ]", "sec": "U6 Read and Think2"}];
+const SETS=[
+{id:'A',t:'who か which か',s:'人→who／もの→which（8問）',en:true,q:[
+ ['Gandhi is a man (　　) has influenced a lot of people.','who',['which'],'前が a man（人）→ who'],
+ ['This is a movie (　　) makes people happy.','which',['who'],'前が a movie（もの）→ which'],
+ ['I have a friend (　　) lives in Osaka.','who',['which'],'前が a friend（人）→ who'],
+ ['This is the bus (　　) goes to the hospital.','which',['who'],'前が the bus（もの）→ which'],
+ ['Ms. Chen is a teacher (　　) came from Canada.','who',['which'],'前が a teacher（人）→ who'],
+ ['I have a dog (　　) runs fast.','which',['who'],'前が a dog（動物）→ which'],
+ ['Do you know the girl (　　) is singing?','who',['which'],'前が the girl（人）→ who'],
+ ['This is a book (　　) is popular in Japan.','which',['who'],'前が a book（もの）→ which'],
+]},
+{id:'B',t:'うしろから訳す',s:'英語 → 日本語の意味（6問）',en:true,q:[
+ ['a man who has influenced a lot of people','多くの人に影響を与えてきた人',['人に影響を与えた多くの男','多くの人がいる男の人'],'who から説明。うしろから訳す。'],
+ ['a movie that makes people happy','人々を幸せにする映画',['幸せな人々の映画','人々が作った映画'],'that から説明：人々を幸せにする → 映画'],
+ ['a picture I found on the internet','私がインターネットで見つけた写真',['インターネットの写真を見つけた私','私が写真をインターネットにのせた'],'名詞のすぐうしろに「I found ～」が説明でくっついている。'],
+ ['the boy standing by me','私のそばに立っている少年',['少年のそばに立っている私','私が立っている少年'],'standing by me（私のそばに立っている）が the boy を説明。'],
+ ['a book written by Soseki','漱石によって書かれた本',['漱石が読んでいる本','本を書いた漱石'],'written（書かれた）＋by Soseki（漱石によって）'],
+ ['many things to study','勉強すべきたくさんのこと',['たくさん勉強すること','勉強が好きなこと'],'to study（勉強するための／すべき）が things を説明。'],
+]},
+{id:'C',t:'I wish ～（～ならいいのに）',s:'過去の形をえらぶ（6問）',en:true,q:[
+ ['I wish I (　　) go to school.\n（学校に行けたらいいのに）','could',['can','will'],'can → could'],
+ ['I wish I (　　) a computer.\n（コンピュータを持っていたらいいのに）','had',['have','has'],'have → had'],
+ ['I wish I (　　) a bird.\n（鳥だったらいいのに）','were',['am','is'],'am・is → were'],
+ ['I wish I (　　) in Hawaii.\n（ハワイに住んでいたらいいのに）','lived',['live','living'],'live → lived'],
+ ['I wish I could speak English. の意味は？','英語が話せたらいいのに',['英語が話せます','英語を話したかった'],'I wish I could ～＝～できたらいいのに'],
+ ['I wish I could speak English. 本当は？','英語が話せない',['英語が話せる','英語が好き'],'I wish は「本当はちがう」。本当は話せない。'],
+]},
+{id:'D',t:'If I were ～（もし～なら）',s:'were / would / could（6問）',en:true,q:[
+ ['If I (　　) you, I would ask my friends for help.','were',['am','was'],'If I were you（もし私があなたなら）はセットで覚える！'],
+ ['If I were you, I (　　) ask my friends for help.','would',['will','am'],'後半は would ＋ 動詞の原形'],
+ ['If I (　　) a school backpack, I would donate it.','had',['have','has'],'have → had'],
+ ['If I were an adult, I (　　) go to other countries.\n（～へ行けるのに）','could',['can','will'],'「～できるのに」は could'],
+ ['If I were you, ～ の意味は？','もし私があなたなら',['もしあなたが私なら','私があなたといたら'],'If I were you＝もし私があなたなら'],
+ ['would の意味は？','～するだろうに',['～しなければならない','～してもよい'],'would＝～するだろうに／could＝～できるのに'],
+]},
+{id:'E',t:'教科書の大事な文',s:'正しい英文をえらぶ（7問）',en:true,q:[
+ ['これは私がインターネットで見つけた写真です。','This is a picture I found on the internet.',['This is a picture found I on the internet.','This is I found a picture on the internet.'],'a picture のうしろに「I found ～」'],
+ ['ガンディーは多くの人々に影響を与えてきた人物です。','Gandhi is a man who has influenced a lot of people.',['Gandhi is a man which has influenced a lot of people.','Gandhi who is a man has influenced a lot of people.'],'人だから who'],
+ ['これは人々を幸せにする映画です。','This is a movie that makes people happy.',['This is a movie that people happy makes.','This is a movie who makes people happy.'],'movie はもの。that（which）＋makes people happy'],
+ ['私たちが毎日目にする多くのものは海外から来ています。','Many things that we see every day come from overseas.',['Many things that we see every day comes from overseas.','We see many things that every day come from overseas.'],'主語は Many things（複数）→ come（s はつかない）'],
+ ['学校に行けたらいいのに。','I wish I could go to school.',['I wish I can go to school.','I wish I go to school could.'],'can → could'],
+ ['もし私があなたなら、友達に助けを求めるだろう。','If I were you, I would ask my friends for help.',['If I am you, I will ask my friends for help.','If you were me, I would ask my friends for help.'],'If I were you, I would ～'],
+ ['もしランドセルを持っていたら、寄付するのに。','If I had a school backpack, I would donate it.',['If I have a school backpack, I would donate it.','If I had a school backpack, I will donate it.'],'had と would'],
+]},
+];
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(){try{return JSON.parse(localStorage.getItem('eng_kihon_done')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('eng_kihon_done',JSON.stringify(v))}catch(e){}}};
+function go(t){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));window.scrollTo(0,0);if(t==='home')renderSteps()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+function renderSteps(){
+ const d=store.get();
+ $('#steps').innerHTML=SETS.map((s,i)=>`<button class="step" onclick="startSet(${i})"><span class="n">${'①②③④⑤'[i]}</span><span><div class="t">${s.t}</div><div class="s">${s.s}</div></span><span class="done">${d[s.id]?'⭐ '+d[s.id]:''}</span></button>`).join('');
+}
+const SECS=[...new Set(WORDS.map(w=>w.sec))];
+$('#wsel').innerHTML=SECS.map((s,i)=>`<label><input type="checkbox" name="ws" value="${s}" checked> ${s}（${WORDS.filter(w=>w.sec===s).length}語）</label>`).join('');
+let S=null;
+function startSet(i){const s=SETS[i];S={id:s.id,title:s.t,qs:s.q.map(q=>({q:q[0],a:q[1],ch:[q[1],...q[2]],ex:q[3],en:s.en})),i:0,ok:0,miss:[]};S.qs=shuffle(S.qs);go('play');show()}
+$('#wgo').onclick=()=>{
+ const ss=[...document.querySelectorAll('input[name="ws"]:checked')].map(x=>x.value);
+ const ws=WORDS.filter(w=>ss.includes(w.sec));if(!ws.length){alert('範囲をえらんでね');return}
+ const qs=shuffle(ws).map(w=>{const ds=shuffle(WORDS.filter(x=>x.ja!==w.ja)).slice(0,3).map(x=>x.ja);return {q:w.en,a:w.ja,ch:[w.ja,...ds],ex:'',en:true,word:true}});
+ S={id:'W',title:'単語',qs,i:0,ok:0,miss:[]};go('play');show();
+};
+function show(){
+ const q=S.qs[S.i];let done=false;
+ $('#pl').innerHTML=`<div class="card"><div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><div class="qhead"><span>${S.title}</span><span>${S.i+1} / ${S.qs.length}</span></div>
+ ${q.word?'<div class="hint">この英語の意味は？</div>':''}<div class="qtext ${q.en&&!/[ぁ-ん]/.test(q.q.split('\n')[0])?'en':''}">${q.q}</div>
+ ${shuffle(q.ch).map(c=>`<button class="choice ${/[ぁ-んァ-ン一-龥]/.test(c)?'':'en'}">${c}</button>`).join('')}<div id="fb"></div></div>`;
+ document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+  if(done)return;done=true;const ok=b.textContent===q.a;if(ok)S.ok++;else S.miss.push(q);
+  document.querySelectorAll('.choice').forEach(x=>{if(x.textContent===q.a)x.classList.add('ok')});if(!ok)b.classList.add('ng');
+  $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><span class="m">${ok?'⭕ 正解！':'❌ おしい！'}</span><br>正解：<b>${q.a}</b>${q.ex?'<br>'+q.ex:''}</div><button class="btn" id="nx">${S.i+1<S.qs.length?'次へ':'結果を見る'}</button>`;
+  $('#nx').onclick=()=>{S.i++;S.i<S.qs.length?show():result()};
+ });
+ window.scrollTo(0,0);
+}
+function result(){
+ const n=S.qs.length;
+ if(S.id!=='W'&&S.ok===n&&!S.retry){const d=store.get();d[S.id]='全問正解';store.set(d)}
+ if(S.id!=='W'&&S.retry&&!S.miss.length){const d=store.get();d[S.id]='クリア';store.set(d)}
+ $('#pl').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${n}</div>
+ <p class="big" style="text-align:center">${S.miss.length?'あと少し！❌の問題を全部⭕にしよう！':'🎉 全部⭕！すごい！次へ進もう！'}</p>
+ ${S.miss.length?`<button class="btn" id="re">❌だけもう一度（${S.miss.length}問）</button>`:''}
+ <button class="btn sub" id="bk">メニューへ</button></div>`;
+ if(S.miss.length)$('#re').onclick=()=>{S={...S,qs:shuffle(S.miss),i:0,ok:0,miss:[],retry:true};show()};
+ $('#bk').onclick=()=>go('home');
+}
+renderSteps();
+</script></body></html>
