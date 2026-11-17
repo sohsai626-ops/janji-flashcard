@@ -1,0 +1,784 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>中1英語 Unit6〜8 文法トレーニング</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:#f3f6fb;color:#1d2433}
+#app{max-width:640px;margin:0 auto;padding:12px 12px 40px}
+header{position:relative;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#d6455d,#f08a5d);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px}
+header h1{font-size:20px;margin:0;line-height:1.3}header small{font-size:14px;font-weight:normal;opacity:.9}
+.help{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.2);color:#fff;font-size:18px;font-weight:bold;padding:0;line-height:1}
+header .today{margin-right:36px}
+.help-box h4{margin:14px 0 4px;color:#d6455d;font-size:15px}.help-box p{margin:0;font-size:14px;line-height:1.7}
+.today{background:rgba(255,255,255,.25);border-radius:12px;padding:6px 10px;font-size:13px;text-align:center}.today b{font-size:20px;display:block}
+.modes{display:flex;gap:6px}.mode{flex:1;padding:12px 4px;font-size:16px;font-weight:bold;border:2px solid #d6455d;background:#fff;color:#d6455d;border-radius:12px}
+.mode.on{background:#d6455d;color:#fff}
+.hint{font-size:13px;color:#667;margin:8px 2px}
+.mix{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.mix button{padding:12px;font-size:15px;border:none;border-radius:12px;background:#2f6fd6;color:#fff;font-weight:bold}
+h2{font-size:15px;margin:18px 2px 8px;color:#d6455d;border-left:5px solid #d6455d;padding-left:8px}
+.cats{display:grid;gap:6px}.cat{text-align:left;padding:13px 14px;font-size:15px;background:#fff;border:1px solid #dde3ee;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.cat:active,.ch:active,.w:active{transform:scale(.98)}
+.weak{background:#fff;border-radius:12px;padding:8px 8px 8px 30px;margin:0;font-size:14px}.weak li{padding:4px 0}.weak span{float:right;color:#888;font-size:12px}
+.tools{display:flex;gap:6px;margin-top:16px}.tools button{flex:1;padding:12px;font-size:14px;border-radius:12px;border:1px solid #ccd;background:#fff}
+button{cursor:pointer;font-family:inherit;color:inherit}
+.small{padding:8px 12px;font-size:13px;border-radius:10px;border:1px solid #ccd;background:#fff;margin-top:8px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.bar button{border:none;background:none;font-size:15px;color:#2f6fd6;padding:6px}
+.prog{height:6px;background:#dde3ee;border-radius:3px;overflow:hidden;margin-bottom:10px}.prog i{display:block;height:100%;background:#f08a5d}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.jp{font-size:16px;color:#445;line-height:1.6;margin-bottom:12px}
+.en{font-size:22px;line-height:1.7;margin:6px 0 16px;font-family:"Segoe UI",Arial,sans-serif}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid #d6455d;margin:0 4px}
+.choices{display:grid;gap:8px}.ch{padding:14px;font-size:20px;border:2px solid #dde3ee;border-radius:12px;background:#fafbfd;font-family:"Segoe UI",Arial,sans-serif}
+.ch.right{border-color:#2aa66a;background:#e3f7ec}.ch.wrong{border-color:#e04848;background:#fde8e8}
+.build{min-height:62px;border:2px dashed #c7cfdd;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+#line{display:flex;flex-wrap:wrap;gap:6px;flex:1}.end{font-size:22px;font-weight:bold}
+.ph{color:#99a;font-size:14px}
+#pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.w{padding:10px 14px;font-size:19px;border-radius:10px;border:2px solid #2f6fd6;background:#eef4ff;font-family:"Segoe UI",Arial,sans-serif}
+.w.in{background:#2f6fd6;color:#fff}.w.used{opacity:.25}
+.row{display:flex;gap:8px;align-items:center}
+input{flex:1;font-size:20px;padding:12px;border:2px solid #c7cfdd;border-radius:12px;min-width:0;font-family:"Segoe UI",Arial,sans-serif}
+.go{padding:13px 18px;font-size:16px;font-weight:bold;border:none;border-radius:12px;background:#d6455d;color:#fff;display:block;width:100%;margin-top:10px}
+.row .go{width:auto;margin-top:0}.go:disabled{background:#ccc}
+#fb .ok{font-size:22px;color:#2aa66a;font-weight:bold;margin-top:14px}#fb .ng{font-size:22px;color:#e04848;font-weight:bold;margin-top:14px}
+.ansline{font-size:20px;margin:6px 0;font-family:"Segoe UI",Arial,sans-serif;background:#fffbe6;border-radius:8px;padding:8px}
+.rule{font-size:15px;color:#7a4b00;background:#fff3d6;border-radius:8px;padding:8px;margin-top:6px;line-height:1.5}
+.res{text-align:center}.big{font-size:52px;font-weight:bold;color:#d6455d}.wl{text-align:left;padding-left:20px}.wl li{margin-bottom:12px}.wl b{font-family:"Segoe UI",Arial,sans-serif;font-size:17px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:12px;z-index:9}
+.mbox{background:#fff;border-radius:16px;padding:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto}
+.mbox table{width:100%;border-collapse:collapse;font-size:17px;text-align:center;font-family:"Segoe UI",Arial,sans-serif}
+.mbox th,.mbox td{border:1px solid #ccd;padding:6px 2px}.mbox th{background:#fdeaea;font-size:13px;font-family:inherit}
+.mbox label{display:block;margin:10px 0;font-size:14px}.mbox select{width:100%;font-size:15px;padding:8px;margin-top:4px}
+#print{display:none}
+@media print{
+ #app,.modal{display:none!important}#print{display:block}body{background:#fff}
+ .pp{font-size:12.5pt}.pp h2{font-size:14pt;border:none;color:#000;padding:0}.pp h2 small{font-size:10pt;font-weight:normal;float:right}
+ .pp ol{padding-left:26px}.pp li{margin-bottom:12px;page-break-inside:avoid;font-family:"Times New Roman",serif}
+ .pj{font-size:10.5pt;color:#333;font-family:sans-serif}.u{border-bottom:1px solid #000;display:inline-block;min-width:110px}
+ .ln{border-bottom:1px solid #000;height:22px;margin-top:4px}.brk{page-break-before:always}.ans li{margin-bottom:5px}
+}
+</style></head><body><div id="app"></div><div id="print"></div><script>// ===== 問題生成エンジン（中1 New Horizon Unit6〜8）=====
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const uniq=a=>[...new Set(a.filter(x=>x))];
+const clean=s=>s.replace(/\s+/g,' ').replace(/ ([.?!,])/g,'$1').trim();
+
+function ing(v){
+  if(['run','swim','sit','get','put','cut','stop','shop'].includes(v)) return v+v.slice(-1)+'ing';
+  if(v.endsWith('e')&&!v.endsWith('ee')) return v.slice(0,-1)+'ing';
+  return v+'ing';
+}
+function s3(v){
+  if(v==='have') return 'has';
+  if(/[^aeiou]y$/.test(v)) return v.slice(0,-1)+'ies';
+  if(/(s|sh|ch|x|o)$/.test(v)) return v+'es';
+  return v+'s';
+}
+function ingType(v){
+  if(['run','swim','sit','get','put','cut','stop','shop'].includes(v)) return 'dbl';
+  if(v.endsWith('e')&&!v.endsWith('ee')) return 'e';
+  return 'plain';
+}
+
+// ---- ルール（まちがえた時の1行）----
+const R={
+  c0:'「〜は・〜が」→ 表の1列目（I / he / she / we / they）',
+  c1:'「〜の」→ 表の2列目（my / his / her / our / their）',
+  c2:'「〜を・〜に」と、like・with・about のあと → 表の3列目（me / him / her / us / them）',
+  c3:'「〜のもの」→ 表の4列目（mine / his / hers / ours / theirs）',
+  whose:'「だれの〜？」→ Whose ＋ 名詞 ＋ is this[that]?',
+  pos:'「〇〇のもの」→ 名前に \'s（Ken\'s / my sister\'s）',
+  wh:'答えを見て選ぶ：いつ→When／どこ→Where／だれの→Whose／だれ→Who／何→What／いくつ・何歳→How',
+  which:'「AとBでは、どちら？」→ Which ＋ do[does] ＋ 主語 ＋ 動詞, A or B?',
+  does:'主語が he / she / 1人の名前 → does を使う（you・複数なら do）',
+  ans3:'he / she が主語の答え → 動詞に s（He likes 〜 / She wants 〜）',
+  can:'「〜してもいいですか」→ Can I 〜?　「〜してくれますか」→ Can you 〜?',
+  be:'be動詞：I → am ／ you・複数 → are ／ he・she・1人 → is',
+  prog:'「〜している」＝ be動詞（am / are / is）＋ 動詞ing。be動詞を忘れない！',
+  ingP:'ふつうはそのまま ing（play → playing）',
+  ingE:'e で終わる語は e をとって ing（make → making / use → using）',
+  ingD:'run / swim / sit / get などは最後の文字を重ねて ing（run → running）',
+  neg:'否定文は be動詞のあとに not（is not playing / isn\'t playing）',
+  q:'疑問文は be動詞を主語の前へ（Is he playing 〜?）',
+  qa:'答えも be動詞で（Yes, he is. / No, she isn\'t.）',
+  what:'「何をしていますか」→ What is[are] ＋ 主語 ＋ doing?',
+  pp:'every day（毎日）→ ふつうの形　／　now（今）→ be動詞＋ing',
+  how:'形容詞だけ → How 〜!（How cute!）',
+  whatA:'形容詞＋名詞 → What a[an] 〜 ●●!（What a nice picture!）',
+  an:'a, i, u, e, o の音で始まる語の前は an（an interesting book）',
+  road:'道案内：Go along 〜（〜を進む）／Turn left[right] at 〜（〜で曲がる）／Go straight（まっすぐ）',
+  want:'「〜したい」→ want to ＋ 動詞の原形（s も ing も付けない）',
+  wantS:'主語が he / she / 1人なら wants・likes（want に s）',
+  wantBe:'「〜になりたい」→ want to be 〜',
+  like:'「〜することが好き」→ like to ＋ 動詞の原形',
+  toS:'「〜することは」→ To ＋ 動詞の原形 で文を始める',
+  order:'教科書・ワークの文。日本語とよく見くらべよう',
+};
+
+// ---- 代名詞 ----
+const P=[
+  {ja:'私',f:['I','my','me','mine']},
+  {ja:'あなた',f:['you','your','you','yours']},
+  {ja:'彼',f:['he','his','him','his']},
+  {ja:'彼女',f:['she','her','her','hers']},
+  {ja:'それ',f:['it','its','it',null]},
+  {ja:'私たち',f:['we','our','us','ours']},
+  {ja:'彼ら',f:['they','their','them','theirs']},
+];
+const COL=['〜は・〜が','〜の','〜を・〜に','〜のもの'];
+const CK=['代名詞：〜は','代名詞：〜の','代名詞：〜を・〜に','代名詞：〜のもの'];
+const fixI=(s)=>s==='i'?'I':s;
+function pChoices(p,c,capFirst){
+  let ch=uniq(p.f);
+  if(ch.length<3){ // it など
+    ch=uniq(ch.concat(shuf(P.map(x=>x.f[c]).filter(x=>x&&!ch.includes(x))).slice(0,3-ch.length)));
+  }
+  return ch.map(x=>capFirst?cap(x):fixI(x));
+}
+const NOUNS=[['bag','かばん'],['pen','ペン'],['book','本'],['guitar','ギター'],['racket','ラケット'],['notebook','ノート'],['camera','カメラ'],['umbrella','かさ'],['computer','コンピュータ'],['bike','自転車'],['dog','イヌ'],['house','家']];
+
+function gTable(){
+  let p,c; do{p=rnd(P);c=Math.floor(Math.random()*4);}while(!p.f[c]);
+  const ans=p.f[c];
+  return {cat:'table',k:CK[c],jp:`「${p.ja}」の「${COL[c]}」の形は？`,t:`[${ans}]`,ch:pChoices(p,c,false),rule:R['c'+c],noOrder:true};
+}
+function gPron(){
+  const c=Math.floor(Math.random()*4);
+  let p; do{p=rnd(P);}while(!p.f[c]);
+  const x=p.f[c];
+  const [n,nj]=rnd(NOUNS);
+  let t,jp;
+  if(c===0){
+    const T=[['can swim well.','上手に泳げます'],['can speak English.','英語を話せます'],['can play the piano.','ピアノをひけます'],['can cook well.','上手に料理ができます']];
+    const [e,j]=rnd(T); t=`[${cap(x)}] ${e}`; jp=`${p.ja}は${j}。`;
+    return {cat:'pron',k:CK[0],jp,t,ch:pChoices(p,0,true),rule:R.c0};
+  }
+  if(c===1){ t=`This is [${fixI(x)}] ${n}.`; jp=`これは${p.ja}の${nj}です。`; }
+  if(c===2){
+    const T=[
+      [`Ken likes [${x}].`,`ケンは${p.ja}が好きです。`],
+      [`Ken plays tennis with [${x}].`,`ケンは${p.ja}とテニスをします。`],
+      [`Ken knows [${x}].`,`ケンは${p.ja}を知っています。`],
+      [`Ken talks about [${x}].`,`ケンは${p.ja}について話します。`],
+    ];
+    [t,jp]=rnd(T);
+  }
+  if(c===3){ t=`This ${n} is [${x}].`; jp=`この${nj}は${p.ja}のものです。`; }
+  return {cat:'pron',k:CK[c],jp,t,ch:pChoices(p,c,false),rule:R['c'+c]};
+}
+// 名前 → 代名詞（ワーク型）
+const PEOPLE=[
+  {n:'Ken',j:'ケン',p:2,pl:false},{n:'Yuki',j:'ユキ',p:3,pl:false},{n:'Mr. Sato',j:'佐藤先生',p:2,pl:false},
+  {n:'Ms. Brown',j:'ブラウン先生',p:3,pl:false},{n:'Tom',j:'トム',p:2,pl:false},{n:'Emma',j:'エマ',p:3,pl:false},
+  {n:'Ken and Yumi',j:'ケンとユミ',p:6,pl:true},{n:'Tom and Emma',j:'トムとエマ',p:6,pl:true},
+];
+function gPron2(){
+  const q=rnd(PEOPLE), p=P[q.p];
+  const T=[
+    ()=>[`${q.pl?'These are':'This is'} ${q.n}. Do you know [${p.f[2]}]?`,`こちらは${q.j}です。あなたは${p.ja}を知っていますか。`,2],
+    ()=>[`That is ${q.n}. I like [${p.f[2]}] very much.`,`あちらは${q.j}です。私は${p.ja}が大好きです。`,2],
+    ()=>[`Look at ${q.n}. [${cap(p.f[0])}] ${q.pl?'are my friends':'is my friend'}.`,`${q.j}を見て。${p.ja}は私の友だちです。`,0],
+    ()=>[`I know ${q.n}. But I don't know [${p.f[1]}] sister.`,`私は${q.j}を知っています。でも、${p.ja}のお姉さんは知りません。`,1],
+    ()=>[`I play soccer with ${q.n}. [${cap(p.f[1])}] house is big.`,`私は${q.j}とサッカーをします。${p.ja}の家は大きいです。`,1],
+  ];
+  const [t,jp,c]=rnd(T)();
+  const capF=c===0||(c===1&&t.indexOf('['+cap(p.f[1]))>=0);
+  return {cat:'pron2',k:CK[c],jp,t,ch:pChoices(p,c,capF),rule:R['c'+c]};
+}
+
+// ---- Whose ----
+const OWN=[["Ken's",'ケン','n'],["Yuki's",'ユキ','n'],["Hide's",'ヒデ','n'],["Taro's",'タロウ','n'],["Maki's",'マキ','n'],
+  ["my sister's",'私の姉','f'],["my father's",'私の父','f'],["my brother's",'私の兄','f'],["my mother's",'私の母','f'],
+  ['mine','私','p'],['hers','彼女','p'],['his','彼','p'],['yours','あなた','p'],['theirs','彼ら','p'],['ours','私たち','p']];
+function gWhose(){
+  const [n,nj]=rnd(NOUNS.slice(0,10)); const d=rnd([['this','これ'],['that','あれ']]);
+  const o=rnd(OWN);
+  const jp=`${d[1]}はだれの${nj}ですか。― ${o[1]}のものです。`;
+  if(Math.random()<0.45){
+    return {cat:'whose',k:'Whose（だれの）',jp,t:`[Whose] ${n} is ${d[0]}? — It's ${o[0]}.`,ch:['Whose','Who','What','Where'],rule:R.whose};
+  }
+  let t,ch,rule=R.pos,k="〜'sのもの";
+  if(o[2]==='n'){const b=o[0].replace("'s",'');t=`Whose ${n} is ${d[0]}? — It's [${o[0]}].`;ch=[b,o[0],b+'s'];}
+  else if(o[2]==='f'){const b=o[0].replace("my ",'').replace("'s",'');t=`Whose ${n} is ${d[0]}? — It's my [${b}'s].`;ch=[b,b+"'s",b+'s'];}
+  else{const p=P.find(x=>x.f[3]===o[0]);t=`Whose ${n} is ${d[0]}? — It's [${o[0]}].`;ch=pChoices(p,3,false);rule=R.c3;k=CK[3];}
+  return {cat:'whose',k,jp,t,ch,rule};
+}
+const WH=[
+  ['[When] is your birthday? — It\'s November 4th.','あなたの誕生日はいつですか。― 11月4日です。'],
+  ['[Where] is my book? — It\'s under the desk.','私の本はどこにありますか。― 机の下にあります。'],
+  ['[What] time is it? — It\'s ten o\'clock.','何時ですか。― 10時です。'],
+  ['[Who] are they? — They are my sisters.','彼女たちはだれですか。― 私の姉妹です。'],
+  ['[How] old are you? — I\'m thirteen.','あなたは何歳ですか。― 13歳です。'],
+  ['[How] many dogs do you have? — I have two.','あなたは何匹イヌを飼っていますか。― 2匹です。'],
+  ['[What] do you usually do after school? — I play soccer.','あなたはふだん放課後に何をしますか。― サッカーをします。'],
+  ['[When] do you study math? — I study it after school.','あなたはいつ数学を勉強しますか。― 放課後に勉強します。'],
+  ['[Whose] T-shirt is that? — It\'s Taro\'s.','あれはだれのTシャツですか。― タロウのものです。'],
+  ['[When] is the concert? — It\'s on August 8th.','コンサートはいつですか。― 8月8日です。'],
+  ['[Where] is my racket? — It\'s by the bed.','私のラケットはどこにありますか。― ベッドのそばにあります。'],
+  ['[Whose] pencil is this? — It\'s Maki\'s.','これはだれのえんぴつですか。― マキのものです。'],
+  ['[What] is this? — It\'s a guitar.','これは何ですか。― ギターです。'],
+  ['[Who] is that girl? — She is my sister.','あの女の子はだれですか。― 私の妹です。'],
+  ['[Where] is the hospital? — It\'s by the station.','病院はどこですか。― 駅のそばです。'],
+];
+function gWh(){
+  const [t,jp]=rnd(WH);
+  const a=t.match(/\[(.+?)\]/)[1];
+  const ch=uniq([a].concat(shuf(['When','Where','Whose','Who','What','How'].filter(x=>x!==a)).slice(0,3)));
+  return {cat:'wh',k:'疑問詞の使い分け',jp,t,ch,rule:R.wh};
+}
+
+// ---- Which ----
+const WP=[
+  {a:'baseball',b:'soccer',ja:'野球',jb:'サッカー',n:'sport',nj:'スポーツ',vs:['play','like']},
+  {a:'tennis',b:'basketball',ja:'テニス',jb:'バスケットボール',n:'sport',nj:'スポーツ',vs:['play','like']},
+  {a:'dogs',b:'cats',ja:'イヌ',jb:'ネコ',n:'animal',nj:'動物',vs:['like','want']},
+  {a:'math',b:'English',ja:'数学',jb:'英語',n:'subject',nj:'教科',vs:['like','study']},
+  {a:'rice',b:'toast',ja:'ごはん',jb:'トースト',n:'food',nj:'食べ物',vs:['eat','want']},
+  {a:'pizza',b:'spaghetti',ja:'ピザ',jb:'スパゲッティ',n:'food',nj:'食べ物',vs:['eat','like']},
+  {a:'summer',b:'winter',ja:'夏',jb:'冬',n:'season',nj:'季節',vs:['like']},
+  {a:'apples',b:'oranges',ja:'リンゴ',jb:'オレンジ',n:'fruit',nj:'果物',vs:['like','want']},
+  {a:'Japanese',b:'English',ja:'日本語',jb:'英語',n:'language',nj:'言語',vs:['speak','study']},
+  {a:'pens',b:'notebooks',ja:'ペン',jb:'ノート',n:null,vs:['want','use']},
+];
+const WV={play:['をしますか','をします'],like:['が好きですか','が好きです'],want:['がほしいですか','がほしいです'],study:['を勉強しますか','を勉強します'],eat:['を食べますか','を食べます'],speak:['を話しますか','を話します'],use:['を使いますか','を使います']};
+const WS=[
+  {s:'you',ja:'あなた',d:'do',a:'I',aj:'私',th:false},
+  {s:'he',ja:'彼',d:'does',a:'He',aj:'彼',th:true},
+  {s:'she',ja:'彼女',d:'does',a:'She',aj:'彼女',th:true},
+  {s:'Ken',ja:'ケン',d:'does',a:'He',aj:'彼',th:true},
+  {s:'Yumi',ja:'ユミ',d:'does',a:'She',aj:'彼女',th:true},
+  {s:'your mother',ja:'あなたのお母さん',d:'does',a:'She',aj:'彼女',th:true},
+];
+function gWhich(){
+  const p=rnd(WP), v=rnd(p.vs), S=rnd(WS);
+  const useN=p.n&&Math.random()<0.3;
+  const pickA=Math.random()<0.5; const A=pickA?p.a:p.b, AJ=pickA?p.ja:p.jb;
+  const jw=WV[v];
+  const jq=`${p.ja}と${p.jb}では、${S.ja}はどちら${useN?'の'+p.nj:''}${useN?jw[0].replace(/^を|^が/,m=>m):jw[0]}。`;
+  const jp=`${jq} ― ${S.aj}は${AJ}${jw[1]}。`;
+  const V=S.th?s3(v):v;
+  const q=`Which${useN?' '+p.n:''} %D ${S.s} ${v}, ${p.a} or ${p.b}?`;
+  const r=Math.random();
+  if(r<0.35){
+    return {cat:'which',k:'Which：do / does',jp,t:q.replace('%D',`[${S.d}]`)+` — ${S.a} ${V} ${A}.`,ch:['do','does','is','are'],rule:R.does,ord:q.replace('%D',S.d)};
+  }
+  if(r<0.7){
+    const ch=S.th?[v,s3(v),ing(v)]:[v,s3(v)];
+    return {cat:'which',k:'Which：答えの動詞（s）',jp,t:q.replace('%D',S.d)+` — ${S.a} [${V}] ${A}.`,ch,rule:S.th?R.ans3:'I / you が主語なら動詞に s は付けない',ord:q.replace('%D',S.d)};
+  }
+  return {cat:'which',k:'Which（どちら）',jp,t:q.replace('%D',S.d).replace(/^Which/,'[Which]')+` — ${S.a} ${V} ${A}.`,ch:['Which','What','Whose','Who'],rule:R.which,ord:q.replace('%D',S.d)};
+}
+
+// ---- Can I / Can you ----
+const CA=[
+  {e:'open the window',j:'窓を開けて',w:'IY'},{e:'close the door',j:'ドアを閉めて',w:'IY'},
+  {e:'use your computer',j:'あなたのコンピュータを使って',w:'I'},{e:'use this pen',j:'このペンを使って',w:'I'},
+  {e:'help me',j:'私を手伝って',w:'Y'},{e:'help me with my homework',j:'私の宿題を手伝って',w:'Y'},
+  {e:'take pictures here',j:'ここで写真を撮って',w:'I'},{e:'play the piano',j:'ピアノをひいて',w:'IY'},
+  {e:'make lunch',j:'昼食を作って',w:'Y'},{e:'borrow your pen',j:'あなたのペンを借りて',w:'I'},
+  {e:'listen to music',j:'音楽を聞いて',w:'I'},{e:'turn on the light',j:'明かりをつけて',w:'IY'},
+  {e:'read this book',j:'この本を読んで',w:'IY'},{e:'sit here',j:'ここにすわって',w:'I'},
+];
+const RESP=[['Sure.','もちろん。'],['All right.','わかった。'],['No problem.','いいですよ。']];
+function gCan(){
+  const a=rnd(CA); const who=rnd(a.w.split('')); const r=rnd(RESP);
+  const jp=who==='I'?`${a.j}もいいですか。― ${r[1]}`:`${a.j}くれますか。― ${r[1]}`;
+  const ans=who==='I'?'Can I':'Can you';
+  return {cat:'can',k:'Can I / Can you',jp,t:`[${ans}] ${a.e}? — ${r[0]}`,ch:['Can I','Can you','Do you','Are you'],rule:R.can};
+}
+
+// ---- 現在進行形 ----
+const A=[
+  {v:'play',o:'tennis',te:'テニスをして',ms:'テニスをします',d:'テニスをする'},
+  {v:'play',o:'the piano',te:'ピアノをひいて',ms:'ピアノをひきます',d:'ピアノをひく'},
+  {v:'study',o:'math',te:'数学を勉強して',ms:'数学を勉強します',d:'数学を勉強する'},
+  {v:'study',o:'English',te:'英語を勉強して',ms:'英語を勉強します',d:'英語を勉強する'},
+  {v:'read',o:'a book',te:'本を読んで',ms:'本を読みます',d:'本を読む'},
+  {v:'watch',o:'TV',te:'テレビを見て',ms:'テレビを見ます',d:'テレビを見る'},
+  {v:'eat',o:'lunch',te:'昼食を食べて',ms:'昼食を食べます',d:'昼食を食べる',alt:'have'},
+  {v:'have',o:'breakfast',te:'朝食を食べて',ms:'朝食を食べます',d:'朝食を食べる',alt:'eat'},
+  {v:'make',o:'dinner',te:'夕食を作って',ms:'夕食を作ります',d:'夕食を作る',alt:'cook'},
+  {v:'write',o:'a letter',te:'手紙を書いて',ms:'手紙を書きます',d:'手紙を書く'},
+  {v:'use',o:'a computer',te:'コンピュータを使って',ms:'コンピュータを使います',d:'コンピュータを使う'},
+  {v:'run',o:'in the park',te:'公園で走って',ms:'公園で走ります',d:'公園で走る'},
+  {v:'swim',o:'in the river',te:'川で泳いで',ms:'川で泳ぎます',d:'川で泳ぐ'},
+  {v:'listen',o:'to music',te:'音楽を聞いて',ms:'音楽を聞きます',d:'音楽を聞く'},
+  {v:'take',o:'pictures',te:'写真を撮って',ms:'写真を撮ります',d:'写真を撮る'},
+  {v:'talk',o:'about soccer',te:'サッカーについて話して',ms:'サッカーについて話します',d:'サッカーについて話す'},
+  {v:'drink',o:'water',te:'水を飲んで',ms:'水を飲みます',d:'水を飲む'},
+  {v:'wait',o:'for Taro',te:'タロウを待って',ms:'タロウを待ちます',d:'タロウを待つ'},
+  {v:'clean',o:'the room',te:'部屋をそうじして',ms:'部屋をそうじします',d:'部屋をそうじする'},
+  {v:'sing',o:'a song',te:'歌を歌って',ms:'歌を歌います',d:'歌を歌う'},
+  {v:'dance',o:'',te:'踊って',ms:'踊ります',d:'踊る'},
+  {v:'cook',o:'curry',te:'カレーを作って',ms:'カレーを作ります',d:'カレーを作る',alt:'make'},
+  {v:'sit',o:'on the bench',te:'ベンチにすわって',ms:'ベンチにすわります',d:'ベンチにすわる'},
+  {v:'practice',o:'soccer',te:'サッカーを練習して',ms:'サッカーを練習します',d:'サッカーを練習する'},
+  {v:'speak',o:'English',te:'英語を話して',ms:'英語を話します',d:'英語を話す'},
+];
+const S=[
+  {e:'I',j:'私',be:'am',qa:null},
+  {e:'You',j:'あなた',be:'are',qa:'I',qb:'am'},
+  {e:'He',j:'彼',be:'is',qa:'he',qb:'is'},
+  {e:'She',j:'彼女',be:'is',qa:'she',qb:'is'},
+  {e:'Ken',j:'ケン',be:'is',qa:'he',qb:'is'},
+  {e:'Yumi',j:'ユミ',be:'is',qa:'she',qb:'is'},
+  {e:'My brother',j:'私の兄',be:'is',qa:'he',qb:'is'},
+  {e:'My mother',j:'私の母',be:'is',qa:'she',qb:'is'},
+  {e:'We',j:'私たち',be:'are',qa:null},
+  {e:'They',j:'彼ら',be:'are',qa:'they',qb:'are'},
+  {e:'Ken and Yumi',j:'ケンとユミ',be:'are',qa:'they',qb:'are'},
+];
+const lowS=s=>s==='I'?'I':(['You','He','She','We','They'].includes(s)?s.toLowerCase():s.replace(/^My /,'my '));
+const pres=(s,v)=>(s.be==='is')?s3(v):v;
+function altBlank(a,blank,s){ // 書くモードの別解
+  if(!a.alt) return [];
+  return [blank.replace(ing(a.v),ing(a.alt))];
+}
+function gIng(){
+  const a=rnd(A), v=a.v, c=ing(v), ty=ingType(v);
+  let w=[v+'ing'];
+  if(v.endsWith('e')) w.push(v.slice(0,-1)+'ing');
+  w.push(v+v.slice(-1)+'ing');
+  if(v.endsWith('y')) w.push(v.slice(0,-1)+'ing');
+  if(!v.endsWith('e')) w.push(v+'eing');
+  const ch=uniq([c].concat(w)).slice(0,4);
+  return {cat:'ing',k:{plain:'ing：そのまま',e:'ing：e をとる',dbl:'ing：文字を重ねる'}[ty],jp:`「${v}」の ing 形は？`,t:`${v} → [${c}]`,ch,rule:{plain:R.ingP,e:R.ingE,dbl:R.ingD}[ty],noOrder:true};
+}
+function gProg(){
+  let s,a; do{s=rnd(S);a=rnd(A);}while(a.o.includes(s.e));
+  const g=ing(a.v), tail=clean(`${a.o} now.`);
+  const jp=`${s.j}は今、${a.te}います。`;
+  if(Math.random()<0.5){
+    return {cat:'prog',k:'進行形：be動詞の選び方',jp,t:clean(`${s.e} [${s.be}] ${g} ${tail}`),ch:['am','are','is'],rule:R.be,alts:[]};
+  }
+  const right=`${s.be} ${g}`;
+  const ch=uniq([right,g,`${s.be} ${a.v}`,pres(s,a.v)]);
+  return {cat:'prog',k:'進行形：be＋ing',jp,t:clean(`${s.e} [${right}] ${tail}`),ch,rule:R.prog,alts:altBlank(a,right)};
+}
+function gProgQ(){
+  let s,a; do{s=rnd(S);a=rnd(A);}while(a.o.includes(s.e));
+  const g=ing(a.v), r=Math.random();
+  if(r<0.25){ // 否定
+    const right=`${s.be} not`;
+    const neg={is:"isn't",are:"aren't",am:"am not"}[s.be];
+    const dn=s.be==='is'?"doesn't":"don't";
+    return {cat:'progq',k:'進行形：否定文',jp:`${s.j}は今、${a.te}いません。`,t:clean(`${s.e} [${right}] ${g} ${a.o} now.`),ch:uniq([right,`not ${s.be}`,dn,`${s.be}`]),rule:R.neg,alts:[neg]};
+  }
+  let q; do{q=rnd(S);}while(!q.qa||a.o.includes(q.e));
+  const Q=clean(`${cap(q.be)} ${lowS(q.e)} ${g} ${a.o} now?`);
+  if(r<0.5){
+    return {cat:'progq',k:'進行形：疑問文',jp:`${q.j}は今、${a.te}いますか。― はい、${a.te}います。`,t:clean(`[${cap(q.be)}] ${lowS(q.e)} ${g} ${a.o} now? — Yes, ${q.qa} ${q.qb}.`),ch:uniq([cap(q.be),'Do','Does','Am'].concat(q.be==='is'?['Are']:['Is'])).slice(0,4),rule:R.q,ord:Q};
+  }
+  if(r<0.75){
+    const yes=Math.random()<0.5;
+    const right=yes?`${q.qa} ${q.qb}`:(q.qb==='am'?"I'm not":`${q.qa} ${q.qb==='is'?"isn't":"aren't"}`);
+    const dd=q.qb==='is'?'does':'do';
+    const ch=yes?uniq([right,`${q.qa} ${dd}`,`${q.qb} ${q.qa}`]):uniq([right,`${q.qa} ${dd==='does'?"doesn't":"don't"}`,`${q.qa} not`]);
+    const alts=yes?[]:(q.qb==='am'?['I am not']:[`${q.qa} ${q.qb} not`,`${q.qa}'s not`.replace("they's","they're")]);
+    return {cat:'progq',k:'進行形：答え方',jp:`${q.j}は今、${a.te}いますか。― ${yes?'はい、しています':'いいえ、していません'}。`,t:`${Q} — ${yes?'Yes':'No'}, [${right}].`,ch,rule:R.qa,alts,ord:Q};
+  }
+  // What 〜 doing
+  const ch=['doing','do','does','play'];
+  const W=`What ${q.be} ${lowS(q.e)} doing now?`;
+  return {cat:'progq',k:'What 〜 doing?',jp:`${q.j}は今、何をしていますか。― ${a.te}います。`,t:clean(`What ${q.be} ${lowS(q.e)} [doing] now? — ${q.qa==='I'?'I am':cap(q.qa)+' '+q.qb} ${g} ${a.o}.`),ch,rule:R.what,ord:W};
+}
+function gPP(){
+  let s,a; do{s=rnd(S);a=rnd(A);}while(a.o.includes(s.e));
+  const now=Math.random()<0.5;
+  const p=pres(s,a.v), pr=`${s.be} ${ing(a.v)}`;
+  const jp=now?`${s.j}は今、${a.te}います。`:`${s.j}は毎日${a.ms}。`;
+  const right=now?pr:p;
+  return {cat:'pp',k:'毎日（ふつう）と今（進行形）',jp,t:clean(`${s.e} [${right}] ${a.o} ${now?'now':'every day'}.`),ch:uniq([p,pr,ing(a.v)]),rule:R.pp,alts:now?altBlank(a,pr):[]};
+}
+
+// ---- 感嘆文 ----
+const EX=[
+  ['interesting','おもしろい','おもしろい',[['book','本'],['movie','映画'],['concert','コンサート']]],
+  ['exciting','わくわくする','わくわくする',[['book','本'],['game','試合'],['movie','映画']]],
+  ['beautiful','美しい','美しい',[['picture','写真'],['city','都市'],['lake','湖'],['flower','花']]],
+  ['cute','かわいい','かわいい',[['cat','ネコ'],['dog','イヌ']]],
+  ['nice','すてきな','すてきな',[['place','場所'],['picture','絵'],['country','国']]],
+  ['funny','おかしい','おかしな',[['question','問題'],['comic','マンガ'],['movie','映画']]],
+  ['big','大きい','大きな',[['city','都市'],['house','家'],['dog','イヌ']]],
+  ['old','古い','古い',[['house','家'],['city','都市']]],
+  ['easy','簡単な','簡単な',[['question','問題']]],
+  ['kind','親切な','親切な',[['woman','女性'],['boy','少年']]],
+  ['high','高い','高い',[['mountain','山']]],
+  ['difficult','難しい','難しい',[['question','問題'],['book','本']]],
+];
+const art=w=>/^[aeiou]/.test(w)?'an':'a';
+function gExcl(){
+  const [ad,ja,jn,ns]=rnd(EX); const [n,nj]=rnd(ns); const a=art(ad); const r=Math.random();
+  if(r<0.3) return {cat:'excl',k:'How 〜!',jp:`なんて${ja}のでしょう。`,t:`[How] ${ad}!`,ch:['How','What','Which'],rule:R.how,noOrder:true};
+  if(r<0.55) return {cat:'excl',k:'What a 〜 ●●!',jp:`なんて${jn}${nj}なのでしょう。`,t:`[What] ${a} ${ad} ${n}!`,ch:['What','How','Which'],rule:R.whatA};
+  if(r<0.8) return {cat:'excl',k:'a と an',jp:`なんて${jn}${nj}なのでしょう。`,t:`What [${a}] ${ad} ${n}!`,ch:['a','an'],rule:R.an};
+  const right=`What ${a} ${ad} ${n}!`;
+  return {cat:'excl',k:'感嘆文：文全体',jp:`なんて${jn}${nj}なのでしょう。`,t:`[${right}]`,ch:uniq([right,`How ${a} ${ad} ${n}!`,`What ${a==='a'?'an':'a'} ${ad} ${n}!`,`What ${ad} ${n}!`]),rule:R.whatA+'　'+R.an};
+}
+
+// ---- 道案内 ----
+const PL=[['the library','図書館'],['the museum','博物館'],['the hospital','病院'],['the post office','郵便局'],['the station','駅'],['the school','学校'],['City Hospital','市民病院']];
+const ORD=[['first','1つめ'],['second','2つめ'],['third','3つめ']];
+const LR=[['left','左'],['right','右']];
+function gRoad(){
+  const p=rnd(PL), o=rnd(ORD), lr=rnd(LR); const r=Math.floor(Math.random()*8);
+  const k='道案内';
+  switch(r){
+    case 0: return {cat:'road',k,jp:`${o[1]}の信号を${lr[1]}に曲がってください。`,t:`[Turn ${lr[0]}] at the ${o[0]} traffic light.`,ch:uniq([`Turn ${lr[0]}`,`Turn ${lr[0]==='left'?'right':'left'}`,'Go straight','Go along']),rule:R.road};
+    case 1: return {cat:'road',k,jp:`${o[1]}の信号を${lr[1]}に曲がってください。`,t:`Turn ${lr[0]} at the [${o[0]}] traffic light.`,ch:['first','second','third'],rule:'1つめ→first／2つめ→second／3つめ→third'};
+    case 2: return {cat:'road',k,jp:'この通りを進んでください。',t:'[Go along] this street.',ch:['Go along','Turn left','Look for','Go to'],rule:R.road};
+    case 3: return {cat:'road',k,jp:`私は${p[1]}をさがしています。`,t:`I'm [looking for] ${p[0]}.`,ch:['looking for','looking at','looking','look for'],rule:'「〜をさがしている」→ I\'m looking for 〜.'};
+    case 4: return {cat:'road',k,jp:`${p[1]}はどこですか。`,t:`[Where] is ${p[0]}?`,ch:['Where','What','Which','Who'],rule:R.wh};
+    case 5: return {cat:'road',k,jp:`${lr[1]}手に見えます。`,t:`You can see it on your [${lr[0]}].`,ch:['left','right'],rule:'右→right／左→left'};
+    case 6: return {cat:'road',k,jp:`まっすぐ行って、${p[1]}のところを${lr[1]}に曲がってください。`,t:`[Go straight] and turn ${lr[0]} at ${p[0].replace('City Hospital','the hospital')}.`,ch:['Go straight','Go along','Turn right','Look for'],rule:R.road};
+    default: {const z=rnd([['Pardon me?','もう一度おっしゃってください。'],['Excuse me.','すみません。（話しかけるとき）'],["You're welcome.",'どういたしまして。'],["Let's see.",'ええと、そうですね。']]);
+      return {cat:'road',k,jp:z[1],t:`[${z[0]}]`,ch:['Pardon me?','Excuse me.',"You're welcome.","Let's see."],rule:'Pardon me?＝もう一度／Excuse me.＝すみません／You\'re welcome.＝どういたしまして',noOrder:true};}
+  }
+}
+
+// ---- want to / like to / try to ----
+const WSU=[
+  {e:'I',j:'私',th:false,po:'my'},{e:'He',j:'彼',th:true,po:'his'},{e:'She',j:'彼女',th:true,po:'her'},
+  {e:'Ken',j:'ケン',th:true,po:'his'},{e:'My sister',j:'私の姉',th:true,po:'her'},{e:'Takuya',j:'タクヤ',th:true,po:'his'},
+  {e:'We',j:'私たち',th:false,po:'our'},{e:'They',j:'彼ら',th:false,po:'their'},
+];
+const JOB=[['teacher','先生'],['doctor','医者'],['soccer player','サッカー選手'],['singer','歌手'],['chef','シェフ'],['nurse','看護師'],['baseball player','野球選手'],['English teacher','英語の先生'],['music teacher','音楽の先生'],['tennis player','テニス選手']];
+function gWant(){
+  let s,a; do{s=rnd(WSU);a=rnd(A);}while(a.o.includes(s.e));
+  const W=s.th?'wants':'want', Wx=s.th?'want':'wants', L=s.th?'likes':'like', r=Math.random();
+  if(r<0.3){
+    const right=`${W} to ${a.v}`;
+    return {cat:'want',k:'want to ＋原形',jp:`${s.j}は${a.ms.replace(/ます$/,'たいです')}。`,t:clean(`${s.e} [${right}] ${a.o}.`),ch:uniq([right,`${W} to ${s3(a.v)}`,`${W} ${ing(a.v)}`,`${Wx} to ${a.v}`]),rule:s.th?R.want+'　'+R.wantS:R.want};
+  }
+  if(r<0.5){
+    const [jb,jj]=rnd(JOB); const right=`${W} to be`;
+    return {cat:'want',k:'want to be（〜になりたい）',jp:`${s.j}は${jj}になりたいです。`,t:`${s.e} [${right}] ${art(jb)} ${jb}.`,ch:uniq([right,`${W} to`,`${W} be`,`${Wx} to be`]),rule:R.wantBe};
+  }
+  if(r<0.7){
+    const right=`${L} to ${a.v}`;
+    return {cat:'want',k:'like to（〜することが好き）',jp:`${s.j}は${a.d}ことが好きです。`,t:clean(`${s.e} [${right}] ${a.o}.`),ch:uniq([right,`${L} ${a.v}`,`${L} to ${s3(a.v)}`,`${s.th?'like':'likes'} to ${a.v}`]),rule:R.like};
+  }
+  if(r<0.82){
+    const ans=rnd([['play soccer','サッカーをしたい'],['read books','本を読みたい'],['go to the zoo','動物園に行きたい'],['watch TV','テレビを見たい']]);
+    return {cat:'want',k:'What do you want to do?',jp:`あなたは何をしたいですか。― ${ans[1]}です。`,t:`[What] do you want to do? — I want to ${ans[0]}.`,ch:['What','Which','Where','How'],rule:'「何を〜したいですか」→ What do you want to 〜?'};
+  }
+  if(r<0.92){
+    const T=s.th?'tries':'try';
+    return {cat:'want',k:'try to（〜しようとする）',jp:`${s.j}はいつも最善を尽くそうとします。`,t:`${s.e} always [${T} to do] ${s.po} best.`,ch:uniq([`${T} to do`,`${T} do`,`${T} to does`,`${s.th?'try':'tries'} to do`]),rule:'「〜しようとする」→ try to ＋ 原形（he / she なら tries）'};
+  }
+  const right=`To ${a.v}`;
+  return {cat:'want',k:'To 〜 is …（〜することは）',jp:`${a.d}ことは楽しいです。`,t:clean(`[${right}] ${a.o} is fun.`),ch:uniq([right,cap(a.v),`To ${s3(a.v)}`,cap(s3(a.v))]),rule:R.toS};
+}
+
+// ---- ワーク・教科書の文（並べかえ・書きかえ）----
+const WORK=[
+  ['これはだれのコンピュータですか。','Whose computer is this?'],
+  ['あれはだれの本ですか。','Whose book is that?'],
+  ['これはだれのラケットですか。','Whose racket is this?'],
+  ['あれはだれのえんぴつですか。','Whose pencil is that?'],
+  ['あなたは彼の弟を知っていますか。','Do you know his brother?'],
+  ['私は彼女がとても好きです。','I like her very much.'],
+  ['彼女は彼らの妹です。','She is their sister.'],
+  ['このギターは私のものです。','This guitar is mine.'],
+  ['彼らは私のイヌを知っています。','They know my dog.'],
+  ['イヌとネコでは、彼はどちらがほしいですか。','Which does he want, dogs or cats?'],
+  ['野球とサッカーでは、あなたはたいていどちらをしますか。','Which do you usually play, baseball or soccer?'],
+  ['英語と数学では、あなたは家でどちらを勉強しますか。','Which do you study at home, English or math?'],
+  ['ピザとスパゲッティでは、彼女は昼食にどちらの食べ物を食べますか。','Which food does she eat for lunch, pizza or spaghetti?'],
+  ['ペンとノートでは、彼女はどちらがほしいですか。','Which does she want, pens or notebooks?'],
+  ['日本語と英語では、彼は家でどちらを話しますか。','Which does he speak at home, Japanese or English?'],
+  ['ごはんとトーストでは、あなたはどちらを朝食に食べますか。','Which do you have for breakfast, rice or toast?'],
+  ['あなたのコンピュータを使ってもいいですか。','Can I use your computer?'],
+  ['私を手伝ってくれますか。','Can you help me?'],
+  ['ここで写真を撮ってもいいですか。','Can I take pictures here?'],
+  ['あの窓を開けてくれますか。','Can you open that window?'],
+  ['昼食を作ってくれますか。','Can you make lunch?'],
+  ['私の妹は今、朝食を食べているところです。','My sister is having breakfast now.'],
+  ['後藤先生は野球について話しています。','Mr. Goto is talking about baseball.'],
+  ['私の兄は英語を勉強しているところです。','My brother is studying English.'],
+  ['彼は今、アメリカについて話しています。','He is talking about America now.'],
+  ['アキラは今、数学を勉強していますか。','Is Akira studying math now?'],
+  ['彼女は何をしていますか。','What is she doing?'],
+  ['彼は日本語を話していますか。','Is he speaking Japanese?'],
+  ['美香は今、何をしていますか。','What is Mika doing now?'],
+  ['あなたは今、何をしていますか。','What are you doing now?'],
+  ['トムは数学を勉強しているところではありません。','Tom isn\'t studying math.'],
+  ['なんておかしな問題なのでしょう。','What a funny question!'],
+  ['なんて高い山なのだろう。','What a high mountain!'],
+  ['なんておもしろいコンサートなのでしょう。','What an interesting concert!'],
+  ['なんて美しい写真なのだろう。','What a beautiful picture!'],
+  ['なんてわくわくする本なのでしょう。','What an exciting book!'],
+  ['なんてかわいいのだろう。','How cute!'],
+  ['まっすぐ行って、郵便局を左に曲がってください。','Go straight and turn left at the post office.'],
+  ['私は図書館をさがしています。','I\'m looking for the library.'],
+  ['2つめの信号を左に曲がってください。','Turn left at the second traffic light.'],
+  ['私の兄は彼の部屋で音楽を聞くことが好きです。','My brother likes to listen to music in his room.'],
+  ['タクヤはシェフになりたいです。','Takuya wants to be a chef.'],
+  ['あなたは沖縄で何をしたいですか。','What do you want to do in Okinawa?'],
+  ['英語を話すことはおもしろいです。','To speak English is interesting.'],
+  ['私の父は野球をすることが好きです。','My father likes to play baseball.'],
+  ['アユミは音楽の先生になりたいです。','Ayumi wants to be a music teacher.'],
+  ['あなたは夕食に何を食べたいですか。','What do you want to eat for dinner?'],
+  ['本を読むことは楽しいです。','To read books is fun.'],
+  ['彼女は困っている人々を助けたいと思っています。','She wants to help people in need.'],
+  ['書きかえ：She uses the computer.（「〜しているところです」の文に）','She is using the computer.'],
+  ['書きかえ：Yoko and Eri run in the park every day.（every day を now にかえて進行形に）','Yoko and Eri are running in the park now.'],
+  ['書きかえ：He is speaking English.（疑問文に）','Is he speaking English?'],
+  ['書きかえ：Kanako is having breakfast now.（having breakfast をたずねる疑問文に）','What is Kanako doing now?'],
+  ['書きかえ：They are practicing soccer now.（否定文に）','They are not practicing soccer now.'],
+  ['書きかえ：Lisa listens to music.（「〜したい」という文に）','Lisa wants to listen to music.'],
+  ['書きかえ：I want to play soccer.（soccer をたずねる疑問文に）','What do you want to play?'],
+  ['書きかえ：I want to be a doctor.（a doctor をたずねる疑問文に）','What do you want to be?'],
+];
+function toks(s){ // 文 → 語のリスト（, は1語、最後の . ? ! は除く）
+  const body=s.replace(/[.?!]$/,'');
+  return body.replace(/,/g,' ,').split(/\s+/).filter(x=>x);
+}
+const LOW=new Set(['what','which','whose','who','where','when','how','is','are','am','do','does','can','my','his','her','their','our','your','this','that','these','those','to','go','turn','the','a','an','he','she','they','we','you','it','and','or','but','not','in','at','for','of','with','now','now?']);
+const lc=(w)=>LOW.has(w.toLowerCase())?w.toLowerCase():w;
+function swapWrong(s){
+  const end=s.match(/[.?!]$/)?s.slice(-1):'';
+  const t=toks(s).map((w,i)=>i===0?lc(w):w); if(t.length<3) return null;
+  for(let k=0;k<20;k++){
+    const u=t.slice(); const i=Math.floor(Math.random()*(u.length-1));
+    if(u[i].toLowerCase()===u[i+1].toLowerCase()||u[i]===','||u[i+1]===',') continue;
+    [u[i],u[i+1]]=[u[i+1],u[i]];
+    let o=u.map((w,j)=>j===0?w:lc(w)).join(' ').replace(/ ,/g,',')+end;
+    o=o.charAt(0).toUpperCase()+o.slice(1);
+    if(o!==s) return o;
+  }
+  return null;
+}
+function gWork(){
+  const [jp,en]=rnd(WORK);
+  let ch=uniq([en,swapWrong(en),swapWrong(en),swapWrong(en),swapWrong(en),swapWrong(en)]).slice(0,4);
+  if(ch.length<3) ch=uniq(ch.concat([en.replace(/^How/,'What'),en.replace(/^How /,'How a '),en.replace(/^What an? /,'How ')])).slice(0,4);
+  return {cat:'work',k:'ワーク・教科書の文',jp,t:`[${en}]`,ch,rule:R.order,ord:en};
+}
+
+// ---- カテゴリ一覧 ----
+const CATS=[
+  {id:'table',u:6,name:'代名詞の表（I-my-me-mine）',g:gTable},
+  {id:'pron',u:6,name:'代名詞を文で使う',g:gPron},
+  {id:'pron2',u:6,name:'名前を代名詞にかえる',g:gPron2},
+  {id:'whose',u:6,name:'Whose 〜? と 〜\'s',g:gWhose},
+  {id:'wh',u:6,name:'疑問詞の使い分け（When / Where / Whose…）',g:gWh},
+  {id:'which',u:6,name:'Which 〜, A or B?',g:gWhich},
+  {id:'can',u:6,name:'Can I 〜? / Can you 〜?',g:gCan},
+  {id:'ing',u:7,name:'ing の付け方',g:gIng},
+  {id:'prog',u:7,name:'現在進行形（〜している）',g:gProg},
+  {id:'progq',u:7,name:'進行形の否定文・疑問文・What 〜 doing?',g:gProgQ},
+  {id:'pp',u:7,name:'「毎日」と「今」の区別',g:gPP},
+  {id:'excl',u:7,name:'How 〜! / What a 〜!',g:gExcl},
+  {id:'road',u:7,name:'道案内（Turn left / Go along）',g:gRoad},
+  {id:'want',u:8,name:'want to / like to / try to',g:gWant},
+  {id:'work',u:0,name:'ワーク・教科書の文（並べかえ・書きかえ）',g:gWork},
+];
+
+// 問題を完成させる（表示用の文・正解など）
+function finish(q){
+  const m=q.t.match(/\[(.+?)\]/);
+  q.ans=m[1];
+  q.full=q.t.replace(/\[(.+?)\]/,'$1');
+  q.ord=q.ord||(q.noOrder?null:q.full.split(' — ')[0]);
+  q.ch=uniq(q.ch);
+  if(!q.ch.includes(q.ans)) q.ch.unshift(q.ans);
+  q.ch=shuf(q.ch);
+  q.alts=q.alts||[];
+  return q;
+}
+function makeQ(catId){ const c=CATS.find(x=>x.id===catId); return finish(c.g()); }
+
+
+
+// ===== 画面 =====
+const KEY='c1eng_u678_v1';
+let ST={miss:{},ok:{},day:'',n:0,mode:'choice'};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) ST=Object.assign(ST,s);}catch(e){}
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
+if(ST.day!==today()){ST.day=today();ST.n=0;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const MODES=[['choice','① 選ぶ'],['order','② 並べる'],['write','③ 書く']];
+const UNITS=[[6,'Unit 6　A Rakugo Performer from the U.K.'],[7,'Unit 7　An Online Tour of the U.K.'],[8,'Unit 8　Part 1'],[0,'まとめ']];
+let SES=null;
+
+function home(){
+  const weak=Object.keys(ST.miss).map(k=>[k,ST.miss[k],(ST.ok[k]||0)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  let h=`<header><h1>中1英語 Unit 6〜8<br><small>文法トレーニング</small></h1><div class="today">今日 <b>${ST.n}</b> 問</div><button class="help" id="help" aria-label="使い方">？</button></header>`;
+  h+=`<div class="modes">${MODES.map(m=>`<button class="mode ${ST.mode===m[0]?'on':''}" data-m="${m[0]}">${m[1]}</button>`).join('')}</div>`;
+  h+=`<p class="hint">はじめは「① 選ぶ」。なれたら ② → ③ へ。1回10問です。</p>`;
+  h+=`<div class="mix"><button data-mix="6">Unit 6 ミックス</button><button data-mix="7">Unit 7 ミックス</button><button data-mix="8">Unit 8 ミックス</button><button data-mix="all">ぜんぶ ミックス</button></div>`;
+  for(const [u,name] of UNITS){
+    h+=`<h2>${name}</h2><div class="cats">`;
+    for(const c of CATS.filter(x=>x.u===u)) h+=`<button class="cat" data-c="${c.id}">${esc(c.name)}</button>`;
+    h+=`</div>`;
+  }
+  if(weak.length){
+    h+=`<h2>⚠ 苦手ランキング（まちがえた回数）</h2><ol class="weak">${weak.map(w=>`<li>${esc(w[0])}<span>❌${w[1]}　⭕${w[2]}</span></li>`).join('')}</ol><button class="small" id="reset">記録をリセット</button>`;
+  }
+  h+=`<div class="tools"><button id="tbl">📋 代名詞の表を見る</button><button id="prt">🖨 プリントを作る</button></div>`;
+  app.innerHTML=h;
+  app.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{ST.mode=b.dataset.m;save();home();});
+  app.querySelectorAll('.cat').forEach(b=>b.onclick=()=>start([b.dataset.c]));
+  app.querySelectorAll('[data-mix]').forEach(b=>b.onclick=()=>{const m=b.dataset.mix;start(CATS.filter(c=>m==='all'?true:String(c.u)===m).map(c=>c.id));});
+  const r=document.getElementById('reset'); if(r) r.onclick=()=>{if(confirm('苦手ランキングを消しますか？')){ST.miss={};ST.ok={};save();home();}};
+  document.getElementById('tbl').onclick=showTable;
+  document.getElementById('help').onclick=showHelp;
+  document.getElementById('prt').onclick=printMenu;
+  window.scrollTo(0,0);
+}
+
+function start(cats,list){
+  if(SES) clearTimeout(SES.t);
+  const qs=list||Array.from({length:10},()=>makeQ(cats[Math.floor(Math.random()*cats.length)]));
+  SES={cats,qs,i:0,score:0,wrong:[],mode:ST.mode};
+  show();
+}
+function modeOf(q){ if(SES.mode==='order'&&!q.ord) return 'choice'; return SES.mode; }
+function blankHTML(t){ return esc(t).replace(/\[(.+?)\]/,'<span class="blank">　　　</span>'); }
+
+function show(){
+  const q=SES.qs[SES.i], m=modeOf(q);
+  let h=`<div class="bar"><button class="back">← メニュー</button><span>${SES.i+1} / ${SES.qs.length}</span>${['table','pron','pron2'].includes(q.cat)?'<button class="tb">📋表</button>':'<span></span>'}</div>`;
+  h+=`<div class="prog"><i style="width:${SES.i/SES.qs.length*100}%"></i></div>`;
+  h+=`<div class="card"><div class="jp">${esc(m==='order'?q.jp.split('―')[0]:q.jp)}</div>`;
+  if(m==='choice'){
+    h+=`<div class="en">${blankHTML(q.t)}</div><div class="choices">${q.ch.map((c,k)=>`<button class="ch" data-k="${k}">${esc(c)}</button>`).join('')}</div>`;
+  }else if(m==='order'){
+    const words=shuf(toks(q.ord).map((w,i)=>({w:i===0?lc(w):w,id:i})));
+    SES.words=words; SES.pick=[];
+    const end=(q.ord.match(/[.?!]$/)||[''])[0];
+    h+=`<div class="build"><div id="line"></div><span class="end">${end}</span></div><div id="pool"></div><div class="row"><button id="undo" class="small">1つもどす</button><button id="chk" class="go" disabled>答え合わせ</button></div>`;
+  }else{
+    h+=`<div class="en">${blankHTML(q.t)}</div><div class="row"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="＿＿に入る英語"><button id="chk" class="go">答え合わせ</button></div>`;
+    if(q.ans.split(' ').length>1) h+=`<p class="hint">※ ${q.ans.split(' ').length}語で書こう</p>`;
+  }
+  h+=`<div id="fb"></div></div>`;
+  app.innerHTML=h;
+  app.querySelector('.back').onclick=()=>{if(confirm('メニューにもどりますか？')){clearTimeout(SES.t);home();}};
+  const tb=app.querySelector('.tb'); if(tb) tb.onclick=showTable;
+  if(m==='choice') app.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{
+    app.querySelectorAll('.ch').forEach(x=>{x.disabled=true; if(x.textContent===q.ans)x.classList.add('right');});
+    const ok=b.textContent===q.ans; if(!ok)b.classList.add('wrong'); judge(ok,b.textContent);
+  });
+  if(m==='order') drawOrder(q);
+  if(m==='write'){const inp=document.getElementById('inp');inp.focus();
+    const go=()=>{if(!inp.value.trim())return;inp.disabled=true;document.getElementById('chk').disabled=true;judge(checkWrite(q,inp.value),inp.value);};
+    document.getElementById('chk').onclick=go; inp.onkeydown=e=>{if(e.key==='Enter')go();};}
+}
+function drawOrder(q){
+  const line=document.getElementById('line'), pool=document.getElementById('pool');
+  line.innerHTML=SES.pick.map((p,i)=>`<button class="w in" data-i="${i}">${esc(p.w)}</button>`).join('')||'<span class="ph">下の語をタップして並べよう</span>';
+  pool.innerHTML=SES.words.map(p=>SES.pick.includes(p)?`<button class="w used" disabled>${esc(p.w)}</button>`:`<button class="w" data-id="${p.id}">${esc(p.w)}</button>`).join('');
+  pool.querySelectorAll('.w[data-id]').forEach(b=>b.onclick=()=>{SES.pick.push(SES.words.find(p=>p.id==b.dataset.id));drawOrder(q);});
+  line.querySelectorAll('.w').forEach(b=>b.onclick=()=>{SES.pick.splice(+b.dataset.i,1);drawOrder(q);});
+  document.getElementById('undo').onclick=()=>{SES.pick.pop();drawOrder(q);};
+  const c=document.getElementById('chk'); c.disabled=SES.pick.length!==SES.words.length;
+  c.onclick=()=>{
+    const ans=toks(q.ord).map(w=>w.toLowerCase()).join(' ');
+    const got=SES.pick.map(p=>p.w.toLowerCase()).join(' ');
+    app.querySelectorAll('.w').forEach(x=>x.disabled=true); c.disabled=true;
+    judge(ans===got,SES.pick.map(p=>p.w).join(' ').replace(/ ,/g,','));
+  };
+}
+const CONTR={"isn't":'is not',"aren't":'are not',"i'm":'i am',"it's":'it is',"don't":'do not',"doesn't":'does not',"he's":'he is',"she's":'she is',"they're":'they are',"you're":'you are',"we're":'we are',"can't":'cannot',"let's":'let us'};
+function norm(s){
+  s=s.toLowerCase().replace(/[’‘`]/g,"'").replace(/[。．]/g,'.').replace(/[？]/g,'?').replace(/[！]/g,'!').replace(/[，、]/g,',');
+  s=s.replace(/[.?!]+\s*$/,'').replace(/\s*,\s*/g,', ').replace(/\s+/g,' ').trim();
+  return s.split(' ').map(w=>CONTR[w]||w).join(' ');
+}
+function checkWrite(q,v){
+  const g=norm(v);
+  return [q.ans].concat(q.alts||[]).some(a=>norm(a)===g);
+}
+function judge(ok,got){
+  const q=SES.qs[SES.i];
+  ST.n++; if(ok){SES.score++;ST.ok[q.k]=(ST.ok[q.k]||0)+1;}else{ST.miss[q.k]=(ST.miss[q.k]||0)+1;SES.wrong.push(q);}
+  save();
+  const fb=document.getElementById('fb');
+  let h=ok?`<div class="ok">⭕ 正解！</div>`:`<div class="ng">❌ ざんねん</div>`;
+  h+=`<div class="ansline">${esc(modeOf(q)==='order'?q.ord:q.full)}</div>`;
+  if(!ok) h+=`<div class="rule">💡 ${esc(q.rule)}</div>`;
+  h+=`<button class="go next">${SES.i+1<SES.qs.length?'次へ →':'結果を見る'}</button>`;
+  fb.innerHTML=h;
+  const nx=fb.querySelector('.next'); nx.onclick=next;
+  if(ok&&SES.mode==='choice'){SES.t=setTimeout(next,1100);}
+  nx.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function next(){clearTimeout(SES.t);SES.i++; if(SES.i<SES.qs.length) show(); else result();}
+function result(){
+  const n=SES.qs.length, s=SES.score;
+  const msg=s===n?'パーフェクト！🎉':s>=n*0.8?'よくできました！':s>=n*0.5?'あと少し！❌をもう一度':'❌の問題をもう一度やってみよう';
+  let h=`<div class="card res"><div class="big">${s} / ${n}</div><p>${msg}</p><p class="hint">今日 ${ST.n} 問とけました</p>`;
+  if(SES.wrong.length){
+    h+=`<h3>まちがえた問題</h3><ul class="wl">${SES.wrong.map(q=>`<li><div class="jp">${esc(q.jp)}</div><b>${esc(q.full)}</b><div class="rule">💡 ${esc(q.rule)}</div></li>`).join('')}</ul>`;
+    h+=`<button class="go" id="retry">❌だけ もう一度（${SES.wrong.length}問）</button>`;
+  }
+  h+=`<button class="go" id="more">次の10問</button><button class="small" id="menu">メニューへ</button></div>`;
+  app.innerHTML=h; window.scrollTo(0,0);
+  const rt=document.getElementById('retry'); if(rt) rt.onclick=()=>start(SES.cats,shuf(SES.wrong).map(q=>{q.ch=shuf(q.ch);return q;}));
+  document.getElementById('more').onclick=()=>start(SES.cats);
+  document.getElementById('menu').onclick=home;
+}
+function showTable(){
+  const d=document.createElement('div'); d.className='modal';
+  d.innerHTML=`<div class="mbox"><h3>代名詞の表</h3><table><tr><th></th><th>〜は<br>〜が</th><th>〜の</th><th>〜を<br>〜に</th><th>〜の<br>もの</th></tr>${P.map(p=>`<tr><th>${p.ja}</th>${p.f.map(x=>`<td>${x||'―'}</td>`).join('')}</tr>`).join('')}</table>
+  <p class="hint">like・with・about のあと → 3列目（〜を・〜に）<br>人の名前の「〜の・〜のもの」→ Ken's</p><button class="go">とじる</button></div>`;
+  document.body.appendChild(d); d.querySelector('button').onclick=()=>d.remove(); d.onclick=e=>{if(e.target===d)d.remove();};
+}
+function showHelp(){
+  const d=document.createElement('div'); d.className='modal';
+  d.innerHTML=`<div class="mbox help-box"><h3>📱 このアプリの使い方</h3>
+  <h4>① 形式をえらぶ</h4>
+  <p>上の3つのボタンから選びます。<br><b>① 選ぶ</b>（まずはここから）→ <b>② 並べる</b> → <b>③ 書く</b> の順にレベルアップ！</p>
+  <h4>② 単元をタップ</h4>
+  <p>10問スタート。<b>ミックス</b>はいろいろな単元がまざって出ます。問題は毎回ちがうので、何回でも練習できます。</p>
+  <h4>③ 答えたら</h4>
+  <p>⭕ … 「① 選ぶ」なら自動で次へ。<br>❌ … 💡の<b>ルール</b>を読んでから「次へ」。ここが一番大事！</p>
+  <h4>④ 並べるとき</h4>
+  <p>下の語をタップして順に並べます。まちがえたら、並べた語をタップするともどります。<br>文の最初の大文字や「? .」は気にしなくてOK。</p>
+  <h4>⑤ 書くとき</h4>
+  <p>＿＿の部分だけ書きます。大文字・小文字は気にしなくてOK。<br>isn't と is not、I'm と I am はどちらでも⭕です。</p>
+  <h4>⑥ 10問終わったら</h4>
+  <p><b>❌だけ もう一度</b> → 全部⭕になるまで。<br><b>次の10問</b> → 新しい問題でどんどん練習。</p>
+  <h4>⑦ べんりな機能</h4>
+  <p>📋 <b>代名詞の表</b> … I-my-me-mine の表がいつでも見られます。<br>⚠ <b>苦手ランキング</b> … まちがえが多いところがメニューの下に出ます。そこを集中して練習！<br>🖨 <b>プリント</b> … 紙で練習したい時に。2ページ目が答えです。</p>
+  <h4>🌟 おすすめの進め方</h4>
+  <p>1日 <b>30問</b>（10問×3回）が目標。<br>「① 選ぶ」で8問以上⭕になったら「② 並べる」へ。<br>テストの前の日は「ぜんぶ ミックス」で仕上げ！</p>
+  <p class="hint">※ 記録（今日の問題数・苦手ランキング）は、このスマホのこのブラウザにだけ残ります。</p>
+  <button class="go">とじる</button></div>`;
+  document.body.appendChild(d); d.querySelector('.go').onclick=()=>d.remove(); d.onclick=e=>{if(e.target===d)d.remove();};
+}
+// ---- プリント ----
+function printMenu(){
+  const d=document.createElement('div'); d.className='modal';
+  d.innerHTML=`<div class="mbox"><h3>🖨 プリントを作る</h3><p class="hint">問題は毎回ちがう組み合わせになります。2ページ目が答えです。</p>
+  <label>はんい<select id="pc"><option value="all">ぜんぶ ミックス</option><option value="6">Unit 6 ミックス</option><option value="7">Unit 7 ミックス</option><option value="8">Unit 8</option>${CATS.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>
+  <label>形式<select id="pm"><option value="choice">( )の中から選ぶ</option><option value="order">並べかえ</option><option value="write">＿＿に書く</option></select></label>
+  <label>問題数<select id="pn"><option>10</option><option selected>20</option><option>30</option></select></label>
+  <div class="row"><button class="small" id="pcan">やめる</button><button class="go" id="pgo">印刷する</button></div></div>`;
+  document.body.appendChild(d);
+  d.querySelector('#pcan').onclick=()=>d.remove();
+  d.querySelector('#pgo').onclick=()=>{const c=d.querySelector('#pc').value,m=d.querySelector('#pm').value,n=+d.querySelector('#pn').value;d.remove();doPrint(c,m,n);};
+}
+function doPrint(c,m,n){
+  const ids=c==='all'?CATS.map(x=>x.id):(['6','7','8'].includes(c)?CATS.filter(x=>String(x.u)===c).map(x=>x.id):[c]);
+  const qs=[]; const seen=new Set(); let guard=0;
+  while(qs.length<n&&guard++<500){const q=makeQ(ids[qs.length%ids.length]); if(seen.has(q.full))continue; if(m==='order'&&!q.ord)continue; seen.add(q.full); qs.push(q);}
+  const title=c==='all'?'Unit 6〜8 ミックス':(['6','7','8'].includes(c)?`Unit ${c}`:CATS.find(x=>x.id===c).name);
+  const mt={choice:'(　)の中から正しいものを選んで○でかこみなさい。',order:'日本文に合うように、(　)内の語を並べかえなさい。',write:'日本文に合うように、＿＿に入る英語を書きなさい。'}[m];
+  let h=`<div class="pp"><h2>${esc(title)}　<small>名前（　　　　　　　）　　　／${n}</small></h2><p>${mt}</p><ol>`;
+  for(const q of qs){
+    let body;
+    if(m==='choice'&&q.ch.length<=4&&!q.t.startsWith('[')) body=esc(q.t).replace(/\[(.+?)\]/,`( ${q.ch.map(esc).join(' / ')} )`);
+    else if(m==='choice') body=`<span class="pc">${q.ch.map((x,i)=>'アイウエ'[i]+'. '+esc(x)).join('　')}</span>`;
+    else if(m==='order'){const end=(q.ord.match(/[.?!]$/)||[''])[0];body=`( ${shuf(toks(q.ord).map((w,i)=>i===0?lc(w):w)).map(esc).join(' / ')} ${end} )<div class="ln"></div>`;}
+    else body=esc(q.t).replace(/\[(.+?)\]/,'<span class="u">　　　　　　　　</span>');
+    h+=`<li><div class="pj">${esc(q.jp)}</div><div>${body}</div></li>`;
+  }
+  h+=`</ol></div><div class="pp brk"><h2>${esc(title)}　解答</h2><ol class="ans">${qs.map(q=>`<li>${esc(q.full)}</li>`).join('')}</ol></div>`;
+  document.getElementById('print').innerHTML=h;
+  setTimeout(()=>window.print(),200);
+}
+home();
+</script></body></html>
