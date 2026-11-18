@@ -1,0 +1,482 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>論理表現 Lesson13〜18 不定詞・動名詞・分詞</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:#f3f6fb;color:#1d2433}
+#app{max-width:640px;margin:0 auto;padding:12px 12px 40px}
+header{position:relative;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#3f51b5,#7e57c2);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px}
+header h1{font-size:20px;margin:0;line-height:1.3}header small{font-size:14px;font-weight:normal;opacity:.9}
+.help{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.2);color:#fff;font-size:18px;font-weight:bold;padding:0;line-height:1}
+header .today{margin-right:36px}
+.help-box h4{margin:14px 0 4px;color:#3f51b5;font-size:15px}.help-box p{margin:0;font-size:14px;line-height:1.7}
+.today{background:rgba(255,255,255,.25);border-radius:12px;padding:6px 10px;font-size:13px;text-align:center}.today b{font-size:20px;display:block}
+.modes{display:flex;gap:6px}.mode{flex:1;padding:12px 4px;font-size:16px;font-weight:bold;border:2px solid #3f51b5;background:#fff;color:#3f51b5;border-radius:12px}
+.mode.on{background:#3f51b5;color:#fff}
+.hint{font-size:13px;color:#667;margin:8px 2px}
+.mix{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.mix button{padding:12px;font-size:15px;border:none;border-radius:12px;background:#2f6fd6;color:#fff;font-weight:bold}
+h2{font-size:15px;margin:18px 2px 8px;color:#3f51b5;border-left:5px solid #3f51b5;padding-left:8px}
+.cats{display:grid;gap:6px}.cat{text-align:left;padding:13px 14px;font-size:15px;background:#fff;border:1px solid #dde3ee;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.cat:active,.ch:active,.w:active{transform:scale(.98)}
+.weak{background:#fff;border-radius:12px;padding:8px 8px 8px 30px;margin:0;font-size:14px}.weak li{padding:4px 0}.weak span{float:right;color:#888;font-size:12px}
+.tools{display:flex;gap:6px;margin-top:16px}.tools button{flex:1;padding:12px;font-size:14px;border-radius:12px;border:1px solid #ccd;background:#fff}
+button{cursor:pointer;font-family:inherit;color:inherit}
+.small{padding:8px 12px;font-size:13px;border-radius:10px;border:1px solid #ccd;background:#fff;margin-top:8px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.bar button{border:none;background:none;font-size:15px;color:#2f6fd6;padding:6px}
+.prog{height:6px;background:#dde3ee;border-radius:3px;overflow:hidden;margin-bottom:10px}.prog i{display:block;height:100%;background:#7e57c2}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.jp{font-size:16px;color:#445;line-height:1.6;margin-bottom:12px}
+.en{font-size:22px;line-height:1.7;margin:6px 0 16px;font-family:"Segoe UI",Arial,sans-serif}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid #3f51b5;margin:0 4px}
+.choices{display:grid;gap:8px}.ch{padding:14px;font-size:20px;border:2px solid #dde3ee;border-radius:12px;background:#fafbfd;font-family:"Segoe UI",Arial,sans-serif}
+.ch.right{border-color:#2aa66a;background:#e3f7ec}.ch.wrong{border-color:#e04848;background:#fde8e8}
+.build{min-height:62px;border:2px dashed #c7cfdd;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+#line{display:flex;flex-wrap:wrap;gap:6px;flex:1}.end{font-size:22px;font-weight:bold}
+.ph{color:#99a;font-size:14px}
+#pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.w{padding:10px 14px;font-size:19px;border-radius:10px;border:2px solid #2f6fd6;background:#eef4ff;font-family:"Segoe UI",Arial,sans-serif}
+.w.in{background:#2f6fd6;color:#fff}.w.used{opacity:.25}
+.row{display:flex;gap:8px;align-items:center}
+input{flex:1;font-size:20px;padding:12px;border:2px solid #c7cfdd;border-radius:12px;min-width:0;font-family:"Segoe UI",Arial,sans-serif}
+.go{padding:13px 18px;font-size:16px;font-weight:bold;border:none;border-radius:12px;background:#3f51b5;color:#fff;display:block;width:100%;margin-top:10px}
+.row .go{width:auto;margin-top:0}.go:disabled{background:#ccc}
+#fb .ok{font-size:22px;color:#2aa66a;font-weight:bold;margin-top:14px}#fb .ng{font-size:22px;color:#e04848;font-weight:bold;margin-top:14px}
+.ansline{font-size:20px;margin:6px 0;font-family:"Segoe UI",Arial,sans-serif;background:#fffbe6;border-radius:8px;padding:8px}
+.rule{font-size:15px;color:#7a4b00;background:#fff3d6;border-radius:8px;padding:8px;margin-top:6px;line-height:1.5}
+.res{text-align:center}.big{font-size:52px;font-weight:bold;color:#3f51b5}.wl{text-align:left;padding-left:20px}.wl li{margin-bottom:12px}.wl b{font-family:"Segoe UI",Arial,sans-serif;font-size:17px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:12px;z-index:9}
+.mbox{background:#fff;border-radius:16px;padding:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto}
+.mbox table{width:100%;border-collapse:collapse;font-size:17px;text-align:center;font-family:"Segoe UI",Arial,sans-serif}
+.mbox th,.mbox td{border:1px solid #ccd;padding:6px 2px}.mbox th{background:#e8eaf6;font-size:13px;font-family:inherit}
+.mbox label{display:block;margin:10px 0;font-size:14px}.mbox select{width:100%;font-size:15px;padding:8px;margin-top:4px}
+#print{display:none}
+@media print{
+ #app,.modal{display:none!important}#print{display:block}body{background:#fff}
+ .pp{font-size:12.5pt}.pp h2{font-size:14pt;border:none;color:#000;padding:0}.pp h2 small{font-size:10pt;font-weight:normal;float:right}
+ .pp ol{padding-left:26px}.pp li{margin-bottom:12px;page-break-inside:avoid;font-family:"Times New Roman",serif}
+ .pj{font-size:10.5pt;color:#333;font-family:sans-serif}.u{border-bottom:1px solid #000;display:inline-block;min-width:110px}
+ .ln{border-bottom:1px solid #000;height:22px;margin-top:4px}.brk{page-break-before:always}.ans li{margin-bottom:5px}
+}
+
+.big{display:block;width:100%;padding:14px;font-size:16px;font-weight:bold;border:none;border-radius:12px;margin:6px 0}
+.star{background:#ffb300;color:#3a2a00}
+.mix button:disabled{background:#bbb}
+.cat b{display:block;font-size:15px}.cat span{font-size:12.5px;color:#667}
+.src{font-size:12px;color:#889}
+.en input.bl{font-size:17px;padding:4px 6px;border:2px solid #9fa8da;border-radius:8px;margin:2px;display:inline-block;min-width:0;max-width:100%;flex:none}
+.en{font-size:19px;line-height:2}
+input.okb{border-color:#2aa66a!important;background:#e3f7ec}input.ngb{border-color:#e04848!important;background:#fde8e8}
+.w{font-size:17px;padding:8px 11px}
+.hintbtn{margin-top:12px;border:none;background:none;color:#3f51b5;font-size:14px;padding:4px 0}
+.tag{display:inline-block;background:#ffb300;color:#3a2a00;font-weight:bold;font-size:12px;border-radius:6px;padding:1px 6px;margin-right:6px}
+.alt{font-size:14px;color:#556;margin:4px 0}
+.nt{border-bottom:1px solid #eee;padding:8px 0}.en2{font-family:"Segoe UI",Arial,sans-serif;font-size:16px;margin:2px 0}.r2{font-size:13.5px;color:#7a4b00;background:#fff3d6;border-radius:6px;padding:6px}
+.mbox h4{color:#3f51b5;margin:14px 0 4px}
+.bigs{font-size:52px;font-weight:bold;color:#3f51b5}
+@media print{.no{font-size:9pt;color:#777}.u{display:inline-block;border-bottom:1px solid #000}}
+</style></head><body><div id="app"></div><div id="print"></div><script>// ===== 論理表現 Lesson 13〜18・Extra 1（不定詞・動名詞・分詞）=====
+// en の [ ] が答えの部分。| は別解。o.s=先生の解説あり, o.ch=選択肢, o.h=ヒント
+const U={
+ L13:['Lesson 13','不定詞(2)','of A to do／人に〜させる・してほしい'],
+ L14:['Lesson 14','不定詞(3)','seem to／to be＋過去分詞／to have＋過去分詞'],
+ EX1:['Extra Lesson 1','不定詞','疑問詞＋to／目的／too…to／独立不定詞'],
+ L15:['Lesson 15','動名詞(1)','〜ing と to do のちがい'],
+ L16:['Lesson 16','動名詞(2)','not 〜ing／having＋過去分詞／慣用表現'],
+ L17:['Lesson 17','分詞(1)','名詞を説明する分詞／〜ing と 〜ed'],
+ L18:['Lesson 18','分詞(2)','O＋分詞／分詞構文'],
+};
+const ITEMS=[];
+function Q(u,no,jp,en,r,o){ITEMS.push(Object.assign({u,no,jp,en,r,id:u+'-'+no},o||{}));}
+const OF='「〜するなんて A は…だ」→ It is＋人の性質（nice, kind, smart, careless, rude）＋of A to do。「A は…だ」と言えれば of、言えなければ for';
+
+const GIT='Give It a Try（解答例）：自分で考えて書く問題。解答例とちがっても、文法が正しければOK（先生に確認しよう）';
+// ---------- Lesson 13 ----------
+Q('L13','①1','手伝ってくれるなんてサチはなんて優しいんだ。',"It is nice [of] Sachi [to] help me.",
+ '「〜するなんて」→ It is＋人の性質＋of A to do。Sachi が意味上の主語（だれが help するか）、to help me が真主語（It の中身）。「サチは優しい（Sachi is nice）」と言えるので of',{s:1});
+Q('L13','①2','間違ったバスに乗るなんて、あなたは不注意でしたね。',"It was [careless] [of] you [to] take the wrong bus.",OF);
+Q('L13','①3','私はジョンにサラも誘うように頼んだ。',"I [asked] [John] [to] invite Sarah, too.",
+ 'ask＋人＋to do「人に〜するように頼む」／tell＋人＋to do「〜するように言う」／want＋人＋to do「〜してほしい」。「頼んだ」の『た』→ 過去形 asked',{s:1});
+Q('L13','①4','写真をお撮りしましょうか。',"Would you [like] [me] to [take] your photo?",
+ 'would like ＝ want。want A to do「A に〜してほしいと思っている」→ Would you like me to 〜?「私に〜してほしいですか＝〜しましょうか」',{s:1});
+Q('L13','①5','両親は私がスマホを持つことを許そうとはしない。',"My parents won't [allow|permit] [me] [to] have a smartphone.",
+ 'allow A to do「A が〜するのを許す」（permit でもよいが、堅い表現）',{s:1});
+Q('L13','②1','私はミカがトランペットを演奏するのを聞いた。',"I [listened to Mika play] the trumpet.",
+ '知覚動詞（see, watch, hear, listen to, feel）＋O＋原形「O が〜するのを見る・聞く」。to は付けない');
+Q('L13','②2','私はイヌがえさを食べるのを見ていた。',"I [was watching my dog eat] his food.",
+ '知覚動詞＋O＋原形。watch my dog eat「イヌが食べるのを見る」');
+Q('L13','②3','先生たちは学園祭の準備のために早く登校させてくれた。',"Our teachers [let us come to school] early to prepare for the school festival.",
+ 'let＋O＋原形「O に（望みどおり）〜させてあげる」。to は付けない');
+Q('L13','②4','私は昨日書店で店員にその本を見つけてもらった。',"I [had the clerk find the book] at the bookstore yesterday.",
+ 'have＋O＋原形「O に（当然すべきことを）〜してもらう」');
+Q('L13','③1','あんなふうに先生に話すなんて、あなたは失礼だ。',"It is rude [of] you to talk to your teacher like that.",OF,{ch:['of','for']});
+Q('L13','③2','先生は私に夢をあきらめないように助言した。',"My teacher advised [me not to] give up my dream.",
+ 'advise＋人＋to do。「〜しないように」は not を to の前に → 人＋not to do',{ch:['me not to','for me to not']});
+Q('L13','③3','たいていの親にとって、子どもに一生懸命勉強させるのは難しい。',"For most parents, it is difficult to get [their children] to study hard.",
+ 'get＋O＋to do「（説得して）O に〜させる」。O の前に for は付けない',{ch:['their children','for their children']});
+Q('L13','③4','まず自己紹介させてください。',"Let me [introduce] myself first.",'let＋O＋原形。to は付けない',{ch:['introduce','to introduce']});
+Q('L13','③5','私は30分以上待たされた。',"I was made [to wait] for over thirty minutes.",
+ 'make＋O＋原形 を受け身にすると、原形が to do に変わる（was made to wait）',{ch:['wait','to wait']});
+Q('L13','④1','学校行事向けに素晴らしいプランを提案したなんて、ケンタは賢い。',"It was [clever of Kenta to|smart of Kenta to] suggest a great plan for the school event.",
+ '「〜したなんて」→ It is[was]＋人の性質＋of A to do。「ケンタは賢い（Kenta was clever）」と言えるので of。模範解答は clever（smart も可）',{s:1});
+Q('L13','④2','私たちの英語の先生は、私たちにたくさんの英語の小説を読んでほしいと思っている。',"Our English teacher [wants us to read] a lot of English novels.",
+ 'want＋人＋to do「人に〜してほしい」。人は目的格（us）。主語が先生1人なので wants');
+Q('L13','④3','両親は、夜9時以降は私にスマホを使わせてくれない。',"My parents [don't let me use|won't let me use|do not let me use|will not let me use|don't allow me to use|won't allow me to use|do not allow me to use|will not allow me to use] my smartphone after 9 p.m.",
+ 'let＋O＋原形「O に〜させてあげる」→ 否定 don\'t let me use。allow＋O＋to do でもよい（don\'t allow me to use）');
+Q('L13','④4','だれかが玄関のドアを開けるのが聞こえた。（front door）',"I [heard someone open] the front door.",
+ '感覚動詞＋O＋do（原形）。一般に、動作の始めから終わりまでが対象（開けるところが全部聞こえた）',{s:1});
+Q('L13','④5','母は私に朝食を食べるように言った。',"My mother [told me to eat|told me to have] breakfast.",
+ 'tell＋人＋to do「人に〜するように言う」。「言った」の『た』→ told',{s:1});
+
+// ---------- Lesson 14 ----------
+Q('L14','①1','みんな文化祭を楽しんでいるようだ。',"Everyone [seems to be enjoying] the school festival.",
+ 'seem, appear＋to do「〜のようだ・〜のように見える」。「楽しんでいる」→ to be ～ing。every / everyone は単数あつかい → seems',{s:1});
+Q('L14','①2','今日は、ひとりにしておいてほしい。',"I [want to be left alone] today.",
+ '受け身の不定詞：to be＋過去分詞。leave O alone「O をひとりにしておく」→ be left alone「ひとりにしておかれる」');
+Q('L14','①3','インフルエンザが流行っているようだ。',"The flu [seems to be going] around.",'seem to be ～ing「〜しているようだ」（進行形の不定詞）');
+Q('L14','①4','このタブレットは使う前に充電する必要がある。',"This tablet [needs to be charged] before you use it.",
+ 'タブレットは「充電される」側 → to be＋過去分詞（need to be charged）');
+Q('L14','②1','a. It seems that Kevin is sleepy. と同じ意味に',"Kevin seems [to] [be] sleepy.",'It seems that S is 〜 → S seems to be 〜（時が同じ → to be）');
+Q('L14','②2','a. Edison was believed to be a genius. と同じ意味に',"It was believed that [Edison|he] [was] a genius.",
+ 'S was believed to be 〜 → It was believed that S was 〜（主語 Edison をそのまま that のあとへ、時制は was）');
+Q('L14','②3','a. It is said that this museum was built in the eighteenth century. と同じ意味に',"This museum is said [to] [have] [been] built in the eighteenth century.",
+ '「言われている（今）」より「建てられた（昔）」が前 → 完了不定詞 to have＋過去分詞。受け身なので to have been built');
+Q('L14','②4','a. It seems that Daiki has been learning the piano for many years. と同じ意味に',"Daiki seems [to] [have] [been] [learning] the piano for many years.",
+ 'that 節が現在完了進行形 → to have been ～ing');
+Q('L14','③1','あなたの作文は今週末までに書かれる必要がある。',"Your essay [needs to be written by] the end of this week.",'作文は「書かれる」側 → to be＋過去分詞。by「〜までに」');
+Q('L14','③2','マナはだれかを待っているようだった。',"Mana [seemed to be waiting for] someone.",'seem to be ～ing「〜しているようだ」。「〜ようだった」→ seemed');
+Q('L14','③3','メグはチームのキャプテンに選ばれることを望んでいる。',"Meg [hopes to be elected captain] of the team.",
+ 'hope to be＋過去分詞「〜されることを望む」。役職（captain）には a を付けない');
+Q('L14','③4','電話に出られなくてごめんなさい。',"I am sorry [to have missed] your call.",'「ごめんなさい（今）」より「出られなかった（前）」→ to have＋過去分詞');
+Q('L14','④1','電話が話し中だ。まだベンがベスと電話で話しているようだ。',"The line is busy. Ben seems [to be speaking|to be talking] with Beth on the phone again.",'seem to be ～ing「〜しているようだ」');
+Q('L14','④2','校門に何人か人が来ている。彼らは今日のイベントに招待されたようだ。',"There are several people at the school gate. They [seem to have been invited] to today's event.",
+ '「〜ようだ（今）」より「招待された（前）」→ to have been＋過去分詞');
+Q('L14','④3','ミキは先生にほめられたかった。（praise）',"Miki [wanted to be praised by her teacher|wanted to be praised by the teacher].",
+ '主語＋be動詞＋過去分詞「〜される」。ほめ・られ・たかっ・た → wanted to be praised。「先生に」→ by her teacher',{s:1});
+Q('L14','④4','ダヴィンチはパラシュートを発明したと言われている。',"[Da Vinci is said to have invented the parachute|It is said that da Vinci invented the parachute|Da Vinci is said to have invented a parachute|It is said that da Vinci invented a parachute|They say that da Vinci invented the parachute|They say da Vinci invented the parachute].",
+ 'They say (that) ＝ It is said that 〜「〜だと言われている」。Da Vinci を主語にすると、発明したのは前のこと → to have invented（完了不定詞）',{s:1});
+
+Q('L14','GIT','私の兄は2時間前は忙しそうだったが、今は暇な（くつろいでいる）ようだ。',"My brother [seemed to be busy] two hours ago, but now he [seems to be free|seems to be relaxing].",
+ GIT+'。「〜ようだった（過去）」→ seemed to be、「〜ようだ（今）」→ seems to be');
+
+// ---------- Extra Lesson 1 ----------
+const QW='疑問詞＋to do：what to do（何を〜すべきか）／how to do（どのように）／when to do（いつ）／where to do（どこで）';
+Q('EX1','①1','ジムの誕生日パーティーに何を持っていくか考えよう。',"Let's think about [what] to bring to Jim's birthday party.",QW,{ch:['how','what','when','where']});
+Q('EX1','①2','ひとり暮らしを始める前に、料理のしかたを学ぶ必要がある。',"I need to learn [how] to cook before starting to live alone.",QW,{ch:['how','what','when','where']});
+Q('EX1','①3','いつトマトを植えればいいか知りたい。―このサイトには5月上旬とある。',"I want to know [when] to plant tomatoes. — This website says in early May.",QW,{ch:['how','what','when','where']});
+Q('EX1','①4','これらの箱をどこに置けばいいか教えてほしい。―あの棚の上ですか？',"I'd like you to tell me [where] to put these boxes. — On that shelf?",QW,{ch:['how','what','when','where']});
+Q('EX1','②1','スティーブは始発電車に乗るために早起きをした。',"Steven got up early [in] order [to] catch the first train.",'in order to do / so as to do「〜するために」');
+Q('EX1','②2','ぬれないように傘を持っていきなさい。',"Take an umbrella with you [so] as [not] [to] get wet.",'「〜しないように」→ so as not to do / in order not to do（not は to の前）');
+Q('EX1','②3','あまりにも疲れていたので、私は夕食を食べることができなかった。',"I was [too] tired [to] [eat|have] dinner.",'too … to do「あまりに…なので〜できない」');
+Q('EX1','②4','彼女は親切にも駅までの行き方を教えてくれた。',"She was [kind] [enough] [to] tell me the way to the station.",'… enough to do「〜するのに十分…／…にも〜する」。enough は形容詞のうしろ');
+Q('EX1','③1','本当のことを言うと、私は数学が得意ではありません。',"[To] [tell] the [truth], I'm not good at math.",'独立不定詞：to tell the truth「実を言うと」');
+Q('EX1','③2','奇妙なことに、彼はまるで私を認識していないかのように振る舞った。',"[Strange] [to] [say], he behaved as if he didn't recognize me.",'独立不定詞：strange to say「奇妙なことに」');
+Q('EX1','③3','言うまでもなく、東京は日本の経済の中心地だ。',"[Needless] [to] [say], Tokyo is the economic center of Japan.",'独立不定詞：needless to say「言うまでもなく」');
+Q('EX1','③4','暗くなってきた。さらに悪いことには、雪が激しく降ってきた。',"It was getting dark, and [to] make [matters] [worse], it started snowing heavily.",'独立不定詞：to make matters worse「さらに悪いことには」');
+Q('EX1','④1','彼女に電話で何と言ったらよいのかわからなかった。',"I didn't know [what to say to her] on the phone.",'what to do「何を〜すべきか」→ what to say to her');
+Q('EX1','④2','図書館に行くにはどこでバスを降りればいいか教えていただけませんか。（get off）',"Could you tell me [where to get off the bus|where to get off the bus in order|where to get off] to go to the library?",'where to do「どこで〜すべきか」→ where to get off');
+Q('EX1','④3','教室がうるさすぎて、私たちはお互いの声が聞こえなかった。',"[The classroom was too noisy for us to hear each other|The classroom was so noisy that we couldn't hear each other].",
+ 'too … to＋動詞の原形「あまりに…なので〜できない」。意味上の主語は for us。so … that 〜 couldn\'t でも同じ意味。each other「お互い」',{s:1});
+Q('EX1','④4','私たちは遅刻しないように、学校まで走った。',"We ran to school [in order not to be late|so as not to be late|not to be late].",'「〜しないように」→ so as not to do / in order not to do');
+
+Q('EX1','GIT1','いつ宿題を提出したらいいのか教えていただけますか。',"Could you tell me [when to hand in my homework]?",GIT+'。when to do「いつ〜すべきか」。hand in「提出する」');
+Q('EX1','GIT2','コピー機の使い方をお教えしましょうか。',"Shall I show you [how to use the copy machine]?",GIT+'。how to do「〜のしかた」');
+
+// ---------- Lesson 15 ----------
+Q('L15','①1','プラスチックごみを減らすことは、環境のために必要だ。',"[Reducing plastic waste is necessary] for the environment.",'動名詞（〜ing）は「〜すること」。文の主語になれる');
+Q('L15','①2','私の趣味は月の写真を撮ることだ。',"My hobby is [taking pictures of the moon].",'動名詞は補語にもなる（My hobby is 〜ing）');
+Q('L15','①3','母は週末に寺を訪れるのを楽しむ。',"My mother [enjoys visiting temples] on weekends.",'enjoy は 〜ing だけを目的語にとる（enjoy to do は×）');
+Q('L15','①4','サクラは服を作るのがとても上手だ。',"Sakura is very [good at making clothes].",'前置詞（at, of, in など）のあとは 〜ing。be good at 〜ing「〜が得意」');
+const ING='〜ing をとる動詞：enjoy, finish, practice, stop, give up, mind, avoid, deny など（すでにしていること・今していること）';
+const TO='to do をとる動詞：want, hope, decide, plan, promise, agree, refuse など（これから〜する）';
+Q('L15','②1','どこで水泳を練習できますか。',"Where can I practice [swimming]?",ING,{ch:['swimming','to swim']});
+Q('L15','②2','子どもたちは夢をみることを決してあきらめるべきではない。',"Children should never give up [dreaming].",ING,{ch:['dreaming','to dream']});
+Q('L15','②3','マークは昨日、私にメールを送ると約束した。',"Mark promised [to send] me an email yesterday.",TO,{ch:['sending','to send']});
+Q('L15','②4','あなたを待つのはかまいません。',"I don't mind [waiting] for you.",ING,{ch:['waiting','to wait']});
+Q('L15','②5','帰り道に牛乳を買うのを覚えておいて。',"Remember [to buy] some milk on your way home.",
+ 'remember to do「（これから）忘れずに〜する」／remember doing「（前に）〜したことを覚えている」',{ch:['buying','to buy']});
+Q('L15','③1','私たちはみな、清掃活動に参加することに合意した。（agree, take）',"We all [agreed to take] part in the cleanup campaign.",'agree to do「〜することに合意する」。「した」→ agreed');
+Q('L15','③2','明日の朝にメグに電話するのを忘れないで。（forget, call）',"Don't [forget to call] Meg tomorrow morning.",'forget to do「（これから）〜するのを忘れる」');
+Q('L15','③3','私は4年前にカナダでブライアンに会ったことを決して忘れません。（forget, meet）',"I'll never [forget meeting] Brian in Canada four years ago.",'forget doing「（前に）〜したことを忘れる」');
+Q('L15','③4','私はケンにうそをついたことを後悔している。（regret, tell）',"I [regret telling|regret having told] a lie to Ken.",'regret doing「（前に）〜したことを後悔する」／regret to do「残念ながら〜する」');
+Q('L15','③5','私はライブのチケットを買おうとしたが、売り切れだった。（try, buy）',"I [tried to buy] a ticket for the concert, but they were sold out.",'try to do「〜しようとする」／try doing「試しに〜してみる」');
+Q('L15','④1','今日は暑いですね。窓を開けていただけませんか。―いいですよ。（mind を使って）',"It's hot today. [Would you mind opening] the window? — Of course not.",
+ 'Would[Do] you mind doing?「〜していただけませんか」⇔「…するのを気にしますか」。mind doing「〜するのを気にする・いやがる」。「いいですよ」→ Of course not.（気にしません）',{s:1});
+Q('L15','④2','彼は寝坊したので、何も食べずに登校した。',"He overslept and went to school [without eating anything|without having anything].",'without＋〜ing「〜しないで」',{s:1});
+Q('L15','④3','兄は、英語のニュースを聞くことで英語を学んでいます。',"My brother learns English [by listening to English news|by listening to the news in English].",'by 〜ing「〜することによって」。listen には to を忘れずに',{s:1});
+Q('L15','④4','アミはフランスの歴史を勉強することに興味がある。',"Ami [is interested in studying|is interested in learning] French history.",'be interested in 〜ing「〜することに興味がある」',{s:1});
+
+Q('L15','GIT1','私は暇なときに、音楽を聴くこと（または、ミステリー小説を読むこと）を楽しむ。',"I enjoy [listening to music|reading mystery novels] in my free time.",GIT+'。enjoy 〜ing「〜することを楽しむ」');
+Q('L15','GIT2','早く寝ること（または、野菜を食べること）は私の健康によい。',"[Going to bed early|Eating vegetables] is good for my health.",GIT+'。動名詞（〜ing）は文の主語になれる');
+Q('L15','GIT3','次の休暇には、家族で奈良に行く（または、千葉の友だちを訪れる）予定だ。',"I plan [to go to Nara with my family|to visit my friend in Chiba] on my next vacation.",GIT+'。plan to do「〜する予定だ」（plan は to do をとる）');
+
+// ---------- Lesson 16 ----------
+Q('L16','②1','最近電話をしなくてごめんなさい。',"I'm sorry for [not] [calling] you these days.",
+ 'I\'m sorry for 〜ing「〜してごめんなさい」。「〜しなくて」→ not を 〜ing の前に：for not calling',{s:1});
+Q('L16','②2','私たちはそのパーティーに招待されたことを感謝している。',"We appreciate [being] [invited] to the party.",'動名詞の受け身：being＋過去分詞「〜されること」');
+Q('L16','②3','姉はこの高校で学んだことを誇りに思っている。',"My sister is proud of [having] [learned|studied|learnt] at this high school.",
+ 'be proud of 〜ing「〜することを誇りに思う」。「学んだ（前）」→ having＋過去分詞（完了動名詞）',{s:1});
+Q('L16','③1','今週末、韓国に行くのを楽しみにしています。',"I'm looking [forward] [to] [going] to South Korea this weekend.",'look forward to 〜ing「〜するのを楽しみに待つ」。この to は前置詞なので 〜ing');
+Q('L16','③2','そんなにおなかがすいていない。ステーキを食べる気にならないな。',"I'm not so hungry. I don't [feel] [like] [eating|having] the steak.",'feel like doing「〜したい気がする」',{s:1});
+Q('L16','③3','マユを待ってもむだです。彼女は出かけてしまいました。',"It's [no] [use|good] [waiting] for Mayu. She's gone out.",'It is no use[good] 〜ing「〜してもむだである」');
+Q('L16','④1','日本人はみな、巨大地震の可能性を心配せずにはいられない。',"Every Japanese [can't help worrying about] the possibility of a huge earthquake.",'can\'t help 〜ing「〜せずにはいられない」');
+Q('L16','④2','エミリーは魚を料理することに慣れていない。',"Emily [is not used to cooking] fish.",'be used to 〜ing「〜することに慣れている」（to は前置詞）');
+Q('L16','④3','大雨のせいで、私たちは旅行に行けなかった。',"The heavy [rain prevented us from going] on the trip.",'prevent O from 〜ing「O が〜するのを妨げる」');
+Q('L16','⑤1','ビニール袋を使わないことによって、私たちは環境を守ることができます。',"We can protect the environment [by not using] plastic bags.",'by not 〜ing「〜しないことによって」（not は 〜ing の前）');
+Q('L16','⑤2','初め、トムは窓を割ったことを否定した。',"At first, Tom [denied having broken the window|denied breaking the window].",'deny 〜ing「〜したことを否定する」');
+Q('L16','⑤3','緑地を増やすために植樹するのはどうですか。',"[How about planting trees|What about planting trees|What do you say to planting trees] for more green space?",
+ 'How about 〜ing …?／What about 〜ing …?／What do you say to 〜ing …?「〜するのはどうですか？」',{s:1});
+Q('L16','⑤4','この仕事はやってみる価値がある。',"[This job is worth doing|This job is worth trying|This work is worth doing|This work is worth trying].",'be worth 〜ing「〜するだけの価値がある」。「この仕事」→ This job。「やってみる」→ doing（trying でもよい）',{s:1});
+
+Q('L16','GIT1','私は早起きに慣れている（または、このアプリを使い慣れている）。',"I'm used to [getting up early|using this app].",GIT+'。be used to 〜ing「〜することに慣れている」（to は前置詞）');
+Q('L16','GIT2','来週の日曜日にあなたと会う（または、すぐに連絡がある）のを楽しみにしている。',"I'm looking forward to [seeing you next Sunday|hearing from you soon].",GIT+'。look forward to 〜ing「〜するのを楽しみにする」。hear from 〜「〜から連絡がある」');
+
+// ---------- Lesson 17 ----------
+Q('L17','①1','カイトは最前列に座っている男の子だ。（sit）',"Kaito is the boy [sitting] in the front row.",'名詞＋〜ing＋語句「〜している名詞」');
+Q('L17','①2','スザンナはイタリアで作られたセーターをネットで買った。（make）',"Susanna bought a sweater [made] in Italy online.",'名詞＋過去分詞＋語句「〜された名詞」');
+Q('L17','①3','あの壊れたドアにさわってはいけない。（break）',"Don't touch that [broken] door.",'1語の分詞は名詞の前。ドアは「壊された」→ 過去分詞 broken');
+Q('L17','①4','私たちの研究は驚くべき結果を示した。（surprise）',"Our research has shown some [surprising] results.",'surprising「（人を）驚かせるような」／surprised「（人が）驚いた」');
+Q('L17','②1','イヌは毛布の下で眠っていた。（sleep）',"The dog lay [sleeping] under the blanket.",'S＋V（lie, sit, stand など）＋〜ing「〜しながら…」');
+Q('L17','②2','映画はわくわくするものだったが、私は結末にがっかりした。（excite, disappoint）',"The movie was [exciting], but I was [disappointed] with the ending.",
+ '物が人を〜させる → 〜ing（exciting）／人が〜した → 過去分詞（disappointed）');
+Q('L17','②3','車は一日中ここに駐車されたままだった。（park）',"The car remained [parked] here all day.",'remain＋過去分詞「〜されたままだ」');
+Q('L17','②4','私は夏休みに海へ釣りに行った。（fish）',"I went [fishing] in the sea during the summer vacation.",'go 〜ing「〜しに行く」（go fishing in the sea。to は×）');
+Q('L17','②5','選手たちはフィールドで審判の判定を待って立っていた。（wait）',"The players stood [waiting] for the referee's decision on the field.",'stand＋〜ing「〜しながら立っている」');
+Q('L17','③1','このノートは再生紙でできている。',"This notebook [is made of recycled paper].",'recycled paper「再生された紙」（1語の過去分詞は名詞の前）');
+Q('L17','③2','生徒たちは座って本を読んでいた。',"[The students sat reading books].",'sit＋〜ing「座って〜している」');
+Q('L17','③3','真ん中で踊っている女の子が私の妹だ。',"[The girl dancing in the center is] my sister.",'名詞＋〜ing＋語句（The girl dancing in the center）が主語');
+Q('L17','③4','ラグビーは15人ずつでプレーするスポーツだ。',"Rugby is a [sport played by 15 players] on each team.",'名詞＋過去分詞＋by 〜「〜によって…される名詞」');
+Q('L17','③5','スタジアムは正月の期間、閉じたままだった。',"[The stadium remained closed during the New Year's] holiday.",'remain＋過去分詞「〜されたままだ」');
+Q('L17','④1','私たちは、明日のコンサートにとても興奮しています。',"We are very [excited about] the concert tomorrow.",'be excited about 〜「〜に興奮している」。「とても」の very を忘れずに',{s:1});
+Q('L17','④2','イタリア製のかばんは一般的に高価です。',"[Bags made in Italy] are generally expensive.",'「イタリアで作られたかばん」→ 名詞＋過去分詞＋語句（Bags made in Italy）',{s:1});
+Q('L17','④3','ステージでギターを弾いている男の子は、私のクラスメイトです。',"[The boy playing the guitar on the stage] is my classmate.",'名詞＋〜ing＋語句。2語以上のかたまりは名詞のうしろ',{s:1});
+Q('L17','④4','アオイは雨の中、走り続けた。',"[Aoi kept running in the rain].",'keep＋〜ing「〜し続ける」',{s:1});
+
+Q('L17','GIT1','木の下でサンドイッチを食べている男の子がヒロキだ。',"[The boy eating a sandwich|The boy having a sandwich] under the tree is Hiroki.",GIT+'。名詞＋〜ing＋語句「〜している名詞」');
+Q('L17','GIT2','噴水の近く（前・周り）を走っている女の子がリカだ。',"[The girl running near|The girl running in front of|The girl running around] the fountain is Rika.",GIT+'。名詞＋〜ing＋語句。near「近く」／in front of「前」／around「周り」');
+
+// ---------- Lesson 18 ----------
+Q('L18','①1','お待たせしてすみません。（wait）',"I am sorry to have kept you [waiting].",'keep O 〜ing「O を〜させておく」（O が待っている）');
+Q('L18','①2','彼女の部屋のそばを通ったとき、彼女が歌っているのが聞こえた。（sing）',"When I passed by her room, I heard her [singing].",'知覚動詞＋O＋〜ing「O が〜しているのを聞く」');
+Q('L18','①3','パソコンの調子が悪い。修理してもらう必要がある。（repair）',"My PC is not working properly. I need to have it [repaired].",'have O＋過去分詞「O を〜してもらう」（PC は修理される側）');
+Q('L18','①4','英語で自分の言うことを理解してもらうのは難しい。（understand）',"It is difficult to make myself [understood] in English.",'make oneself understood「自分の言うことを理解してもらう」');
+const BOX=['watching','taking','causing','feeling','reading'];
+const PC='分詞構文：〜ing で始まる部分が文に情報を加える（〜しながら／〜したとき／〜なので／そして〜）';
+Q('L18','②1','私はスマホで映画を見ながら、ソファに横になっていた。',"I was lying on the sofa, [watching] a movie on my smartphone.",PC,{ch:BOX});
+Q('L18','②2','深呼吸をして、彼はドアをノックした。',"[Taking] a deep breath, he knocked on the door.",PC,{ch:BOX.map(cap0)});
+Q('L18','②3','台風が島を直撃し、深刻な被害をもたらした。',"The typhoon hit the island, [causing] serious damage.",PC+'。ここは「そしてその結果〜」',{ch:BOX});
+Q('L18','②4','気分が悪かったので、私は早退した。',"[Feeling] sick, I left school early.",PC+'。ここは「〜なので」（理由）',{ch:BOX.map(cap0)});
+Q('L18','②5','今日の新聞を読んでいたら、おもしろい記事を見つけた。',"[Reading] today's paper, I found an interesting article.",PC+'。ここは「〜していたら」（時）',{ch:BOX.map(cap0)});
+Q('L18','④1','水を出しっぱなしにしてはいけません。（流れる run）',"Don't [leave the water running].",'leave＋O＋現在分詞 or 過去分詞「O を〜のままにしておく」。水が流れている → running',{s:1});
+Q('L18','④2','部屋の掃除をしているときに、私は古いぬいぐるみを見つけた。',"[Cleaning my room, I found|Cleaning the room, I found] an old stuffed animal.",'分詞構文：Cleaning my room「（自分の）部屋を掃除しているときに」。主語は主文と同じ（I）',{s:1});
+Q('L18','④3','彼の飛行機は9時にロンドンを出発し、10時20分にパリに着いた。',"His plane left London at 9:00, [arriving in|arriving at] Paris at 10:20.",'分詞構文「…して、そして〜」（続けて起こる動作）。arrive in＋都市（at も可）',{s:1});
+Q('L18','④4','金髪の女性が、私に英語で話しかけてきて、駅への行き方を尋ねてきた。',"A blonde woman, [speaking to me in English], asked how to get to the station.",
+ 'speak to 〜「〜に話しかける」。「英語で」は in English（in を忘れずに）',{s:1});
+Q('L18','④5','音楽を聞きながら、私は公園でジョギングをした。',"[Listening to music, I jogged in the park|I jogged in the park, listening to music].",'分詞構文「〜しながら」。文の最初でも最後でもよい。listen to を忘れずに');
+Q('L18','GIT1','ジャックは、新聞を読みながら朝食をとった。',"Jack had breakfast, [reading the newspaper|reading a newspaper].",GIT+'。分詞構文「〜しながら」');
+Q('L18','GIT2','エミリーは、あくびをしながらベッドから出た。',"Emily got out of bed, [yawning].",GIT+'。分詞構文「〜しながら」。yawn「あくびをする」');
+
+function cap0(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+// ===== 画面 =====
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const PROPER=new Set(['I','Hiroki','Rika','Jack','Nara','Chiba','Sachi','John','Sarah','Mika','Kenta','Kevin','Edison','Daiki','Mana','Meg','Miki','Ben','Da','Steven','Tokyo','Mark','Sakura','Ami','Emily','Tom','Kaito','Susanna','Rugby','Aoi','Ken','Mayu']);
+// 準備
+for(const q of ITEMS){
+  q.blanks=[];
+  q.full=q.en.replace(/\[(.+?)\]/g,(m,a)=>{const al=a.split('|');q.blanks.push(al);return al[0];});
+  const mk=q.en.replace(/\[(.+?)\]/g,(m,a)=>'\u0001'+a.split('|')[0]+'\u0002');
+  const segs=mk.replace(/([.?!])\s+/g,'$1\u0003').replace(/\s+—\s+/g,'\u0003').split('\u0003');
+  q.ord=segs.filter(s=>s.indexOf('\u0001')>=0).join(' ').replace(/[\u0001\u0002]/g,'').trim();
+  // 並べかえの別解（同じ語で順番だけちがう答えも⭕にする）
+  let vs=[q.en];
+  q.en.replace(/\[(.+?)\]/g,(m,a)=>{const al=a.split('|');const nv=[];vs.forEach(v=>al.forEach(x=>nv.push(v.replace(m,'\u0001'+x+'\u0002'))));vs=nv.slice(0,64);return m;});
+  q.ordAll=vs.map(v=>{const sg=v.replace(/([.?!])\s+/g,'$1\u0003').replace(/\s+—\s+/g,'\u0003').split('\u0003');return sg.filter(x=>x.indexOf('\u0001')>=0).join(' ').replace(/[\u0001\u0002]/g,'').trim();});
+}
+function toks(s){
+  const t=(/p\.m\.$/.test(s)?s:s.replace(/[.?!]$/,'')).replace(/,/g,' ,').split(/\s+/).filter(x=>x);
+  if(t.length&&!PROPER.has(t[0])&&!/^I'/.test(t[0])) t[0]=t[0].charAt(0).toLowerCase()+t[0].slice(1);
+  return t;
+}
+const KEY='ronpyo_L13_18_v1';
+let ST={miss:{},ok:{},im:{},day:'',n:0,mode:'order'};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) ST=Object.assign(ST,s);}catch(e){}
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
+if(ST.day!==today()){ST.day=today();ST.n=0;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+const app=document.getElementById('app');
+let SES=null;
+const uname=u=>U[u][0]+' '+U[u][1];
+
+function home(){
+  if(SES) clearTimeout(SES.t);
+  const weakItems=ITEMS.filter(q=>(ST.im[q.id]||0)>0);
+  const weakU=Object.keys(U).map(u=>[u,ST.miss[u]||0,ST.ok[u]||0]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+  let h=`<header><h1>論理表現 Lesson 13〜18<br><small>不定詞・動名詞・分詞</small></h1><div class="today">今日 <b>${ST.n}</b> 問</div><button class="help" id="help" aria-label="使い方">？</button></header>`;
+  h+=`<div class="modes"><button class="mode ${ST.mode==='order'?'on':''}" data-m="order">① 並べる</button><button class="mode ${ST.mode==='write'?'on':''}" data-m="write">② 書く</button></div>`;
+  h+=`<p class="hint">はじめは「① 並べる」。なれたら「② 書く」へ。</p>`;
+  h+=`<button class="big star" id="star">★ 先生の解説がある問題（${ITEMS.filter(q=>q.s).length}問）</button>`;
+  h+=`<div class="mix"><button id="mix">ぜんぶ ミックス 15問</button><button id="weak" ${weakItems.length?'':'disabled'}>❌ 苦手な問題（${weakItems.length}問）</button></div>`;
+  h+=`<h2>単元ごと</h2><div class="cats">`;
+  for(const u in U){const n=ITEMS.filter(q=>q.u===u).length;h+=`<button class="cat" data-u="${u}"><b>${U[u][0]}　${U[u][1]}</b><span>${U[u][2]}（${n}問）</span></button>`;}
+  h+=`</div>`;
+  if(weakU.length){h+=`<h2>⚠ 苦手ランキング（まちがえた回数）</h2><ol class="weak">${weakU.map(w=>`<li>${esc(uname(w[0]))}<span>❌${w[1]}　⭕${w[2]}</span></li>`).join('')}</ol><button class="small" id="reset">記録をリセット</button>`;}
+  h+=`<div class="tools"><button id="note">📘 先生の解説まとめ</button><button id="prt">🖨 プリントを作る</button></div>`;
+  app.innerHTML=h;
+  app.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{ST.mode=b.dataset.m;save();home();});
+  app.querySelectorAll('.cat').forEach(b=>b.onclick=()=>start(shuf(ITEMS.filter(q=>q.u===b.dataset.u))));
+  document.getElementById('star').onclick=()=>start(shuf(ITEMS.filter(q=>q.s)));
+  document.getElementById('mix').onclick=()=>start(shuf(ITEMS).slice(0,15));
+  document.getElementById('weak').onclick=()=>start(shuf(weakItems));
+  const r=document.getElementById('reset'); if(r) r.onclick=()=>{if(confirm('記録を消しますか？')){ST.miss={};ST.ok={};ST.im={};save();home();}};
+  document.getElementById('help').onclick=showHelp;
+  document.getElementById('note').onclick=showNote;
+  document.getElementById('prt').onclick=printMenu;
+  window.scrollTo(0,0);
+}
+function start(list){ if(SES) clearTimeout(SES.t); SES={qs:list,i:0,score:0,wrong:[]}; show(); }
+function modeOf(q){ return q.ch?'choice':ST.mode; }
+function ruleHTML(q){ return `<div class="rule">${q.s?'<span class="tag">★先生の解説</span>':'💡 '}${esc(q.r)}</div>`; }
+
+function show(){
+  const q=SES.qs[SES.i], m=modeOf(q);
+  let h=`<div class="bar"><button class="back">← メニュー</button><span>${SES.i+1} / ${SES.qs.length}</span><span class="src">${U[q.u][0].replace('Lesson','L.').replace('Extra L.','Ex.')} ${q.no}${q.s?' ★':''}</span></div>`;
+  h+=`<div class="prog"><i style="width:${SES.i/SES.qs.length*100}%"></i></div><div class="card"><div class="jp">${esc(q.jp)}</div>`;
+  if(m==='choice'){
+    h+=`<div class="en">${esc(q.en).replace(/\[(.+?)\]/,'<span class="blank">　　　</span>')}</div><div class="choices">${shuf(q.ch).map(c=>`<button class="ch">${esc(c)}</button>`).join('')}</div>`;
+  }else if(m==='order'){
+    const words=shuf(toks(q.ord).map((w,i)=>({w,id:i})));
+    SES.words=words; SES.pick=[];
+    const end=/p\.m\.$/.test(q.ord)?'':(q.ord.match(/[.?!]$/)||[''])[0];
+    h+=`<div class="build"><div id="line"></div><span class="end">${end}</span></div><div id="pool"></div><div class="row"><button id="undo" class="small">1つもどす</button><button id="chk" class="go" disabled>答え合わせ</button></div>`;
+  }else{
+    let k=0;
+    h+=`<div class="en">${esc(q.en).replace(/\[(.+?)\]/g,(mm,a)=>{const w=Math.min(20,Math.max(3,a.split('|')[0].length*0.62+1.5));return `<input class="bl" data-k="${k++}" style="width:${w}em" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`;})}</div><button id="chk" class="go">答え合わせ</button>`;
+  }
+  h+=`<button class="hintbtn" id="hb">💡 ヒント（ルールを見る）</button><div id="hbox"></div><div id="fb"></div></div>`;
+  app.innerHTML=h;
+  app.querySelector('.back').onclick=()=>{if(confirm('メニューにもどりますか？'))home();};
+  document.getElementById('hb').onclick=()=>{document.getElementById('hbox').innerHTML=ruleHTML(q);document.getElementById('hb').remove();};
+  if(m==='choice') app.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{
+    const ans=q.blanks[0][0];
+    app.querySelectorAll('.ch').forEach(x=>{x.disabled=true;if(x.textContent===ans)x.classList.add('right');});
+    const ok=b.textContent===ans; if(!ok)b.classList.add('wrong'); judge(ok);
+  });
+  if(m==='order') drawOrder(q);
+  if(m==='write'){
+    const ins=[...app.querySelectorAll('.bl')]; ins[0].focus();
+    ins.forEach((x,i)=>x.onkeydown=e=>{if(e.key==='Enter'){if(i+1<ins.length)ins[i+1].focus();else go();}});
+    const go=()=>{
+      let all=true;
+      ins.forEach((x,i)=>{const ok=q.blanks[i].some(a=>norm(a)===norm(x.value));x.classList.add(ok?'okb':'ngb');x.disabled=true;if(!ok)all=false;});
+      document.getElementById('chk').disabled=true; judge(all);
+    };
+    document.getElementById('chk').onclick=go;
+  }
+}
+function drawOrder(q){
+  const line=document.getElementById('line'), pool=document.getElementById('pool');
+  line.innerHTML=SES.pick.map((p,i)=>`<button class="w in" data-i="${i}">${esc(p.w)}</button>`).join('')||'<span class="ph">下の語をタップして並べよう</span>';
+  pool.innerHTML=SES.words.map(p=>SES.pick.includes(p)?`<button class="w used" disabled>${esc(p.w)}</button>`:`<button class="w" data-id="${p.id}">${esc(p.w)}</button>`).join('');
+  pool.querySelectorAll('.w[data-id]').forEach(b=>b.onclick=()=>{SES.pick.push(SES.words.find(p=>p.id==b.dataset.id));drawOrder(q);});
+  line.querySelectorAll('.w').forEach(b=>b.onclick=()=>{SES.pick.splice(+b.dataset.i,1);drawOrder(q);});
+  document.getElementById('undo').onclick=()=>{SES.pick.pop();drawOrder(q);};
+  const c=document.getElementById('chk'); c.disabled=SES.pick.length!==SES.words.length;
+  c.onclick=()=>{
+    const got=SES.pick.map(p=>p.w.toLowerCase()).join(' ');
+    const ok=q.ordAll.some(o=>toks(o).map(w=>w.toLowerCase()).join(' ')===got);
+    app.querySelectorAll('.w').forEach(x=>x.disabled=true); c.disabled=true;
+    judge(ok);
+  };
+}
+const CONTR={"isn't":'is not',"aren't":'are not',"wasn't":'was not',"weren't":'were not',"i'm":'i am',"it's":'it is',"don't":'do not',"doesn't":'does not',"didn't":'did not',"won't":'will not',"can't":'can not',"cannot":'can not',"couldn't":'could not',"i'll":'i will',"she's":'she is',"he's":'he is',"they're":'they are',"you're":'you are',"we're":'we are',"let's":'let us',"i'd":'i would'};
+function norm(s){
+  s=s.toLowerCase().replace(/[’‘`]/g,"'").replace(/[。．]/g,'.').replace(/[？]/g,'?').replace(/[！]/g,'!').replace(/[，、]/g,',').replace(/　/g,' ');
+  s=s.replace(/[.?!]+\s*$/,'').replace(/\s*,\s*/g,', ').replace(/\s+/g,' ').trim();
+  return s.split(' ').map(w=>CONTR[w]||w).join(' ');
+}
+function judge(ok){
+  const q=SES.qs[SES.i];
+  ST.n++;
+  if(ok){SES.score++;ST.ok[q.u]=(ST.ok[q.u]||0)+1; if(ST.im[q.id]) ST.im[q.id]--; if(!ST.im[q.id]) delete ST.im[q.id];}
+  else{ST.miss[q.u]=(ST.miss[q.u]||0)+1;ST.im[q.id]=(ST.im[q.id]||0)+1;SES.wrong.push(q);}
+  save();
+  const fb=document.getElementById('fb'); const hb=document.getElementById('hb'); if(hb) hb.remove(); document.getElementById('hbox').innerHTML='';
+  let h=ok?`<div class="ok">⭕ 正解！</div>`:`<div class="ng">❌ ざんねん</div>`;
+  h+=`<div class="ansline">${esc(q.full)}</div>`;
+  const alts=q.blanks.filter(b=>b.length>1).map(b=>b.slice(1).join(' / '));
+  if(alts.length&&ST.mode==='write'&&!q.ch) h+=`<div class="alt">別解：${esc(alts.join('　'))}</div>`;
+  h+=ruleHTML(q);
+  h+=`<button class="go next">${SES.i+1<SES.qs.length?'次へ →':'結果を見る'}</button>`;
+  fb.innerHTML=h;
+  const nx=fb.querySelector('.next'); nx.onclick=next;
+  nx.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function next(){clearTimeout(SES.t);SES.i++; if(SES.i<SES.qs.length) show(); else result();}
+function result(){
+  const n=SES.qs.length, s=SES.score;
+  const msg=s===n?'パーフェクト！🎉':s>=n*0.8?'よくできました！':s>=n*0.5?'あと少し！❌をもう一度':'❌の問題をもう一度やってみよう';
+  let h=`<div class="card res"><div class="bigs">${s} / ${n}</div><p>${msg}</p><p class="hint">今日 ${ST.n} 問とけました</p>`;
+  if(SES.wrong.length){
+    h+=`<h3>まちがえた問題</h3><ul class="wl">${SES.wrong.map(q=>`<li><div class="jp">${esc(q.jp)}</div><b>${esc(q.full)}</b>${ruleHTML(q)}</li>`).join('')}</ul>`;
+    h+=`<button class="go" id="retry">❌だけ もう一度（${SES.wrong.length}問）</button>`;
+  }
+  h+=`<button class="small" id="menu">メニューへ</button></div>`;
+  app.innerHTML=h; window.scrollTo(0,0);
+  const rt=document.getElementById('retry'); if(rt) rt.onclick=()=>start(shuf(SES.wrong));
+  document.getElementById('menu').onclick=home;
+}
+function modal(html){
+  const d=document.createElement('div'); d.className='modal';
+  d.innerHTML=`<div class="mbox">${html}<button class="go cl">とじる</button></div>`;
+  document.body.appendChild(d); d.querySelector('.cl').onclick=()=>d.remove(); d.onclick=e=>{if(e.target===d)d.remove();};
+  return d;
+}
+function showNote(){
+  let h=`<h3>📘 先生の解説まとめ</h3><p class="hint">テストの前に、ここを読んでから問題へ。</p>`;
+  for(const u in U){
+    const its=ITEMS.filter(q=>q.u===u&&q.s); if(!its.length) continue;
+    h+=`<h4>${esc(uname(u))}</h4>`;
+    for(const q of its) h+=`<div class="nt"><div class="jp">${esc(q.jp)}</div><div class="en2">${esc(q.full)}</div><div class="r2">${esc(q.r)}</div></div>`;
+  }
+  modal(h);
+}
+function showHelp(){
+  modal(`<div class="help-box"><h3>📱 このアプリの使い方</h3>
+  <h4>① 形式をえらぶ</h4><p><b>① 並べる</b>（まずはここから）… 語をタップして英文を作ります。<br><b>② 書く</b> … ( ) に入る英語を書きます。<br>選ぶ問題（of / for など）は、どちらの形式でも「選ぶ」で出ます。</p>
+  <h4>② 問題をえらぶ</h4><p><b>★ 先生の解説がある問題</b> … 先生がノートで説明した、まちがえやすい問題です。<b>まずはここから！</b><br><b>単元ごと</b> … その単元の問題が全部出ます。<br><b>ミックス</b> … 全単元から15問。</p>
+  <h4>③ 解くとき</h4><p>わからないときは <b>💡ヒント</b> でルールが見られます。<br>答え合わせのあと、<b>ルール（★先生の解説）を必ず読んで</b>から「次へ」。</p>
+  <h4>④ 並べるとき</h4><p>まちがえたら、上に並べた語をタップするともどります。文の最初の大文字・小文字は気にしなくてOK。</p>
+  <h4>⑤ 書くとき</h4><p>( ) が2つ以上あるときは、それぞれに書きます。大文字・小文字は気にしなくてOK。don't と do not などはどちらでも⭕。</p>
+  <h4>⑥ 終わったら</h4><p><b>❌だけ もう一度</b> → 全部⭕になるまで。<br>まちがえた問題は <b>❌ 苦手な問題</b> にたまります。正解すると減っていきます。</p>
+  <h4>⑦ べんりな機能</h4><p>📘 <b>先生の解説まとめ</b> … ★の問題の解説を一覧で読めます。<br>🖨 <b>プリント</b> … 紙で練習したいときに。最後のページが答えです。</p>
+  <h4>🌟 おすすめの進め方（金曜のテストまで）</h4><p>1日目：📘解説まとめを読む →「★先生の解説がある問題」を① 並べる で全部⭕に<br>2日目：単元ごとに① 並べる → ❌だけもう一度<br>3日目：「② 書く」で★の問題 →「❌ 苦手な問題」が0になるまで</p>
+  <p class="hint">※ 記録は、このスマホのこのブラウザにだけ残ります。</p></div>`);
+}
+function printMenu(){
+  const d=modal(`<h3>🖨 プリントを作る</h3><p class="hint">最後のページが答えです。</p>
+  <label>はんい<select id="pc"><option value="star">★ 先生の解説がある問題</option><option value="all">ぜんぶ</option>${Object.keys(U).map(u=>`<option value="${u}">${esc(uname(u))}</option>`).join('')}</select></label>
+  <label>形式<select id="pm"><option value="write">( ) に書く（ワークと同じ）</option><option value="order">並べかえ</option></select></label>
+  <label><input type="checkbox" id="ps" checked> 問題の順番をシャッフルする</label>
+  <button class="go" id="pgo">印刷する</button>`);
+  d.querySelector('#pgo').onclick=()=>{const c=d.querySelector('#pc').value,m=d.querySelector('#pm').value,s=d.querySelector('#ps').checked;d.remove();doPrint(c,m,s);};
+}
+function doPrint(c,m,s){
+  let qs=c==='star'?ITEMS.filter(q=>q.s):c==='all'?ITEMS.slice():ITEMS.filter(q=>q.u===c);
+  if(s) qs=shuf(qs);
+  const title=c==='star'?'★ 先生の解説がある問題':c==='all'?'Lesson 13〜18 ぜんぶ':uname(c);
+  let h=`<div class="pp"><h2>論理表現　${esc(title)}<small>名前（　　　　　　　）　　／${qs.length}</small></h2><ol>`;
+  for(const q of qs){
+    let body;
+    if(q.ch) body=esc(q.en).replace(/\[(.+?)\]/,`( ${q.ch.map(esc).join(' / ')} )`);
+    else if(m==='order'){
+      const end=(q.ord.match(/[.?!]$/)||[''])[0];
+      const fr=q.en.replace(/\[(.+?)\]/g,(mm,a)=>'\u0001'+a.split('|')[0]+'\u0002');
+      body=`( ${shuf(toks(q.ord)).map(esc).join(' / ')} ${end} )<div class="ln"></div>`;
+    }
+    else body=esc(q.en).replace(/\[(.+?)\]/g,(mm,a)=>`( <span class="u" style="min-width:${Math.max(3,a.split('|')[0].length*0.55)}em"></span> )`);
+    h+=`<li><div class="pj">${esc(q.jp)}　<span class="no">[${U[q.u][0]} ${q.no}]</span></div><div>${body}</div></li>`;
+  }
+  h+=`</ol></div><div class="pp brk"><h2>${esc(title)}　解答</h2><ol class="ans">${qs.map(q=>`<li>${esc(q.full)}</li>`).join('')}</ol></div>`;
+  document.getElementById('print').innerHTML=h;
+  setTimeout(()=>window.print(),200);
+}
+home();
+</script></body></html>
