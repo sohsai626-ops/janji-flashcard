@@ -123,6 +123,10 @@ Q('L13','④4','だれかが玄関のドアを開けるのが聞こえた。（f
  '感覚動詞＋O＋do（原形）。一般に、動作の始めから終わりまでが対象（開けるところが全部聞こえた）',{s:1});
 Q('L13','④5','母は私に朝食を食べるように言った。',"My mother [told me to eat|told me to have] breakfast.",
  'tell＋人＋to do「人に〜するように言う」。「言った」の『た』→ told',{s:1});
+Q('L13','GIT1','熱があったので、コーチは（出たかったが）私を試合に出してくれなかった。（make か let を正しい形で）',"Our coach didn't [let] me play in the game because I had a fever.",
+ 'Give It a Try：make と let の使い分け。let＋O＋原形「O に（望んでいることを）させてやる」。出たかったのに出してくれなかった → didn\'t let。didn\'t のあとは原形',{ch:['let','make','made']});
+Q('L13','GIT2','昨晩私はテレビを見たかったが、父が（強制的に）試験勉強をさせた。（make か let を正しい形で）',"I wanted to watch TV last night, but my father [made] me study for the test.",
+ 'Give It a Try：make＋O＋原形「O に（強制的に）〜させる」。見たかったのに勉強させられた → make。昨晩のこと → 過去形 made',{ch:['made','make','let']});
 
 // ---------- Lesson 14 ----------
 Q('L14','①1','みんな文化祭を楽しんでいるようだ。',"Everyone [seems to be enjoying] the school festival.",
@@ -207,6 +211,14 @@ Q('L15','GIT2','早く寝ること（または、野菜を食べること）は�
 Q('L15','GIT3','次の休暇には、家族で奈良に行く（または、千葉の友だちを訪れる）予定だ。',"I plan [to go to Nara with my family|to visit my friend in Chiba] on my next vacation.",GIT+'。plan to do「〜する予定だ」（plan は to do をとる）');
 
 // ---------- Lesson 16 ----------
+Q('L16','①1a','次の英文を日本語にしなさい。（b. と比べよう）',"We are proud of cleaning the park every weekend.",
+ '動名詞の意味上の主語：cleaning の前に何もない → 文の主語（We）と同じ。「（自分たちが）清掃している」',{tr:'私たちは、（自分たちが）毎週末公園の清掃をしていることを誇りに思っている。'});
+Q('L16','①1b','次の英文を日本語にしなさい。（a. と比べよう）',"We are proud of our students cleaning the park every weekend.",
+ '動名詞の意味上の主語：cleaning の直前の our students。清掃しているのは「生徒たち」。文の主語と違うときは動名詞の直前に置く',{tr:'私たちは、生徒たちが毎週末公園の清掃をしていることを誇りに思っている。'});
+Q('L16','①2a','次の英文を日本語にしなさい。（b. と比べよう）',"Would you mind turning off the air conditioner?",
+ 'Would you mind 〜ing?：turning の前に何もない → 消すのは you（相手）。「〜していただけませんか」',{tr:'エアコンを消していただいてもよろしいでしょうか。'});
+Q('L16','①2b','次の英文を日本語にしなさい。（a. と比べよう）',"Would you mind me turning off the air conditioner?",
+ 'turning の直前の me が意味上の主語 → 消すのは「私」。「（私が）〜してもよろしいですか」。話し言葉では目的格 me、書き言葉では所有格 my も使う',{tr:'エアコンを（私が）消してもよろしいでしょうか。'});
 Q('L16','②1','最近電話をしなくてごめんなさい。',"I'm sorry for [not] [calling] you these days.",
  'I\'m sorry for 〜ing「〜してごめんなさい」。「〜しなくて」→ not を 〜ing の前に：for not calling',{s:1});
 Q('L16','②2','私たちはそのパーティーに招待されたことを感謝している。',"We appreciate [being] [invited] to the party.",'動名詞の受け身：being＋過去分詞「〜されること」');
@@ -263,6 +275,17 @@ Q('L18','②2','深呼吸をして、彼はドアをノックした。',"[Taking
 Q('L18','②3','台風が島を直撃し、深刻な被害をもたらした。',"The typhoon hit the island, [causing] serious damage.",PC+'。ここは「そしてその結果〜」',{ch:BOX});
 Q('L18','②4','気分が悪かったので、私は早退した。',"[Feeling] sick, I left school early.",PC+'。ここは「〜なので」（理由）',{ch:BOX.map(cap0)});
 Q('L18','②5','今日の新聞を読んでいたら、おもしろい記事を見つけた。',"[Reading] today's paper, I found an interesting article.",PC+'。ここは「〜していたら」（時）',{ch:BOX.map(cap0)});
+const TRH='和訳：まず自分で日本語に訳してみよう（声に出す・ノートに書く）。そのあと「答えを見る」で確認';
+Q('L18','③1','次の英文を日本語にしなさい。',"Did you have your hair cut? It suits you!",
+ 'have＋O＋過去分詞「O を〜してもらう」。Did you cut your hair? だと自分で髪を切ることになる。suit「似合う」',{tr:'髪を切りましたか［切ってもらいましたか］。似合っていますよ。'});
+Q('L18','③2','次の英文を日本語にしなさい。',"My brother took a shower, singing a song in English.",
+ '分詞構文「〜しながら」（同時）。singing a song in English が took a shower に情報を加えている',{tr:'兄［弟］は英語で歌を歌いながらシャワーを浴びた。'});
+Q('L18','③3','次の英文を日本語にしなさい。',"Taking off their shoes, the tourists entered the temple.",
+ '分詞構文「〜して（そして…）」（連続した動作）。先に行われた動作（靴を脱ぐ）が前',{tr:'観光客たちは靴を脱いで、寺に入った。'});
+Q('L18','③4','次の英文を日本語にしなさい。（opposite「反対側の」）',"Waiting for the train, I saw my teacher on the opposite platform.",
+ '分詞構文「〜しているときに」（時）',{tr:'電車を待っているとき、反対側のホームに先生を見かけた。'});
+Q('L18','③5','次の英文を日本語にしなさい。',"Having nothing to do, Mako cooked dinner for her family.",
+ '分詞構文「〜なので」（理由）。Having nothing to do ＝ Because she had nothing to do',{tr:'何もすることがなかったので、マコは家族のために夕食を作った。'});
 Q('L18','④1','水を出しっぱなしにしてはいけません。（流れる run）',"Don't [leave the water running].",'leave＋O＋現在分詞 or 過去分詞「O を〜のままにしておく」。水が流れている → running',{s:1});
 Q('L18','④2','部屋の掃除をしているときに、私は古いぬいぐるみを見つけた。',"[Cleaning my room, I found|Cleaning the room, I found] an old stuffed animal.",'分詞構文：Cleaning my room「（自分の）部屋を掃除しているときに」。主語は主文と同じ（I）',{s:1});
 Q('L18','④3','彼の飛行機は9時にロンドンを出発し、10時20分にパリに着いた。',"His plane left London at 9:00, [arriving in|arriving at] Paris at 10:20.",'分詞構文「…して、そして〜」（続けて起こる動作）。arrive in＋都市（at も可）',{s:1});
@@ -277,7 +300,7 @@ function cap0(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 // ===== 画面 =====
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-const PROPER=new Set(['I','Hiroki','Rika','Jack','Nara','Chiba','Sachi','John','Sarah','Mika','Kenta','Kevin','Edison','Daiki','Mana','Meg','Miki','Ben','Da','Steven','Tokyo','Mark','Sakura','Ami','Emily','Tom','Kaito','Susanna','Rugby','Aoi','Ken','Mayu']);
+const PROPER=new Set(['I','Mako','Hiroki','Rika','Jack','Nara','Chiba','Sachi','John','Sarah','Mika','Kenta','Kevin','Edison','Daiki','Mana','Meg','Miki','Ben','Da','Steven','Tokyo','Mark','Sakura','Ami','Emily','Tom','Kaito','Susanna','Rugby','Aoi','Ken','Mayu']);
 // 準備
 for(const q of ITEMS){
   q.blanks=[];
@@ -332,14 +355,16 @@ function home(){
   window.scrollTo(0,0);
 }
 function start(list){ if(SES) clearTimeout(SES.t); SES={qs:list,i:0,score:0,wrong:[]}; show(); }
-function modeOf(q){ return q.ch?'choice':ST.mode; }
+function modeOf(q){ return q.tr?'tr':q.ch?'choice':ST.mode; }
 function ruleHTML(q){ return `<div class="rule">${q.s?'<span class="tag">★先生の解説</span>':'💡 '}${esc(q.r)}</div>`; }
 
 function show(){
   const q=SES.qs[SES.i], m=modeOf(q);
   let h=`<div class="bar"><button class="back">← メニュー</button><span>${SES.i+1} / ${SES.qs.length}</span><span class="src">${U[q.u][0].replace('Lesson','L.').replace('Extra L.','Ex.')} ${q.no}${q.s?' ★':''}</span></div>`;
   h+=`<div class="prog"><i style="width:${SES.i/SES.qs.length*100}%"></i></div><div class="card"><div class="jp">${esc(q.jp)}</div>`;
-  if(m==='choice'){
+  if(m==='tr'){
+    h+=`<div class="en">${esc(q.en)}</div><p class="hint">${esc(TRH)}</p><div id="trbox"><button id="trshow" class="go">答えを見る</button></div>`;
+  }else if(m==='choice'){
     h+=`<div class="en">${esc(q.en).replace(/\[(.+?)\]/,'<span class="blank">　　　</span>')}</div><div class="choices">${shuf(q.ch).map(c=>`<button class="ch">${esc(c)}</button>`).join('')}</div>`;
   }else if(m==='order'){
     const words=shuf(toks(q.ord).map((w,i)=>({w,id:i})));
@@ -360,6 +385,11 @@ function show(){
     const ok=b.textContent===ans; if(!ok)b.classList.add('wrong'); judge(ok);
   });
   if(m==='order') drawOrder(q);
+  if(m==='tr') document.getElementById('trshow').onclick=()=>{
+    document.getElementById('trbox').innerHTML=`<div class="ansline" style="font-family:inherit">${esc(q.tr)}</div><p class="hint">自分の訳と同じ意味になっていた？</p><div class="row"><button class="go" id="tro" style="background:#2aa66a">⭕ できた</button><button class="go" id="trx" style="background:#e04848">❌ できなかった</button></div>`;
+    document.getElementById('tro').onclick=()=>{document.getElementById('trbox').innerHTML='';judge(true);};
+    document.getElementById('trx').onclick=()=>{document.getElementById('trbox').innerHTML='';judge(false);};
+  };
   if(m==='write'){
     const ins=[...app.querySelectorAll('.bl')]; ins[0].focus();
     ins.forEach((x,i)=>x.onkeydown=e=>{if(e.key==='Enter'){if(i+1<ins.length)ins[i+1].focus();else go();}});
@@ -400,7 +430,7 @@ function judge(ok){
   save();
   const fb=document.getElementById('fb'); const hb=document.getElementById('hb'); if(hb) hb.remove(); document.getElementById('hbox').innerHTML='';
   let h=ok?`<div class="ok">⭕ 正解！</div>`:`<div class="ng">❌ ざんねん</div>`;
-  h+=`<div class="ansline">${esc(q.full)}</div>`;
+  h+=q.tr?`<div class="ansline" style="font-family:inherit">${esc(q.en)}<br>→ ${esc(q.tr)}</div>`:`<div class="ansline">${esc(q.full)}</div>`;
   const alts=q.blanks.filter(b=>b.length>1).map(b=>b.slice(1).join(' / '));
   if(alts.length&&ST.mode==='write'&&!q.ch) h+=`<div class="alt">別解：${esc(alts.join('　'))}</div>`;
   h+=ruleHTML(q);
@@ -415,7 +445,7 @@ function result(){
   const msg=s===n?'パーフェクト！🎉':s>=n*0.8?'よくできました！':s>=n*0.5?'あと少し！❌をもう一度':'❌の問題をもう一度やってみよう';
   let h=`<div class="card res"><div class="bigs">${s} / ${n}</div><p>${msg}</p><p class="hint">今日 ${ST.n} 問とけました</p>`;
   if(SES.wrong.length){
-    h+=`<h3>まちがえた問題</h3><ul class="wl">${SES.wrong.map(q=>`<li><div class="jp">${esc(q.jp)}</div><b>${esc(q.full)}</b>${ruleHTML(q)}</li>`).join('')}</ul>`;
+    h+=`<h3>まちがえた問題</h3><ul class="wl">${SES.wrong.map(q=>`<li><div class="jp">${esc(q.jp)}</div><b>${esc(q.full)}</b>${q.tr?'<div>→ '+esc(q.tr)+'</div>':''}${ruleHTML(q)}</li>`).join('')}</ul>`;
     h+=`<button class="go" id="retry">❌だけ もう一度（${SES.wrong.length}問）</button>`;
   }
   h+=`<button class="small" id="menu">メニューへ</button></div>`;
@@ -434,7 +464,7 @@ function showNote(){
   for(const u in U){
     const its=ITEMS.filter(q=>q.u===u&&q.s); if(!its.length) continue;
     h+=`<h4>${esc(uname(u))}</h4>`;
-    for(const q of its) h+=`<div class="nt"><div class="jp">${esc(q.jp)}</div><div class="en2">${esc(q.full)}</div><div class="r2">${esc(q.r)}</div></div>`;
+    for(const q of its) h+=`<div class="nt"><div class="jp">${esc(q.jp)}</div><div class="en2">${esc(q.full)}</div>${q.tr?'<div>→ '+esc(q.tr)+'</div>':''}<div class="r2">${esc(q.r)}</div></div>`;
   }
   modal(h);
 }
@@ -465,7 +495,8 @@ function doPrint(c,m,s){
   let h=`<div class="pp"><h2>論理表現　${esc(title)}<small>名前（　　　　　　　）　　／${qs.length}</small></h2><ol>`;
   for(const q of qs){
     let body;
-    if(q.ch) body=esc(q.en).replace(/\[(.+?)\]/,`( ${q.ch.map(esc).join(' / ')} )`);
+    if(q.tr) body=`${esc(q.en)}<div class="ln"></div>`;
+    else if(q.ch) body=esc(q.en).replace(/\[(.+?)\]/,`( ${q.ch.map(esc).join(' / ')} )`);
     else if(m==='order'){
       const end=(q.ord.match(/[.?!]$/)||[''])[0];
       const fr=q.en.replace(/\[(.+?)\]/g,(mm,a)=>'\u0001'+a.split('|')[0]+'\u0002');
@@ -474,7 +505,7 @@ function doPrint(c,m,s){
     else body=esc(q.en).replace(/\[(.+?)\]/g,(mm,a)=>`( <span class="u" style="min-width:${Math.max(3,a.split('|')[0].length*0.55)}em"></span> )`);
     h+=`<li><div class="pj">${esc(q.jp)}　<span class="no">[${U[q.u][0]} ${q.no}]</span></div><div>${body}</div></li>`;
   }
-  h+=`</ol></div><div class="pp brk"><h2>${esc(title)}　解答</h2><ol class="ans">${qs.map(q=>`<li>${esc(q.full)}</li>`).join('')}</ol></div>`;
+  h+=`</ol></div><div class="pp brk"><h2>${esc(title)}　解答</h2><ol class="ans">${qs.map(q=>`<li>${esc(q.tr||q.full)}</li>`).join('')}</ol></div>`;
   document.getElementById('print').innerHTML=h;
   setTimeout(()=>window.print(),200);
 }
