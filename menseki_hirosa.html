@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>面積ってなに？ 長さと広さ</title>
+<style>
+:root{--main:#1f5fa8;--ok:#1a9b55;--ng:#d64545;--blue:#5b9cf0;--red:#f08080;--org:#ff9a3c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:#f6f7fb;color:#222;font-size:17px;line-height:1.6}
+header{position:sticky;top:0;z-index:5;background:var(--main);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:8px}
+header h1{flex:1;font-size:16px;margin:0}
+.hbtn{background:#fff;color:var(--main);border:none;border-radius:50%;width:34px;height:34px;font-size:18px;font-weight:bold}
+.bar{height:6px;background:#dfe5f0}.bar div{height:6px;background:#ffb52e;transition:width .3s}
+main{max-width:560px;margin:0 auto;padding:12px 12px 80px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+h2{font-size:19px;margin:0 0 8px;color:var(--main)}
+.big{font-size:22px;font-weight:bold}
+.say{background:#fff7dd;border-radius:12px;padding:10px 12px;margin:10px 0}
+.btn{border:none;background:var(--main);color:#fff;border-radius:12px;padding:12px 16px;font-size:17px;font-weight:bold;width:100%;margin-top:10px}
+.btn.gray{background:#8a93a5}.btn.ok{background:var(--ok)}
+.ch button{display:block;width:100%;border:2px solid #d8dde8;background:#fff;border-radius:12px;padding:12px;margin:8px 0;font-size:19px;font-weight:bold}
+.ch button.right{border-color:var(--ok);background:#e9f8ef}.ch button.wrong{border-color:var(--ng);background:#fdecec}
+.res{margin-top:8px;padding:10px 12px;border-radius:12px}
+.res.o{background:#e9f8ef;border:1px solid var(--ok)}.res.x{background:#fdecec;border:1px solid var(--ng)}
+svg{display:block;margin:6px auto;max-width:100%;touch-action:manipulation}
+.cnt{text-align:center;font-size:26px;font-weight:bold;color:var(--main)}
+.mini{font-size:14px;color:#666}
+.len{color:#d64545;font-weight:bold}.area{color:#1f5fa8;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9;padding:16px;overflow:auto}
+.modal.show{display:block}.modal .box{background:#fff;border-radius:14px;max-width:560px;margin:20px auto;padding:16px}
+.close{float:right;border:none;background:#eee;border-radius:50%;width:32px;height:32px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+.nav button{flex:1;margin:0}
+</style>
+</head>
+<body>
+<header><h1>面積ってなに？ 〜長さと広さ〜</h1><button class="hbtn" onclick="help(1)">？</button></header>
+<div class="bar"><div id="bar"></div></div>
+<main id="main"></main>
+<div class="nav"><button class="btn gray" onclick="go(-1)">◀ もどる</button><button class="btn" id="nextBtn" onclick="go(1)">次へ ▶</button></div>
+
+<div class="modal" id="help" onclick="if(event.target===this)help(0)"><div class="box">
+<button class="close" onclick="help(0)">✕</button>
+<h2>使い方</h2>
+<p>上から順に「次へ」で進みます。問題に答えると次に進めます。まちがえても大丈夫。正解が出るまで何度でも選べます。</p>
+<p>マスの問題は、マスを<b>タップ</b>して色をぬります。</p>
+<p>このアプリで覚えること：</p>
+<p><span class="len">長さ</span>＝線（へり）の長さ。図の<b>外側（辺の横）</b>に書く。<br><span class="area">広さ（面積）</span>＝中に入るマスの数。図の<b>内側</b>に書く。<br>形の一部を<b>取りのぞいた</b>ら、広さは<b>引き算</b>。</p>
+<p>「◀ もどる」で前のページにもどれます。最初からやり直すときは、ページを読みこみ直してください。</p>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function help(on){$("help").classList.toggle("show",!!on)}
+
+/* マス目のSVG  opt: w,h(マス数), s(1マスのpx), fill(Set of "x,y"), removed(Set), edge('top'|'left'|null), inLabel, cellCls */
+function grid(o){
+ const s=o.s||30,W=o.w*s,H=o.h*s,P=36;
+ let g=`<svg width="${W+P*2}" height="${H+P*2}" viewBox="0 0 ${W+P*2} ${H+P*2}" id="${o.id||''}">`;
+ for(let y=0;y<o.h;y++)for(let x=0;x<o.w;x++){
+  const k=x+","+y,rm=o.removed&&o.removed.has(k);
+  const f=rm?"#ffffff":(o.fill&&o.fill.has(k)?(o.color||"#5b9cf0"):"#ffffff");
+  g+=`<rect x="${P+x*s}" y="${P+y*s}" width="${s}" height="${s}" fill="${f}" stroke="${rm?'#eee':'#b8c3d6'}" stroke-width="1" ${o.tap?`onclick="${o.tap}('${k}')"`:''} ${rm?'stroke-dasharray="3 3"':''}/>`;
+ }
+ g+=`<rect x="${P}" y="${P}" width="${W}" height="${H}" fill="none" stroke="#333" stroke-width="2"/>`;
+ if(o.edge==="top"||o.edge==="both")g+=`<line x1="${P}" y1="${P-2}" x2="${P+W}" y2="${P-2}" stroke="#d64545" stroke-width="6" stroke-linecap="round"/><text x="${P+W/2}" y="${P-10}" text-anchor="middle" font-size="20" font-weight="bold" fill="#d64545">${o.w}</text>`;
+ if(o.edge==="left"||o.edge==="both")g+=`<line x1="${P-2}" y1="${P}" x2="${P-2}" y2="${P+H}" stroke="#d64545" stroke-width="6" stroke-linecap="round"/><text x="${P-12}" y="${P+H/2+7}" text-anchor="end" font-size="20" font-weight="bold" fill="#d64545">${o.h}</text>`;
+ if(o.inLabel)g+=`<text x="${P+W/2}" y="${P+H/2+12}" text-anchor="middle" font-size="34" font-weight="bold" fill="#1f5fa8" stroke="#fff" stroke-width="5" paint-order="stroke">${o.inLabel}</text>`;
+ return g+"</svg>";
+}
+function allCells(w,h){const s=new Set();for(let y=0;y<h;y++)for(let x=0;x<w;x++)s.add(x+","+y);return s}
+
+/* 選択問題  q:{text, choices, a, ok, ng} */
+let solved=false;
+function quiz(q,area){
+ solved=false;const cs=shuffle(q.choices);
+ $(area).innerHTML=`<div class="say big" style="font-size:19px">${q.text}</div><div class="ch">`+cs.map(c=>`<button data-c="${encodeURIComponent(c)}">${c}</button>`).join("")+`</div><div id="${area}_r"></div>`;
+ $(area).querySelectorAll(".ch button").forEach(b=>b.onclick=()=>{
+  if(solved)return;const c=decodeURIComponent(b.dataset.c);
+  if(c===q.a){b.classList.add("right");solved=true;$(area+"_r").innerHTML=`<div class="res o"><b>⭕ 正解！</b><br>${q.ok||""}</div>`;q.after&&q.after();unlock()}
+  else{b.classList.add("wrong");$(area+"_r").innerHTML=`<div class="res x"><b>❌ ちがうよ</b><br>${q.ng||"もう一度考えてみよう。"}</div>`}
+ });
+}
+function lock(){$("nextBtn").disabled=true;$("nextBtn").style.opacity=.4}
+function unlock(){$("nextBtn").disabled=false;$("nextBtn").style.opacity=1}
+
+/* 連続問題  list of q, 全部正解で解除 */
+function series(list,area,done){
+ let i=0;
+ function show(){
+  const q=list[i];
+  $(area).innerHTML=`<div class="mini">${i+1} / ${list.length}</div><div id="${area}_fig">${q.fig||""}</div><div id="${area}_q"></div>`;
+  quiz(Object.assign({},q,{after:()=>{
+    if(i<list.length-1){$(area+"_q_r").insertAdjacentHTML("beforeend",`<button class="btn" id="${area}_nx">次の問題 ▶</button>`);$(area+"_nx").onclick=()=>{i++;show()};lock()}
+    else{done&&done()}
+  }}),area+"_q");
+  lock();
+ }
+ show();
+}
+
+/* ======== ページ ======== */
+const PAGES=[];
+/* 0 はじめに */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>このアプリでわかること</h2>
+ <p>図には、2種類の数があります。</p>
+ <p class="big"><span class="len">長さ</span>　と　<span class="area">広さ（面積）</span></p>
+ ${grid({w:4,h:3,s:44,fill:allCells(4,3),edge:"both",inLabel:"広さ 12"})}
+ <div class="say"><span class="len">長さ</span>は、<b>線（へり）</b>の長さ。図の<b>外側</b>に書きます。<br><span class="area">広さ</span>は、<b>中にマスがいくつ入るか</b>。図の<b>内側</b>に書きます。</div>
+ <p>この2つは<b>ちがう数</b>です。順番にたしかめていこう！</p></div>`;
+ unlock();
+});
+/* 1 マスを数える */
+let cnt=new Set();
+function tapCount(k){cnt.has(k)?cnt.delete(k):cnt.add(k);drawCount()}
+function drawCount(){
+ const done=cnt.size===12;
+ $("cf").innerHTML=grid({w:4,h:3,s:56,fill:cnt,tap:"tapCount",inLabel:done?"12":""});
+ $("cc").textContent=cnt.size+" マス";
+ if(done){$("cmsg").innerHTML=`<div class="res o"><b>⭕ ぜんぶぬれた！</b><br>この長方形の中には <b>12マス</b> 入っています。<br>だから、この長方形の<span class="area">広さ（面積）は 12</span>。<br>広さは、図の<b>中</b>に書きます。</div>`;unlock()}
+ else $("cmsg").innerHTML="";
+}
+PAGES.push(()=>{
+ cnt=new Set();
+ $("main").innerHTML=`<div class="card"><h2>① マスを数えよう</h2>
+ <div class="say">1マスの広さを「1」とします。<br>長方形のマスを<b>ぜんぶタップ</b>して、青くぬってね。</div>
+ <div id="cf"></div><div class="cnt" id="cc"></div><div id="cmsg"></div></div>`;
+ drawCount();lock();
+});
+/* 2 長さと広さはちがう */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>② 長さと広さは、ちがう数</h2>
+ ${grid({w:4,h:3,s:50,fill:allCells(4,3),edge:"both",inLabel:"12"})}
+ <div class="say">赤い線（へり）の長さは <span class="len">4</span> と <span class="len">3</span>。これが<span class="len">長さ</span>。<br>中のマスの数は <span class="area">12</span>。これが<span class="area">広さ</span>。</div>
+ <p>指で<b>へりをなぞる</b>と<span class="len">長さ</span>、<b>中を手のひらでなでる</b>と<span class="area">広さ</span>。</p>
+ <div id="q2"></div></div>`;
+ lock();
+ quiz({text:"この長方形の <span class='area'>広さ（面積）</span> はいくつ？",choices:["12","4","3","7"],a:"12",ok:"広さは中のマスの数。4や3は<span class='len'>長さ</span>だよ。",ng:"4や3は、へり（線）の<span class='len'>長さ</span>。広さは<b>中のマスの数</b>だよ。"},"q2");
+});
+/* 3 長さ？広さ？ 連続問題 */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>③ 長さ？ 広さ？</h2><div class="say">聞かれているのは<span class="len">長さ</span>？ それとも<span class="area">広さ</span>？ よく読んで答えよう。</div><div id="s3"></div></div>`;
+ lock();
+ const L=[];
+ const pad=(arr,a)=>{let c=[...new Set(arr.map(String))];let n=1;while(c.length<4){const v=String(+a+n);if(!c.includes(v))c.push(v);n++}return c.slice(0,4)};
+ [[2,2],[3,3],[5,5],[6,3],[10,10]].forEach(([w,h])=>{
+  const ar=w*h,sz=w>6?24:40;
+  L.push({fig:grid({w,h,s:sz,edge:"top"}),text:`赤い線の <span class="len">長さ</span> はいくつ？`,choices:pad([w,ar,w+h,w*4],w),a:String(w),ok:`線（へり）の長さは ${w}。`,ng:`聞かれているのは<span class="len">長さ</span>（赤い線）。マスの数ではないよ。`});
+  L.push({fig:grid({w,h,s:sz,fill:allCells(w,h),edge:"both"}),text:`この${w===h?"正方形":"長方形"}の <span class="area">広さ（面積）</span> はいくつ？`,choices:pad([ar,w,w+h,(w+h)*2],ar),a:String(ar),ok:`中のマスは ${w}×${h}＝${ar}。これが広さ。`,ng:`${w}は<span class="len">長さ</span>。広さは<b>中のマスの数</b>（${w}×${h}）だよ。`});
+ });
+ series(L,"s3",()=>unlock());
+});
+/* 4 公式とつなぐ */
+let rows=0;
+PAGES.push(()=>{
+ rows=0;
+ $("main").innerHTML=`<div class="card"><h2>④ 公式は「マスを速く数える方法」</h2>
+ <div class="say">10×10の正方形。1マスずつ数えるのは大変…。<br>ボタンを押すと、1列ずつ（10マスずつ）ぬれるよ。</div>
+ <div id="rf"></div><div class="cnt" id="rc"></div>
+ <button class="btn" id="rb" onclick="addRow()">1列ぬる（＋10マス）</button><div id="rm"></div></div>`;
+ drawRows();lock();
+});
+function drawRows(){
+ const f=new Set();for(let y=0;y<rows;y++)for(let x=0;x<10;x++)f.add(x+","+y);
+ $("rf").innerHTML=grid({w:10,h:10,s:26,fill:f,edge:"both",inLabel:rows===10?"100":""});
+ $("rc").textContent=`10マス × ${rows}列 ＝ ${rows*10} マス`;
+ if(rows===10){$("rb").style.display="none";$("rm").innerHTML=`<div class="res o">10×10＝<b>100</b>。<br>公式で出した100は、<b>中のマスの数＝<span class="area">広さ</span></b>のこと！<br><span class="len">長さ</span>は10、<span class="area">広さ</span>は100。ちがう数だね。</div>`;unlock()}
+}
+function addRow(){if(rows<10){rows++;drawRows()}}
+/* 5 取りのぞいたら引く */
+let cut=false;
+PAGES.push(()=>{
+ cut=false;
+ $("main").innerHTML=`<div class="card"><h2>⑤ 取りのぞいたら「引く」</h2>
+ <div class="say">広さ100の紙があります。<br>ここから、5×5（25マス）を<b>切り取ります</b>。</div>
+ <div id="cutf"></div><button class="btn" id="cb" onclick="doCut()">✂ 5×5を切り取る</button><div id="q5"></div></div>`;
+ drawCut();lock();
+});
+function cutSet(){const r=new Set();for(let y=0;y<5;y++)for(let x=0;x<5;x++)r.add(x+","+y);return r}
+function drawCut(){$("cutf").innerHTML=grid({w:10,h:10,s:26,fill:allCells(10,10),removed:cut?cutSet():null,inLabel:cut?"":"100"})}
+function doCut(){cut=true;drawCut();$("cb").style.display="none";
+ quiz({text:"残った紙の <span class='area'>広さ</span> は？",choices:["100 − 25 ＝ 75","100 ÷ 25 ＝ 4","100 + 25 ＝ 125","25"],a:"100 − 25 ＝ 75",
+ ok:"<b>元の紙（100）から、切り取った分（25）を取りのぞいた</b>から、<b>引き算</b>。<br>100 − 25 ＝ 75 マス。",
+ ng:"紙を切り取ると、残りは<b>へる</b>よね。へるのは「引き算」。"},"q5")}
+/* 6 引き算の練習 */
+function holeFig(w,h,hx,hy,hw,hh,s){const r=new Set();for(let y=hy;y<hy+hh;y++)for(let x=hx;x<hx+hw;x++)r.add(x+","+y);return grid({w,h,s,fill:allCells(w,h),removed:r})}
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑥ 引き算の練習</h2><div class="say">白いところは<b>切り取られた</b>部分。<br>青い部分の<span class="area">広さ</span>の式はどれ？</div><div id="s6"></div></div>`;
+ lock();
+ series([
+  {fig:holeFig(8,6,0,0,2,3,30),text:"青い部分の広さの式は？",choices:["8×6 − 2×3","8×6 ÷ 2×3","8×6 + 2×3","2×3"],a:"8×6 − 2×3",ok:"大きい長方形（48）から、小さい長方形（6）を取りのぞいた → 48 − 6 ＝ 42"},
+  {fig:holeFig(6,6,2,2,2,2,36),text:"青い部分の広さの式は？",choices:["6×6 − 2×2","6×6 ÷ 2×2","6 − 2","6×6 + 2×2"],a:"6×6 − 2×2",ok:"正方形（36）から、まん中の正方形（4）を取りのぞいた → 36 − 4 ＝ 32"},
+  {fig:holeFig(10,4,6,0,4,4,26),text:"青い部分の広さの式は？",choices:["10×4 − 4×4","10×4 ÷ 4×4","10 − 4","10×4 + 4×4"],a:"10×4 − 4×4",ok:"長方形（40）から、正方形（16）を取りのぞいた → 40 − 16 ＝ 24"},
+  {text:"「（大きい形）から（小さい形）を<b>取りのぞいた</b>」広さを求めるとき、使う計算は？",choices:["引き算","わり算","たし算","かけ算"],a:"引き算",ok:"取りのぞいた → <b>引き算</b>。これがいちばん大事！"}
+ ],"s6",()=>unlock());
+});
+/* 7 円と正方形 */
+let out7=false;
+function circFig(mode,moved){
+ // mode: "cminuss" 円−正方形, "sminusc" 正方形−円
+ const C=150,R=110;
+ let s=`<svg width="300" height="300" viewBox="0 0 300 300">`;
+ if(mode==="cminuss"){
+  s+=`<circle cx="${C}" cy="${C}" r="${R}" fill="#5b9cf0" stroke="#1f3f80" stroke-width="3"/>`;
+  s+=moved?`<polygon points="${C},${C-R} ${C+R},${C} ${C},${C+R} ${C-R},${C}" fill="#fff" stroke="#d64545" stroke-width="2" stroke-dasharray="6 5"/>`
+   :`<polygon points="${C},${C-R} ${C+R},${C} ${C},${C+R} ${C-R},${C}" fill="#f08080" stroke="#b02040" stroke-width="3"/>
+    <line x1="${C-R}" y1="${C}" x2="${C+R}" y2="${C}" stroke="#333" stroke-dasharray="6 5" stroke-width="2"/><line x1="${C}" y1="${C-R}" x2="${C}" y2="${C+R}" stroke="#333" stroke-dasharray="6 5" stroke-width="2"/>
+    <text x="${C-55}" y="${C-8}" font-size="20" font-weight="bold">10</text><text x="${C+8}" y="${C+60}" font-size="20" font-weight="bold">10</text>`;
+ }else{
+  s+=`<rect x="${C-R}" y="${C-R}" width="${2*R}" height="${2*R}" fill="#f08080" stroke="#b02040" stroke-width="3"/>`;
+  s+=moved?`<circle cx="${C}" cy="${C}" r="${R}" fill="#fff" stroke="#1f3f80" stroke-width="2" stroke-dasharray="6 5"/>`
+   :`<circle cx="${C}" cy="${C}" r="${R}" fill="#5b9cf0" stroke="#1f3f80" stroke-width="3"/><line x1="${C}" y1="${C}" x2="${C+R}" y2="${C}" stroke="#333" stroke-width="2"/><text x="${C+45}" y="${C-8}" font-size="20" font-weight="bold">5</text>`;
+  s+=`<text x="${C}" y="${C-R-10}" text-anchor="middle" font-size="20" font-weight="bold" fill="#d64545">10</text>`;
+ }
+ return s+"</svg>";
+}
+PAGES.push(()=>{
+ out7=false;
+ $("main").innerHTML=`<div class="card"><h2>⑦ 円から正方形を取りのぞく</h2>
+ <div class="say">青い円（半径5）の広さ：<b>5×5×π＝25π</b><br>赤い正方形（対角線10）の広さ：<b>10×10÷2＝50</b></div>
+ <div id="f7">${circFig("cminuss",false)}</div>
+ <button class="btn" id="b7" onclick="cut7()">✂ 赤い正方形を切り取る</button><div id="q7"></div></div>`;
+ lock();
+});
+function cut7(){$("f7").innerHTML=circFig("cminuss",true);$("b7").style.display="none";
+ quiz({text:"残った<b>青い部分</b>の広さは？",choices:["25π − 50","25π ÷ 50","25π + 50","50 − 25π"],a:"25π − 50",
+ ok:"<b>円（25π）から、正方形（50）を取りのぞいた</b> → 引き算で <b>25π − 50</b>。<br>数字がπでも、考え方は⑤の紙と同じ！",
+ ng:"円の紙から正方形を<b>切り取った</b>よ。切り取ったら…？（⑤を思い出そう）"},"q7")}
+/* 8 正方形から円 */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑧ 反対もやってみよう</h2>
+ <div class="say">赤い正方形（1辺10）の広さ：<b>10×10＝100</b><br>青い円（半径5）の広さ：<b>5×5×π＝25π</b></div>
+ <div id="f8">${circFig("sminusc",false)}</div>
+ <button class="btn" id="b8" onclick="cut8()">✂ 青い円を切り取る</button><div id="q8"></div></div>`;
+ lock();
+});
+function cut8(){$("f8").innerHTML=circFig("sminusc",true);$("b8").style.display="none";
+ quiz({text:"残った<b>赤い部分（4すみ）</b>の広さは？",choices:["100 − 25π","25π − 100","100 ÷ 25π","100 + 25π"],a:"100 − 25π",
+ ok:"<b>正方形（100）から、円（25π）を取りのぞいた</b> → <b>100 − 25π</b>。<br>「何から」が先、「何を」があと！",
+ ng:"大きいほう（正方形の紙）から、切り取った円を引くよ。順番に気をつけて。"},"q8")}
+/* 9 葉っぱ */
+function leafFig(){
+ const k=24,o=30,P=(x,y)=>[o+k*x,o+k*(10-y)];
+ let s=`<svg width="300" height="300" viewBox="0 0 300 300"><rect x="${o}" y="${o}" width="${10*k}" height="${10*k}" fill="#fff" stroke="#333" stroke-width="2"/>`;
+ const L=[[[0,0],[5,0],[0,5]],[[10,0],[5,0],[10,5]],[[0,10],[5,10],[0,5]],[[10,10],[5,10],[10,5]]];
+ L.forEach(([c,m1,m2])=>{const a=P(...c),b=P(5,5);s+=`<path d="M${a} A${5*k},${5*k} 0 0 ${c[0]===c[1]?1:0} ${b} A${5*k},${5*k} 0 0 ${c[0]===c[1]?1:0} ${a}Z" fill="#8cbcf5" stroke="#333" stroke-width="2"/>`});
+ return s+`<text x="150" y="22" text-anchor="middle" font-size="18" font-weight="bold">10</text></svg>`;
+}
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑨ いよいよ葉っぱの問題</h2>
+ ${leafFig()}
+ <div class="say">葉っぱを半分に切って集めると、<br>⑦の「<b>円 − 正方形</b>」の形が<b>2つ</b>できます。<br>（くわしくは動画で見たね！）</div>
+ <div id="q9"></div></div>`;
+ lock();
+ quiz({text:"葉っぱ4枚の広さの式は？",choices:["（25π − 50）× 2","25π − 50","25π ÷ 50 × 2","100 − 25π"],a:"（25π − 50）× 2",
+  ok:"円−正方形（25π−50）が2つ分 → <b>（25π − 50）× 2 ＝ 50π − 100</b>",ng:"「円−正方形」の形が<b>2つ</b>できたよ。"},"q9");
+});
+/* 10 まとめ */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>🎉 まとめ</h2>
+ <div class="say"><span class="len">長さ</span>＝線（へり）の長さ。図の<b>外側</b>。<br><span class="area">広さ（面積）</span>＝中のマスの数。図の<b>内側</b>。</div>
+ <div class="say">公式（10×10、5×5×π）は、<b>広さ</b>を速く出す方法。</div>
+ <div class="say">形を<b>取りのぞいた</b>ら、広さは<b>引き算</b>。<br>「<b>何から</b>、<b>何を</b>取りのぞいた？」を先に言おう！</div>
+ <button class="btn ok" onclick="cur=0;render()">もう一度さいしょから</button></div>`;
+ unlock();
+});
+
+let cur=0;
+function render(){window.scrollTo(0,0);$("bar").style.width=((cur+1)/PAGES.length*100)+"%";PAGES[cur]();$("nextBtn").style.visibility=cur===PAGES.length-1?"hidden":"visible"}
+function go(d){if(d>0&&$("nextBtn").disabled)return;cur=Math.max(0,Math.min(PAGES.length-1,cur+d));render()}
+render();
+</script>
+</body>
+</html>
