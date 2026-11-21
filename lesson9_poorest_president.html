@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lesson 9 The World's Poorest President</title>
+<style>
+:root{--main:#1f5fa8;--sub:#e8f0fb;--ok:#1a9b55;--ng:#d64545;--bg:#f6f7fb;--line:#d8dde8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:var(--bg);color:#222;font-size:16px;line-height:1.6}
+header{position:sticky;top:0;z-index:20;background:var(--main);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:8px}
+header h1{font-size:15px;margin:0;flex:1;line-height:1.3}
+header h1 small{display:block;font-size:11px;opacity:.85;font-weight:normal}
+.hbtn{background:#fff;color:var(--main);border:none;border-radius:50%;width:34px;height:34px;font-size:18px;font-weight:bold}
+nav{position:sticky;top:56px;z-index:19;background:#fff;display:flex;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav button{flex:0 0 auto;border:none;background:none;padding:10px 12px;font-size:14px;color:#555;border-bottom:3px solid transparent}
+nav button.on{color:var(--main);border-bottom-color:var(--main);font-weight:bold}
+main{padding:12px;max-width:760px;margin:0 auto;padding-bottom:60px}
+.tab{display:none}.tab.show{display:block}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.seg button,.chip{border:1px solid var(--main);background:#fff;color:var(--main);border-radius:20px;padding:6px 12px;font-size:14px}
+.seg button.on,.chip.on{background:var(--main);color:#fff}
+.btn{border:none;background:var(--main);color:#fff;border-radius:10px;padding:10px 16px;font-size:15px;font-weight:bold}
+.btn.gray{background:#8a93a5}.btn.ok{background:var(--ok)}.btn.ng{background:var(--ng)}
+.btn.wide{width:100%;margin-top:8px}
+.lbl{font-size:13px;color:#666;margin:10px 0 4px}
+h2{font-size:17px;margin:4px 0 10px;color:var(--main)}
+h3{font-size:15px;margin:12px 0 6px}
+/* 本文 */
+.sent{border-bottom:1px dashed var(--line);padding:8px 0}
+.sent:last-child{border-bottom:none}
+.num{display:inline-block;color:var(--main);font-weight:bold;margin-right:4px}
+.chunk{display:inline;cursor:pointer}
+.chunk .en{border-bottom:2px solid transparent}
+.chunk .ja{display:none;color:#c0392b;font-size:13px}
+.showja .chunk .ja{display:inline}
+.chunk.open .ja{display:inline}
+.chunk.open .en{border-bottom-color:#f5c26b}
+.sl{color:#aaa;margin:0 3px}
+.spk{border:none;background:var(--sub);border-radius:50%;width:30px;height:30px;font-size:15px;vertical-align:middle}
+/* 単語カード */
+.fc{min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer}
+.fc .w{font-size:28px;font-weight:bold}
+.fc .m{font-size:20px;color:#c0392b;margin-top:8px}
+.fc .hint{font-size:12px;color:#999;margin-top:10px}
+.vlist td{padding:6px 4px;border-bottom:1px solid #eee;font-size:14px;vertical-align:top}
+.pos{display:inline-block;border:1px solid #888;border-radius:3px;font-size:11px;padding:0 3px;margin-right:4px;color:#555}
+/* 問題 */
+.qhead{display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:6px}
+.qtype{display:inline-block;background:var(--sub);color:var(--main);border-radius:6px;font-size:12px;padding:1px 8px;margin-bottom:6px}
+.qtext{font-size:17px;margin:6px 0 10px}
+.qen{font-size:17px;font-family:Georgia,"Times New Roman",serif;background:#fafafa;border-left:4px solid var(--main);padding:6px 10px;margin:6px 0}
+.choices button{display:block;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;margin:6px 0;font-size:16px}
+.choices button.right{border-color:var(--ok);background:#e9f8ef}
+.choices button.wrong{border-color:var(--ng);background:#fdecec}
+.tf button{display:inline-block;width:48%;text-align:center;font-size:18px;font-weight:bold}
+.res{margin-top:10px;padding:10px;border-radius:10px;font-size:15px}
+.res.o{background:#e9f8ef;border:1px solid var(--ok)}.res.x{background:#fdecec;border:1px solid var(--ng)}
+.res b{font-size:17px}
+.tiles{display:flex;flex-wrap:wrap;gap:6px;min-height:48px;padding:8px;border-radius:10px}
+.tiles.ansbox{background:#fffbe8;border:2px dashed #e5c86b}
+.tile{border:1px solid var(--main);background:#fff;color:#123;border-radius:8px;padding:6px 10px;font-size:16px;font-family:Georgia,serif}
+.tile.used{visibility:hidden}
+.fixed{font-family:Georgia,serif;font-size:16px;color:#555}
+u{text-decoration-thickness:2px}
+/* 苦手・検索 */
+.rk{display:flex;gap:8px;align-items:flex-start;border-bottom:1px solid #eee;padding:8px 0}
+.rk .no{font-weight:bold;color:var(--ng);min-width:28px}
+.rk .tx{flex:1;font-size:14px}
+.rk .st{font-size:12px;color:#666;white-space:nowrap}
+.badge{display:inline-block;font-size:11px;border-radius:4px;padding:0 5px;margin-right:4px;background:#eee;color:#555}
+input[type=search]{width:100%;font-size:16px;padding:10px;border:1px solid var(--line);border-radius:10px}
+mark{background:#fff09a}
+/* モーダル */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;padding:16px;overflow:auto}
+.modal.show{display:block}
+.modal .box{background:#fff;border-radius:14px;max-width:640px;margin:20px auto;padding:16px}
+.modal h2{margin-top:0}
+.close{float:right;border:none;background:#eee;border-radius:50%;width:32px;height:32px;font-size:16px}
+.gram .ex{background:#fafafa;border-radius:8px;padding:8px 10px;margin:6px 0;font-family:Georgia,serif}
+.gram .ex .j{font-family:inherit;color:#c0392b;font-size:14px;display:block}
+.hl{background:#ffe58f;padding:0 2px;border-radius:3px}
+.box2{border:2px solid var(--main);border-radius:8px;padding:2px 6px;font-weight:bold;color:var(--main)}
+/* 印刷 */
+#printSheet{display:none}
+@media print{
+ body{background:#fff}
+ body>*:not(#printSheet){display:none!important}
+ #printSheet{display:block!important;font-size:12.5pt;color:#000}
+ #printSheet .pq{page-break-inside:avoid;margin:0 0 10px}
+ #printSheet .ansPage{page-break-before:always}
+}
+#printSheet h1{font-size:16pt;margin:0 0 4px}
+#printSheet .nm{text-align:right;margin-bottom:8px}
+#printSheet .pq .c{margin-left:1.5em}
+#printSheet .line{display:inline-block;border-bottom:1px solid #000;min-width:12em}
+#prevWrap h1{font-size:16px;margin:0 0 4px}
+#prevWrap .pq{margin-bottom:8px}
+#prevWrap .ansPage{border-top:2px dashed #aaa;margin-top:14px;padding-top:8px}
+#prevWrap{border:1px solid var(--line);border-radius:10px;padding:10px;max-height:420px;overflow:auto;background:#fff;font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+ <h1>Lesson 9 The World's Poorest President<small>Section 1〜3 基礎トレーニング</small></h1>
+ <button class="hbtn" onclick="openHelp()">？</button>
+</header>
+
+<nav id="nav">
+ <button data-t="hon" class="on">📖本文</button>
+ <button data-t="tan">🔤単語</button>
+ <button data-t="bun">📝文法</button>
+ <button data-t="mon">✏️問題</button>
+ <button data-t="nig">📊苦手</button>
+ <button data-t="pri">🖨プリント</button>
+ <button data-t="ken">🔍検索</button>
+</nav>
+
+<main>
+
+<!-- ===== 本文 ===== -->
+<div class="tab show" id="t_hon">
+ <div class="card">
+  <div class="row seg" id="honSec"></div>
+  <div class="row" style="margin-top:8px">
+   <button class="chip" id="jaAll" onclick="toggleJaAll()">和訳をすべて表示</button>
+   <button class="chip" onclick="speakSection()">🔊 全文を読む</button>
+   <button class="chip" onclick="stopSpeak()">⏹ 止める</button>
+  </div>
+  <div class="lbl">英語の区切り（チャンク）をタップすると、その部分の意味が出ます。</div>
+ </div>
+ <div class="card" id="honBody"></div>
+</div>
+
+<!-- ===== 単語 ===== -->
+<div class="tab" id="t_tan">
+ <div class="card">
+  <div class="row seg" id="tanSec"></div>
+  <div class="row seg" style="margin-top:8px" id="tanDir">
+   <button class="on" data-d="e">英 → 日</button><button data-d="j">日 → 英</button>
+  </div>
+ </div>
+ <div class="card fc" id="fc" onclick="flipCard()"></div>
+ <div class="row" style="justify-content:space-between">
+  <button class="btn gray" onclick="moveCard(-1)">◀ 前</button>
+  <button class="btn" onclick="speakCard(event)">🔊</button>
+  <button class="btn gray" onclick="shuffleCards()">🔀</button>
+  <button class="btn gray" onclick="moveCard(1)">次 ▶</button>
+ </div>
+ <button class="btn wide ok" onclick="startVocabQuiz()">この範囲の単語テスト（4択）を始める</button>
+ <div class="card" style="margin-top:12px">
+  <h3 style="margin-top:0">単語一覧</h3>
+  <table class="vlist" style="width:100%;border-collapse:collapse" id="vlist"></table>
+ </div>
+</div>
+
+<!-- ===== 文法 ===== -->
+<div class="tab" id="t_bun"><div id="gramBody"></div></div>
+
+<!-- ===== 問題 ===== -->
+<div class="tab" id="t_mon">
+ <div id="quizSetup">
+  <div class="card">
+   <h2>問題演習</h2>
+   <div class="lbl">範囲（Section）</div>
+   <div class="row" id="qSec"></div>
+   <div class="lbl">問題の種類</div>
+   <div class="row" id="qType"></div>
+   <div class="lbl">問題数</div>
+   <div class="row seg" id="qNum">
+    <button data-n="10" class="on">10問</button><button data-n="20">20問</button><button data-n="0">全部</button>
+   </div>
+   <button class="btn wide" onclick="startFromSetup()">スタート</button>
+  </div>
+ </div>
+ <div id="quizArea" style="display:none"></div>
+</div>
+
+<!-- ===== 苦手 ===== -->
+<div class="tab" id="t_nig">
+ <div class="card">
+  <h2>苦手ランキング</h2>
+  <div class="lbl">これまでに間違えた回数が多い順です。この端末に記録されています。</div>
+  <div class="row">
+   <button class="btn ng" onclick="startWeak()">苦手な問題だけ出題</button>
+   <button class="btn gray" onclick="resetStats()">記録を消す</button>
+  </div>
+ </div>
+ <div class="card" id="rankBody"></div>
+</div>
+
+<!-- ===== プリント ===== -->
+<div class="tab" id="t_pri">
+ <div class="card">
+  <h2>プリント作成</h2>
+  <div class="lbl">範囲（Section）</div>
+  <div class="row" id="pSec"></div>
+  <div class="lbl">問題の種類</div>
+  <div class="row" id="pType"></div>
+  <div class="lbl">並び順</div>
+  <div class="row seg" id="pOrd"><button data-o="s" class="on">シャッフル</button><button data-o="n">教科書の順</button></div>
+  <div class="lbl">問題数</div>
+  <div class="row seg" id="pNum"><button data-n="20" class="on">20問</button><button data-n="30">30問</button><button data-n="0">全部</button></div>
+  <button class="btn wide" onclick="makePrint()">プレビューを作る</button>
+  <button class="btn wide ok" onclick="doPrint()">🖨 印刷する（解答つき）</button>
+ </div>
+ <div class="card"><div class="lbl" style="margin-top:0">プレビュー（解答は2ページ目以降に印刷されます）</div><div id="prevWrap">「プレビューを作る」を押してください。</div></div>
+</div>
+
+<!-- ===== 検索 ===== -->
+<div class="tab" id="t_ken">
+ <div class="card">
+  <h2>検索</h2>
+  <input type="search" id="sq" placeholder="英語でも日本語でもOK（例：belief、格差、強調）" oninput="doSearch()">
+  <div class="lbl">単語・本文・問題をまとめて探せます。問題は、これまでの正解・間違いの回数も表示されます。</div>
+ </div>
+ <div id="sres"></div>
+</div>
+
+</main>
+
+<!-- ===== 取扱説明書 ===== -->
+<div class="modal" id="help" onclick="if(event.target===this)closeHelp()">
+ <div class="box">
+  <button class="close" onclick="closeHelp()">✕</button>
+  <h2>使い方</h2>
+  <h3>📖 本文</h3>
+  <p>Sectionを選ぶと本文が出ます。英語の区切りをタップすると、その部分の日本語訳が赤字で出ます。「和訳をすべて表示」で全部出せます。🔊で英語が読まれます。</p>
+  <h3>🔤 単語</h3>
+  <p>カードをタップすると答えが出ます。◀▶で移動、🔀で順番をまぜます。「英→日」「日→英」を切りかえられます。下のボタンで4択テストもできます。</p>
+  <h3>📝 文法</h3>
+  <p>このレッスンで大事な文法（同格のthat・強調構文・倒置など）の説明です。各説明の下のボタンで、その文法の問題だけを解けます。</p>
+  <h3>✏️ 問題</h3>
+  <p>範囲と種類を選んでスタート。ワークの問題（内容確認・ポイント・Exercises）がそのまま入っています。並べかえは、下の語句を正しい順にタップします。まちがえた語句はもう一度タップすると戻せます。</p>
+  <p>とちゅうで「間違えた問題を見る」を押すと、今回まちがえた問題をいつでも確認できます。</p>
+  <h3>📊 苦手</h3>
+  <p>まちがえた回数が多い問題のランキングです。「苦手な問題だけ出題」で集中して練習できます。</p>
+  <h3>🖨 プリント</h3>
+  <p>範囲と種類を選んで「プレビューを作る」→「印刷する」。解答は別ページに出ます。</p>
+  <h3>🔍 検索</h3>
+  <p>単語・本文・問題を英語でも日本語でも探せます。問題には、これまでの正解・まちがいの回数が出ます。テストのふり返りに使ってください。</p>
+  <h3>音が出ないとき</h3>
+  <p>LINEの中で開くと音が出ないことがあります。右上のメニューから「Safariで開く」（Androidは「デフォルトのブラウザで開く」）を選んでください。iPhoneはマナーモードを解除してください。</p>
+ </div>
+</div>
+
+<div id="printSheet"></div>
+
+<script>
+/* ================= データ ================= */
+const SECS=[1,2,3];
+const TEXT={
+1:[
+ ["①",[["In 2012,","2012年に、"],["the Earth Summit was held","地球サミットが開かれた"],["in Rio de Janeiro.","リオデジャネイロで。"]]],
+ ["②",[["The theme of the Summit","そのサミットのテーマは"],["was environmental problems.","環境問題だった。"]]],
+ ["③",[["José Mujica,","ホセ・ムヒカは、"],["the president of Uruguay at that time,","当時のウルグアイの大統領で、"],["made a speech there.","そこで演説をした。"]]],
+ ["④",[["The speech was about human happiness","その演説は人間の幸せについてのものだった"],["rather than environmental problems.","環境問題よりもむしろ。"]]],
+ ["⑤",[["During his speech,","演説の中で、"],["Mujica asked the audience these questions:","ムヒカは聴衆に次の質問をした。"],["\"What would happen to the earth","「地球に何が起こるだろうか"],["if everyone in the world","もし世界中のみんなが"],["owned a car?","車を持ったら。"]]],
+ ["⑥",[["Can seven or eight billion people","70億人や80億人の人々が〜できるだろうか"],["enjoy the same lifestyle","同じ生活スタイルを楽しむ"],["as that in the rich Western societies?","豊かな欧米社会の生活スタイルと。"]]],
+ ["⑦",[["Do we have enough resources for that?\"","そのための十分な資源が私たちにあるだろうか。」"]]],
+ ["⑧",[["Today,","今日、"],["many people seek economic development,","多くの人が経済発展を求めている"],["but Mujica thought","しかしムヒカは考えた"],["that this tendency damaged the earth.","この風潮が地球を傷つけていると。"]]],
+ ["⑨",[["The speech showed his belief","その演説は彼の信念を示した"],["that people had to change their lifestyle","人々は生活スタイルを変えなければならないという"],["for the earth and their own happiness.","地球と自分たち自身の幸せのために。"]]]
+],
+2:[
+ ["①",[["Mujica was born","ムヒカは生まれた"],["in a poor area of Montevideo","モンテビデオの貧しい地区で"],["in 1935.","1935年に。"]]],
+ ["②",[["When he was in his early 20s,","彼が20代の初めの頃、"],["the economy in Uruguay","ウルグアイの経済が"],["went down.","悪化した。"]]],
+ ["③",[["He became concerned about the gap","彼は格差を心配するようになった"],["between the rich and the poor.","裕福な人々と貧しい人々の間の。"]]],
+ ["④",[["Mujica thought","ムヒカは考えた"],["that political change was necessary.","政治の変化が必要だと。"]]],
+ ["⑤",[["He fought against the military government","彼は軍事政権と戦った"],["and got arrested four times.","そして4回逮捕された。"]]],
+ ["⑥",[["It was 13 years","13年間だった"],["that Mujica spent in jail.","ムヒカが刑務所で過ごしたのは。"]]],
+ ["⑦",[["However,","しかし、"],["he did not give up his hope","彼は望みを捨てなかった"],["of changing Uruguay","ウルグアイを変えるという"],["into a better country.","よりよい国に。"]]],
+ ["⑧",[["In 1985,","1985年に、"],["he was finally released.","彼はついに釈放された。"]]],
+ ["⑨",[["He never lost his strong will","彼は強い意志を決して失わなかった"],["to change society","社会を変えようという"],["and became a politician","そして政治家になった"],["ten years later.","10年後に。"]]],
+ ["⑩",[["Then in 2010,","そして2010年に、"],["he was elected","彼は選ばれた"],["as the 40th president of Uruguay.","ウルグアイの第40代大統領として。"]]]
+],
+3:[
+ ["①",[["Mujica's speech at the Summit","サミットでのムヒカの演説は"],["made him known widely","彼を広く知られるようにした"],["to the world.","世界に。"]]],
+ ["②",[["He was called","彼は呼ばれた"],["\"the world's poorest president\"","「世界でいちばん貧しい大統領」と"],["because of his way of life.","彼の生き方のために。"]]],
+ ["③",[["Mujica actually lived a very humble life.","ムヒカは実際にとても質素な生活を送っていた。"]]],
+ ["④",[["He lived in a small house","彼は小さな家に住んでいた"],["in the suburbs.","郊外の。"]]],
+ ["⑤",[["He got water from a well.","彼は井戸から水を得ていた。"]]],
+ ["⑥",[["He plowed his land,","彼は自分の土地を耕し、"],["and grew vegetables and flowers there.","そこで野菜や花を育てた。"]]],
+ ["⑦",[["He even donated about 90% of his income","彼は収入の約90%を寄付さえした"],["to charity.","慈善事業に。"]]],
+ ["⑧",[["His only possession of value","彼の唯一の価値ある所有物は"],["was a very old car.","とても古い車だった。"]]],
+ ["⑨",[["Never did he need fancy things","彼は高価な物を決して必要としなかった"],["to be happy.","幸せになるために。"]]],
+ ["⑩",[["Mujica said in an interview,","ムヒカはインタビューで言った、"],["\"I can live well","「私は十分に暮らせる"],["with what I have.","自分が持っているもので。"]]],
+ ["⑪",[["I'm called the poorest president,","私はいちばん貧しい大統領と呼ばれている"],["but I'm not poor.","でも私は貧しくない。"]]],
+ ["⑫",[["Truly poor people are","本当に貧しい人とは"],["those who only work","ただ働くだけの人たちだ"],["to keep an expensive lifestyle","お金のかかる生活スタイルを保つために"],["and endlessly want more and more.\"","そして際限なくもっともっと欲しがる（人たちだ）。」"]]]
+]};
+
+const VOCAB=[
+ [1,"the Earth Summit","","地球サミット"],
+ [1,"summit","名","サミット、首脳会談"],
+ [1,"theme","名","テーマ"],
+ [1,"environmental","形","環境の"],
+ [1,"president","名","大統領"],
+ [1,"make a speech","","演説をする"],
+ [1,"rather than ～","","～よりもむしろ"],
+ [1,"billion","名","10億"],
+ [1,"Western","形","西洋の、欧米の"],
+ [1,"resource","名","資源"],
+ [1,"seek","動","～を求める"],
+ [1,"development","名","発展"],
+ [1,"tendency","名","風潮、傾向"],
+ [1,"belief","名","信念"],
+ [2,"in one's early 20s","","20代の初めに"],
+ [2,"economy","名","経済"],
+ [2,"go down","","悪化する"],
+ [2,"concerned","形","心配して"],
+ [2,"be concerned about ～","","～について心配している"],
+ [2,"gap","名","格差、差"],
+ [2,"the rich","","裕福な人々（= rich people）"],
+ [2,"political","形","政治の"],
+ [2,"fight against ～","","～と戦う（過去形 fought）"],
+ [2,"military","形","軍の"],
+ [2,"arrest","動","～を逮捕する"],
+ [2,"jail","名","刑務所"],
+ [2,"give up ～","","～をあきらめる"],
+ [2,"release","動","～を釈放する"],
+ [2,"will","名","意志"],
+ [2,"politician","名","政治家"],
+ [2,"elect","動","～を選出する"],
+ [3,"widely","副","広く"],
+ [3,"live a ～ life","","～な生活を送る"],
+ [3,"humble","形","質素な"],
+ [3,"suburb","名","郊外"],
+ [3,"well","名","井戸"],
+ [3,"plow","動","～を耕す"],
+ [3,"donate","動","～を寄付する"],
+ [3,"income","名","収入"],
+ [3,"possession","名","所有物、財産"],
+ [3,"～ of value","","価値がある～"],
+ [3,"fancy","形","高価な"],
+ [3,"truly","副","本当に"],
+ [3,"endlessly","副","際限なく"]
+];
+
+/* 問題  t: tf / nai / pt / yaku / fill / nar / hat */
+const TYPES=[["v1","単語（英→日）"],["v2","単語（日→英）"],["nai","内容確認"],["pt","ポイント"],["yaku","和訳"],["fill","空所補充"],["nar","並べかえ"],["hat","発音・アクセント"]];
+const TF=["T（合っている）","F（合っていない）"];
+const Q=[
+/* ---------- Section 1 ---------- */
+{id:"s1n1",s:1,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"People talked about environmental problems during the 2012 Earth Summit.",c:TF,a:TF[0],ns:1,exp:"本文②：サミットのテーマは環境問題（environmental problems）だった。"},
+{id:"s1n2",s:1,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica didn't think that the lifestyle in the rich Western societies was environmentally-friendly.",c:TF,a:TF[0],ns:1,exp:"本文⑤〜⑦：みんなが欧米と同じ生活をしたら資源が足りるか、と問いかけている。つまり環境にやさしいとは思っていない。"},
+{id:"s1n3",s:1,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica said that people can become happy only after economic development is achieved.",c:TF,a:TF[1],ns:1,exp:"本文⑧⑨：ムヒカは、経済発展を求める風潮が地球を傷つけると考え、生活スタイルを変えるべきだと訴えた。"},
+{id:"s1n4",s:1,t:"nai",q:"2012年の（　）で、当時のウルグアイのムヒカ大統領が演説を行いました。",c:["地球サミット","国連総会","オリンピック","万国博覧会"],a:"地球サミット",exp:"本文①③：the Earth Summit ＝ 地球サミット。"},
+{id:"s1n5",s:1,t:"nai",q:"彼の演説は、サミットのテーマである（　）についてではなく、人間の幸せに関するものでした。",c:["環境問題","経済問題","人口問題","戦争"],a:"環境問題",exp:"本文②④：rather than environmental problems ＝ 環境問題よりもむしろ。"},
+{id:"s1n6",s:1,t:"nai",q:"彼の演説は、環境問題についてではなく、人間の（　）に関するものでした。",c:["幸せ","お金","健康","仕事"],a:"幸せ",exp:"本文④：about human happiness ＝ 人間の幸せについて。"},
+{id:"s1n7",s:1,t:"nai",q:"彼は、地球上の全員が裕福な（　）のような生活スタイルを享受することはできないと述べました。",c:["西洋社会","アジアの社会","農村","昔の日本"],a:"西洋社会",exp:"本文⑥：the rich Western societies ＝ 豊かな西洋（欧米）社会。"},
+{id:"s1n8",s:1,t:"nai",q:"（　）と自分たちの幸せのために、人々は生活スタイルを変える必要があると訴えました。",c:["地球","会社","国","家族"],a:"地球",exp:"本文⑨：for the earth and their own happiness。"},
+{id:"s1p1",s:1,t:"pt",q:"ムヒカの質問「What would happen to the earth if everyone in the world owned a car?」の答えとして考えられるものは？",c:["地球をさらに傷つけるだろう","地球がもっと豊かになるだろう","何も変わらないだろう","車の値段が下がるだろう"],a:"地球をさらに傷つけるだろう",exp:"全員が車を持てば、資源をたくさん使い、地球はさらに傷つく。ifのあとが過去形（owned）なのは仮定法過去。"},
+{id:"s1p2",s:1,t:"pt",q:"「私は日本の映画よりインド映画の方が好きです。」\n I like Indian movies more than (　) of Japan.",c:["those","that","it","these"],a:"those",exp:"同じ名詞のくり返しをさけるとき、単数なら that、複数なら those。ここは movies（複数）なので those。本文⑥の as that in ～ の that は lifestyle（単数）の代わり。"},
+{id:"s1p3",s:1,t:"yaku",q:"次の英文の意味として正しいものは？",en:"Some people don't like the idea that men should be brave.",c:["男性は勇敢であるべきだという考えが好きではない人もいます。","勇敢な男性が好きではない人もいます。","男性は勇敢であるべきだと考える人もいます。","男性が好む考えが好きではない人もいます。"],a:"男性は勇敢であるべきだという考えが好きではない人もいます。",exp:"同格のthat：the idea that ～ ＝「～という考え」。that以下は抜けのない完全な文。"},
+{id:"s1p4",s:1,t:"yaku",q:"次の英文の意味として正しいものは？",en:"She thinks the ideas that Ken told her are interesting.",c:["彼女は、ケンが彼女に話した考えは興味深いと思っています。","彼女は、ケンが興味深い考えを話したことを知っています。","ケンは、彼女の考えが興味深いと思っています。","彼女は、興味深い考えをケンに話したと思っています。"],a:"彼女は、ケンが彼女に話した考えは興味深いと思っています。",exp:"このthatは同格ではなく関係代名詞。Ken told her ＿（何を？）と目的語が抜けている。抜けがあれば関係代名詞、抜けがなければ同格。"},
+{id:"s1e1",s:1,t:"yaku",q:"次の英文の意味として正しいものは？",en:"I heard the news that his team had won the game.",c:["私は彼のチームが試合に勝ったというニュースを聞きました。","私は試合に勝った彼のチームについてのニュースを聞きました。","彼のチームはニュースを聞いて試合に勝ちました。","私はニュースで彼のチームの試合を見ました。"],a:"私は彼のチームが試合に勝ったというニュースを聞きました。",exp:"同格のthat：the news that ～ ＝「～というニュース（知らせ）」。"},
+{id:"s1e2",s:1,t:"yaku",q:"次の英文の意味として正しいものは？",en:"He talked about the fact that we were destroying the earth.",c:["彼は、私たちが地球を破壊しているという事実について話しました。","彼は、地球を破壊した私たちについて話しました。","彼は、地球が私たちを破壊しているという事実について話しました。","私たちは、彼が地球を破壊したという事実について話しました。"],a:"彼は、私たちが地球を破壊しているという事実について話しました。",exp:"同格のthat：the fact that ～ ＝「～という事実」。"},
+{id:"s1e3",s:1,t:"fill",q:"彼女は私と同じ本を読んでいました。\nShe was reading the (　) book (　) me.",c:["same / as","same / than","same / to","like / as"],a:"same / as",exp:"the same ～ as … ＝「…と同じ～」。"},
+{id:"s1e4",s:1,t:"fill",q:"リチャードは経済的な問題について演説をしました。\nRichard made (　)(　) about economic problems.",c:["a / speech","the / talk","a / say","an / speech"],a:"a / speech",exp:"make a speech ＝ 演説をする。"},
+{id:"s1e5",s:1,t:"fill",q:"私はスペイン語よりもむしろ中国語に興味があります。\nI am interested in Chinese (　)(　) Spanish.",c:["rather / than","more / than","same / as","rather / as"],a:"rather / than",exp:"A rather than B ＝「BよりもむしろA」。"},
+{id:"s1e6",d:"Tom didn't know the fact that so many wild animals are dying.",s:1,t:"nar",q:"トムはたくさんの野生生物が死滅しつつあるという事実を知りませんでした。",pre:"Tom didn't know",suf:".",tiles:["wild animals","are","that","the fact","so many","dying"],a:"the fact that so many wild animals are dying",exp:"同格のthat：the fact that ～（～という事実）。thatのあとに「たくさんの野生生物が死滅しつつある」so many wild animals are dying を続ける。"},
+{id:"s1e7",d:"Did you hear the news that Linda had left Japan?",s:1,t:"nar",q:"リンダが日本を去ったという知らせを聞きましたか。",pre:"Did you hear",suf:"Japan?",tiles:["Linda","that","left","the news","had"],a:"the news that Linda had left",exp:"同格のthat：the news that ～（～という知らせ）。thatのあとに Linda had left Japan を続ける。"},
+{id:"s1h1",s:1,t:"hat",q:"下線部の発音が見出し語と同じものは？\n見出し語：th<u>e</u>me",c:["ア　bel<u>ie</u>f","イ　pr<u>e</u>sident","ウ　mat<u>e</u>rial"],a:"ア　bel<u>ie</u>f",ns:1,exp:"theme [θíːm] と belief [bilíːf] はどちらも［iː］（イー）。president は［e］、material は［iə］。"},
+{id:"s1h2",s:1,t:"hat",q:"下線部の発音が見出し語と同じものは？\n見出し語：s<u>u</u>mmit",c:["ア　sol<u>u</u>tion","イ　comm<u>u</u>nity","ウ　inj<u>u</u>stice"],a:"ウ　inj<u>u</u>stice",ns:1,exp:"summit [sʌ́mit] と injustice [indʒʌ́stis] はどちらも［ʌ］（ア）。"},
+/* ---------- Section 2 ---------- */
+{id:"s2n1",s:2,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica was not interested in the gap between the rich and the poor.",c:TF,a:TF[1],ns:1,exp:"本文③：He became concerned about the gap ～（格差を心配するようになった）。"},
+{id:"s2n2",s:2,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"When Mujica was young, the military government ruled his country.",c:TF,a:TF[0],ns:1,exp:"本文⑤：若い頃、軍事政権（the military government）と戦った。"},
+{id:"s2n3",s:2,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"When Mujica was elected president, he had already had experience as a politician.",c:TF,a:TF[0],ns:1,exp:"本文⑨⑩：1995年に政治家になり、2010年に大統領に選ばれた。"},
+{id:"s2n4",s:2,t:"nai",q:"ムヒカはモンテビデオの（　）地区で生まれました。",c:["貧しい","裕福な","大きな","静かな"],a:"貧しい",exp:"本文①：in a poor area of Montevideo。"},
+{id:"s2n5",s:2,t:"nai",q:"貧富の差を心配したムヒカは、政治が変わる必要があると考え、（　）と戦って投獄されました。",c:["軍事政権","外国の軍隊","警察","大統領"],a:"軍事政権",exp:"本文⑤：the military government ＝ 軍事政権。"},
+{id:"s2n6",s:2,t:"nai",q:"ムヒカは刑務所で（　）年間過ごしましたが、ウルグアイをよりよくするのだという気持ちは変わりませんでした。",c:["13","4","10","25"],a:"13",exp:"本文⑥：It was 13 years that Mujica spent in jail.（4は逮捕された回数）"},
+{id:"s2n7",s:2,t:"nai",q:"釈放から10年後に（　）になりました。",c:["政治家","弁護士","農家","教師"],a:"政治家",exp:"本文⑨：became a politician ten years later。"},
+{id:"s2n8",s:2,t:"nai",q:"2010年には第40代（　）に選ばれました。",c:["大統領","首相","市長","議長"],a:"大統領",exp:"本文⑩：the 40th president of Uruguay。"},
+{id:"s2p1",s:2,t:"pt",q:"20代の頃、ウルグアイの現状を心配していたムヒカさんは、何が必要だと考えましたか。",c:["政治が変わること","経済が良くなること","外国に移り住むこと","お金をたくさん稼ぐこと"],a:"政治が変わること",exp:"本文④：Mujica thought that political change was necessary."},
+{id:"s2p2",s:2,t:"pt",q:"Ben won this science contest at the age of 13.\n「Ben」を強調した文は？",c:["It was Ben who won this science contest at the age of 13.","It was Ben won this science contest at the age of 13.","Ben was it that won this science contest at the age of 13.","It is at the age of 13 that Ben won this science contest."],a:"It was Ben who won this science contest at the age of 13.",exp:"強調構文：It was ＿＿ that［who］～。強調したい Ben を It was と who（that でもよい）ではさむ。"},
+{id:"s2p3",s:2,t:"pt",q:"Ben won this science contest at the age of 13.\n「at the age of 13」を強調した文は？",c:["It was at the age of 13 that Ben won this science contest.","It was at the age of 13 who Ben won this science contest.","At the age of 13 it was Ben won this science contest.","It was Ben that at the age of 13 won this science contest."],a:"It was at the age of 13 that Ben won this science contest.",exp:"強調するのが人以外（時など）のときは that を使う。"},
+{id:"s2p4",s:2,t:"pt",q:"ムヒカさんが投獄されたあとも、あきらめなかったことは何ですか。",c:["ウルグアイをよりよい国に変えるという望み","刑務所から逃げること","外国で暮らすこと","お金持ちになること"],a:"ウルグアイをよりよい国に変えるという望み",exp:"本文⑦：his hope of changing Uruguay into a better country。"},
+{id:"s2p5",s:2,t:"pt",q:"In what year did Mujica become a politician?",c:["1995","1985","2010","1935"],a:"1995",exp:"本文⑧⑨：1985年に釈放され、その10年後（ten years later）に政治家になった → 1995年。"},
+{id:"s2e1",s:2,t:"yaku",q:"次の英文の意味として正しいものは？",en:"It was in 2012 that the Earth Summit was held in Rio de Janeiro.",c:["リオデジャネイロで地球サミットが開催されたのは2012年でした。","2012年に地球サミットが開催されたのはリオデジャネイロでした。","2012年のリオデジャネイロは地球サミットでした。","地球サミットはリオデジャネイロで2012年まで開催されました。"],a:"リオデジャネイロで地球サミットが開催されたのは2012年でした。",exp:"強調構文：It was と that にはさまれた in 2012 が強調されている →「～したのは2012年だ」。"},
+{id:"s2e2",s:2,t:"yaku",q:"次の英文の意味として正しいものは？",en:"It was in Rio de Janeiro that the Earth Summit was held in 2012.",c:["2012年に地球サミットが開催されたのはリオデジャネイロでのことでした。","リオデジャネイロで地球サミットが開催されたのは2012年でした。","リオデジャネイロは2012年に地球サミットを開催しませんでした。","2012年、リオデジャネイロでは地球サミットが話題でした。"],a:"2012年に地球サミットが開催されたのはリオデジャネイロでのことでした。",exp:"強調構文：in Rio de Janeiro が強調されている →「～したのはリオデジャネイロだ」。"},
+{id:"s2e3",s:2,t:"fill",q:"アメリカの経済は2008年に悪化しました。\nThe economy in the US (　)(　) in 2008.",c:["went / down","fought / against","was / concerned","went / about"],a:"went / down",exp:"go down ＝ 悪化する（過去形 went down）。"},
+{id:"s2e4",s:2,t:"fill",q:"その弁護士は社会的不公平と戦いました。\nThe lawyer (　)(　) social injustice.",c:["fought / against","went / down","concerned / about","fought / down"],a:"fought / against",exp:"fight against ～ ＝ ～と戦う。fight の過去形は fought。"},
+{id:"s2e5",s:2,t:"fill",q:"母は私の健康について心配していました。\nMy mother was (　)(　) my health.",c:["concerned / about","fought / against","went / down","concerned / down"],a:"concerned / about",exp:"be concerned about ～ ＝ ～について心配している。"},
+{id:"s2e6",d:"It was early in the morning that I saw Saki.",s:2,t:"nar",q:"私がサキを見かけたのは早朝でした。",pre:"",suf:"I saw Saki.",tiles:["early","it","that","in the morning","was"],a:"it was early in the morning that",exp:"強調構文。I saw Saki early in the morning. の early in the morning を It was と that ではさむ。"},
+{id:"s2e7",d:"It was my teacher's words that encouraged me.",s:2,t:"nar",q:"私を勇気づけていたのは先生の言葉でした。",pre:"",suf:"me.",tiles:["that","was","my teacher's words","encouraged","it"],a:"it was my teacher's words that encouraged",exp:"強調構文。My teacher's words encouraged me. の my teacher's words を強調。"},
+{id:"s2e8",d:"It was the president of Uruguay who made the first speech.",s:2,t:"nar",q:"最初に演説をしたのはウルグアイの大統領でした。",pre:"",suf:"made the first speech.",tiles:["who","the president","it","Uruguay","was","of"],a:"it was the president of Uruguay who",exp:"強調構文。強調するのが人（the president of Uruguay）なので who を使っている。"},
+{id:"s2h1",s:2,t:"hat",q:"最も強く発音する部分は？\ne-con-o-my（経済）",c:["ア　e","イ　con","ウ　o","エ　my"],a:"イ　con",ns:1,exp:"economy [ikɑ́nəmi]：2番目の con を強く読む。"},
+{id:"s2h2",s:2,t:"hat",q:"最も強く発音する部分は？\npol-i-ti-cian（政治家）",c:["ア　pol","イ　i","ウ　ti","エ　cian"],a:"ウ　ti",ns:1,exp:"politician [pɑ̀lətíʃn]：-cian の直前の ti を強く読む。"},
+/* ---------- Section 3 ---------- */
+{id:"s3n1",s:3,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica's life was so humble that he was called \"the world's poorest president.\"",c:TF,a:TF[0],ns:1,exp:"本文②③：生き方のために「世界でいちばん貧しい大統領」と呼ばれ、実際にとても質素な生活をしていた。"},
+{id:"s3n2",s:3,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica was so poor that he was supported by a charity group.",c:TF,a:TF[1],ns:1,exp:"本文⑦：ムヒカは収入の約90%を慈善事業に寄付していた（支援される側ではなく、寄付する側）。"},
+{id:"s3n3",s:3,t:"nai",q:"本文の内容に合うものにはT、合わないものにはFを選ぼう。",en:"Mujica had plenty of fancy things so he thought he was living well.",c:TF,a:TF[1],ns:1,exp:"本文⑧⑨：価値ある持ち物は古い車だけで、高価な物は決して必要としなかった。"},
+{id:"s3n4",s:3,t:"nai",q:"ムヒカはとても（　）な生活をしていました。",c:["質素","豪華","忙しい","不便"],a:"質素",exp:"本文③：a very humble life ＝ とても質素な生活。"},
+{id:"s3n5",s:3,t:"nai",q:"郊外の小さな家に住み、井戸水を使い、（　）の90%をチャリティーに寄付していました。",c:["収入","財産","時間","土地"],a:"収入",exp:"本文⑦：about 90% of his income ＝ 収入の約90%。"},
+{id:"s3n6",s:3,t:"nai",q:"価値がある所有物と言えば、古い（　）しか持っていませんでした。",c:["車","家","時計","自転車"],a:"車",exp:"本文⑧：His only possession of value was a very old car."},
+{id:"s3n7",s:3,t:"nai",q:"本当に貧しいのは、お金のかかる（　）を維持するためだけに働く人だと言いました。",c:["生活スタイル","仕事","家族","友人関係"],a:"生活スタイル",exp:"本文⑫：to keep an expensive lifestyle。"},
+{id:"s3n8",s:3,t:"nai",q:"本当に貧しいのは、（　）の尽きない人だと言いました。",c:["欲求","お金","仕事","不安"],a:"欲求",exp:"本文⑫：endlessly want more and more ＝ 際限なくもっともっと欲しがる。"},
+{id:"s3p1",s:3,t:"pt",q:"People call him Chris for short. を受け身の文にすると？",c:["He is called Chris for short.","He calls Chris for short.","Chris is called him for short.","He was calling Chris for short."],a:"He is called Chris for short.",exp:"call A B（AをBと呼ぶ）の受け身は A is called B（AはBと呼ばれる）。本文② He was called \"the world's poorest president\" も同じ形。"},
+{id:"s3p2",s:3,t:"pt",q:"彼は決して自分の仕事の不満を言いませんでした。\nNever (　) he complain about his job.",c:["did","does","was","had"],a:"did",exp:"倒置：否定語 Never が文頭に出ると、そのあとは疑問文の語順（did he complain）になる。過去の文なので did。"},
+{id:"s3p3",s:3,t:"pt",q:"私は彼女があんなに素晴らしい選手になるなんて、ほとんど想像していませんでした。\nLittle (　) I expect that she would become such a great player.",c:["did","do","was","have"],a:"did",exp:"倒置：Little が文頭 → 疑問文の語順（did I expect）。"},
+{id:"s3p4",s:3,t:"pt",q:"ムヒカさんは、なぜ those who only work … and endlessly want more and more を Truly poor people（本当に貧しい人）と呼んでいるのですか。",c:["満足することを知らず、心が満たされていないから","お金を持っていないから","仕事がないから","小さな家に住んでいるから"],a:"満足することを知らず、心が満たされていないから",exp:"本文⑫：もっともっと欲しがり続ける人は、いくら持っていても満足できない＝心が貧しい、という考え。"},
+{id:"s3e1",s:3,t:"yaku",q:"次の英文の意味として正しいものは？",en:"Never have I talked so much with Leo.",c:["私はレオとそんなに話したことは一度もありません。","私はレオといつもたくさん話しています。","レオは私とそんなに話したことがありません。","私はレオと話すのをやめません。"],a:"私はレオとそんなに話したことは一度もありません。",exp:"倒置：I have never talked so much with Leo. の never が文頭に出た形。"},
+{id:"s3e2",s:3,t:"yaku",q:"次の英文の意味として正しいものは？",en:"Little did I know about his family.",c:["彼の家族について、私は何も知りませんでした。","彼の家族について、私は少し知っていました。","彼の小さな家族について、私は知っていました。","彼は私の家族について何も知りませんでした。"],a:"彼の家族について、私は何も知りませんでした。",exp:"little ＋ know などの動詞 →「少しも～ない」。「少し知っていた」ではないので注意。"},
+{id:"s3e3",s:3,t:"yaku",q:"次の会話の意味として正しいものは？",en:"\"My father doesn't drink coffee.\" \"Neither do I.\"",c:["「父はコーヒーを飲みません」「私も飲みません」","「父はコーヒーを飲みません」「私も飲みます」","「父はコーヒーを飲みません」「私は飲みます」","「父はコーヒーを飲みません」「どちらも飲みません」"],a:"「父はコーヒーを飲みません」「私も飲みません」",exp:"Neither do I. ＝ I don't drink coffee, either.（私も～しない）。否定の文に「私もです」と答える形。「私も飲みます」は×。"},
+{id:"s3e4",s:3,t:"fill",q:"彼の忠告は選手たちにとって、とても価値のあるものでした。\nHis advice was (　) great (　) to the players.",c:["of / value","of / life","for / value","with / value"],a:"of / value",exp:"of value ＝ 価値のある。ここでは great が value を修飾している。"},
+{id:"s3e5",s:3,t:"fill",q:"祖父は田舎で幸せな生活を送るでしょう。\nMy grandfather will (　) a happy (　) in the countryside.",c:["live / life","life / live","live / value","have / live"],a:"live / life",exp:"live a ～ life ＝ ～な生活を送る。"},
+{id:"s3e6",s:3,t:"fill",q:"その技術はますます進歩してきました。\nThe technology has progressed more (　)(　).",c:["and / more","more / and","than / more","and / value"],a:"and / more",exp:"more and more ＝ ますます。"},
+{id:"s3e7",d:"Never did I imagine that Mika would become a doctor.",s:3,t:"nar",q:"私はミカが医者になるとは想像したこともありませんでした。",pre:"",suf:"Mika would become a doctor.",tiles:["I","that","did","imagine","never"],a:"never did i imagine that",exp:"倒置：否定語 Never で始め、そのあとを did I imagine と疑問文の語順にする。"},
+{id:"s3e8",d:"Rarely does Kota see American movies.",s:3,t:"nar",q:"コウタはアメリカ映画をめったに見ません。",pre:"",suf:".",tiles:["American movies","does","Kota","see","rarely"],a:"rarely does kota see american movies",exp:"倒置：rarely（めったに～ない）で始め、does Kota see と疑問文の語順にする。"},
+{id:"s3e9",d:"\"So am I.\"",s:3,t:"nar",q:"「私はSFに興味があります」「私もそうです」\n\"I am interested in science fiction.\"",pre:"\"",suf:".\"",tiles:["I","so","am"],a:"so am i",exp:"肯定の文に「私もそうです」は So ＋ 動詞 ＋ 主語。相手が be動詞（am）なので So am I。"},
+{id:"s3h1",s:3,t:"hat",q:"下線部の発音が見出し語と同じものは？\n見出し語：pl<u>ow</u>",c:["ア　spr<u>ou</u>t","イ　kn<u>ow</u>ledge","ウ　gl<u>o</u>bal"],a:"ア　spr<u>ou</u>t",ns:1,exp:"plow [pláu] と sprout [spráut] はどちらも［au］（アウ）。knowledge は［ɑ］、global は［ou］。"},
+{id:"s3h2",s:3,t:"hat",q:"下線部の発音が見出し語と同じものは？\n見出し語：h<u>u</u>mble",c:["ア　cons<u>u</u>mer","イ　s<u>u</u>burb","ウ　r<u>u</u>ral"],a:"イ　s<u>u</u>burb",ns:1,exp:"humble [hʌ́mbl] と suburb [sʌ́bəːrb] はどちらも［ʌ］（ア）。"}
+];
+
+/* 単語問題を自動で作る */
+VOCAB.forEach((v,i)=>{
+ const same=VOCAB.filter((w,j)=>j!==i);
+ Q.push({id:"v"+i+"e",s:v[0],t:"v1",q:"次の語句の意味は？",en:v[1],vi:i,a:v[3],pool:same.map(w=>w[3]),exp:(v[2]?"【"+v[2]+"】":"")+v[1]+" ＝ "+v[3]});
+ Q.push({id:"v"+i+"j",s:v[0],t:"v2",q:"「"+v[3]+"」を英語にすると？",vi:i,a:v[1],pool:same.map(w=>w[1]),exp:v[3]+" ＝ "+v[1]});
+});
+const QMAP={};Q.forEach(q=>QMAP[q.id]=q);
+
+const GRAM=[
+ {sec:1,title:"同格の that（～という…）",ids:["s1p3","s1p4","s1e1","s1e2","s1e6","s1e7"],
+  body:`<p><span class="box2">名詞 ＋ that ＋ 文</span> で「<b>～という</b>名詞」。that のあとの文が、前の名詞の中身を説明します。</p>
+  <div class="ex">The speech showed his <span class="hl">belief that</span> people had to change their lifestyle.<span class="j">その演説は、人々は生活スタイルを変えなければならない<b>という信念</b>を示した。（本文⑨）</span></div>
+  <p>よく出る名詞：<b>the news that ～</b>（～という知らせ）、<b>the fact that ～</b>（～という事実）、<b>the idea that ～</b>（～という考え）、<b>belief that ～</b>（～という信念）</p>
+  <p>⚠ 見分け方：that のあとが <b>抜けのない文</b> → 同格。<br>that のあとに <b>抜け（目的語など）がある</b> → 関係代名詞（「～した…」）。</p>
+  <div class="ex">the ideas that Ken told her ＿<span class="j">told の目的語が抜けている → 関係代名詞「ケンが彼女に話した考え」</span></div>`},
+ {sec:1,title:"the same ～ as … ／ that・those",ids:["s1p2","s1e3"],
+  body:`<p><span class="box2">the same ～ as …</span> で「…と同じ～」。</p>
+  <div class="ex">enjoy <span class="hl">the same</span> lifestyle <span class="hl">as that</span> in the rich Western societies<span class="j">豊かな欧米社会の<b>それ（生活スタイル）と同じ</b>生活スタイルを楽しむ（本文⑥）</span></div>
+  <p>同じ名詞のくり返しをさけるとき、<b>単数なら that、複数なら those</b> を使います。</p>`},
+ {sec:2,title:"強調構文 It was ～ that …",ids:["s2p2","s2p3","s2e1","s2e2","s2e6","s2e7","s2e8"],
+  body:`<p><span class="box2">It was ＿＿ that …</span> で「…したのは <b>＿＿</b> だ」。強調したい語句を It was と that ではさみます。</p>
+  <div class="ex">It was <span class="hl">13 years</span> that Mujica spent in jail.<span class="j">ムヒカが刑務所で過ごしたのは<b>13年間</b>だった。（本文⑥）</span></div>
+  <p>作り方：①ふつうの文を作る → ②強調したい語句を取り出す → ③ It was ＿ that のあとに残りを続ける。</p>
+  <div class="ex">I saw Saki <span class="hl">early in the morning</span>.<br>→ It was <span class="hl">early in the morning</span> that I saw Saki.</div>
+  <p>強調するのが<b>人</b>のときは that の代わりに <b>who</b> も使えます。<br>確かめ方：It was と that を消すと、ふつうの文にもどります。</p>`},
+ {sec:3,title:"倒置（否定語が文の頭に出る）",ids:["s3p2","s3p3","s3e1","s3e2","s3e3","s3e7","s3e8","s3e9"],
+  body:`<p><b>Never / Little / Rarely</b> など否定の意味の語が文の頭に出ると、そのあとは<b>疑問文と同じ語順</b>になります。</p>
+  <div class="ex">He never needed fancy things.<br>→ <span class="hl">Never did he need</span> fancy things to be happy.<span class="j">彼は幸せになるために高価な物を決して必要としなかった。（本文⑨）</span></div>
+  <p>・<b>Never</b>：決して～ない　・<b>Little</b>：少しも～ない　・<b>Rarely</b>：めったに～ない</p>
+  <p>「私もです」の言い方も同じ語順です。</p>
+  <div class="ex">"I am interested in science fiction." "<span class="hl">So am I.</span>"<span class="j">（肯定に）私もそうです</span></div>
+  <div class="ex">"My father doesn't drink coffee." "<span class="hl">Neither do I.</span>"<span class="j">（否定に）私も飲みません ← 「飲みます」ではない！</span></div>`},
+ {sec:3,title:"SVOC の受け身（～と呼ばれる）",ids:["s3p1"],
+  body:`<p><span class="box2">call A B</span>（AをBと呼ぶ）の受け身は <span class="box2">A is called B</span>（AはBと呼ばれる）。</p>
+  <div class="ex">He <span class="hl">was called</span> "the world's poorest president".<span class="j">彼は「世界でいちばん貧しい大統領」と呼ばれた。（本文②）</span></div>
+  <div class="ex">People call him Chris for short.<br>→ He is called Chris for short.<span class="j">彼は略してクリスと呼ばれている。</span></div>`}
+];
+
+/* ================= 共通 ================= */
+const $=id=>document.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function strip(s){return String(s).replace(/<[^>]+>/g,"")}
+function nl(s){return esc(s).replace(/\n/g,"<br>")}
+function nlh(s){return String(s).replace(/\n/g,"<br>")}
+const TYPENAME=Object.fromEntries(TYPES);
+
+/* 音声 */
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/Samantha|Google US/i.test(v.name))||vs.find(v=>/en-US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t,rate){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(strip(t).replace(/～/g,"").replace(/one's/g,"one's"));u.lang="en-US";if(voice)u.voice=voice;u.rate=rate||0.85;speechSynthesis.speak(u)}
+function stopSpeak(){if('speechSynthesis' in window)speechSynthesis.cancel()}
+
+/* 記録 */
+const SKEY="l9_poorest_stats_v1";
+let ST={};try{ST=JSON.parse(localStorage.getItem(SKEY)||"{}")}catch(e){ST={}}
+function saveST(){try{localStorage.setItem(SKEY,JSON.stringify(ST))}catch(e){}}
+function rec(id,ok){const r=ST[id]||{c:0,w:0};ok?r.c++:r.w++;r.t=Date.now();ST[id]=r;saveST()}
+
+/* タブ */
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+function showTab(t){
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+ document.querySelectorAll(".tab").forEach(d=>d.classList.remove("show"));
+ $("t_"+t).classList.add("show");
+ if(t==="nig")renderRank();
+ window.scrollTo(0,0);
+}
+function segInit(id,cb){const box=$(id);box.querySelectorAll("button").forEach(b=>b.onclick=()=>{box.querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");cb&&cb(b)})}
+function segVal(id,key){const b=$(id).querySelector("button.on");return b?b.dataset[key]:null}
+function chips(id,items,onAll){$(id).innerHTML=items.map(([v,l])=>`<button class="chip ${onAll?'on':''}" data-v="${v}">${l}</button>`).join("");$(id).querySelectorAll(".chip").forEach(b=>b.onclick=()=>b.classList.toggle("on"))}
+function chipVals(id){return [...$(id).querySelectorAll(".chip.on")].map(b=>b.dataset.v)}
+
+/* ================= 本文 ================= */
+let honSec=1,jaAll=false;
+$("honSec").innerHTML=SECS.map(s=>`<button data-s="${s}" class="${s===1?'on':''}">Section ${s}</button>`).join("");
+segInit("honSec",b=>{honSec=+b.dataset.s;renderHon()});
+function renderHon(){
+ $("honBody").className="card"+(jaAll?" showja":"");
+ $("honBody").innerHTML=TEXT[honSec].map((s,i)=>`<div class="sent"><span class="num">${s[0]}</span>`+
+  s[1].map((c,k)=>`<span class="chunk" onclick="this.classList.toggle('open')"><span class="en">${esc(c[0])}</span> <span class="ja">（${esc(c[1])}）</span></span>${k<s[1].length-1?'<span class="sl">/</span>':''}`).join(" ")+
+  ` <button class="spk" onclick="speakSent(${i})">🔊</button></div>`).join("");
+}
+function toggleJaAll(){jaAll=!jaAll;$("jaAll").classList.toggle("on",jaAll);$("jaAll").textContent=jaAll?"和訳をかくす":"和訳をすべて表示";renderHon()}
+function speakSent(i){speak(TEXT[honSec][i][1].map(c=>c[0]).join(" "))}
+function speakSection(){speak(TEXT[honSec].map(s=>s[1].map(c=>c[0]).join(" ")).join(" "),0.8)}
+renderHon();
+
+/* ================= 単語 ================= */
+let tanSec=1,tanDir="e",cards=[],ci=0,flipped=false;
+$("tanSec").innerHTML=SECS.map(s=>`<button data-s="${s}" class="${s===1?'on':''}">Section ${s}</button>`).join("")+`<button data-s="0">全部</button>`;
+segInit("tanSec",b=>{tanSec=+b.dataset.s;initCards()});
+segInit("tanDir",b=>{tanDir=b.dataset.d;flipped=false;renderCard()});
+function initCards(){cards=VOCAB.map((v,i)=>i).filter(i=>!tanSec||VOCAB[i][0]===tanSec);ci=0;flipped=false;renderCard();renderVlist()}
+function renderCard(){
+ const v=VOCAB[cards[ci]];
+ const front=tanDir==="e"?esc(v[1]):esc(v[3]);
+ const back=tanDir==="e"?(v[2]?`<span class="pos">${v[2]}</span>`:"")+esc(v[3]):esc(v[1]);
+ $("fc").innerHTML=`<div style="font-size:12px;color:#999">${ci+1} / ${cards.length}　Section ${v[0]}</div><div class="w" style="${tanDir==='j'?'font-size:22px':''}">${front}</div>`+
+  (flipped?`<div class="m" style="${tanDir==='j'?'color:#1f5fa8;font-size:26px;font-weight:bold':''}">${back}</div>`:`<div class="hint">タップして答えを見る</div>`);
+}
+function flipCard(){flipped=!flipped;renderCard();if(flipped&&tanDir==="j")speak(VOCAB[cards[ci]][1])}
+function moveCard(d){ci=(ci+d+cards.length)%cards.length;flipped=false;renderCard();if(tanDir==="e")speak(VOCAB[cards[ci]][1])}
+function shuffleCards(){cards=shuffle(cards);ci=0;flipped=false;renderCard()}
+function speakCard(e){e.stopPropagation();speak(VOCAB[cards[ci]][1])}
+function renderVlist(){$("vlist").innerHTML=cards.map(i=>{const v=VOCAB[i];return `<tr><td><b>${esc(v[1])}</b> <button class="spk" style="width:26px;height:26px;font-size:12px" onclick="speak('${esc(v[1]).replace(/'/g,"\\'")}')">🔊</button></td><td>${v[2]?`<span class="pos">${v[2]}</span>`:""}${esc(v[3])}</td></tr>`}).join("")}
+function startVocabQuiz(){const tt=tanDir==="e"?"v1":"v2";const list=Q.filter(q=>q.t===tt&&(!tanSec||q.s===tanSec));startQuiz(shuffle(list),"単語テスト（"+(tanDir==="e"?"英→日":"日→英")+"）")}
+initCards();
+
+/* ================= 文法 ================= */
+$("gramBody").innerHTML=GRAM.map((g,i)=>`<div class="card gram"><div class="qtype">Section ${g.sec}</div><h2>${g.title}</h2>${g.body}<button class="btn wide" onclick="startGram(${i})">この文法の問題を解く（${g.ids.length}問）</button></div>`).join("");
+function startGram(i){startQuiz(shuffle(GRAM[i].ids.map(id=>QMAP[id])),GRAM[i].title)}
+
+/* ================= 問題 ================= */
+chips("qSec",SECS.map(s=>[s,"Section "+s]),true);
+chips("qType",TYPES,true);
+segInit("qNum");
+function filterQ(secs,types){secs=secs.map(Number);return Q.filter(q=>secs.includes(q.s)&&types.includes(q.t))}
+function startFromSetup(){
+ const list=filterQ(chipVals("qSec"),chipVals("qType"));
+ if(!list.length){alert("範囲と種類を1つ以上選んでください。");return}
+ const n=+segVal("qNum","n");
+ let l=shuffle(list);if(n)l=l.slice(0,n);
+ startQuiz(l,"問題演習");
+}
+let QS=null;
+function startQuiz(list,title){
+ if(!list.length){alert("問題がありません。");return}
+ QS={list,i:0,ok:0,wrong:[],title,answered:false};
+ showTab("mon");$("quizSetup").style.display="none";$("quizArea").style.display="block";renderQ();
+}
+function quitQuiz(){QS=null;stopSpeak();$("quizSetup").style.display="block";$("quizArea").style.display="none"}
+function buildChoices(q){
+ if(q.ns)return q.c.slice();
+ if(q.pool){const ds=shuffle([...new Set(q.pool.filter(x=>x!==q.a))]).slice(0,3);return shuffle([q.a,...ds])}
+ return shuffle(q.c);
+}
+function renderQ(){
+ const q=QS.list[QS.i];QS.answered=false;
+ let h=`<div class="card"><div class="qhead"><span>${esc(QS.title)}　${QS.i+1} / ${QS.list.length}</span><span>正解 ${QS.ok}</span></div>`+
+  `<div class="qtype">Section ${q.s}・${TYPENAME[q.t]}</div><div class="qtext">${nlh(q.t==="hat"?q.q:esc(q.q))}</div>`;
+ if(q.en)h+=`<div class="qen">${esc(q.en)} <button class="spk" onclick="speak(QS.list[QS.i].en)">🔊</button></div>`;
+ if(q.t==="nar"){
+  QS.sel=[];QS.tiles=shuffle(q.tiles.map((w,i)=>({w,i})));
+  h+=`<div class="lbl">下の語句をタップして並べよう（まちがえたら上の語句をタップで戻せます）</div>
+  <div class="fixed">${esc(q.pre)}</div><div class="tiles ansbox" id="ansT"></div><div class="fixed" style="text-align:right">${esc(q.suf)}</div>
+  <div class="tiles" id="poolT"></div><div class="row" style="margin-top:6px"><button class="btn" onclick="checkNar()">答え合わせ</button><button class="btn gray" onclick="QS.sel=[];drawTiles()">やり直し</button></div>`;
+ }else{
+  QS.ch=buildChoices(q);
+  h+=`<div class="choices ${q.c===TF?'tf':''}" id="chs">`+QS.ch.map((c,i)=>`<button onclick="answer(${i})">${q.t==="hat"?c:esc(c)}</button>`).join(" ")+`</div>`;
+ }
+ h+=`<div id="resBox"></div></div>
+ <div class="row" style="justify-content:space-between"><button class="btn gray" onclick="showWrongNow()">間違えた問題を見る（${QS.wrong.length}）</button><button class="btn gray" onclick="if(confirm('演習をやめますか？'))quitQuiz()">やめる</button></div>`;
+ $("quizArea").innerHTML=h;
+ if(q.t==="nar")drawTiles();
+ if(q.t==="v1")speak(q.en);
+ window.scrollTo(0,0);
+}
+function drawTiles(){
+ $("ansT").innerHTML=QS.sel.map((ti,k)=>`<button class="tile" onclick="QS.sel.splice(${k},1);drawTiles()">${esc(QS.tiles[ti].w)}</button>`).join("");
+ $("poolT").innerHTML=QS.tiles.map((t,k)=>`<button class="tile ${QS.sel.includes(k)?'used':''}" onclick="if(!QS.sel.includes(${k})){QS.sel.push(${k});drawTiles()}">${esc(t.w)}</button>`).join("");
+}
+function norm(s){return s.toLowerCase().replace(/[.,?!"]/g,"").replace(/\s+/g," ").trim()}
+function checkNar(){
+ if(QS.answered)return;const q=QS.list[QS.i];
+ if(QS.sel.length<q.tiles.length){alert("すべての語句を使って並べてください。");return}
+ const s=QS.sel.map(k=>QS.tiles[k].w).join(" ");
+ const ok=norm(s)===norm(q.a)||(q.id==="s2e8"&&norm(s)===norm("it was the president of Uruguay that"));
+ finish(q,ok,full(q));
+}
+function full(q){return q.d}
+function answer(i){
+ if(QS.answered)return;const q=QS.list[QS.i];const ok=QS.ch[i]===q.a;
+ const bs=$("chs").querySelectorAll("button");
+ bs.forEach((b,k)=>{if(QS.ch[k]===q.a)b.classList.add("right")});if(!ok)bs[i].classList.add("wrong");
+ finish(q,ok,q.a);
+}
+function finish(q,ok,ans){
+ QS.answered=true;rec(q.id,ok);if(ok)QS.ok++;else QS.wrong.push(q);
+ const last=QS.i>=QS.list.length-1;
+ $("resBox").innerHTML=`<div class="res ${ok?'o':'x'}"><b>${ok?'⭕ 正解！':'❌ 不正解'}</b><br>${ok?'':'正解：<b>'+(q.t==="hat"?ans:esc(ans))+'</b><br>'}${esc(q.exp)}</div>
+  <button class="btn wide" onclick="nextQ()">${last?'結果を見る':'次の問題へ ▶'}</button>`;
+ if(q.t==="nar"||q.t==="v2")speak(q.t==="nar"?ans:q.a);
+}
+function nextQ(){stopSpeak();if(QS.i>=QS.list.length-1){showResult();return}QS.i++;renderQ()}
+function wrongListHtml(list){return list.length?list.map((q,k)=>`<div class="rk"><span class="no">${k+1}</span><div class="tx"><span class="badge">S${q.s}・${TYPENAME[q.t]}</span>${q.t==="hat"?q.q.replace(/\n/g," "):esc(q.q.replace(/\n/g," "))}${q.en?'<br><i>'+esc(q.en)+'</i>':''}<br>→ <b style="color:#1a9b55">${q.t==="nar"?esc(full(q)):(q.t==="hat"?q.a:esc(q.a))}</b></div></div>`).join(""):"<p>まだ間違えた問題はありません。</p>"}
+function showWrongNow(){
+ const m=document.createElement("div");m.className="modal show";m.onclick=e=>{if(e.target===m)m.remove()};
+ m.innerHTML=`<div class="box"><button class="close" onclick="this.closest('.modal').remove()">✕</button><h2>今回間違えた問題</h2>${wrongListHtml(QS.wrong)}</div>`;document.body.appendChild(m);
+}
+function showResult(){
+ const n=QS.list.length,p=Math.round(QS.ok/n*100);
+ $("quizArea").innerHTML=`<div class="card" style="text-align:center"><h2>結果</h2><div style="font-size:40px;font-weight:bold;color:${p>=80?'#1a9b55':'#1f5fa8'}">${QS.ok} / ${n}</div><div>${p}点　${p===100?'パーフェクト！🎉':p>=80?'よくできました！':p>=50?'もう少し！':'もう一度やってみよう！'}</div></div>
+ <div class="card"><h3 style="margin-top:0">間違えた問題</h3>${wrongListHtml(QS.wrong)}</div>
+ ${QS.wrong.length?'<button class="btn wide ng" onclick="startQuiz(shuffle(QS.wrong),\'間違えた問題\')">間違えた問題だけもう一度</button>':''}
+ <button class="btn wide gray" onclick="quitQuiz()">最初の画面にもどる</button>`;
+ window.scrollTo(0,0);
+}
+
+/* ================= 苦手 ================= */
+function qLabel(q){if(q.t==="v1")return q.en+"（意味）";if(q.t==="v2")return "「"+VOCAB[q.vi][3]+"」の英語";return strip(q.q.replace(/\n/g," "))+(q.en?" "+q.en:"")}
+function renderRank(){
+ const arr=Object.entries(ST).filter(([id,r])=>r.w>0&&QMAP[id]).sort((a,b)=>b[1].w-a[1].w||a[1].c-b[1].c);
+ $("rankBody").innerHTML=arr.length?arr.slice(0,50).map(([id,r],k)=>{const q=QMAP[id];return `<div class="rk"><span class="no">${k+1}</span><div class="tx"><span class="badge">S${q.s}・${TYPENAME[q.t]}</span>${esc(qLabel(q))}<br>→ <b style="color:#1a9b55">${q.t==="nar"?esc(full(q)):(q.t==="hat"?q.a:esc(q.a))}</b></div><div class="st">✕${r.w}　○${r.c}</div></div>`}).join(""):"<p>まだ記録がありません。問題を解くと、ここに苦手な問題が並びます。</p>";
+}
+function startWeak(){const l=Object.entries(ST).filter(([id,r])=>r.w>0&&r.w>=r.c&&QMAP[id]).map(([id])=>QMAP[id]);if(!l.length){alert("苦手な問題はまだありません。");return}startQuiz(shuffle(l),"苦手な問題")}
+function resetStats(){if(confirm("これまでの記録をすべて消しますか？")){ST={};saveST();renderRank()}}
+
+/* ================= プリント ================= */
+chips("pSec",SECS.map(s=>[s,"Section "+s]),true);
+chips("pType",TYPES,true);
+segInit("pOrd");segInit("pNum");
+const KANA=["ア","イ","ウ","エ"];
+let PL=[];
+function makePrint(){
+ let l=filterQ(chipVals("pSec"),chipVals("pType"));
+ if(!l.length){alert("範囲と種類を1つ以上選んでください。");return}
+ if(segVal("pOrd","o")==="s")l=shuffle(l);
+ const n=+segVal("pNum","n");if(n)l=l.slice(0,n);
+ PL=l.map(q=>{const c=q.t==="nar"?null:(q.t==="v1"||q.t==="v2")?null:(q.ns?q.c.slice():shuffle(q.c));return {q,c}});
+ const secs=chipVals("pSec").join("・");
+ let h=`<h1>Lesson 9 The World's Poorest President（Section ${secs}）</h1><div class="nm">　　年　　組　　番　名前＿＿＿＿＿＿＿＿＿＿　　　／${PL.length}</div>`;
+ h+=PL.map((p,k)=>{const q=p.q;let s=`<div class="pq"><b>${k+1}.</b> `;
+  if(q.t==="v1")s+=`<span class="badge">単語</span> <b>${esc(q.en)}</b> の意味　（<span class="line"></span>）`;
+  else if(q.t==="v2")s+=`<span class="badge">単語</span> 「${esc(VOCAB[q.vi][3])}」を英語に　（<span class="line"></span>）`;
+  else if(q.t==="nar")s+=`<span class="badge">並べかえ</span> ${nl(q.q)}<div class="c">${esc(q.pre)} ( ${shuffle(q.tiles).map(esc).join(" / ")} ) ${esc(q.suf)}</div><div class="c" style="margin-top:6px"><span class="line" style="min-width:90%">&nbsp;</span></div>`;
+  else{s+=`<span class="badge">${TYPENAME[q.t]}</span> ${q.t==="hat"?nlh(q.q):nl(q.q)}`+(q.en?`<div class="c"><i>${esc(q.en)}</i></div>`:"")+
+   `<div class="c">`+p.c.map((c,i)=>q.c===TF?`${c}`:(q.t==="hat"?c:`${KANA[i]}　${esc(c)}`)).join(p.c.some(c=>strip(c).length>14)?"<br>":"　　")+`</div><div class="c">答え（　　　　）</div>`}
+  return s+"</div>"}).join("");
+ h+=`<div class="ansPage"><h1>解答</h1>`+PL.map((p,k)=>{const q=p.q;let a;
+  if(q.t==="nar")a=esc(full(q));else if(q.t==="v1"||q.t==="v2")a=esc(q.a);else if(q.c===TF)a=q.a.charAt(0);else if(q.t==="hat")a=q.a;else a=KANA[p.c.indexOf(q.a)]+"　"+esc(q.a);
+  return `<div class="pq"><b>${k+1}.</b> ${a}</div>`}).join("")+`</div>`;
+ $("printSheet").innerHTML=h;$("prevWrap").innerHTML=h;
+}
+function doPrint(){if(!PL.length)makePrint();if(PL.length)setTimeout(()=>window.print(),100)}
+
+/* ================= 検索 ================= */
+function hl(s,k){const e=esc(s);if(!k)return e;const re=new RegExp("("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");return e.replace(re,"<mark>$1</mark>")}
+function stTxt(id){const r=ST[id];return r?`○${r.c}　✕${r.w}`:"未挑戦"}
+function doSearch(){
+ const k=$("sq").value.trim();if(!k){$("sres").innerHTML="";return}
+ const lk=k.toLowerCase();let out="";
+ const vs=VOCAB.map((v,i)=>[v,i]).filter(([v])=>(v[1]+v[3]).toLowerCase().includes(lk));
+ if(vs.length)out+=`<div class="card"><h3 style="margin-top:0">単語（${vs.length}）</h3>`+vs.map(([v,i])=>`<div class="rk"><div class="tx"><span class="badge">S${v[0]}</span><b>${hl(v[1],k)}</b>　${v[2]?`<span class="pos">${v[2]}</span>`:""}${hl(v[3],k)}</div><div class="st">英→日 ${stTxt("v"+i+"e")}<br>日→英 ${stTxt("v"+i+"j")}</div></div>`).join("")+`</div>`;
+ const ss=[];SECS.forEach(s=>TEXT[s].forEach(t=>{const en=t[1].map(c=>c[0]).join(" "),ja=t[1].map(c=>c[1]).join("");if((en+ja).toLowerCase().includes(lk))ss.push([s,t[0],en,ja])}));
+ if(ss.length)out+=`<div class="card"><h3 style="margin-top:0">本文（${ss.length}）</h3>`+ss.map(x=>`<div class="rk"><div class="tx"><span class="badge">S${x[0]} ${x[1]}</span>${hl(x[2],k)}<br><span style="color:#c0392b">${hl(x[3],k)}</span></div></div>`).join("")+`</div>`;
+ const gs=GRAM.map((g,i)=>[g,i]).filter(([g])=>(g.title+strip(g.body)).toLowerCase().includes(lk));
+ if(gs.length)out+=`<div class="card"><h3 style="margin-top:0">文法（${gs.length}）</h3>`+gs.map(([g,i])=>`<div class="rk"><div class="tx"><span class="badge">S${g.sec}</span>${hl(g.title,k)}</div><button class="chip" onclick="showTab('bun')">見る</button></div>`).join("")+`</div>`;
+ const qs=Q.filter(q=>q.t!=="v1"&&q.t!=="v2"&&(strip(q.q)+(q.en||"")+strip(q.a)+q.exp).toLowerCase().includes(lk));
+ if(qs.length)out+=`<div class="card"><h3 style="margin-top:0">問題（${qs.length}）</h3>`+qs.map(q=>`<div class="rk"><div class="tx"><span class="badge">S${q.s}・${TYPENAME[q.t]}</span>${hl(strip(q.q.replace(/\n/g," ")),k)}${q.en?'<br><i>'+hl(q.en,k)+'</i>':''}<br>→ <b style="color:#1a9b55">${q.t==="nar"?esc(full(q)):hl(strip(q.a),k)}</b></div><div class="st">${stTxt(q.id)}<br><button class="chip" style="margin-top:4px" onclick="startQuiz([QMAP['${q.id}']],'検索から')">解く</button></div></div>`).join("")+`</div>`;
+ $("sres").innerHTML=out||`<div class="card">見つかりませんでした。</div>`;
+}
+
+/* ヘルプ */
+function openHelp(){$("help").classList.add("show")}
+function closeHelp(){$("help").classList.remove("show")}
+</script>
+</body>
+</html>
