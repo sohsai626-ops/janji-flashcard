@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>x＝3 ってなに？ 〜空間の図形と方程式〜</title>
+<style>
+:root{--main:#1f5fa8;--ok:#1a9b55;--ng:#d64545}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:#f6f7fb;color:#222;font-size:17px;line-height:1.6}
+header{position:sticky;top:0;z-index:5;background:var(--main);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:8px}
+header h1{flex:1;font-size:16px;margin:0}
+.hbtn{background:#fff;color:var(--main);border:none;border-radius:50%;width:34px;height:34px;font-size:18px;font-weight:bold}
+.bar{height:6px;background:#dfe5f0}.bar div{height:6px;background:#ffb52e;transition:width .3s}
+main{max-width:560px;margin:0 auto;padding:12px 12px 90px}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+h2{font-size:19px;margin:0 0 8px;color:var(--main)}
+.say{background:#fff7dd;border-radius:12px;padding:10px 12px;margin:10px 0}
+.key{background:#ffe9e9;border:2px solid var(--ng);border-radius:12px;padding:10px 12px;margin:10px 0;font-weight:bold;text-align:center}
+.btn{border:none;background:var(--main);color:#fff;border-radius:12px;padding:12px 14px;font-size:16px;font-weight:bold;width:100%;margin-top:8px}
+.btn.sub{background:#8a93a5}.btn.org{background:#e8891a}
+.row{display:flex;gap:8px}.row .btn{flex:1}
+canvas{display:block;width:100%;background:#fff;border:1px solid #dde3ee;border-radius:12px;touch-action:none}
+.coord{text-align:center;font-size:20px;font-weight:bold;color:var(--main);min-height:32px;margin-top:6px}
+.mini{font-size:13px;color:#777;text-align:center}
+.ch button{display:block;width:100%;border:2px solid #d8dde8;background:#fff;border-radius:12px;padding:11px;margin:7px 0;font-size:17px;font-weight:bold;text-align:left}
+.ch button.right{border-color:var(--ok);background:#e9f8ef}.ch button.wrong{border-color:var(--ng);background:#fdecec}
+.res{margin-top:8px;padding:10px 12px;border-radius:12px}
+.res.o{background:#e9f8ef;border:1px solid var(--ok)}.res.x{background:#fdecec;border:1px solid var(--ng)}
+.tf{display:flex;gap:8px}.tf button{flex:1;text-align:center}
+.qpt{font-size:22px;font-weight:bold;text-align:center;margin:6px 0}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+.nav button{flex:1;margin:0}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9;padding:16px;overflow:auto}
+.modal.show{display:block}.modal .box{background:#fff;border-radius:14px;max-width:560px;margin:20px auto;padding:16px}
+.close{float:right;border:none;background:#eee;border-radius:50%;width:32px;height:32px}
+.red{color:#d64545;font-weight:bold}.blue{color:#1f5fa8;font-weight:bold}.grn{color:#1a9b55;font-weight:bold}
+</style>
+</head>
+<body>
+<header><h1>x＝3 ってなに？ 〜空間の図形と方程式〜</h1><button class="hbtn" onclick="help(1)">？</button></header>
+<div class="bar"><div id="bar"></div></div>
+<main id="main"></main>
+<div class="nav"><button class="btn sub" onclick="go(-1)">◀ もどる</button><button class="btn" id="nextBtn" onclick="go(1)">次へ ▶</button></div>
+
+<div class="modal" id="help" onclick="if(event.target===this)help(0)"><div class="box">
+<button class="close" onclick="help(0)">✕</button>
+<h2>使い方</h2>
+<p>上から順に「次へ」で進みます。問題に正解すると次に進めます。</p>
+<p><b>点を打つボタン</b>を押すと、条件に合う点が1つずつ（または10こずつ）打たれます。たくさん打つと、どんな形になるかが見えてきます。</p>
+<p><b>空間の図</b>は、指でなぞる（ドラッグする）と回転します。いろいろな向きから見てみよう。「向きをもどす」で最初の向きにもどります。</p>
+<p>このアプリで覚えること：<br><span class="red">式に書いていない文字は「何でもいい」</span><br>x＝3 は「x が 3 なら、y と z は何でもいい点」の集まり。</p>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+function help(on){$("help").classList.toggle("show",!!on)}
+function rnd(a,b){return Math.round((a+Math.random()*(b-a))*2)/2}
+function fmt(v){return (v<0?"−":"")+Math.abs(v)}
+function lock(){$("nextBtn").disabled=true;$("nextBtn").style.opacity=.4}
+function unlock(){$("nextBtn").disabled=false;$("nextBtn").style.opacity=1}
+
+/* ===== 2D座標平面 ===== */
+function Plane2D(cv){
+ const ctx=cv.getContext("2d"),dpr=window.devicePixelRatio||1;
+ const W=cv.clientWidth,H=W;cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.scale(dpr,dpr);
+ const s=W/12,cx=W/2,cy=H/2;const P=(x,y)=>[cx+x*s,cy-y*s];
+ const o={pts:[],line:null,last:null};
+ o.draw=()=>{
+  ctx.clearRect(0,0,W,H);ctx.strokeStyle="#eef1f6";ctx.lineWidth=1;
+  for(let i=-5;i<=5;i++){ctx.beginPath();ctx.moveTo(...P(i,-5.5));ctx.lineTo(...P(i,5.5));ctx.stroke();ctx.beginPath();ctx.moveTo(...P(-5.5,i));ctx.lineTo(...P(5.5,i));ctx.stroke()}
+  ctx.strokeStyle="#333";ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(...P(-5.7,0));ctx.lineTo(...P(5.7,0));ctx.stroke();ctx.beginPath();ctx.moveTo(...P(0,-5.7));ctx.lineTo(...P(0,5.7));ctx.stroke();
+  ctx.fillStyle="#333";ctx.font="bold 16px sans-serif";ctx.fillText("x",...P(5.6,0.35));ctx.fillText("y",...P(0.25,5.5));ctx.fillText("O",...P(-0.45,-0.45));
+  ctx.font="12px sans-serif";ctx.fillStyle="#888";for(let i=-5;i<=5;i++){if(i){ctx.fillText(i,P(i,0)[0]-4,P(i,0)[1]+14);ctx.fillText(i,P(0,i)[0]+5,P(0,i)[1]+4)}}
+  if(o.line){ctx.strokeStyle="rgba(214,69,69,.85)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(...P(o.line,-5.6));ctx.lineTo(...P(o.line,5.6));ctx.stroke()}
+  for(const p of o.pts){ctx.fillStyle=p===o.last?"#e8891a":"#1f5fa8";ctx.beginPath();ctx.arc(...P(p[0],p[1]),p===o.last?7:5,0,7);ctx.fill()}
+ };
+ o.draw();return o;
+}
+
+/* ===== 3D空間 ===== */
+function Space3D(cv){
+ const ctx=cv.getContext("2d"),dpr=window.devicePixelRatio||1;
+ const W=cv.clientWidth,H=Math.round(W*1.0);cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.scale(dpr,dpr);
+ const o={pts:[],planes:[],lines:[],last:null,yaw:-0.75,pitch:0.42};
+ const s=W/13,cx=W/2,cy=H/2+10;
+ function proj(x,y,z){ // 数学の座標 → 画面
+  let X=y,Y=z,Z=x;
+  const ca=Math.cos(o.yaw),sa=Math.sin(o.yaw),cb=Math.cos(o.pitch),sb=Math.sin(o.pitch);
+  const X1=X*ca+Z*sa,Z1=-X*sa+Z*ca;
+  const Y2=Y*cb-Z1*sb,Z2=Y*sb+Z1*cb;
+  const f=18/(18-Z2);return [cx+X1*s*f,cy-Y2*s*f,Z2];
+ }
+ function L(a,b,col,w,dash){const p=proj(...a),q=proj(...b);ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash||[]);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.setLineDash([])}
+ function poly(ps,fill,stroke){ctx.beginPath();ps.forEach((p,i)=>{const q=proj(...p);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+ function lab(t,p,col){const q=proj(...p);ctx.fillStyle=col||"#333";ctx.font="bold 17px sans-serif";ctx.fillText(t,q[0]-5,q[1]+5)}
+ o.draw=()=>{
+  ctx.clearRect(0,0,W,H);
+  const R=4.5;
+  // 平面
+  for(const pl of o.planes){
+   const v=pl.v,c=pl.col||"rgba(214,69,69,0.25)",e=pl.edge||"rgba(214,69,69,0.9)";
+   if(pl.a==="x")poly([[v,-R,-R],[v,R,-R],[v,R,R],[v,-R,R]],c,e);
+   if(pl.a==="y")poly([[-R,v,-R],[R,v,-R],[R,v,R],[-R,v,R]],c,e);
+   if(pl.a==="z")poly([[-R,-R,v],[R,-R,v],[R,R,v],[-R,R,v]],c,e);
+  }
+  // 軸
+  L([-5,0,0],[5.5,0,0],"#333",2);L([0,-5,0],[0,5.5,0],"#333",2);L([0,0,-5],[0,0,5.5],"#333",2);
+  lab("x",[5.9,0,0]);lab("y",[0,5.9,0]);lab("z",[0,0,5.9]);lab("O",[-0.4,-0.4,-0.4],"#555");
+  ctx.font="12px sans-serif";ctx.fillStyle="#999";
+  for(let i=-4;i<=4;i+=2){if(!i)continue;let q=proj(i,0,0);ctx.fillText(i,q[0]-4,q[1]+14);q=proj(0,i,0);ctx.fillText(i,q[0]-4,q[1]+14);q=proj(0,0,i);ctx.fillText(i,q[0]+6,q[1]+4)}
+  for(const ln of o.lines)L(ln.a,ln.b,ln.col||"rgba(214,69,69,.9)",5);
+  // 点（奥から）
+  const ps=o.pts.map(p=>({p,d:proj(...p)})).sort((a,b)=>a.d[2]-b.d[2]);
+  for(const {p,d} of ps){
+   if(o.guide&&p===o.last){ // 点から各平面への補助線
+    L([p[0],p[1],0],p,"#bbb",1,[4,4]);L([p[0],0,0],[p[0],p[1],0],"#bbb",1,[4,4]);L([0,p[1],0],[p[0],p[1],0],"#bbb",1,[4,4]);
+   }
+   ctx.fillStyle=p===o.last?"#e8891a":(p.c||"#1f5fa8");ctx.beginPath();ctx.arc(d[0],d[1],p===o.last?7:4.5,0,7);ctx.fill()
+  }
+ };
+ let drag=null;
+ cv.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY,o.yaw,o.pitch];cv.setPointerCapture(e.pointerId)});
+ cv.addEventListener("pointermove",e=>{if(!drag)return;o.yaw=drag[2]+(e.clientX-drag[0])*0.01;o.pitch=Math.max(-1.2,Math.min(1.3,drag[3]+(e.clientY-drag[1])*0.01));o.draw()});
+ cv.addEventListener("pointerup",()=>drag=null);
+ o.reset=()=>{o.yaw=-0.75;o.pitch=0.42;o.draw()};
+ o.draw();return o;
+}
+
+/* ===== 選択問題 ===== */
+function quiz(area,q,after){
+ const id="q"+Math.random().toString(36).slice(2);let done=false;
+ $(area).innerHTML=`<div class="say"><b>${q.text}</b></div><div class="ch ${q.tf?'tf':''}" id="${id}">`+q.c.map(c=>`<button>${c}</button>`).join("")+`</div><div id="${id}r"></div>`;
+ [...$(id).children].forEach(b=>b.onclick=()=>{
+  if(done)return;
+  if(b.textContent===q.a){b.classList.add("right");done=true;$(id+"r").innerHTML=`<div class="res o"><b>⭕ 正解！</b><br>${q.ok||""}</div>`;after&&after()}
+  else{b.classList.add("wrong");$(id+"r").innerHTML=`<div class="res x"><b>❌ ちがうよ</b><br>${q.ng||"もう一度考えてみよう。"}</div>`}
+ });
+}
+function series(area,list,done){
+ let i=0;
+ const show=()=>{const box=document.createElement("div");$(area).innerHTML=`<div class="mini">${i+1} / ${list.length}</div><div id="${area}_in"></div>`;
+  quiz(area+"_in",list[i],()=>{list[i].after&&list[i].after();if(i<list.length-1){const b=document.createElement("button");b.className="btn";b.textContent="次の問題 ▶";b.onclick=()=>{i++;show()};$(area+"_in").appendChild(b)}else done&&done()})};
+ show();
+}
+
+/* ===== ページ ===== */
+const PAGES=[];
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>「x＝3 を図にかいて」と言われたら…</h2>
+ <div class="say">「y や z が書いてないから、かけない…」</div>
+ <p>そう思った人、実はその<b>「書いてない」がヒント</b>です。</p>
+ <div class="key">式に書いていない文字は<br>「何でもいい」という意味！</div>
+ <p>x＝3 は、「<b>x が 3 なら、ほかは何でもいい点</b>」を<b>ぜんぶ集めたもの</b>です。</p>
+ <p>数直線 → 平面 → 空間 の順に、自分で点を打ってたしかめよう！</p></div>`;
+ unlock();
+});
+/* 数直線 */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>① 数直線の x＝3</h2>
+ <canvas id="c1" height="90"></canvas>
+ <div class="say">数直線には x しかありません。<br>x＝3 は、3 のところの<b>点1つ</b>だけ。</div>
+ <div id="q1"></div></div>`;
+ const cv=$("c1"),ctx=cv.getContext("2d"),dpr=devicePixelRatio||1,W=cv.clientWidth,H=90;cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";ctx.scale(dpr,dpr);
+ const s=W/12,cx=W/2;ctx.strokeStyle="#333";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(10,45);ctx.lineTo(W-10,45);ctx.stroke();
+ ctx.font="13px sans-serif";ctx.fillStyle="#666";for(let i=-5;i<=5;i++){ctx.beginPath();ctx.moveTo(cx+i*s,40);ctx.lineTo(cx+i*s,50);ctx.stroke();ctx.fillText(i,cx+i*s-4,70)}
+ ctx.fillStyle="#d64545";ctx.beginPath();ctx.arc(cx+3*s,45,8,0,7);ctx.fill();ctx.font="bold 15px sans-serif";ctx.fillText("x＝3",cx+3*s-16,25);
+ lock();
+ quiz("q1",{text:"数直線の上で、x＝3 が表すものは？",c:["点","直線","平面"],a:"点",ok:"文字が x だけの世界では、x＝3 は1つの点。"},unlock);
+});
+/* 平面 */
+let pl2;
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>② 座標平面の x＝3</h2>
+ <div class="say">平面の点は (x, y) の2つの数で表します。<br>x＝3 には <b>y が書いてない</b> → <span class="red">y は何でもいい</span>！</div>
+ <canvas id="c2"></canvas><div class="coord" id="cd2">　</div>
+ <div class="row"><button class="btn org" onclick="add2(1)">x＝3 の点を1つ打つ</button><button class="btn org" onclick="add2(10)">10こ打つ</button></div>
+ <div id="m2"></div></div>`;
+ pl2=Plane2D($("c2"));lock();
+});
+function add2(n){
+ for(let i=0;i<n;i++){const p=[3,rnd(-5,5)];pl2.pts.push(p);pl2.last=p}
+ $("cd2").textContent=`(3, ${fmt(pl2.last[1])})　← y は何でもOK`;
+ if(pl2.pts.length>=20&&!pl2.line){pl2.line=3;$("m2").innerHTML=`<div class="res o">点がたくさん集まると…<b>y軸に平行な直線</b>になった！<br>座標平面では、x＝3 は<b>直線</b>を表します。</div>`;unlock()}
+ else if(!pl2.line)$("m2").innerHTML=`<div class="mini">あと ${20-pl2.pts.length} こ以上打ってみよう</div>`;
+ pl2.draw();
+}
+/* 平面 ○× */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>③ x＝3 を満たす点？（平面）</h2><div class="say">x が 3 なら ○。y は見なくていい！</div><div id="s3"></div></div>`;
+ lock();
+ series("s3",[
+  {text:"点 (3, 5) は x＝3 を満たす？",c:["○","×"],a:"○",tf:1,ok:"x が 3。y は 5 でも何でもOK。"},
+  {text:"点 (5, 3) は x＝3 を満たす？",c:["○","×"],a:"×",tf:1,ok:"x が 5 なので×。3 は y のほうだよ。",ng:"(x, y) の順。x は 5 だよ。"},
+  {text:"点 (3, −100) は x＝3 を満たす？",c:["○","×"],a:"○",tf:1,ok:"y がどんなに大きくても小さくても、x が 3 なら○！"},
+  {text:"点 (0, 3) は x＝3 を満たす？",c:["○","×"],a:"×",tf:1,ok:"x が 0 なので×。"}
+ ],unlock);
+});
+/* 空間 */
+let sp;
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>④ 空間の x＝3</h2>
+ <div class="say">空間の点は (x, y, z) の3つの数。<br>x＝3 には <b>y も z も書いてない</b> → <span class="red">y も z も何でもいい</span>！</div>
+ <canvas id="c4"></canvas><div class="mini">指でなぞると図が回転します</div><div class="coord" id="cd4">　</div>
+ <div class="row"><button class="btn org" onclick="add4(1)">点を1つ打つ</button><button class="btn org" onclick="add4(20)">20こ打つ</button></div>
+ <button class="btn sub" onclick="sp.reset()">向きをもどす</button>
+ <div id="m4"></div></div>`;
+ sp=Space3D($("c4"));sp.guide=true;lock();
+});
+function add4(n){
+ for(let i=0;i<n;i++){const p=[3,rnd(-4.5,4.5),rnd(-4.5,4.5)];sp.pts.push(p);sp.last=p}
+ $("cd4").textContent=`(3, ${fmt(sp.last[1])}, ${fmt(sp.last[2])})`;
+ if(sp.pts.length>=60&&!sp.planes.length){sp.planes.push({a:"x",v:3});$("m4").innerHTML=`<div class="res o">点が<b>かべ（平面）</b>のように並んだ！<br>空間では、x＝3 は<b>平面</b>を表します。<br>図を回して、横から見てみよう。うすい「板」になっているね。</div>`;unlock()}
+ else if(!sp.planes.length)$("m4").innerHTML=`<div class="mini">あと ${60-sp.pts.length} こ以上打ってみよう</div>`;
+ sp.draw();
+}
+/* まとめ表 */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑤ 同じ x＝3 でも…</h2>
+ <table style="width:100%;border-collapse:collapse;font-size:16px;text-align:center">
+ <tr style="background:#eef3fb"><th style="padding:8px">場所</th><th>点の書き方</th><th>x＝3 の形</th></tr>
+ <tr><td style="padding:8px;border-top:1px solid #ddd">数直線</td><td style="border-top:1px solid #ddd">(x)</td><td style="border-top:1px solid #ddd" class="red">点</td></tr>
+ <tr><td style="padding:8px;border-top:1px solid #ddd">平面</td><td style="border-top:1px solid #ddd">(x, y)</td><td style="border-top:1px solid #ddd" class="red">直線</td></tr>
+ <tr><td style="padding:8px;border-top:1px solid #ddd">空間</td><td style="border-top:1px solid #ddd">(x, y, z)</td><td style="border-top:1px solid #ddd" class="red">平面</td></tr></table>
+ <div class="say">「何でもいい」文字が1つふえるごとに、<br>点 → 線 → 面 と、形が1段ずつ広がる！</div>
+ <div class="key">空間の x＝3<br>＝ 点 (3, □, □) の集まり<br>（□ には何が入ってもいい）</div>
+ <div id="q5"></div></div>`;
+ lock();
+ quiz("q5",{text:"空間で、x＝3 を満たす点はどれ？（1つ選ぶ）",c:["(3, −4, 7)","(2, 3, 3)","(0, 0, 3)","(7, 3, −4)"],a:"(3, −4, 7)",ok:"x 座標（いちばん左）が 3 なら、y と z は何でもOK！",ng:"いちばん左の数（x 座標）を見よう。"},unlock);
+});
+/* 空間 ○× */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑥ 平面 x＝3 の上にある？</h2><div class="say">(x, y, z) の <b>いちばん左</b> が 3 なら ○！</div><div id="s6"></div></div>`;
+ lock();
+ series("s6",[
+  {text:"点 (3, 0, 0) は平面 x＝3 の上にある？",c:["○","×"],a:"○",tf:1,ok:"x 軸と平面 x＝3 が交わる点だよ。"},
+  {text:"点 (3, 3, 3) は？",c:["○","×"],a:"○",tf:1,ok:"y や z が 3 でも、x が 3 だから○。"},
+  {text:"点 (0, 3, 0) は？",c:["○","×"],a:"×",tf:1,ok:"x が 0。3 は y のほう。"},
+  {text:"点 (3, −2, 100) は？",c:["○","×"],a:"○",tf:1,ok:"z が 100 でも、平面はどこまでも広がっているので○！"},
+  {text:"点 (−3, 1, 1) は？",c:["○","×"],a:"×",tf:1,ok:"x は −3。3 とはちがうので×。"}
+ ],unlock);
+});
+/* 練習：z＝2, y＝−1 */
+let sp7;
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑦ ほかの式もやってみよう</h2>
+ <canvas id="c7"></canvas><div class="mini">指でなぞると回転</div><div id="s7"></div></div>`;
+ sp7=Space3D($("c7"));lock();
+ const show=(a,v,col)=>{sp7.planes=[{a,v,col}];sp7.pts=[];sp7.draw()};
+ series("s7",[
+  {text:"空間で z＝2 が表すものは？",c:["xy平面に平行な平面","z軸に平行な直線","点 (0, 0, 2)"],a:"xy平面に平行な平面",ok:"x と y が何でもいい → (□, □, 2)。高さ 2 の「ゆか」のような平面。",after:()=>show("z",2,"rgba(31,95,168,0.25)")},
+  {text:"空間で y＝−1 が表すものは？",c:["zx平面に平行な平面","y軸に平行な直線","点 (0, −1, 0)"],a:"zx平面に平行な平面",ok:"x と z が何でもいい → (□, −1, □)。y＝−1 の「かべ」。",after:()=>show("y",-1,"rgba(26,155,85,0.25)")},
+  {text:"空間で x＝3 が表すものは？（もう一度）",c:["yz平面に平行な平面","x軸に平行な直線","点 (3, 0, 0)"],a:"yz平面に平行な平面",ok:"y と z が何でもいい → (3, □, □)。",after:()=>show("x",3)}
+ ],unlock);
+});
+/* 発展：x=3 かつ y=2 */
+let sp8;
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>⑧ チャレンジ：x＝3 かつ y＝2</h2>
+ <div class="say">2つの条件が両方ある。「何でもいい」のは z だけ！<br>→ 点 (3, 2, □) の集まり</div>
+ <canvas id="c8"></canvas><div class="mini">指でなぞると回転</div>
+ <div class="row"><button class="btn org" onclick="add8()">点を10こ打つ</button></div><div id="q8"></div></div>`;
+ sp8=Space3D($("c8"));sp8.planes=[{a:"x",v:3,col:"rgba(214,69,69,0.12)",edge:"rgba(214,69,69,0.4)"},{a:"y",v:2,col:"rgba(26,155,85,0.12)",edge:"rgba(26,155,85,0.4)"}];sp8.draw();lock();
+ quiz("q8",{text:"x＝3 かつ y＝2 が表すものは？",c:["z軸に平行な直線","平面","点"],a:"z軸に平行な直線",ok:"何でもいいのは z だけ（1つ）→ 直線。2枚の平面が交わる線だよ。",ng:"「何でもいい」文字はいくつ？ 1つなら直線、2つなら平面。"},()=>{sp8.lines=[{a:[3,2,-4.5],b:[3,2,4.5]}];sp8.draw();unlock()});
+});
+function add8(){for(let i=0;i<10;i++){const p=[3,2,rnd(-4.5,4.5)];sp8.pts.push(p);sp8.last=p}sp8.draw()}
+/* まとめ */
+PAGES.push(()=>{
+ $("main").innerHTML=`<div class="card"><h2>🎉 まとめ</h2>
+ <div class="key">式に書いていない文字は「何でもいい」</div>
+ <div class="say">空間で…<br>・x＝3 → (3, □, □) → <span class="red">yz平面に平行な平面</span><br>・z＝2 → (□, □, 2) → <span class="blue">xy平面に平行な平面</span><br>・x＝3 かつ y＝2 → (3, 2, □) → <span class="grn">z軸に平行な直線</span></div>
+ <div class="say">□（何でもいい文字）が<br>2つ → 平面　　1つ → 直線　　0こ → 点</div>
+ <button class="btn" onclick="cur=0;render()">もう一度さいしょから</button></div>`;
+ unlock();
+});
+let cur=0;
+function render(){window.scrollTo(0,0);$("bar").style.width=((cur+1)/PAGES.length*100)+"%";PAGES[cur]();$("nextBtn").style.visibility=cur===PAGES.length-1?"hidden":"visible"}
+function go(d){if(d>0&&$("nextBtn").disabled)return;cur=Math.max(0,Math.min(PAGES.length-1,cur+d));render()}
+render();
+</script>
+</body>
+</html>
