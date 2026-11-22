@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>和歌の世界 問題（三大和歌集・歌仙）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f6f1fa;color:#2b2540;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:#3a2a6b;color:#fff}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 6px}
+.top h1{font-size:17px;font-weight:800}
+.top button{background:#fff;color:#3a2a6b;border:0;border-radius:16px;padding:5px 12px;font-weight:800;font-size:13px}
+nav{display:flex}
+nav button{flex:1;background:none;border:0;color:#d9d0ef;font-size:13px;font-weight:700;padding:9px 0 10px;border-bottom:3px solid transparent}
+nav button.on{color:#fff;border-bottom-color:#f6b73c}
+.view{display:none;padding:12px;max-width:680px;margin:0 auto}.view.on{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(58,42,107,.12)}
+h2{font-size:16px;color:#c2185b;margin-bottom:8px}
+.sel label{display:flex;align-items:center;gap:10px;font-size:15px;padding:9px 2px;border-bottom:1px solid #eee}
+.sel input,.row input{width:21px;height:21px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.opt{flex:1;min-width:140px;display:flex;align-items:center;gap:6px;background:#f2edfa;border-radius:10px;padding:10px;font-size:14px}
+.btn{display:block;width:100%;border:0;border-radius:12px;background:#3a2a6b;color:#fff;font-size:17px;font-weight:800;padding:13px;margin-top:10px}
+.btn.pink{background:#c2185b}.btn.ghost{background:#fff;color:#3a2a6b;border:2px solid #3a2a6b}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.bar{height:7px;background:#e8e2f3;border-radius:4px;overflow:hidden;margin-bottom:8px}.bar i{display:block;height:100%;background:#c2185b}
+.qh{display:flex;justify-content:space-between;font-size:12.5px;color:#7a6f92;margin-bottom:6px}
+.qt{font-size:18px;line-height:1.7;margin:4px 0 12px;font-weight:600}
+.ch{display:block;width:100%;text-align:left;font-size:16px;background:#fff;border:2px solid #ddd3ee;border-radius:12px;padding:12px;margin:8px 0;color:#2b2540;line-height:1.5}
+.ch.good{border-color:#2e7d32;background:#e8f5e9}.ch.bad{border-color:#c62828;background:#ffebee}
+.ans{font-size:20px;font-weight:900;color:#c2185b;text-align:center;background:#fdeef3;border-radius:12px;padding:12px;margin:8px 0}
+.ex{font-size:14.5px;line-height:1.7;background:#fff8e1;border-radius:10px;padding:10px;margin-top:8px}
+.res{font-size:17px;font-weight:900}
+.score{font-size:40px;font-weight:900;color:#c2185b;text-align:center}
+.li{border-bottom:1px solid #eee;padding:9px 0;font-size:14px;line-height:1.6}
+.li .a{color:#2e7d32;font-weight:800}.li .n{float:right;background:#c62828;color:#fff;border-radius:99px;padding:0 9px;font-weight:800;margin-left:6px}
+.note{font-size:13px;color:#7a6f92;line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.6}
+th,td{border:1px solid #d7cde9;padding:6px;vertical-align:top;text-align:left}
+th{background:#3a2a6b;color:#fff}td:first-child{background:#f4f0fb;font-weight:800;white-space:nowrap}
+.search{width:100%;font-size:16px;padding:11px;border:2px solid #3a2a6b;border-radius:10px}
+mark{background:#ffe58a}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;padding:16px;overflow:auto}.ov.on{display:block}
+.ov .box{background:#fff;border-radius:14px;padding:16px;max-width:620px;margin:0 auto;font-size:14.5px;line-height:1.8}
+.ov h3{color:#3a2a6b;margin-bottom:6px}.ov h4{color:#c2185b;margin-top:10px}.ov ul{padding-left:1.2em}
+#printArea{display:none}
+@media print{@page{size:A4;margin:12mm}body{background:#fff}header,.view,.ov{display:none!important}#printArea{display:block;font-size:10.5pt;color:#000}
+.ph{font-size:14pt;border-bottom:2px solid #000;margin-bottom:3mm}.pq{margin-bottom:3mm;break-inside:avoid}.pc{margin-left:5mm}.pb{page-break-before:always}}
+</style></head><body>
+<header><div class="top"><h1>🌸 和歌の世界（教p.146〜147）</h1><button id="helpBtn">❓使い方</button></div>
+<nav><button data-v="sum" class="on">まとめ</button><button data-v="quiz">問題</button><button data-v="srch">🔍検索</button><button data-v="weak">苦手</button><button data-v="print">印刷</button></nav></header>
+
+<section class="view on" id="v-sum">
+<div class="card"><h2>三大和歌集をくらべよう</h2>
+<table><tr><th></th><th>万葉集</th><th>古今和歌集</th><th>新古今和歌集</th></tr>
+<tr><td>成立</td><td>奈良時代末期までに</td><td>平安時代初期</td><td>鎌倉時代初期</td></tr>
+<tr><td>編者<br>撰者</td><td>多くの人の手を経て編まれ、<b>大伴家持</b>が今の形にまとめたとみられる</td><td><b>醍醐天皇</b>の勅命。撰者は<b>紀貫之</b>・凡河内躬恒・<b>紀友則</b>・壬生忠岑</td><td><b>後鳥羽上皇</b>の命。撰者は藤原有家・<b>藤原定家</b>・藤原家隆・藤原雅経・源通具・寂蓮法師</td></tr>
+<tr><td>位置づけ</td><td>現存する<b>日本最古</b>の歌集</td><td><b>最初の勅撰和歌集</b></td><td><b>八番目</b>の勅撰和歌集。華やかな貴族文化の復興を目ざした</td></tr>
+<tr><td>巻数・歌数</td><td>二十巻・約<b>4500</b>首</td><td>二十巻・約<b>1100</b>首</td><td>二十巻・約<b>1980</b>首</td></tr>
+<tr><td>特徴</td><td>天皇・貴族・兵士・農民など広い階層の人々の<b>素朴な感動</b>が<b>力強く</b>歌われている。漢字で日本語の音を表した（<b>万葉仮名</b>）</td><td>春・夏・秋・冬・恋などの部に分類され、整然と編集。技巧を凝らした<b>理知的かつ優美</b>な歌</td><td>実際の風景ではなく、<b>物語的な美の世界</b>や<b>繊細な感情</b>を多様な技巧で表した歌</td></tr></table>
+<p class="note" style="margin-top:8px">勅撰和歌集＝天皇や上皇、法皇の命令で作られた和歌集</p></div>
+<div class="card"><h2>年表で位置をつかもう</h2>
+<p style="font-size:15px;line-height:2">奈良：<b>万葉集</b><br>平安：竹取物語 → <b>古今和歌集</b>（900年ごろ）→ 枕草子<br>鎌倉：<b>新古今和歌集</b>（1200年ごろ）→ 平家物語 → 徒然草</p></div>
+<div class="card"><h2>三十六歌仙と六歌仙</h2>
+<p style="font-size:15px;line-height:1.9"><b>三十六歌仙</b>＝平安時代中期の歌学者<b>藤原公任</b>が選んだ、万葉集の時代から平安中期までの<b>36人</b>の優れた歌人。（教科書の絵は鈴木其一「三十六歌仙図」）<br>
+<b>六歌仙</b>＝<b>紀貫之</b>が「古今和歌集 仮名序」の中で挙げた<b>6人</b>の優れた歌人。<br>僧正遍昭・在原業平・文屋康秀・喜撰法師・小野小町・大伴黒主<br>
+→ このうち<b>僧正遍昭・在原業平・小野小町</b>の3人は、三十六歌仙にも選ばれている。</p></div>
+<button class="btn pink" onclick="go('quiz')">✏️ 問題にチャレンジ ▶</button>
+</section>
+
+<section class="view" id="v-quiz">
+<div id="setup"><div class="card"><h2>範囲をえらぶ</h2><div class="sel" id="usel"></div></div>
+<div class="card"><h2>やり方</h2>
+<div class="row"><label class="opt"><input type="radio" name="mode" value="mc" checked> 4択</label><label class="opt"><input type="radio" name="mode" value="card"> 思い出す（○×を自分で）</label></div>
+<div class="row"><label class="opt"><input type="radio" name="ord" value="rnd" checked> シャッフル</label><label class="opt"><input type="radio" name="ord" value="seq"> 順番どおり</label></div>
+<button class="btn" id="start">スタート</button>
+<p class="note" style="margin-top:8px">おすすめ：①「まとめ」を読む → ②4択 → ③「思い出す」で答えを言えるように → ④まちがえた問題だけくり返す</p></div></div>
+<div id="play" style="display:none"></div>
+</section>
+
+<section class="view" id="v-srch"><div class="card"><h2>🔍 語句をさがす</h2>
+<input class="search" id="sIn" placeholder="例：家持／ていか／勅撰／六歌仙" oninput="doSearch()">
+<p class="note" id="sInfo" style="margin:8px 0">漢字でも読み（ひらがな）でも探せます。</p><div id="sRes"></div></div></section>
+
+<section class="view" id="v-weak"><div class="card"><h2>苦手ランキング</h2><p class="note">まちがえた回数が多い順（このスマホに記録）</p><div id="wList"></div>
+<button class="btn" id="wGo">苦手な問題だけ練習</button><button class="btn ghost" id="wClr">記録を消す</button></div></section>
+
+<section class="view" id="v-print"><div class="card"><h2>プリントを作る</h2><div class="sel" id="psel"></div>
+<div class="row"><label class="opt"><input type="radio" name="pm" value="mc" checked> 4択で</label><label class="opt"><input type="radio" name="pm" value="w"> 記述（答えを書く）</label></div>
+<div class="row"><label class="opt"><input type="checkbox" id="pAns" checked> 答えを最後につける</label></div>
+<button class="btn" id="pGo">🖨 印刷する</button><p class="note" style="margin-top:6px">iPhone・iPadは印刷画面から「PDFとして保存」もできます。</p></div></section>
+<div id="printArea"></div>
+
+<div class="ov" id="help"><div class="box"><h3>❓ 使い方</h3>
+<h4>このアプリは？</h4><ul><li>中3国語「和歌の世界」（教科書p.146〜147）の問題アプリです。三大和歌集・年表・三十六歌仙・六歌仙を練習します。</li></ul>
+<h4>まとめ</h4><ul><li>三つの和歌集をくらべる表です。問題の前に読みましょう。</li></ul>
+<h4>問題</h4><ul><li>範囲をえらんで「4択」か「思い出す」で練習します。4択の選択肢は、テストでまちがえやすいものにしてあります。</li><li>まちがえた問題は最後に「❌だけもう一度」でくり返せます。</li></ul>
+<h4>検索</h4><ul><li>語句を入れると、その語句が出てくる問題と答えが見られます。タップするとその問題だけ練習できます。</li></ul>
+<h4>苦手・印刷</h4><ul><li>まちがえた回数が多い問題を集めて練習できます。プリント（4択／記述）も作れます。</li></ul>
+<button class="btn" id="helpClose">閉じる</button></div></div>
+
+<script>
+const UNITS=[['man','万葉集'],['kok','古今和歌集'],['shin','新古今和歌集'],['cmp','くらべる・年表'],['kas','三十六歌仙・六歌仙']];
+// [範囲, 問題, 正解, 誤答1, 誤答2, 誤答3, 解説, 読み]
+const QS=[
+['man','現存する日本最古の歌集は？','万葉集','古今和歌集','新古今和歌集','古事記','「現存する日本最古の歌集」＝万葉集。','まんようしゅう'],
+['man','万葉集が今の形にまとめられたのは、何時代の末期までか。','奈良時代','平安時代','鎌倉時代','飛鳥時代','奈良時代末期（八世紀末）までにまとめられた。','ならじだい'],
+['man','多くの人の手を経て編まれた万葉集を、現在の形にまとめたとみられる人物は？','大伴家持','紀貫之','藤原定家','柿本人麻呂','大伴家持（おおとものやかもち）。柿本人麻呂は万葉集の代表的な歌人。','おおとものやかもち'],
+['man','万葉集の巻数と歌の数は？','二十巻・約4500首','二十巻・約1100首','二十巻・約1980首','十巻・約4500首','万葉集は約4500首でいちばん多い。','にじゅっかん'],
+['man','万葉集に歌が収められている人々として、正しいものは？','天皇・貴族・兵士・農民など広い階層の人々','天皇と貴族だけ','僧侶と貴族だけ','撰者に選ばれた歌人だけ','身分を問わず、広い階層の人々の歌が収められている。','かいそう'],
+['man','万葉集の歌の特徴は？','素朴な感動が力強く歌われている','技巧を凝らした理知的で優美な歌','物語的な美の世界を表した歌','季節ごとに整然と分類された歌','万葉集＝素朴・力強い。','そぼく ちからづよい'],
+['man','漢字を用いて日本語の発音を表した文字を何というか。','万葉仮名','平仮名','片仮名','真名','日本にはもともと文字がなく、漢字の音を借りて書いた（万葉仮名）。','まんようがな'],
+['man','万葉集の時代に「万葉仮名」が使われたのはなぜか。','日本にはもともと文字がなかったから','漢字が禁止されていたから','平仮名が難しかったから','中国の人に読ませるため','もともと日本には文字がなく、漢字を使って日本語の音を表した。','もじ'],
+['kok','古今和歌集が作られたのは何時代の初期か。','平安時代','奈良時代','鎌倉時代','室町時代','平安時代初期（900年ごろ）。','へいあんじだい'],
+['kok','古今和歌集を作るよう命じた（勅命を出した）天皇は？','醍醐天皇','後鳥羽上皇','聖武天皇','持統天皇','醍醐（だいご）天皇の勅命。後鳥羽上皇は新古今和歌集。','だいごてんのう ちょくめい'],
+['kok','古今和歌集は、何番目の勅撰和歌集か。','最初（一番目）','二番目','八番目','十番目','最初の勅撰和歌集。八番目は新古今和歌集。','さいしょ'],
+['kok','「勅撰和歌集」とはどんな和歌集か。','天皇や上皇・法皇の命令で作られた和歌集','天皇が自分で詠んだ歌だけを集めた和歌集','多くの人の手を経て自然にまとまった和歌集','歌合で勝った歌だけを集めた和歌集','勅撰＝天皇などの命令で選ぶこと。','ちょくせん'],
+['kok','古今和歌集の撰者に入っていない人物は？','藤原定家','紀貫之','紀友則','凡河内躬恒','撰者は紀貫之・凡河内躬恒・紀友則・壬生忠岑。藤原定家は新古今和歌集の撰者。','きのつらゆき きのとものり おおしこうちのみつね みぶのただみね'],
+['kok','古今和歌集の撰者で、「仮名序」を書いた人物は？','紀貫之','紀友則','壬生忠岑','大伴家持','仮名序の作者は紀貫之。','きのつらゆき'],
+['kok','古今和歌集の巻数と歌の数は？','二十巻・約1100首','二十巻・約4500首','二十巻・約1980首','十巻・約1100首','三つの中でいちばん少ない約1100首。','せんひゃくしゅ'],
+['kok','古今和歌集の編集のしかたとして正しいものは？','春・夏・秋・冬・恋などの部に分類され、整然と編集されている','作者の身分の順に並べられている','時代の古い順に並べられている','長歌と短歌が交互に並べられている','部立て（ぶだて）に分けて整然と編集されている。','ぶるい'],
+['kok','古今和歌集の歌の特徴は？','技巧を凝らした、理知的かつ優美な歌が多い','素朴な感動を力強く歌った歌が多い','実際の風景ではなく物語的な美の世界を表した歌が多い','方言を使った歌が多い','古今和歌集＝理知的・優美。','りちてき ゆうび'],
+['shin','新古今和歌集が作られたのは何時代の初期か。','鎌倉時代','平安時代','室町時代','奈良時代','鎌倉時代初期（1200年ごろ）。','かまくらじだい'],
+['shin','新古今和歌集を作るよう命じた人物は？','後鳥羽上皇','醍醐天皇','後白河法皇','源頼朝','後鳥羽（ごとば）上皇の命。','ごとばじょうこう'],
+['shin','新古今和歌集は、何番目の勅撰和歌集か。','八番目','最初','三番目','二十番目','八番目の勅撰和歌集。','はちばんめ'],
+['shin','新古今和歌集は、何を目ざして作られたか。','華やかな貴族文化の復興','武士の文化を広めること','日本最古の歌集を作ること','漢詩を広めること','鎌倉時代になり、華やかな貴族文化を復興させようとした。','ふっこう'],
+['shin','新古今和歌集の撰者として正しい人物は？','藤原定家','紀貫之','大伴家持','壬生忠岑','撰者は藤原有家・藤原定家・藤原家隆・藤原雅経・源通具・寂蓮法師。','ふじわらのていか'],
+['shin','新古今和歌集の撰者に入っていない人物は？','紀友則','寂蓮法師','源通具','藤原家隆','紀友則は古今和歌集の撰者。','じゃくれんほうし みなもとのみちとも ふじわらのいえたか ふじわらのまさつね ふじわらのありいえ'],
+['shin','新古今和歌集の巻数と歌の数は？','二十巻・約1980首','二十巻・約1100首','二十巻・約4500首','三十巻・約1980首','約1980首（約2000首）。','せんきゅうひゃくはちじゅっしゅ'],
+['shin','新古今和歌集の歌の特徴は？','実際の風景ではなく、物語的な美の世界や繊細な感情を多様な技巧で表した歌','素朴な感動を力強く歌った歌','広い階層の人々の生活を歌った歌','春・夏・秋・冬だけを歌った歌','新古今和歌集＝物語的な美の世界・繊細な感情。','ものがたりてき せんさい'],
+['cmp','三つの和歌集を、成立の古い順に並べたものは？','万葉集 → 古今和歌集 → 新古今和歌集','古今和歌集 → 万葉集 → 新古今和歌集','万葉集 → 新古今和歌集 → 古今和歌集','新古今和歌集 → 古今和歌集 → 万葉集','奈良 → 平安 → 鎌倉の順。','じゅんばん'],
+['cmp','三つの和歌集の巻数について正しいものは？','どれも二十巻','万葉集だけ二十巻','古今和歌集だけ二十巻','どれも十巻','三つとも二十巻。','にじゅっかん'],
+['cmp','収められている歌の数がいちばん多い和歌集は？','万葉集','古今和歌集','新古今和歌集','三つとも同じ','万葉集 約4500首 ＞ 新古今 約1980首 ＞ 古今 約1100首。','かず'],
+['cmp','収められている歌の数がいちばん少ない和歌集は？','古今和歌集','万葉集','新古今和歌集','三つとも同じ','古今和歌集は約1100首。','かず'],
+['cmp','勅撰和歌集ではないものは？','万葉集','古今和歌集','新古今和歌集','どれも勅撰和歌集','万葉集は多くの人の手を経て編まれた歌集。最初の勅撰和歌集は古今和歌集。','ちょくせん'],
+['cmp','年表で、古今和歌集（900年ごろ）より前にできた作品は？','竹取物語','枕草子','平家物語','徒然草','年表の順：万葉集 → 竹取物語 → 古今和歌集 → 枕草子 → 新古今和歌集 → 平家物語 → 徒然草。','たけとりものがたり'],
+['cmp','年表で、古今和歌集と新古今和歌集の間にある作品は？','枕草子','竹取物語','平家物語','徒然草','枕草子は平安時代（1000年ごろ）。','まくらのそうし'],
+['cmp','年表で、新古今和歌集より後にできた作品は？','徒然草','竹取物語','枕草子','万葉集','平家物語・徒然草は新古今和歌集より後（鎌倉時代）。','つれづれぐさ'],
+['cmp','「素朴で力強い」歌が多い和歌集は？','万葉集','古今和歌集','新古今和歌集','三つとも','万葉集＝素朴・力強い／古今＝理知的・優美／新古今＝物語的な美・繊細。','そぼく'],
+['cmp','「理知的かつ優美」な歌が多い和歌集は？','古今和歌集','万葉集','新古今和歌集','三つとも','古今和歌集。','りちてき ゆうび'],
+['kas','三十六歌仙を選んだ人物は？','藤原公任','紀貫之','藤原定家','大伴家持','平安時代中期の歌学者、藤原公任（きんとう）。','ふじわらのきんとう'],
+['kas','三十六歌仙とは、どの時代の歌人から選ばれたか。','万葉集の時代から平安時代中期まで','平安時代だけ','鎌倉時代から室町時代まで','奈良時代だけ','万葉集の時代から平安中期までの36人。','さんじゅうろっかせん'],
+['kas','六歌仙を挙げたのは、何という文章の中か。','古今和歌集 仮名序','万葉集の序文','新古今和歌集 仮名序','枕草子','紀貫之が「古今和歌集 仮名序」の中で挙げた6人。','かなじょ ろっかせん'],
+['kas','六歌仙を挙げた人物は？','紀貫之','藤原公任','藤原定家','醍醐天皇','紀貫之（仮名序の作者）。','きのつらゆき'],
+['kas','六歌仙に入っていない人物は？','柿本人麻呂','在原業平','小野小町','僧正遍昭','六歌仙＝僧正遍昭・在原業平・文屋康秀・喜撰法師・小野小町・大伴黒主。','そうじょうへんじょう ありわらのなりひら ふんやのやすひで きせんほうし おののこまち おおとものくろぬし'],
+['kas','六歌仙の中でただ一人の女性の歌人は？','小野小町','式子内親王','額田王','持統天皇','小野小町（おののこまち）。','おののこまち'],
+['kas','六歌仙のうち、三十六歌仙にも選ばれている3人の組み合わせは？','僧正遍昭・在原業平・小野小町','文屋康秀・喜撰法師・大伴黒主','在原業平・文屋康秀・喜撰法師','小野小町・大伴黒主・僧正遍昭','僧正遍昭・在原業平・小野小町の3人。','そうじょうへんじょう ありわらのなりひら おののこまち'],
+['kas','六歌仙の「大伴黒主」と、万葉集をまとめたとみられる「大伴家持」の関係は？','別の人物（名前が似ているので注意）','同じ人物','親子','どちらも古今和歌集の撰者','大伴黒主＝六歌仙、大伴家持＝万葉集をまとめた人物。まちがえやすいので注意。','おおとものくろぬし おおとものやかもち'],
+['kas','教科書p.147の「三十六歌仙図」をえがいた画家は？','鈴木其一','紀貫之','藤原公任','後鳥羽上皇','鈴木其一（すずききいつ）。別々の時代の歌人が一堂に会しているようにえがかれている。','すずききいつ'],
+];
+const Q=QS.map((r,i)=>({id:i,u:r[0],q:r[1],a:r[2],d:[r[3],r[4],r[5]],ex:r[6],yomi:r[7]||''}));
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uName=u=>UNITS.find(x=>x[0]===u)[1];
+let W={};try{W=JSON.parse(localStorage.getItem('waka_sekai_weak')||'{}')}catch(e){}
+const saveW=()=>{try{localStorage.setItem('waka_sekai_weak',JSON.stringify(W))}catch(e){}};
+function go(v){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));if(v==='weak')renderWeak();scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.v));
+$('helpBtn').onclick=()=>$('help').classList.add('on');$('helpClose').onclick=()=>$('help').classList.remove('on');
+const selHTML=n=>UNITS.map(u=>`<label><input type="checkbox" name="${n}" value="${u[0]}" checked> ${u[1]}（${Q.filter(q=>q.u===u[0]).length}問）</label>`).join('');
+$('usel').innerHTML=selHTML('u');$('psel').innerHTML=selHTML('p');
+const picked=n=>[...document.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
+const radio=n=>document.querySelector(`input[name="${n}"]:checked`).value;
+
+let S=null;
+function begin(list,mode){if(!list.length){alert('問題がありません');return}S={l:list,i:0,ok:0,miss:[],mode};go('quiz');$('setup').style.display='none';$('play').style.display='block';show()}
+$('start').onclick=()=>{let l=Q.filter(q=>picked('u').includes(q.u));if(radio('ord')==='rnd')l=shuffle(l);begin(l,radio('mode'))};
+function record(q,ok){if(ok){S.ok++;if(W[q.id]>0)W[q.id]--;if(!W[q.id])delete W[q.id]}else{S.miss.push(q);W[q.id]=(W[q.id]||0)+1}saveW()}
+function head(){const q=S.l[S.i];return `<div class="bar"><i style="width:${S.i/S.l.length*100}%"></i></div><div class="qh"><span>${uName(q.u)}</span><span>${S.i+1} / ${S.l.length}</span></div><div class="qt">${esc(q.q)}</div>`}
+function next(){S.i++;S.i<S.l.length?show():result()}
+function show(){const q=S.l[S.i],p=$('play');let done=false;
+ if(S.mode==='card'){p.innerHTML=`<div class="card">${head()}<div id="ar"><button class="btn ghost" id="rv">答えを見る</button></div></div>`;
+  $('rv').onclick=()=>{$('ar').innerHTML=`<div class="ans">${esc(q.a)}</div><div class="ex">${esc(q.ex)}</div><div class="two"><button class="btn ok" id="o">⭕ 言えた</button><button class="btn ng" id="x">❌ 言えなかった</button></div>`;
+   $('o').onclick=()=>{if(done)return;done=true;record(q,true);next()};$('x').onclick=()=>{if(done)return;done=true;record(q,false);next()}};
+ }else{const ch=shuffle([q.a,...q.d]);
+  p.innerHTML=`<div class="card">${head()}${ch.map(c=>`<button class="ch">${esc(c)}</button>`).join('')}<div id="fb"></div></div>`;
+  p.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{if(done)return;done=true;const ok=b.textContent===q.a;record(q,ok);
+   p.querySelectorAll('.ch').forEach(x=>{if(x.textContent===q.a)x.classList.add('good')});if(!ok)b.classList.add('bad');
+   $('fb').innerHTML=`<div class="res" style="color:${ok?'#2e7d32':'#c62828'}">${ok?'⭕ 正解！':'❌ 正解は「'+esc(q.a)+'」'}</div><div class="ex">${esc(q.ex)}</div><button class="btn" id="nx">${S.i+1<S.l.length?'次の問題 ▶':'結果を見る ▶'}</button><button class="btn ghost" id="qt">やめる</button>`;
+   $('nx').onclick=next;$('qt').onclick=result})}
+ scrollTo(0,0)}
+function result(){const n=Math.min(S.l.length,S.i+(S.i<S.l.length?1:0));
+ $('play').innerHTML=`<div class="card"><h2>結果</h2><div class="score">${S.ok} / ${S.l.length}</div><p style="text-align:center;margin:6px 0">${S.miss.length?'まちがえた問題を全部⭕にしよう！':'🎉 全問正解！'}</p>${S.miss.length?`<button class="btn pink" id="re">❌だけもう一度（${S.miss.length}問）</button>`:''}<button class="btn ghost" id="bk">範囲えらびにもどる</button></div>`;
+ if(S.miss.length)$('re').onclick=()=>begin(shuffle(S.miss),S.mode);
+ $('bk').onclick=()=>{$('play').style.display='none';$('setup').style.display='block'}}
+
+const norm=s=>String(s||'').replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).replace(/[\s　・、。「」（）()]/g,'').toLowerCase();
+function hl(t,w){if(!w)return esc(t);const i=t.indexOf(w);return i<0?esc(t):esc(t.slice(0,i))+'<mark>'+esc(w)+'</mark>'+esc(t.slice(i+w.length))}
+function doSearch(){const raw=$('sIn').value.trim(),w=norm(raw);if(!w){$('sRes').innerHTML='';$('sInfo').textContent='漢字でも読み（ひらがな）でも探せます。';return}
+ const hit=Q.filter(q=>norm(q.q+q.a+q.ex+q.d.join('')).includes(w)||norm(q.yomi).includes(w));
+ $('sInfo').textContent=hit.length?hit.length+'問見つかりました。タップするとその問題を練習できます。':'見つかりませんでした。';
+ $('sRes').innerHTML=hit.map(q=>`<div class="li" style="cursor:pointer" onclick="begin([Q[${q.id}]],'mc')">${W[q.id]?`<span class="n">✗${W[q.id]}</span>`:''}<span style="font-size:12px;color:#7a6f92">${uName(q.u)}</span><br>${hl(q.q,raw)}<div class="a">→ ${hl(q.a,raw)}</div></div>`).join('')}
+function renderWeak(){const ids=Object.keys(W).sort((a,b)=>W[b]-W[a]);$('wList').innerHTML=ids.length?ids.map(i=>`<div class="li"><span class="n">${W[i]}回</span>${esc(Q[i].q)}<div class="a">→ ${esc(Q[i].a)}</div></div>`).join(''):'<p class="note">まだ記録がありません。</p>'}
+$('wGo').onclick=()=>{const ids=Object.keys(W);if(!ids.length){alert('まだ記録がありません');return}begin(shuffle(ids.map(i=>Q[i])),'mc')};
+$('wClr').onclick=()=>{if(confirm('苦手の記録を消しますか？')){W={};saveW();renderWeak()}};
+$('pGo').onclick=()=>{const l=Q.filter(q=>picked('p').includes(q.u));if(!l.length){alert('範囲をえらんでください');return}const mc=radio('pm')==='mc',M='アイウエ';
+ const ords=l.map(q=>shuffle([q.a,...q.d]));
+ let h='<div class="ph">和歌の世界　確認問題　　名前（　　　　　　　　）</div>'+l.map((q,n)=>`<div class="pq">${n+1}．${esc(q.q)}${mc?'　答え（　　）'+ords[n].map((c,j)=>`<div class="pc">${M[j]}　${esc(c)}</div>`).join(''):'<div class="pc">答え（　　　　　　　　　　　　　　　）</div>'}</div>`).join('');
+ if($('pAns').checked)h+='<div class="pb"></div><div class="ph">答え</div>'+l.map((q,n)=>`<div class="pq">${n+1}．${mc?M[ords[n].indexOf(q.a)]+'　':''}${esc(q.a)}</div>`).join('');
+ $('printArea').innerHTML=h;setTimeout(()=>print(),200)};
+</script></body></html>
