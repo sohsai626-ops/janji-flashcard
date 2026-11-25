@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>比例・反比例 再テスト特訓（1年数学 第4回定期テスト 1）</title>
+<style>
+:root{--p:#1b4965;--a:#e85d04;--ok:#2b8a3e;--ng:#c92a2a;--bg:#f3f6fa}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:#222;-webkit-text-size-adjust:100%}
+header{background:var(--p);color:#fff;padding:10px 12px;position:sticky;top:0;z-index:20}
+header h1{font-size:17px;margin:0;display:flex;align-items:center;gap:8px}
+.badge{background:#fff;color:var(--p);font-size:11px;padding:2px 7px;border-radius:9px;font-weight:bold}
+#helpBtn{margin-left:auto;background:#fff;color:var(--p);border:0;border-radius:8px;padding:5px 9px;font-weight:bold;font-size:13px}
+nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #d0d7e2;position:sticky;top:44px;z-index:19}
+nav button{flex:1 0 auto;border:0;background:none;padding:10px;font-size:14px;color:#555;border-bottom:3px solid transparent}
+nav button.on{color:var(--p);border-color:var(--a);font-weight:bold}
+.scr{display:none;padding:12px;max-width:720px;margin:0 auto;padding-bottom:240px}.scr.show{display:block}
+.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+h2{font-size:16px;margin:4px 0 8px;color:var(--p)}h3{font-size:14px;margin:12px 0 6px}
+.btn{display:inline-block;border:0;border-radius:10px;padding:11px 16px;font-size:15px;font-weight:bold;background:var(--p);color:#fff}
+.btn.sub{background:#e7edf5;color:var(--p)}.btn.a{background:var(--a)}.btn.ok{background:var(--ok)}.btn.sm{padding:6px 10px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 2px;line-height:1.15}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}.fr>span{padding:1px 2px}
+.prob{background:#fffdf3;border:2px solid #f2c94c;border-radius:10px;padding:10px;line-height:1.9;font-size:16px}
+.big{font-size:22px;text-align:center;margin:6px 0}
+.fig{text-align:center;margin:8px 0}
+.tb{border-collapse:collapse;margin:8px auto;font-size:17px}.tb th,.tb td{border:1px solid #555;padding:4px 9px;text-align:center}.tb th{background:#eef2f7}
+.step{border-top:1px dashed #c5d0de;margin-top:12px;padding-top:10px;font-size:15px;line-height:1.9}
+.snum{display:inline-block;background:var(--a);color:#fff;border-radius:6px;padding:0 7px;font-size:12px;font-weight:bold;margin-right:6px}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:90px;min-height:46px;border:2px solid #9fb3c8;border-radius:10px;padding:2px 8px;font-size:20px;background:#fff;vertical-align:middle;margin:3px}
+.slot.on{border-color:var(--a);box-shadow:0 0 0 3px #ffe8cc}.slot.okc{border-color:var(--ok);background:#ebfbee}.slot.ngc{border-color:var(--ng);background:#fff5f5}
+input.term{font-size:20px;padding:8px;border:2px solid #9fb3c8;border-radius:10px;width:190px}
+.chs button{display:block;width:100%;text-align:left;border:2px solid #c5d0de;background:#fff;border-radius:10px;padding:9px 10px;margin:6px 0;font-size:16px;color:#222;line-height:1.6}
+.chs.inl button{display:inline-block;width:auto;min-width:56px;text-align:center;margin:4px}
+.chs button.sel{border-color:var(--a);background:#fff4e6}.chs button.right{border-color:var(--ok);background:#ebfbee}.chs button.wrong{border-color:var(--ng);background:#fff5f5}
+.res{font-weight:bold;margin:6px 0}.res.ok{color:var(--ok)}.res.ng{color:var(--ng)}
+.ex{background:#f1f8f2;border-left:5px solid #51cf66;padding:6px 10px;border-radius:6px;font-size:15px;line-height:2;margin-top:8px}
+.ol{padding-left:20px;margin:4px 0}.ol li{margin:4px 0}
+.model{background:#fff9db;border-left:5px solid #f59f00;padding:8px 10px;border-radius:6px;line-height:1.9}
+.ck label{display:flex;gap:8px;padding:6px 0;font-size:15px;align-items:center}.ck input{width:22px;height:22px}
+textarea{width:100%;font-size:16px;padding:10px;border:2px solid #9fb3c8;border-radius:10px;min-height:90px;font-family:inherit}
+.cd{font-size:28px;font-weight:bold;color:var(--a);text-align:center}
+.resume{background:#fff4e6;border:2px solid #ffa94d}
+.type{display:flex;gap:8px;align-items:center;padding:9px 2px;border-bottom:1px solid #eef1f5}
+.type .no{font-size:13px;color:#fff;background:var(--p);border-radius:6px;padding:2px 6px;font-weight:bold;white-space:nowrap}
+.type .tt{flex:1;font-size:14px}.type .st{font-size:11px;color:#666}
+.weak{background:#fff5f5;border:2px solid #ffc9c9}
+.list .it{padding:9px 4px;border-bottom:1px solid #eef1f5;font-size:14px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:none;overflow:auto;padding:16px}.ov.show{display:block}.ov .card{max-width:640px;margin:20px auto}
+#kp{position:fixed;left:0;right:0;bottom:0;background:#dde3ea;padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:none;z-index:30;box-shadow:0 -2px 8px rgba(0,0,0,.15)}
+#kp.show{display:block}#kp .g{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:520px;margin:0 auto}
+#kp button{font-size:21px;padding:9px 0;border:0;border-radius:8px;background:#fff;color:#222;font-family:inherit}
+#kp button.f{background:#b8c4d2;font-size:15px}#kp button.go{background:var(--ok);color:#fff;font-size:16px;font-weight:bold}
+.tapinfo{font-size:14px;margin:4px 0;color:var(--p);font-weight:bold}
+.gsvg.tap{touch-action:manipulation;cursor:crosshair;border:2px solid var(--a);border-radius:8px}
+.sc{font-size:34px;font-weight:bold;color:var(--a);text-align:center}
+.rc{background:linear-gradient(135deg,#1b4965,#2c7da0);color:#fff;border-radius:14px;padding:14px}
+.rc h2{color:#fff;margin:0 0 4px}.rc .sub{font-size:12px;opacity:.85}
+.rc .kpi{display:flex;gap:8px;margin:10px 0}.rc .kpi div{flex:1;background:rgba(255,255,255,.15);border-radius:10px;padding:8px;text-align:center;font-size:12px}.rc .kpi b{display:block;font-size:22px}
+.bar{height:9px;background:#eee;border-radius:5px}.bar>div{height:9px;border-radius:5px}
+.mk{display:flex;align-items:flex-end;gap:6px;height:110px;margin:8px 0;padding:0 4px;border-bottom:1px solid #ccc}.mk div{flex:1;background:#e85d04;border-radius:4px 4px 0 0;position:relative;min-width:14px}.mk span{position:absolute;top:-17px;left:0;right:0;text-align:center;font-size:11px;font-weight:bold}
+.days{display:flex;gap:4px}.days div{flex:1;text-align:center;font-size:10px}.days i{display:block;height:24px;border-radius:4px;margin-bottom:2px;font-style:normal;font-size:12px;line-height:24px;font-weight:bold}
+.pr{display:none}
+@media print{body{background:#fff}header,nav,.scr,.ov,#kp{display:none!important}.pr{display:block!important;font-size:10.5pt}.pq{break-inside:avoid;margin-bottom:4mm;border:1px solid #999;padding:2.5mm}.pq .gsvg{width:210px}.pg{break-before:page}.pr h2{font-size:13pt;margin:0 0 3mm}.pr .fr{font-size:10pt}.ans{border-bottom:1px solid #999;min-height:9mm}.two{display:flex;gap:4mm;flex-wrap:wrap}.two>div{flex:1 1 45%}}
+</style></head><body>
+<header><h1>比例・反比例 再テスト特訓 <span class="badge">v1.1</span><button id="helpBtn" onclick="ov('help')">❓使い方</button></h1></header>
+<nav id="nav"><button data-t="home" class="on">🏠 練習</button><button data-t="solve">✏️ 解く</button><button data-t="miss">❌ ミス</button><button data-t="rank">📊 苦手</button><button data-t="find">🔍 検索</button><button data-t="print">🖨 印刷</button><button data-t="card">📋 成績</button></nav>
+
+<div id="home" class="scr show"><div id="resume"></div>
+ <div class="card"><h2>🎯 本番そっくりテスト（50点満点）</h2><p style="font-size:14px;margin:0 0 8px">1年数学 第4回定期テストの<b>1（知識・技能）(1)〜(6)</b>と同じ形・同じ配点で，<b>数字を変えて</b>出題します（全22問）。毎回ちがう問題になります。</p><div class="row"><button class="btn a" onclick="startMock()">▶ 本番そっくりテストを始める</button><button class="btn ok" onclick="show('card')">📋 成績・先生に送る</button></div><div id="mockHist" style="font-size:13px;margin-top:8px"></div></div>
+ <div class="card weak"><h2>⚠️ やり直し答案で見つかった「つまずき」</h2><div id="tsuma"></div></div>
+ <div class="card"><h2>📚 型ごとに練習（数字は毎回かわる）</h2><p style="font-size:13px;margin:0 0 4px">「3問」でその型を3問。📈で「学習のあと」。</p><div id="tlist"></div>
+ <div class="row" style="margin-top:10px"><button class="btn" onclick="startRand(9)">🎲 ぜんぶの型から9問</button><button class="btn sub" onclick="startWeak()">苦手な型から6問</button></div></div></div>
+<div id="solve" class="scr"><div id="sbox"><div class="card">「🏠 練習」から問題をえらんでください。</div></div></div>
+<div id="miss" class="scr"></div><div id="rank" class="scr"></div>
+<div id="find" class="scr"><div class="card"><h2>🔍 検索（漢字・ひらがな）</h2><input id="fq" style="width:100%;font-size:17px;padding:9px;border:2px solid #9fb3c8;border-radius:10px" placeholder="例：はんぴれい／座標／だいにゅう／グラフ" oninput="doFind()"><p style="font-size:12px;color:#666">型の名前・用語・説明メモから探します。</p><div id="fres"></div></div></div>
+<div id="print" class="scr"><div class="card"><h2>🖨 プリント（毎回ちがう数字）</h2>
+ <p><button class="btn a" onclick="printMock()">🖨 本番そっくりテスト（問題＋解答）</button></p>
+ <h3>型をえらんで印刷（各4問＋解答）</h3><div id="plist" class="ck"></div>
+ <div class="row"><button class="btn sub sm" onclick="pAll(1)">ぜんぶ</button><button class="btn sub sm" onclick="pAll(0)">はずす</button><button class="btn sub sm" onclick="pWeak()">苦手だけ</button></div>
+ <p><button class="btn" onclick="printTypes()">🖨 えらんだ型を印刷</button></p>
+ <p><button class="btn sub" onclick="printGrids()">🖨 グラフ用の白紙方眼（6面）</button></p>
+ <p style="font-size:12px;color:#666">グラフをかく問題は，プリントの方眼に<b>紙と鉛筆</b>でかいて，解答ページのグラフと見くらべよう。iPhoneは「共有」→「プリント」でPDFにもできます。</p></div></div>
+<div id="card" class="scr"></div>
+<div class="pr" id="pr"></div>
+<div id="kp"><div class="g">
+ <button onclick="kp('7')">7</button><button onclick="kp('8')">8</button><button onclick="kp('9')">9</button><button class="f" onclick="kp('/')">分数<br>／</button><button class="f" onclick="kp('BS')">⌫</button>
+ <button onclick="kp('4')">4</button><button onclick="kp('5')">5</button><button onclick="kp('6')">6</button><button onclick="kp('x')"><i>x</i></button><button class="f" onclick="kp('C')">全消し</button>
+ <button onclick="kp('1')">1</button><button onclick="kp('2')">2</button><button onclick="kp('3')">3</button><button onclick="kp('-')">−</button><button onclick="kp('+')">＋</button>
+ <button onclick="kp('0')">0</button><button onclick="kp('.')">.</button><button class="f" onclick="kpMove(-1)">◀ 前</button><button class="f" onclick="kpMove(1)">次 ▶</button><button class="go" onclick="checkStep()">答え<br>合わせ</button>
+</div><div style="font-size:11px;text-align:center;color:#555;margin-top:3px">分数は「分子 ／ 分母」の順：<span class="fr"><span>4</span><span>3</span></span><i>x</i> → 4 ／ 3 <i>x</i>　<span class="fr"><span>12</span><span><i>x</i></span></span> → 12 ／ <i>x</i></div></div>
+
+<div class="ov" id="help"><div class="card"><h2>❓ 使い方</h2>
+<p><b>このアプリは？</b>来週の<b>再テスト</b>（1年数学 第4回定期テスト <b>1</b> の(1)〜(6)）のための特訓アプリです。<b>数字が毎回かわる</b>ので，何回でも練習できます。</p>
+<p><b>🎯 本番そっくりテスト</b>：テストと同じ22問・50点満点。終わると点数と，まちがえた型が出ます。<b>40点以上</b>を目指そう。</p>
+<p><b>📚 型ごとに練習</b>：(1)用語〜(6)②反比例まで9つの型。「3問」をタップ。</p>
+<p><b>答え方</b><br>・数や式は<b>下のキーボード</b>で入れます。分数は「分子 → <b>分数／</b> → 分母」。例：<span class="fr"><span>4</span><span>3</span></span><i>x</i> は <code>4 ／ 3 x</code>，<span class="fr"><span>12</span><span><i>x</i></span></span> は <code>12 ／ x</code>，マイナスは先に <code>−</code>。入れたものは<b>たての分数</b>で表示されます。<br>・ワクが2つあるときは，ワクをタップするか「次 ▶」で切りかえ。<br>・用語は<b>漢字</b>でふつうに入力（ひらがなだと×）。<br>・<b>約分</b>していないと×になります（テストと同じ）。</p>
+<p><b>グラフをかく問題</b>：方眼を<b>タップして点を打つ</b>と，正しければアプリが線（曲線）を引きます。まちがった点は赤くなって消えます。紙でも練習したいときは🖨印刷の方眼を使おう。</p>
+<p><b>大事なこと</b>：答えたら必ず<b>「解き方」を読む</b>。そのあと<b>💬 自分の言葉で説明</b>（20秒考えてから書く→お手本①②③とチェック）。</p>
+<p><b>❌ ミス</b>：今回まちがえた問題（解き方をもう一度見る・同じ型を新しい数字で）。<b>📊 苦手</b>：型ごとの正答率。<b>📈 学習のあと</b>：何回やったか・○×の記録・説明メモ。</p>
+<p><b>📋 成績</b>：成績カード（本番の点数の変化・型ごとの正答率・7日間の学習）。<b>「📨 先生にLINEで送る」</b>で記録を先生に送れます。1日の終わりに送ろう。記録はこのスマホの中だけに保存され，<b>自分でボタンを押したときだけ</b>先生に届きます（自動では送られません）。くわしくは📋成績の画面の下の「この機能について」。</p>
+<p><b>🔍 検索</b>：「はんぴれい」「座標」などで型や用語をさがせます。</p>
+<p><b>📌 とちゅうから再開</b>：1ステップごとに保存。画面が消えても「▶ 続きから再開」。</p>
+<p><b>うまく動かないとき</b>：LINEの中ではなくSafari（AndroidはChrome）で開く（記録はLINEとブラウザで別々）。</p>
+<p style="font-size:12px;color:#666">※問題と答えはClaudeが作り，答えはすべて計算で確かめています（4万問以上で自動チェック）。</p>
+<button class="btn" onclick="cov()">閉じる</button></div></div>
+<div class="ov" id="after"><div class="card" id="afterBox"></div></div>
+<div class="ov" id="expl"><div class="card" id="explBox"></div></div>
+<script>
+// ===== 比例・反比例 再テスト 問題生成 =====
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+function Q(n,d=1){if(d<0){n=-n;d=-d}const g=gcd(n,d);return [n/g,d/g]}
+const qmul=(a,b)=>Q(a[0]*b[0],a[1]*b[1]),qdiv=(a,b)=>Q(a[0]*b[1],a[1]*b[0]),qv=a=>a[0]/a[1];
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));const pick=a=>a[R(0,a.length-1)];
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const MI='−',X='<i>x</i>',Y='<i>y</i>',KANA='アイウエオカキ';
+const fr=(n,d)=>`<span class="fr"><span>${n}</span><span>${d}</span></span>`;
+const nm=n=>n<0?MI+(-n):''+n;               // 整数
+const np=n=>n<0?'('+MI+(-n)+')':''+n;        // 負ならかっこ
+function qh(q){const s=q[0]<0?MI:'',n=Math.abs(q[0]);return q[1]==1?s+n:s+fr(n,q[1])}
+function qp(q){return q[0]<0?'('+qh(q)+')':qh(q)}
+function coefH(a){if(a[1]==1)return a[0]==1?X:a[0]==-1?MI+X:nm(a[0])+X;return (a[0]<0?MI:'')+fr(Math.abs(a[0]),a[1])+X}
+function linH(a,b){b=b||0;if(!b)return coefH(a);const ab=[Math.abs(a[0]),a[1]];return nm(b)+(a[0]<0?' − ':' + ')+coefH(ab)}
+const invH=a=>(a<0?MI:'')+fr(Math.abs(a),X);
+function linT(a,b){b=b||0;let c=a[1]==1?(a[0]==1?'x':a[0]==-1?'-x':a[0]+'x'):a[0]+'/'+a[1]+'x';if(!b)return c;return b+(a[0]<0?c:'+'+c)}
+const invT=a=>a+'/x',qT=q=>q[1]==1?''+q[0]:q[0]+'/'+q[1];
+const yE=h=>`${Y} = ${h}`;
+
+// ---------- 判定 ----------
+function norm(s){return (s||'').normalize('NFKC').replace(/[−ー－‐]/g,'-').replace(/÷/g,'/').replace(/×/g,'*').replace(/\s/g,'').replace(/^y=/i,'').replace(/X/g,'x')}
+function toJS(s){s=norm(s);if(!s||!/^[0-9x+\-*/().]+$/.test(s))return null;return s.replace(/(\d|\)|x)(?=[x(])/g,'$1*')}
+function ev(js,x){try{const v=Function('x','"use strict";return ('+js+')')(x);return typeof v=='number'?v:NaN}catch(e){return NaN}}
+function unreduced(s){s=norm(s);let m,re=/(\d+)\/(\d+)/g;while(m=re.exec(s)){if(gcd(+m[1],+m[2])>1)return m[0]}if(/\/1(?!\d)/.test(s))return '/1';return null}
+function model(ans){return ans.f=='lin'?x=>qv(ans.a)*x+(ans.b||0):ans.f=='inv'?x=>ans.a/x:()=>qv(ans.q)}
+// 戻り値 {ok, msg}
+function judge(sl,v){
+ if(sl.t=='term'){const s=(v||'').normalize('NFKC').trim().replace(/[　 ]/g,'');
+  if(s==sl.ans||(sl.al||[]).includes(s))return{ok:true};
+  if(s==sl.yomi)return{ok:false,msg:'読みは合っています。<b>漢字</b>で書こう。'};return{ok:false}}
+ if(sl.t=='num'||sl.t=='fx'){
+  if(!norm(v))return{ok:false,msg:'答えが入っていません。'};
+  if(/[a-wzA-WZ]/.test(norm(v).replace(/x/g,'')))return{ok:false,msg:'文字（<i>a</i> など）が残っています。<i>a</i> の値を求めて，数を入れよう。'};
+  const js=toJS(v);if(js==null)return{ok:false,msg:'書き方が読めませんでした。'};
+  if(sl.t=='num'&&/x/.test(js))return{ok:false,msg:'ここは数だけを答えよう。'};
+  const f=model(sl.ans),xs=[1,2,3,-2,5,7,-3];
+  const good=xs.every(x=>Math.abs(ev(js,x)-f(x))<1e-9);
+  if(!good)return{ok:false};
+  const u=unreduced(v);if(u)return{ok:false,msg:`数は合っていますが，<b>約分</b>ができていません（${u}）。テストでは×になります。`};
+  if(/\./.test(norm(v))&&!Number.isInteger(f(1)))return{ok:true,msg:'正解。でも分数で書くのがふつうです。'};
+  return{ok:true}}
+ return{ok:false}
+}
+
+// ---------- 方眼(SVG) ----------
+function grid(o){const r=o.r,W=o.size||300,pad=22,s=(W-2*pad)/(2*r+1),H=W;
+ const gx=x=>pad+(x+r+.5)*s,gy=y=>pad+(r+.5-y)*s,lo=-r-.5,hi=r+.5;let g='';
+ const cid='c'+Math.random().toString(36).slice(2,8);
+ g+=`<defs><clipPath id="${cid}"><rect x="${gx(lo)}" y="${gy(hi)}" width="${(2*r+1)*s}" height="${(2*r+1)*s}"/></clipPath></defs>`;
+ g+=`<rect x="${gx(lo)}" y="${gy(hi)}" width="${(2*r+1)*s}" height="${(2*r+1)*s}" fill="#fff" stroke="#888"/>`;
+ for(let k=-r;k<=r;k++){g+=`<line x1="${gx(k)}" y1="${gy(lo)}" x2="${gx(k)}" y2="${gy(hi)}" stroke="#c9d2dc" stroke-width="${k%5?0.7:1.1}"/><line x1="${gx(lo)}" y1="${gy(k)}" x2="${gx(hi)}" y2="${gy(k)}" stroke="#c9d2dc" stroke-width="${k%5?0.7:1.1}"/>`}
+ g+=`<line x1="${gx(lo)}" y1="${gy(0)}" x2="${gx(hi)+8}" y2="${gy(0)}" stroke="#222" stroke-width="1.6"/><line x1="${gx(0)}" y1="${gy(lo)}" x2="${gx(0)}" y2="${gy(hi)-8}" stroke="#222" stroke-width="1.6"/>`;
+ g+=`<text x="${gx(hi)+6}" y="${gy(0)+14}" font-size="14" font-style="italic">x</text><text x="${gx(0)+5}" y="${gy(hi)-6}" font-size="14" font-style="italic">y</text><text x="${gx(0)-11}" y="${gy(0)+13}" font-size="11">O</text>`;
+ const ls=r==10?[-10,-5,5,10]:[-5,5];
+ ls.forEach(k=>{g+=`<text x="${gx(k)}" y="${gy(0)+13}" font-size="10" text-anchor="middle">${k<0?'−'+(-k):k}</text><text x="${gx(0)-3}" y="${gy(k)+4}" font-size="10" text-anchor="end">${k<0?'−'+(-k):k}</text>`});
+ let ln='';
+ if(o.lin){const a=qv(o.lin);ln+=`<line x1="${gx(lo)}" y1="${gy(a*lo)}" x2="${gx(hi)}" y2="${gy(a*hi)}" stroke="${o.col||'#1b4965'}" stroke-width="2.4"/>`}
+ if(o.inv!=null){const a=o.inv;[1,-1].forEach(sg=>{let p=[];for(let t=0.02;t<=hi;t+=0.02){const x=sg*t,y=a/x;if(Math.abs(y)<=hi+2)p.push(gx(x).toFixed(1)+','+gy(y).toFixed(1))}ln+=`<polyline points="${p.join(' ')}" fill="none" stroke="${o.col||'#1b4965'}" stroke-width="2.4"/>`})}
+ g+=`<g clip-path="url(#${cid})">${ln}</g>`;
+ (o.pts||[]).forEach(p=>{g+=`<circle cx="${gx(p[0])}" cy="${gy(p[1])}" r="${p[3]?5:4}" fill="${p[3]||'#222'}"/>`;if(p[2])g+=`<text x="${gx(p[0])-4}" y="${gy(p[1])-7}" font-size="15" font-weight="bold" text-anchor="end">${p[2]}</text>`});
+ return `<svg class="gsvg" viewBox="0 0 ${W} ${H}" width="${W}" style="max-width:100%;height:auto" data-r="${r}" data-pad="${pad}" data-s="${s}">${g}<g class="taps"></g></svg>`}
+
+// ---------- 問題の型 ----------
+const TYPES=[
+ {id:'T1',no:'(1)',name:'用語（漢字で書く）',y:'ようご かんじ だいにゅう へんいき げんてん ちょくせん そうきょくせん ひれいていすう かんすう ざひょう へんすう ていすう'},
+ {id:'T2',name:'関数・比例・反比例をえらぶ',no:'(2)',y:'かんすう ひれい はんぴれい えらぶ ぶんしょう'},
+ {id:'T3',name:'文章から式をつくる',no:'(3)',y:'ぶんしょう しき つくる みちのり めんせき さんかくけい'},
+ {id:'T4',name:'表から式をつくる',no:'(4)',y:'ひょう しき ひれい はんぴれい'},
+ {id:'T5',name:'点の座標を読む',no:'(5)①',y:'ざひょう てん よむ'},
+ {id:'T6',name:'グラフから式を求める',no:'(5)②',y:'ぐらふ しき もとめる ちょくせん'},
+ {id:'T7',name:'グラフをかく（点を打つ）',no:'(5)③',y:'ぐらふ かく てん うつ そうきょくせん ちょくせん'},
+ {id:'T8',name:'比例：比例定数・式・xの値',no:'(6)①',y:'ひれい ひれいていすう しき あたい だいにゅう'},
+ {id:'T9',name:'反比例：比例定数・式・xの値',no:'(6)②',y:'はんぴれい ひれいていすう しき あたい だいにゅう'}];
+
+const TERMS=[
+ ['式の中の文字に数をあてはめることを【　】するという。','代入','だいにゅう','「<b>代</b>わりに<b>入</b>れる」で代入。「大」ではなく「<b>代</b>（にんべん）」。'],
+ ['変数のとる値の範囲を，その変数の【　】という。','変域','へんいき','「<b>変</b>数の領<b>域</b>（はんい）」で変域。「域」は<b>土へん</b>（「城」ではない）。'],
+ ['比例 <i>y</i>＝<i>ax</i> のグラフは，【　】を通る直線である。','原点','げんてん','<i>x</i>軸と<i>y</i>軸が交わる点O。「<b>原</b>（もと）の<b>点</b>」。'],
+ ['比例 <i>y</i>＝<i>ax</i> のグラフは，原点を通る【　】である。','直線','ちょくせん','まっすぐな線。「<b>線</b>」は糸へん。'],
+ ['反比例 <i>y</i>＝<i>a</i>／<i>x</i> のグラフは，【　】とよばれる曲線になる。','双曲線','そうきょくせん','2本に分かれた曲線。「<b>双</b>（ふた）つの<b>曲線</b>」。'],
+ ['<i>y</i>＝<i>ax</i> や <i>y</i>＝<i>a</i>／<i>x</i> の <i>a</i>（決まった数）を【　】という。','比例定数','ひれいていすう','比例でも反比例でも <i>a</i> は「<b>比例定数</b>」とよぶ。'],
+ ['<i>x</i>の値を決めると，それに対応する<i>y</i>の値がただ1つに決まるとき，<i>y</i>は<i>x</i>の【　】であるという。','関数','かんすう','「<b>関</b>係する<b>数</b>」。ただ1つに決まることがポイント。'],
+ ['いろいろな値をとる文字（<i>x</i>や<i>y</i>）を【　】という。','変数','へんすう','値が<b>変</b>わる<b>数</b>。'],
+ ['決まった数や，決まった数を表す文字を【　】という。','定数','ていすう','<b>定</b>まった（決まった）<b>数</b>。'],
+ ['点の位置を (3, −2) のように表した数の組を，その点の【　】という。','座標','ざひょう','「<b>座</b>」は「まだれ」に「人人土」。'],
+ ['<i>x</i>軸と<i>y</i>軸の交わる点Oを【　】という。','原点','げんてん','座標は (0, 0)。'],
+ ['<i>y</i>＝<i>ax</i> で表される関係を，「<i>y</i>は<i>x</i>に【　】する」という。','比例','ひれい','<i>x</i>が2倍，3倍…→<i>y</i>も2倍，3倍…'],
+ ['<i>y</i>＝<i>a</i>／<i>x</i> で表される関係を，「<i>y</i>は<i>x</i>に【　】する」という。','反比例','はんぴれい','<i>x</i>が2倍，3倍…→<i>y</i>は1/2倍，1/3倍…'],
+];
+function genT1(k){const t=k!=null?TERMS[k]:pick(TERMS);
+ return{q:t[0].replace('【　】','【　？　】'),steps:[{lab:'【　？　】に入る語句（すべて<b>漢字</b>で）',slots:[{t:'term',ans:t[1],yomi:t[2],pre:'',w:180}],pts:2}],
+  exp:`<p>答え：<b style="font-size:20px">${t[1]}</b>（${t[2]}）</p><p>💡 ${t[3]}</p>`}}
+
+// (2) 場面
+const SIT=[
+ ()=>{const N=pick([50,100,200]);return{t:`${N}Lの水を${X}L使ったときの残りの水の量${Y}L`,k:'o',e:yE(`${N} − ${X}`)}},
+ ()=>({t:`縦の長さが${X}cmの長方形の面積${Y}cm²`,k:'n',e:'横の長さがわからないので，<i>y</i>は1つに決まらない'}),
+ ()=>{const v=pick([3,4,5,6]);return{t:`時速${v}kmで${X}時間歩いたときの進んだ道のり${Y}km`,k:'h',e:yE(v+X)}},
+ ()=>{const S=pick([6,8,10,12,15,20]);return{t:`面積${S}cm²の三角形の底辺の長さ${X}cm，高さ${Y}cm`,k:'v',e:yE(invH(2*S))}},
+ ()=>({t:`1辺の長さ${X}cmの正三角形の周の長さ${Y}cm`,k:'h',e:yE('3'+X)}),
+ ()=>({t:`1辺の長さ${X}cmの正方形の面積${Y}cm²`,k:'o',e:yE(X+'×'+X)+'（比例でも反比例でもない）'}),
+ ()=>({t:`年齢が${X}歳の人の身長${Y}cm`,k:'n',e:'同じ年齢でも身長は人によってちがうので，1つに決まらない'}),
+ ()=>{const D=pick([12,18,20,24,30]);return{t:`${D}kmの道のりを時速${X}kmで進むときにかかる時間${Y}時間`,k:'v',e:yE(invH(D))}},
+ ()=>{const p=pick([80,120,150]);return{t:`1個${p}円のパンを${X}個買ったときの代金${Y}円`,k:'h',e:yE(p+X)}},
+ ()=>({t:`周の長さが${X}cmの長方形の面積${Y}cm²`,k:'n',e:'周の長さが同じでも，形によって面積はちがうので1つに決まらない'}),
+ ()=>{const V=pick([60,80,120]);return{t:`${V}Lの水そうに毎分${X}Lずつ水を入れるとき，満水になるまでの時間${Y}分`,k:'v',e:yE(invH(V))}},
+ ()=>{const N=pick([24,36,48,60]);return{t:`${N}枚の色紙を${X}人で同じ数ずつ分けるときの1人分の枚数${Y}枚`,k:'v',e:yE(invH(N))}},
+ ()=>{const p=pick([300,500,700]);return{t:`${X}円を持って${p}円の本を買ったときの残りのお金${Y}円`,k:'o',e:yE(`${X} − ${p}`)+'（比例でも反比例でもない）'}},
+ ()=>({t:`体重が${X}kgの人の身長${Y}cm`,k:'n',e:'体重が同じでも身長はちがうので1つに決まらない'}),
+ ()=>{const S=pick([12,18,24,30]);return{t:`面積${S}cm²の長方形の縦の長さ${X}cm，横の長さ${Y}cm`,k:'v',e:yE(invH(S))}},
+ ()=>{const p=pick([60,90,110]);return{t:`1本${p}円の鉛筆を${X}本買ったときの代金${Y}円`,k:'h',e:yE(p+X)}}];
+function genT2(){const b=SIT.map(f=>f());const byk=k=>shuf(b.filter(s=>s.k==k));
+ const nN=R(1,2);let L=[byk('v')[0],...byk('n').slice(0,nN)];const rest=shuf([...byk('h'),...byk('o')]);
+ L=L.concat(rest.slice(0,5-L.length));if(!L.some(s=>s.k=='h')){L[L.length-1]=byk('h')[0]}L=shuf(L);
+ const fIdx=L.map((s,i)=>s.k!='n'?i:-1).filter(i=>i>=0),vIdx=L.findIndex(s=>s.k=='v'),hIdx=L.map((s,i)=>s.k=='h'?i:-1).filter(i=>i>=0);
+ const opts=L.map((s,i)=>KANA[i]);const q2=Math.random()<.6;
+ const tag={n:'関数ではない',o:'関数（比例でも反比例でもない）',h:'関数・<b>比例</b>',v:'関数・<b>反比例</b>'};
+ return{q:L.map((s,i)=>`<div style="margin:3px 0">${KANA[i]}　${s.t}</div>`).join(''),
+  steps:[{lab:'① <i>y</i>が<i>x</i>の<b>関数</b>であるものを<b>すべて</b>選びなさい。',multi:true,opts,ans:fIdx,pts:3},
+   q2?{lab:'② <i>y</i>が<i>x</i>に<b>反比例</b>するものを1つ選びなさい。',opts,ans:[vIdx],pts:3}:{lab:'② <i>y</i>が<i>x</i>に<b>比例</b>するものを<b>すべて</b>選びなさい。',multi:true,opts,ans:hIdx,pts:3}],
+  exp:`<p>まず<b>式にしてみる</b>のがコツ。式にできない（1つに決まらない）ものは関数ではありません。</p>`+L.map((s,i)=>`<div style="margin:4px 0">${KANA[i]}：${s.e}　→ ${tag[s.k]}</div>`).join('')+`<p style="font-size:13px">${Y}＝(数)${X} → 比例　／　${Y}＝${fr('(数)',X)} → 反比例</p>`}}
+
+// (3) 文章→式
+const TPL3=[
+ ()=>{const L=pick([12,16,20,25,30]);return{t:`長さ${L}kmのサイクリングコースを，自転車で${X}km走ったときの残りの道のり${Y}km`,ans:{f:'lin',a:[-1,1],b:L},
+  e:[`ことばの式：（残り）＝（全体）−（走った道のり）`,`${Y} = ${L} − ${X}`]}},
+ ()=>{const S=pick([6,8,9,10,12,14,15,18]);return{t:`面積が${S}cm²の三角形の底辺${X}cmと高さ${Y}cm`,ans:{f:'inv',a:2*S},
+  e:[`ことばの式：（底辺）×（高さ）÷ 2 ＝（面積）`,`${X} × ${Y} ÷ 2 = ${S}`,`両辺に2をかける → ${X}${Y} = ${2*S}`,`両辺を${X}でわる → ${yE(invH(2*S))}`]}},
+ ()=>{const S=pick([12,18,20,24,30,36]);return{t:`面積が${S}cm²の長方形の縦${X}cmと横${Y}cm`,ans:{f:'inv',a:S},e:[`ことばの式：（縦）×（横）＝（面積）`,`${X} × ${Y} = ${S}`,`両辺を${X}でわる → ${yE(invH(S))}`]}},
+ ()=>{const v=pick([4,5,12,15,40,60]);return{t:`時速${v}kmで${X}時間進んだときの道のり${Y}km`,ans:{f:'lin',a:[v,1]},e:[`ことばの式：（道のり）＝（速さ）×（時間）`,`${Y} = ${v} × ${X}`,yE(v+X)]}},
+ ()=>{const D=pick([12,24,30,36,60]);return{t:`${D}kmの道のりを時速${X}kmで進むときにかかる時間${Y}時間`,ans:{f:'inv',a:D},e:[`ことばの式：（時間）＝（道のり）÷（速さ）`,`${Y} = ${D} ÷ ${X}`,yE(invH(D))]}},
+ ()=>{const p=pick([60,80,120,150]);return{t:`1個${p}円のりんごを${X}個買ったときの代金${Y}円`,ans:{f:'lin',a:[p,1]},e:[`ことばの式：（代金）＝（1個の値段）×（個数）`,`${Y} = ${p} × ${X}`,yE(p+X)]}},
+ ()=>{const [n,nm2]=pick([[3,'正三角形'],[4,'正方形'],[5,'正五角形'],[6,'正六角形']]);return{t:`1辺の長さが${X}cmの${nm2}の周の長さ${Y}cm`,ans:{f:'lin',a:[n,1]},e:[`${nm2}は${n}つの辺の長さが等しい`,`（周）＝（1辺）× ${n}`,yE(n+X)]}},
+ ()=>{const N=pick([24,30,36,48,60]);return{t:`${N}個のあめを${X}人で同じ数ずつ分けるときの1人分の個数${Y}個`,ans:{f:'inv',a:N},e:[`ことばの式：（1人分）＝（全部）÷（人数）`,`${Y} = ${N} ÷ ${X}`,yE(invH(N))]}},
+ ()=>{const N=pick([50,80,100,200]);return{t:`${N}Lの水のうち${X}L使ったときの残りの水の量${Y}L`,ans:{f:'lin',a:[-1,1],b:N},e:[`ことばの式：（残り）＝（全体）−（使った量）`,`${Y} = ${N} − ${X}`]}},
+ ()=>{const b=pick([3,5,7,9,4,6]);const a=Q(b,2);return{t:`底辺が${b}cm，高さが${X}cmの三角形の面積${Y}cm²`,ans:{f:'lin',a},
+  e:[`ことばの式：（面積）＝（底辺）×（高さ）÷ 2`,`${Y} = ${b} × ${X} ÷ 2`,`÷2 は ×${fr(1,2)} のこと → ${Y} = ${fr(b+X,2)}`,yE(coefH(a))+(a[1]==1?'（約分）':'')]}},
+ ()=>{const V=pick([24,40,60,90]);return{t:`${V}Lの水そうに毎分${X}Lずつ水を入れるとき，いっぱいになるまでの時間${Y}分`,ans:{f:'inv',a:V},e:[`ことばの式：（時間）＝（全体の量）÷（1分に入る量）`,`${Y} = ${V} ÷ ${X}`,yE(invH(V))]}}];
+function genT3(){const t=pick(TPL3)();const can=t.ans.f=='inv'?invT(t.ans.a):linT(t.ans.a,t.ans.b);
+ return{q:`次について，${Y}を${X}の式で表しなさい。<div style="margin-top:6px">${t.t}</div>`,
+  steps:[{lab:'式を答えよう',slots:[{t:'fx',ans:t.ans,pre:Y+' =',can}],pts:3}],
+  exp:`<ol class="ol">${t.e.map(s=>`<li>${s}</li>`).join('')}</ol><p>答え：<b>${yE(t.ans.f=='inv'?invH(t.ans.a):linH(t.ans.a,t.ans.b))}</b></p>`}}
+
+// (4) 表→式
+function tblH(xs,ys){return `<table class="tb"><tr><th>${X}</th><td>…</td>${xs.map(x=>`<td>${nm(x)}</td>`).join('')}<td>…</td></tr><tr><th>${Y}</th><td>…</td>${ys.map(y=>`<td>${y}</td>`).join('')}<td>…</td></tr></table>`}
+function genT4(kind){kind=kind||pick(['h','v']);
+ if(kind=='h'){const a=Math.random()<.7?Q(pick([2,3,4,5,-2,-3,-4,-5,6,-6]),1):Q(...pick([[1,2],[-1,2],[3,2],[-3,2],[2,3],[-2,3]]));
+  const xs=[-1,0,1,2].map(k=>k*a[1]),ys=xs.map(x=>qh(qmul(a,[x,1])));const x0=xs[2],y0=qmul(a,[x0,1])[0];
+  return{q:`次の表は，${Y}が${X}に<b>比例</b>する関係を表している。${Y}を${X}の式で表しなさい。${tblH(xs,ys)}`,
+   steps:[{lab:'まず比例定数 <i>a</i> を求めよう',slots:[{t:'num',ans:{q:a},pre:'<i>a</i> =',can:qT(a)}],pts:0},{lab:'式を答えよう',slots:[{t:'fx',ans:{f:'lin',a},pre:Y+' =',can:linT(a)}],pts:3}],
+   exp:`<ol class="ol"><li>比例は ${Y} = <i>a</i>${X}。0 ではない組を1つえらぶ：${X} = ${x0}，${Y} = ${nm(y0)}</li><li>代入：${nm(y0)} = <i>a</i> × ${np(x0)} → ${x0}<i>a</i> = ${nm(y0)}</li><li>両辺を ${x0} でわる → <i>a</i> = ${fr(nm(y0),x0)} = ${qh(a)}</li><li>（たしかめ：<i>a</i> = ${Y} ÷ ${X} はどの組でも ${qh(a)}）</li></ol><p>答え：<b>${yE(coefH(a))}</b></p>`}}
+ const a=pick([6,12,18,24,30,36,-6,-12,-18,-24,-30,-36]);const xs=Math.random()<.6?[-2,-1,0,1,2]:[1,2,3,6];const ys=xs.map(x=>x==0?'×':nm(a/x));const x0=xs.find(x=>x>1),y0=a/x0;
+ return{q:`次の表は，${Y}が${X}に<b>反比例</b>する関係を表している。${Y}を${X}の式で表しなさい。${tblH(xs,ys)}`,
+  steps:[{lab:'まず比例定数 <i>a</i> を求めよう',slots:[{t:'num',ans:{q:[a,1]},pre:'<i>a</i> =',can:''+a}],pts:0},{lab:'式を答えよう',slots:[{t:'fx',ans:{f:'inv',a},pre:Y+' =',can:invT(a)}],pts:3}],
+  exp:`<ol class="ol"><li>反比例は ${Y} = ${fr('<i>a</i>',X)}。<b><i>a</i> = ${X} × ${Y}</b>（かけ算）で求まる。</li><li>${X} = ${x0}，${Y} = ${nm(y0)} を使う：<i>a</i> = ${x0} × ${np(y0)} = ${nm(a)}</li><li>（たしかめ：どの組でも ${X}×${Y} = ${nm(a)}）</li></ol><p>答え：<b>${yE(invH(a))}</b></p><p style="font-size:13px">表の「×」は，${X}=0 のときは ${Y} の値がない（0でわれない）という意味。</p>`}}
+
+// (5)① 座標
+function genT5(){let A,B;do{A=[R(-5,5),R(-5,5)];B=[R(-5,5),R(-5,5)]}while(A[0]*A[1]==0&&Math.random()<.8||B[0]*B[1]==0&&Math.random()<.8||(A[0]==B[0]&&A[1]==B[1])||Math.sign(A[0])==Math.sign(B[0])&&Math.sign(A[1])==Math.sign(B[1]));
+ const sl=(P,n)=>[{t:'num',ans:{q:[P[0],1]},pre:n+'（',w:70,can:''+P[0]},{t:'num',ans:{q:[P[1],1]},pre:'，',post:'）',w:70,can:''+P[1]}];
+ const ex=(P,n)=>`<li>点${n}：原点Oから<b>横</b>に ${P[0]>0?'右へ'+P[0]:P[0]<0?'左へ'+(-P[0]):'0'}（${X}座標 ${nm(P[0])}），<b>縦</b>に ${P[1]>0?'上へ'+P[1]:P[1]<0?'下へ'+(-P[1]):'0'}（${Y}座標 ${nm(P[1])}）→ ${n}(${nm(P[0])}, ${nm(P[1])})</li>`;
+ return{q:'次の点の座標を答えなさい。',fig:grid({r:5,pts:[[A[0],A[1],'A'],[B[0],B[1],'B']]}),
+  steps:[{lab:'点Aの座標',slots:sl(A,'A'),pts:1},{lab:'点Bの座標',slots:sl(B,'B'),pts:1}],
+  exp:`<p>座標は <b>(横, 縦)</b> ＝ (${X}座標, ${Y}座標) の順。<b>右・上がプラス，左・下がマイナス</b>。</p><ol class="ol">${ex(A,'A')}${ex(B,'B')}</ol>`}}
+
+// (5)② グラフ→式
+const LINA=[[1,1],[2,1],[3,1],[1,2],[3,2],[2,3],[1,3],[3,4],[4,3],[2,5],[5,2],[4,5],[5,4],[5,3],[3,5]];
+function genT6(){const b=pick(LINA),a=Q(b[0]*(Math.random()<.5?-1:1),b[1]);const px=a[1],py=a[0];
+ return{q:'次のグラフの式を求めなさい。',fig:grid({r:5,lin:a}),
+  steps:[{lab:'直線が<b>方眼の交わった点</b>をちょうど通るところ（原点以外）を1つさがして，その座標を書こう',online:a,slots:[{t:'num',pre:'（',w:70},{t:'num',pre:'，',post:'）',w:70}],can:[px,py],pts:0},
+   {lab:'式を答えよう',slots:[{t:'fx',ans:{f:'lin',a},pre:Y+' =',can:linT(a)}],pts:2}],
+  exp:`<ol class="ol"><li>原点を通る直線 → 比例。式は ${Y} = <i>a</i>${X}。<b><i>a</i> を求めないと答えにならない</b>（${Y}=<i>a</i>${X} のままは×）。</li><li>方眼の交わった点をちょうど通る点をさがす → (${px}, ${nm(py)})</li><li>代入：${nm(py)} = <i>a</i> × ${px} → ${px}<i>a</i> = ${nm(py)}</li><li>両辺を ${px} でわる → <i>a</i> = ${qh(a)}</li></ol><p>答え：<b>${yE(coefH(a))}</b></p><p style="font-size:13px">（右へ ${px} 進むと ${py>0?'上へ '+py:'下へ '+(-py)} 進む → <i>a</i> = ${fr('上がる量','右へ進む量')} とも考えられる）</p>`,figAns:grid({r:5,lin:a,pts:[[0,0,''],[px,py,'','#e85d04']]})}}
+
+// (5)③ グラフをかく
+function latInv(a,r){const p=[];for(let x=-r;x<=r;x++){if(x&&a%x==0&&Math.abs(a/x)<=r)p.push([x,a/x])}return p}
+function genT7(kind){kind=kind||pick(['h','v']);
+ if(kind=='h'){const b=pick(LINA.filter(t=>t[1]<=3&&t[0]<=4)),a=Q(b[0]*(Math.random()<.6?-1:1),b[1]);
+  return{q:`次の関数のグラフをかきなさい。<div class="big">${yE(coefH(a))}</div>`,
+   steps:[{lab:'どんな形？',opts:['原点を通る<b>右上がり</b>の直線','原点を通る<b>右下がり</b>の直線','原点を通らない直線','2本の曲線（双曲線）'],ans:[a[0]>0?0:1],pts:0},
+    {lab:`方眼をタップして点を打とう：<b>原点</b>と，<b>もう1つの点</b>（${X}座標が ${a[1]} のところ）`,tap:{f:'lin',a,r:5},pts:3}],
+   exp:`<ol class="ol"><li>比例のグラフは<b>原点を通る直線</b>。<i>a</i> = ${qh(a)} は${a[0]>0?'プラス → 右上がり':'マイナス → 右下がり'}。</li><li>${a[1]>1?`分母が ${a[1]} なので，${X} = ${a[1]} を代入すると整数になる：`:`${X} = 1 を代入：`}${Y} = ${qh(a)} × ${a[1]} = ${nm(a[0])} → 点 (${a[1]}, ${nm(a[0])})</li><li>原点 (0, 0) と (${a[1]}, ${nm(a[0])}) を通る直線を，方眼の<b>はしからはしまで</b>ひく。</li></ol>`,
+   figAns:grid({r:5,lin:a,pts:[[0,0,''],[a[1],a[0],'','#e85d04']]})}}
+ const a=pick([6,8,12,18,20,24,-6,-8,-12,-18,-20,-24,-16,16]);const P=latInv(a,10);
+ return{q:`次の関数のグラフをかきなさい。<div class="big">${yE(invH(a))}</div>`,
+  steps:[{lab:'グラフはどこを通る？',opts:['右上と左下（第1・第3象限）','左上と右下（第2・第4象限）','原点を通る直線'],ans:[a>0?0:1],pts:0},
+   {lab:`${X}と${Y}がどちらも<b>整数</b>になる点を，方眼の中に<b>すべて</b>打とう（${P.length}個）`,tap:{f:'inv',a,r:10},pts:3}],
+  exp:`<ol class="ol"><li>反比例のグラフは<b>双曲線</b>（2本の曲線）。<i>a</i> = ${nm(a)} は${a>0?'プラス → <b>右上と左下</b>':'マイナス → <b>左上と右下</b>'}。</li><li>表をつくる（<b>${X}×${Y}＝${nm(a)}</b> になる整数の組）：<br>${tblH(P.map(p=>p[0]),P.map(p=>nm(p[1])))}</li><li>点をなめらかな曲線でつなぐ。<b>軸にはくっつけない</b>，折れ線にしない。</li></ol>`,
+  figAns:grid({r:10,inv:a,pts:P.map(p=>[p[0],p[1],''])})}}
+
+// (6)① 比例
+const HA=[[2,1],[3,1],[4,1],[5,1],[6,1],[-2,1],[-3,1],[-4,1],[-5,1],[2,3],[3,2],[4,3],[3,4],[-2,3],[-3,2],[-3,4],[5,2],[-5,2],[1,2],[-1,2],[2,5],[-4,5],[5,3],[7,2],[1,3],[-1,3]];
+function solveA(x0,y0){const a=Q(y0,x0);return `<li>${Y} = <i>a</i>${X} に ${X} = ${nm(x0)}，${Y} = ${nm(y0)} を<b>代入</b>：${nm(y0)} = <i>a</i> × ${np(x0)}</li><li>左右を入れかえる：${nm(x0)}<i>a</i> = ${nm(y0)}</li><li>両辺を ${np(x0)} でわる：${fr(nm(x0)+'<i>a</i>',np(x0))} = ${fr(nm(y0),np(x0))}</li><li><i>a</i> = ${qh(a)}${a[1]>1&&gcd(y0,x0)>1?`（${gcd(y0,x0)}で約分）`:''}${a[1]>1?'　←わり切れなくても<b>分数のまま</b>でOK':''}</li>`}
+function genT8(sub){sub=sub||pick(['a','f','x']);const a=Q(...pick(HA));let x0=a[1]*pick([1,2,3,4,-1,-2,-3])*(a[1]==1?pick([1,2,3]):1);if(Math.abs(x0)>15)x0=a[1]*pick([2,3]);const y0=qmul(a,[x0,1])[0];
+ const head=`${Y}が${X}に<b>比例</b>し，${X} = ${nm(x0)} のとき ${Y} = ${nm(y0)} である。`;const s1={lab:'比例定数 <i>a</i> を求めよう',slots:[{t:'num',ans:{q:a},pre:'<i>a</i> =',can:qT(a)}],pts:sub=='a'?2:0};
+ if(sub=='a')return{q:head+'比例定数を求めなさい。',steps:[s1],exp:`<ol class="ol">${solveA(x0,y0)}</ol><p>答え：<b>${qh(a)}</b></p>`};
+ if(sub=='f')return{q:head+`${Y}を${X}の式で表しなさい。`,steps:[s1,{lab:'式を答えよう',slots:[{t:'fx',ans:{f:'lin',a},pre:Y+' =',can:linT(a)}],pts:2}],exp:`<ol class="ol">${solveA(x0,y0)}<li><i>a</i> を ${Y}=<i>a</i>${X} にもどす</li></ol><p>答え：<b>${yE(coefH(a))}</b></p>`};
+ let y1;do{y1=pick([-1,1])*R(2,30)}while(y1==y0||Math.abs(qv(qdiv([y1,1],a)))>60);const x1=qdiv([y1,1],a);
+ const st=a[1]==1?`<li>両辺を ${np(a[0])} でわる：${X} = ${fr(nm(y1),np(a[0]))} = ${qh(x1)}</li>`:`<li>左右を入れかえて ${coefH(a)} = ${nm(y1)}</li><li>両辺に ${qh(a)} の<b>逆数</b> ${qh([a[1],a[0]])} をかける：${X} = ${nm(y1)} × ${qp([a[1],a[0]])}</li><li>整数を分数に：${fr(nm(y1),1)} × ${qp([a[1],a[0]])} = ${qh(x1)}</li>`;
+ return{q:head+`${Y} = ${nm(y1)} のときの ${X} の値を求めなさい。`,steps:[s1,{lab:'式は？',slots:[{t:'fx',ans:{f:'lin',a},pre:Y+' =',can:linT(a)}],pts:0},{lab:`${X} の値は？`,slots:[{t:'num',ans:{q:x1},pre:X+' =',can:qT(x1)}],pts:2}],
+  exp:`<ol class="ol">${solveA(x0,y0)}<li>式は ${yE(coefH(a))}</li><li>この式に ${Y} = ${nm(y1)} を<b>代入</b>：${nm(y1)} = ${coefH(a)}</li>${st}</ol><p>答え：<b>${X} = ${qh(x1)}</b></p>`}}
+
+// (6)② 反比例
+function genT9(sub){sub=sub||pick(['a','f','x']);let x0,y0,a;
+ if(Math.random()<.35){a=pick([1,2,3,4,5,6])*pick([-1,1]);do{x0=R(2,8)*pick([-1,1])}while(a%x0==0);y0=Q(a,x0)}else{a=pick([6,8,12,16,18,24,30,32,36,40,48,60])*pick([-1,1]);const ds=[];for(let k=2;k<=12;k++)if(a%k==0)ds.push(k);x0=pick(ds)*pick([-1,1]);y0=[a/x0,1]}
+ const head=`${Y}が${X}に<b>反比例</b>し，${X} = ${nm(x0)} のとき ${Y} = ${qh(y0)} である。`;
+ const sa=`<li>反比例は <b><i>a</i> = ${X} × ${Y}</b>（${Y} = ${fr('<i>a</i>',X)} の両辺に ${X} をかけた形）</li><li><i>a</i> = ${np(x0)} × ${qp(y0)} = <b>${nm(a)}</b></li>`;
+ const s1={lab:'比例定数 <i>a</i> を求めよう',slots:[{t:'num',ans:{q:[a,1]},pre:'<i>a</i> =',can:''+a}],pts:sub=='a'?2:0};
+ if(sub=='a')return{q:head+'比例定数を求めなさい。',steps:[s1],exp:`<ol class="ol">${sa}</ol><p>答え：<b>${nm(a)}</b></p>`};
+ if(sub=='f')return{q:head+`${Y}を${X}の式で表しなさい。`,steps:[s1,{lab:'式を答えよう',slots:[{t:'fx',ans:{f:'inv',a},pre:Y+' =',can:invT(a)}],pts:2}],exp:`<ol class="ol">${sa}</ol><p>答え：<b>${yE(invH(a))}</b></p>`};
+ let y1;do{y1=pick([-1,1])*R(1,12)}while(y1==qv(y0)||a%y1==0&&Math.random()<.4);const x1=Q(a,y1);
+ return{q:head+`${Y} = ${nm(y1)} のときの ${X} の値を求めなさい。`,steps:[s1,{lab:'式は？',slots:[{t:'fx',ans:{f:'inv',a},pre:Y+' =',can:invT(a)}],pts:0},{lab:`${X} の値は？`,slots:[{t:'num',ans:{q:x1},pre:X+' =',can:qT(x1)}],pts:2}],
+  exp:`<ol class="ol">${sa}<li>${X} × ${Y} = ${nm(a)} に ${Y} = ${nm(y1)} を<b>代入</b>：${X} × ${np(y1)} = ${nm(a)} → ${nm(y1)}${X} = ${nm(a)}</li><li>両辺を ${np(y1)} でわる：${X} = ${fr(nm(a),np(y1))} = ${qh(x1)}${x1[1]>1?'（わり切れないので<b>分数</b>）':''}</li></ol><p>答え：<b>${X} = ${qh(x1)}</b></p><p style="font-size:13px">（たしかめ：${qp(x1)} × ${np(y1)} = ${nm(a)}）</p>`}}
+
+const GEN={T1:genT1,T2:genT2,T3:genT3,T4:genT4,T5:genT5,T6:genT6,T7:genT7,T8:genT8,T9:genT9};
+function makeP(tid,arg){const p=GEN[tid](arg);p.tid=tid;p.id=tid+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);return p}
+// 本番そっくり（50点）
+function mockSet(){const L=[];const ks=shuf([0,1,2,3,4]).slice(0);[0,1,2,3,4].forEach(k=>L.push(makeP('T1',k)));
+ L.push(makeP('T2'));const t3=shuf(TPL3.map((_,i)=>i));L.push(makeP('T3'),makeP('T3'));
+ L.push(makeP('T4','h'),makeP('T4','v'),makeP('T5'),makeP('T6'),makeP('T7','h'),makeP('T7','v'));
+ ['a','f','x'].forEach(s=>L.push(makeP('T8',s)));['a','f','x'].forEach(s=>L.push(makeP('T9',s)));
+ // (3)は反比例を1問ふくめる
+ if(L[6].steps[0].slots[0].ans.f==L[7].steps[0].slots[0].ans.f){for(let i=0;i<20;i++){const p=makeP('T3');if(p.steps[0].slots[0].ans.f!=L[6].steps[0].slots[0].ans.f){L[7]=p;break}}}
+ return L}
+if(typeof module!='undefined')module.exports={GEN,makeP,mockSet,judge,latInv,TYPES,Q,qv};
+
+const TBY={};TYPES.forEach(t=>TBY[t.id]=t);
+const store={get(k,d){try{const v=localStorage.getItem('hpr_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('hpr_'+k,JSON.stringify(v))}catch(e){}}};
+const $=id=>document.getElementById(id);
+const MODEL={
+ T1:{m:['問題文のキーワードを見る（「あてはめる」→代入，「範囲」→変域）','比例のグラフ＝原点を通る直線，反比例のグラフ＝双曲線','漢字を正しく：代入（にんべんの代），変域（土へんの域）'],ck:['「代入」「変域」を漢字で書ける','比例のグラフは原点を通る直線と言える','反比例のグラフは双曲線と言える']},
+ T2:{m:['まず，それぞれを<b>式にしてみる</b>','式にできない（<i>x</i>を決めても<i>y</i>が1つに決まらない）ものは<b>関数ではない</b>','<i>y</i>＝(数)<i>x</i> なら比例，<i>y</i>＝(数)／<i>x</i> なら反比例'],ck:['式にしてみると言えた','「1つに決まらない→関数ではない」と言えた','比例・反比例の式の形を言えた']},
+ T3:{m:['ことばの式をつくる（例：道のり＝速さ×時間，底辺×高さ÷2＝面積）','わかっている数と<i>x</i>，<i>y</i>を入れる','<i>y</i>＝ の形になおす（両辺を<i>x</i>でわる など）'],ck:['ことばの式から始めた','数と文字を入れた','y＝の形にした']},
+ T4:{m:['比例か反比例かを見る','比例は <i>a</i>＝<i>y</i>÷<i>x</i>，反比例は <i>a</i>＝<i>x</i>×<i>y</i>','求めた<i>a</i>を式にもどす（比例 <i>y</i>＝<i>ax</i>，反比例 <i>y</i>＝<i>a</i>／<i>x</i>）'],ck:['比例はわり算と言えた','反比例はかけ算と言えた','aを式にもどした']},
+ T5:{m:['座標は（横，縦）＝（<i>x</i>座標，<i>y</i>座標）の順','原点Oから右はプラス，左はマイナス','上はプラス，下はマイナス'],ck:['横が先と言えた','右＋・左−と言えた','上＋・下−と言えた']},
+ T6:{m:['原点を通る直線なので比例 <i>y</i>＝<i>ax</i>','方眼の交わった点をちょうど通る点をさがす','その<i>x</i>，<i>y</i>を代入して<i>a</i>を求める（分数でもOK）。<i>y</i>＝<i>ax</i>のままは×'],ck:['比例の式と言えた','通る点をさがすと言えた','代入してaを求めると言えた']},
+ T7:{m:['比例：原点と，<i>x</i>に分母の数を入れた点を結ぶ直線','反比例：<i>x</i>×<i>y</i>＝<i>a</i> になる整数の組で表をつくり，点を打ってなめらかな曲線','<i>a</i>がマイナスなら，比例は右下がり，反比例は左上と右下'],ck:['比例は2点を結ぶと言えた','反比例は表をつくると言えた','aがマイナスのときの形を言えた']},
+ T8:{m:['<i>y</i>＝<i>ax</i> に<i>x</i>，<i>y</i>の値を代入','両辺を<i>x</i>の数でわって<i>a</i>を求める（わり切れなければ分数のまま）','式に<i>y</i>の値を代入し，<i>x</i>を求める（分数なら逆数をかける）'],ck:['代入から始めた','分数のままでOKと言えた','式にyを代入した']},
+ T9:{m:['反比例は <i>a</i>＝<i>x</i>×<i>y</i>（かけ算）','式は <i>y</i>＝<i>a</i>／<i>x</i>','<i>x</i>×<i>y</i>＝<i>a</i> に<i>y</i>の値を代入し，両辺をわって<i>x</i>を求める（分数になることも）'],ck:['a＝x×yと言えた','式の形を言えた','xを求める手順を言えた']}};
+const TSUMA=[['T5','座標の読み方','A(−2, 1) を (2, 2) と読んでいた。<b>横が先</b>，左はマイナス。'],['T6','グラフから式','<i>y</i>＝<i>ax</i> のままになっていた。<b><i>a</i>の値を求める</b>。'],['T8','比例定数が分数','12＝9<i>a</i> → <i>a</i>＝<span class="fr"><span>4</span><span>3</span></span>。わり切れなくても<b>分数のまま</b>。'],['T7','反比例のグラフの位置','<i>y</i>＝−<span class="fr"><span>18</span><span><i>x</i></span></span> を右上・左下にかいていた。<b><i>a</i>がマイナス→左上と右下</b>。'],['T1','用語の漢字','代入・変域・直線を<b>漢字で正しく</b>。']];
+
+// ---- 記録 ----
+let REC=store.get('rec',{});function rec(t){return REC[t]||(REC[t]={n:0,ok:0,h:[],ws:{},memo:'',ex:''})}
+function saveRec(){store.set('rec',REC)}
+// ---- 画面 ----
+function show(t){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('show',s.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t!='solve')kpHide();
+ if(t=='home')renderHome();if(t=='miss')renderMiss();if(t=='rank')renderRank();if(t=='print')renderPList();if(t=='card')renderCard();window.scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function ov(id){$(id).classList.add('show')}function cov(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('show'))}
+function rate(t){const r=rec(t);return r.n?Math.round(r.ok/r.n*100):null}
+function renderHome(){
+ const S=store.get('sess',null);$('resume').innerHTML=S&&S.i<S.list.length?`<div class="card resume"><b>📌 前回の続きがあります</b>（${S.mode=='mock'?'本番そっくりテスト':'練習'}：${S.i+1}問目／${S.list.length}問）<div class="row" style="margin-top:8px"><button class="btn a" onclick="resume()">▶ 続きから再開</button><button class="btn sub" onclick="store.set('sess',null);renderHome()">すてる</button></div></div>`:'';
+ $('tsuma').innerHTML=TSUMA.map(z=>`<div class="type"><span class="no">${TBY[z[0]].no}</span><div class="tt"><b>${z[1]}</b><br><span style="font-size:13px">${z[2]}</span></div><button class="btn sm a" onclick="startType('${z[0]}',3)">3問</button></div>`).join('');
+ $('tlist').innerHTML=TYPES.map(t=>{const r=rec(t.id),p=rate(t.id);return `<div class="type"><span class="no">${t.no}</span><div class="tt">${t.name}<div class="st">${r.n?`${r.n}問　正答率 <b style="color:${p>=80?'#2b8a3e':p>=50?'#e67700':'#c92a2a'}">${p}%</b>`:'まだ'}</div></div><button class="btn sm" onclick="startType('${t.id}',3)">3問</button><button class="btn sm sub" onclick="after('${t.id}')">📈</button></div>`}).join('');
+ const MH=store.get('mock',[]);$('mockHist').innerHTML=MH.length?'これまでの点数：'+MH.slice(-8).map(m=>`<b>${m.s}</b>点`).join(' → '):'';}
+// ---- セッション ----
+let S=null,ACT=0,TAPS=[],TAPMISS=0;
+function startList(list,mode){S={mode:mode||'prac',list,i:0,si:0,res:{},score:0};store.set('sess',S);show('solve');render()}
+function startType(t,n){const L=[];if(t=='T8'||t=='T9'){const subs=shuf(['a','f','x']);for(let k=0;k<n;k++)L.push(makeP(t,subs[k%3]))}else if(t=='T7'){for(let k=0;k<n;k++)L.push(makeP(t,k%2?'h':'v'))}else for(let k=0;k<n;k++)L.push(makeP(t));startList(L)}
+function startRand(n){const ts=shuf(TYPES.map(t=>t.id));const L=[];for(let k=0;k<n;k++)L.push(makeP(ts[k%ts.length]));startList(L)}
+function startWeak(){const ts=TYPES.map(t=>t.id).sort((a,b)=>(rate(a)??-1)-(rate(b)??-1)).slice(0,3);const L=[];ts.forEach(t=>{L.push(makeP(t),makeP(t))});startList(L)}
+function startMock(){startList(mockSet(),'mock')}
+function resume(){S=store.get('sess',null);if(!S)return;show('solve');render()}
+function cur(){return S.list[S.i]}
+function resOf(p){return S.res[p.id]||(S.res[p.id]={steps:[],done:false})}
+// ---- 表示 ----
+function prevH(s){if(!s)return '<span style="color:#bbb">　</span>';s=s.replace(/</g,'&lt;');s=s.replace(/(\d+(?:\.\d+)?|x)\/(\d+(?:\.\d+)?|x)/g,(m,a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`);return s.replace(/-/g,'−').replace(/\+/g,'＋').replace(/x/g,'<i>x</i>')}
+function slotAnsH(sl){if(sl.t=='term')return sl.ans;if(sl.t=='fx')return yE(sl.ans.f=='inv'?invH(sl.ans.a):linH(sl.ans.a,sl.ans.b)).replace(/^<i>y<\/i> = /,'');return qh(sl.ans.q)}
+function stepAnsH(st){if(st.opts)return st.ans.map(i=>st.opts[i]).join('，');if(st.online)return `（${st.can[0]}，${nm(st.can[1])}）など`;if(st.tap)return '解き方のグラフを見よう';return st.slots.map(sl=>(sl.pre||'')+' '+slotAnsH(sl)+(sl.post||'')).join(' ')}
+function render(){const p=cur();if(!p){finish();return}const r=resOf(p),T=TBY[p.tid];
+ let h=`<div class="card"><div class="row" style="justify-content:space-between;font-size:13px;color:#555"><span>${S.mode=='mock'?'🎯 本番そっくり':'📚 練習'}　${S.i+1}／${S.list.length}</span><span>${T.no} ${T.name}</span></div>`;
+ if(S.mode=='mock')h+=`<div style="font-size:13px;text-align:right">得点 <b>${S.score}</b>／50</div>`;
+ const tapStep=p.steps.findIndex(s=>s.tap);const tapNow=tapStep>=0&&r.steps.length==tapStep;
+ h+=`<div class="prob">${p.q}${p.fig?`<div class="fig">${p.fig}</div>`:''}${p.steps[tapStep]&&r.steps.length>=tapStep?'':''}</div>`;
+ if(tapStep>=0&&r.steps.length>=tapStep){const tp=p.steps[tapStep].tap;const done=r.steps.length>tapStep;h+=`<div class="fig" id="tapfig">${grid({r:tp.r,size:tp.r==10?340:300,lin:done&&tp.f=='lin'?tp.a:null,inv:done&&tp.f=='inv'?tp.a:null,pts:(r.taps||[]).map(q=>[q[0],q[1],'','#2b8a3e'])}).replace('class="gsvg"',done?'class="gsvg"':'class="gsvg tap"')}</div>`}
+ p.steps.forEach((st,i)=>{if(i>r.steps.length)return;const sr=r.steps[i];h+=`<div class="step"><span class="snum">${i+1}</span>${st.lab}<div>`;
+  if(st.opts){h+=`<div class="chs ${st.opts[0].length<3?'inl':''}">`+st.opts.map((o,k)=>{let c='';if(sr){if(st.ans.includes(k))c='right';else if(sr.v.includes(k))c='wrong'}else if((r.sel||[]).includes(k)&&i==r.steps.length)c='sel';return `<button class="${c}" ${sr?'disabled':''} onclick="pickOpt(${k})">${o}</button>`}).join('')+'</div>';if(!sr&&st.multi)h+=`<button class="btn ok" onclick="checkStep()">答え合わせ</button>`}
+  else if(st.tap){h+=sr?'':`<div class="tapinfo" id="tapinfo"></div><button class="btn sub sm" onclick="tapHint()">💡 ヒント</button>`}
+  else{st.slots.forEach((sl,k)=>{h+=`${sl.pre||''}`;if(sl.t=='term'){h+=sr?`<span class="slot ${sr.okk[k]?'okc':'ngc'}">${sr.v[k]||'　'}</span>`:`<input class="term" id="term${k}" autocomplete="off" value="${(r.draft||[])[k]||''}">`}else{const v=sr?sr.v[k]:(r.draft||[])[k];h+=`<span class="slot ${sr?(sr.okk[k]?'okc':'ngc'):(k==ACT?'on':'')}" ${sr?'':`onclick="setAct(${k})"`} style="min-width:${sl.w||110}px">${prevH(v)}</span>`}h+=`${sl.post||''}`});if(!sr&&st.slots[0].t=='term')h+=`<div style="margin-top:6px"><button class="btn ok" onclick="checkStep()">答え合わせ</button></div>`}
+  h+='</div>';if(sr){h+=`<div class="res ${sr.ok?'ok':'ng'}">${sr.ok?'⭕ 正解！':'❌ ざんねん'}${sr.msg?`　<span style="font-weight:normal">${sr.msg}</span>`:''}</div>`;if(!sr.ok&&!st.tap)h+=`<div>正しい答え：<b>${stepAnsH(st)}</b></div>`}
+  h+='</div>'});
+ if(r.done){h+=`<div class="ex"><b>📘 解き方</b>${p.exp}${p.figAns?`<div class="fig">${p.figAns}</div>`:''}</div><div class="row" style="margin-top:10px"><button class="btn a" onclick="next()">${S.i+1<S.list.length?'次の問題へ ▶':'結果を見る ▶'}</button>${S.mode=='mock'?'':`<button class="btn sub" onclick="explain('${p.tid}')">💬 自分の言葉で説明</button>`}</div>`}
+ h+='</div>';$('sbox').innerHTML=h;
+ const st=p.steps[r.steps.length];
+ if(!r.done&&st&&st.slots&&st.slots[0].t!='term')kpShow();else kpHide();
+ if(!r.done&&st&&st.tap)bindTap(st);
+ if(!r.done&&st&&st.slots&&st.slots[0].t=='term'){const e=$('term0');e&&e.addEventListener('input',()=>{r.draft=[e.value];})}
+}
+function setAct(k){ACT=k;render()}
+function kpShow(){$('kp').classList.add('show')}function kpHide(){$('kp').classList.remove('show')}
+function kp(c){const p=cur(),r=resOf(p);r.draft=r.draft||[];let v=r.draft[ACT]||'';if(c=='BS')v=v.slice(0,-1);else if(c=='C')v='';else if(v.length<14)v+=c;r.draft[ACT]=v;render();save()}
+function kpMove(d){const st=cur().steps[resOf(cur()).steps.length];if(!st||!st.slots)return;ACT=Math.max(0,Math.min(st.slots.length-1,ACT+d));render()}
+function pickOpt(k){const p=cur(),r=resOf(p),st=p.steps[r.steps.length];if(st.multi){r.sel=r.sel||[];r.sel=r.sel.includes(k)?r.sel.filter(x=>x!=k):r.sel.concat(k);render()}else{r.sel=[k];checkStep()}}
+function save(){store.set('sess',S)}
+function checkStep(){const p=cur(),r=resOf(p),i=r.steps.length,st=p.steps[i];if(!st||r.done)return;let res;
+ if(st.opts){const v=(r.sel||[]).slice().sort();if(!v.length)return;const ok=v.length==st.ans.length&&st.ans.every(a=>v.includes(a));res={ok,v};r.sel=[]}
+ else if(st.slots[0].t=='term'){const v=[$('term0').value];const j=judge(st.slots[0],v[0]);res={ok:j.ok,v,okk:[j.ok],msg:j.msg}}
+ else if(st.online){const v=(r.draft||[]);const js=v.map(toJS);const xy=js.map(j=>j==null||/x/.test(j)?NaN:ev(j,1));let ok=xy.every(Number.isInteger)&&!(xy[0]==0&&xy[1]==0)&&xy[1]*st.online[1]==st.online[0]*xy[0]&&Math.abs(xy[0])<=5&&Math.abs(xy[1])<=5;res={ok,v,okk:[ok,ok],msg:ok?'':'その点は直線の上にありません（方眼の交わった点をちょうど通るところ）。'}}
+ else{const v=st.slots.map((_,k)=>(r.draft||[])[k]||'');if(v.some(x=>!x)){alert('ワクに答えを入れてね');return}const js=st.slots.map((sl,k)=>judge(sl,v[k]));res={ok:js.every(j=>j.ok),v,okk:js.map(j=>j.ok),msg:js.map(j=>j.msg).filter(Boolean).join(' ')};
+  if(p.tid=='T5'&&!res.ok&&st.slots.length==2&&norm(v[0])==norm(st.slots[1].can)&&norm(v[1])==norm(st.slots[0].can))res.msg='<i>x</i>と<i>y</i>が<b>逆</b>です。（横，縦）の順。'}
+ finishStep(p,r,st,res)}
+function finishStep(p,r,st,res){r.steps.push(res);r.draft=[];ACT=0;if(res.ok&&S.mode=='mock')S.score+=st.pts||0;if(!res.ok){const R0=rec(p.tid);const key=st.lab.replace(/<[^>]+>/g,'').slice(0,26);R0.ws[key]=(R0.ws[key]||0)+1}
+ if(r.steps.length==p.steps.length){r.done=true;r.ok=r.steps.every(s=>s.ok);const R0=rec(p.tid);R0.n++;if(r.ok)R0.ok++;R0.h.push([Date.now(),r.ok?1:0]);if(R0.h.length>60)R0.h.shift();saveRec();if(!r.ok){const M=store.get('miss',[]);M.push(p);store.set('miss',M.slice(-30))}}
+ save();render();if(r.done)setTimeout(()=>{const e=document.querySelector('.ex');e&&e.scrollIntoView({behavior:'smooth',block:'start'})},60)}
+function next(){S.i++;S.si=0;save();render();window.scrollTo(0,0)}
+// ---- タップ ----
+function bindTap(st){const svg=document.querySelector('#tapfig svg');if(!svg)return;const r=resOf(cur());r.taps=r.taps||[];updTapInfo(st);
+ svg.onclick=e=>{const b=svg.getBoundingClientRect(),W=+svg.viewBox.baseVal.width,sc=W/b.width,pad=+svg.dataset.pad,s=+svg.dataset.s,R0=+svg.dataset.r;
+  const px=(e.clientX-b.left)*sc,py=(e.clientY-b.top)*sc;const fx=(px-pad)/s-R0-.5,fy=R0+.5-(py-pad)/s;const x=Math.round(fx),y=Math.round(fy);
+  if(Math.hypot(fx-x,fy-y)>.42||Math.abs(x)>R0||Math.abs(y)>R0)return;
+  if(r.taps.some(q=>q[0]==x&&q[1]==y))return;
+  const tp=st.tap;let ok=tp.f=='lin'?(y*tp.a[1]==tp.a[0]*x):(x!=0&&x*y==tp.a);
+  const g=svg.querySelector('.taps'),cx=pad+(x+R0+.5)*s,cy=pad+(R0+.5-y)*s;
+  if(!ok){r.tmiss=(r.tmiss||0)+1;const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',7);c.setAttribute('fill','#c92a2a');g.appendChild(c);
+   $('tapinfo').innerHTML=`<span style="color:#c92a2a">✖ (${nm(x)}, ${nm(y)}) は通りません。</span> `+(tp.f=='lin'?`${X} = ${nm(x)} のとき ${Y} = ${qh(qmul(tp.a,[x,1]))}`:x?`${X} = ${nm(x)} のとき ${Y} = ${fr(nm(tp.a),np(x))} = ${qh(Q(tp.a,x))}`:`${X} = 0 のときは ${Y} の値がない`);setTimeout(()=>c.remove(),900);save();return}
+  r.taps.push([x,y]);save();render()}}
+function needPts(tp){return tp.f=='lin'?null:latInv(tp.a,tp.r)}
+function updTapInfo(st){const r=resOf(cur()),tp=st.tap,t=r.taps||[];let done=false,msg;
+ if(tp.f=='lin'){const hasO=t.some(q=>q[0]==0&&q[1]==0),other=t.filter(q=>q[0]||q[1]).length;done=hasO&&other>=1;msg=`原点：${hasO?'✔':'まだ'}　もう1つの点：${other?'✔':'まだ'}`}
+ else{const P=needPts(tp);done=t.length>=P.length;msg=`打った点 ${t.length}／${P.length}`}
+ if(done){finishStep(cur(),r,st,{ok:!(r.tmiss>0)||S.mode!='mock'&&false,v:[],msg:r.tmiss?`まちがえて打った点が ${r.tmiss} 個ありました。`:'すべて正しく打てました。線をかくとこうなります。'});return}
+ const e=$('tapinfo');if(e)e.innerHTML=msg+(r.tmiss?`　<span style="color:#c92a2a">（ミス ${r.tmiss}）</span>`:'')}
+function tapHint(){const st=cur().steps[resOf(cur()).steps.length],tp=st.tap,e=$('tapinfo');
+ if(tp.f=='lin')e.innerHTML=`<i>x</i> = ${tp.a[1]} を代入：${Y} = ${qh(tp.a)} × ${tp.a[1]} = ${nm(tp.a[0])}　→ 点 (${tp.a[1]}, ${nm(tp.a[0])})`;
+ else{const P=needPts(tp);e.innerHTML=`<i>x</i>×<i>y</i> = ${nm(tp.a)} になる整数の組：`+tblH(P.map(p=>p[0]),P.map(p=>nm(p[1])))}}
+// ---- 結果 ----
+function finish(){kpHide();const n=S.list.length,ok=S.list.filter(p=>resOf(p).ok).length;let h='<div class="card">';
+ if(S.mode=='mock'){const MH=store.get('mock',[]);MH.push({t:Date.now(),s:S.score});store.set('mock',MH);
+  h+=`<h2>🎯 本番そっくりテスト 結果</h2><div class="sc">${S.score} ／ 50 点</div><p style="text-align:center">${S.score>=45?'すばらしい！この調子で再テストへ！':S.score>=35?'あと少し！まちがえた型をもう一度。':'まちがえた型を「3問」で練習してから，もう一度チャレンジ！'}</p>`;
+  const sec={};S.list.forEach(p=>{const T=TBY[p.tid];const k=T.no;const pts=p.steps.reduce((a,b)=>a+(b.pts||0),0);const got=p.steps.reduce((a,b,i)=>a+((resOf(p).steps[i]||{}).ok?(b.pts||0):0),0);sec[k]=sec[k]||{n:T.name,t:p.tid,max:0,got:0};sec[k].max+=pts;sec[k].got+=got});
+  h+='<table class="tb" style="font-size:14px">'+Object.entries(sec).map(([k,v])=>`<tr><th>${k}</th><td style="text-align:left">${v.n}</td><td><b style="color:${v.got==v.max?'#2b8a3e':'#c92a2a'}">${v.got}</b>／${v.max}</td><td>${v.got<v.max?`<button class="btn sm a" onclick="startType('${v.t}',3)">練習</button>`:'✔'}</td></tr>`).join('')+'</table>'}
+ else h+=`<h2>おつかれさま！</h2><div class="sc">${ok} ／ ${n} 問 正解</div>`;
+ h+=`<div class="row" style="margin-top:10px"><button class="btn ok" onclick="show('card')">📨 成績を先生に送る</button><button class="btn" onclick="show('miss')">❌ ミスを見る</button><button class="btn sub" onclick="show('home')">🏠 練習へ</button></div></div>`;
+ $('sbox').innerHTML=h;store.set('sess',null)}
+function renderMiss(){const M=store.get('miss',[]);let h='<div class="card"><h2>❌ まちがえた問題（新しい順）</h2>';if(!M.length)h+='<p>まだありません。</p>';
+ h+=M.slice().reverse().map((p,k)=>`<div class="list"><div class="it"><span class="no" style="font-size:12px;background:#1b4965;color:#fff;border-radius:5px;padding:1px 5px">${TBY[p.tid].no}</span> ${TBY[p.tid].name}<div style="font-size:14px;margin:4px 0">${p.q.replace(/<div class="big">/,'<div>')}</div><details><summary style="color:#1b4965">解き方を見る</summary><div class="ex">${p.exp}${p.figAns||''}</div></details><button class="btn sm a" style="margin-top:6px" onclick="startType('${p.tid}',3)">同じ型を新しい数字で3問</button></div></div>`).join('');
+ if(M.length)h+=`<p><button class="btn sub sm" onclick="if(confirm('ミスの一覧を消しますか？')){store.set('miss',[]);renderMiss()}">一覧を消す</button></p>`;$('miss').innerHTML=h+'</div>'}
+function renderRank(){const L=TYPES.slice().sort((a,b)=>(rate(a.id)??101)-(rate(b.id)??101));$('rank').innerHTML='<div class="card"><h2>📊 苦手ランキング（正答率の低い順）</h2>'+L.map(t=>{const r=rec(t.id),p=rate(t.id);return `<div class="type"><span class="no">${t.no}</span><div class="tt">${t.name}<div class="st">${r.n?`${r.n}問・正答率 ${p}%`:'まだやっていない'}</div><div style="height:7px;background:#eee;border-radius:4px;margin-top:3px"><div style="height:7px;width:${p??0}%;background:${p>=80?'#2b8a3e':p>=50?'#f59f00':'#c92a2a'};border-radius:4px"></div></div></div><button class="btn sm" onclick="startType('${t.id}',3)">3問</button><button class="btn sm sub" onclick="after('${t.id}')">📈</button></div>`}).join('')+'</div>'}
+function after(t){const T=TBY[t],r=rec(t),p=rate(t);const ws=Object.entries(r.ws).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $('afterBox').innerHTML=`<h2>📈 学習のあと：${T.no} ${T.name}</h2><p>やった問題：<b>${r.n}</b>問　正解：<b>${r.ok}</b>問　正答率：<b>${p??'−'}%</b></p><p>最近の結果：${r.h.slice(-15).map(x=>x[1]?'⭕':'❌').join('')||'まだ'}</p>${ws.length?'<h3>まちがえやすいステップ</h3><ul>'+ws.map(w=>`<li>${w[0]}…（${w[1]}回）</li>`).join('')+'</ul>':''}<h3>💬 自分の言葉の説明（保存ずみ）</h3><div class="model">${r.ex?r.ex.replace(/</g,'&lt;'):'まだ書いていません'}</div><h3>📝 メモ</h3><textarea id="memo" placeholder="気づいたこと・先生に言われたこと">${r.memo||''}</textarea><div class="row" style="margin-top:8px"><button class="btn" onclick="rec('${t}').memo=$('memo').value;saveRec();cov()">保存して閉じる</button><button class="btn a" onclick="cov();startType('${t}',3)">この型を3問</button><button class="btn sub" onclick="cov();explain('${t}')">💬 説明する</button></div>`;ov('after')}
+let CDT=null;function explain(t){const M=MODEL[t],r=rec(t);clearInterval(CDT);let c=20;
+ $('explBox').innerHTML=`<h2>💬 自分の言葉で説明しよう</h2><p>「<b>${TBY[t].name}</b>」の解き方を，友だちに教えるつもりで書こう（声に出してもOK）。</p><div class="cd" id="cd">考える時間 20</div><textarea id="extx">${r.ex||''}</textarea><div class="row" style="margin-top:8px"><button class="btn" id="exbtn" onclick="showModel('${t}')">お手本を見る</button><button class="btn sub" onclick="cov()">閉じる</button></div><div id="exm"></div>`;ov('expl');
+ CDT=setInterval(()=>{c--;const e=$('cd');if(!e){clearInterval(CDT);return}e.textContent=c>0?'考える時間 '+c:'書いてみよう！';if(c<=0)clearInterval(CDT)},1000)}
+function showModel(t){const M=MODEL[t],r=rec(t);r.ex=$('extx').value;saveRec();
+ $('exm').innerHTML=`<h3>お手本</h3><div class="model">${M.m.map((s,i)=>'①②③'[i]+' '+s).join('<br>')}</div><h3>✅ チェック：自分の説明に入っていた？</h3><div class="ck">${M.ck.map(c=>`<label><input type="checkbox"> ${c}</label>`).join('')}</div><button class="btn ok" onclick="cov()">できた！</button>`}
+// ---- 検索 ----
+function kata2hira(s){return s.replace(/[ァ-ン]/g,c=>String.fromCharCode(c.charCodeAt(0)-96))}
+function doFind(){const q=kata2hira(($('fq').value||'').trim());if(!q){$('fres').innerHTML='';return}let h='';
+ TYPES.forEach(t=>{const r=rec(t.id);if((t.name+t.y+t.no+(r.memo||'')+(r.ex||'')).includes(q)||kata2hira(t.name).includes(q))h+=`<div class="type"><span class="no">${t.no}</span><div class="tt">${t.name}</div><button class="btn sm" onclick="startType('${t.id}',3)">3問</button></div>`});
+ TERMS.forEach((t,k)=>{if((t[1]+t[2]+t[0]).includes(q))h+=`<div class="list"><div class="it">📖 <b>${t[1]}</b>（${t[2]}）<br><span style="font-size:13px">${t[0].replace('【　】','【'+t[1]+'】')}</span><br><span style="font-size:13px">💡 ${t[3]}</span></div></div>`});
+ $('fres').innerHTML=h||'<p>見つかりませんでした。</p>'}
+// ---- 印刷 ----
+function renderPList(){$('plist').innerHTML=TYPES.map(t=>`<label><input type="checkbox" value="${t.id}" checked> ${t.no} ${t.name}</label>`).join('')}
+function pAll(v){document.querySelectorAll('#plist input').forEach(c=>c.checked=!!v)}
+function pWeak(){document.querySelectorAll('#plist input').forEach(c=>{const p=rate(c.value);c.checked=p==null||p<80})}
+function pQ(p,n){const tap=p.steps.find(s=>s.tap);let body=p.q;if(p.fig)body+=`<div class="fig">${p.fig}</div>`;if(tap)body+=`<div class="fig">${grid({r:tap.tap.r,size:tap.tap.r==10?260:220})}</div>`;
+ const lab=p.steps.filter(s=>s.pts||s===p.steps[p.steps.length-1]).map(s=>`<div class="ans">${s.slots?s.slots.map(sl=>(sl.pre||'')+'　　　　　　'+(sl.post||'')).join(''):s.tap?'':s.lab.replace(/^[①②]\s*/,'')+'：'}</div>`).join('');
+ return `<div class="pq"><b>${n}</b>　${body}${tap?'':lab}</div>`}
+function pA(p,n){const L=p.steps.filter(s=>s.pts||s===p.steps[p.steps.length-1]);return `<div class="pq"><b>${n}</b>　${L.map(s=>stepAnsH(s)).join('　／　')}${p.figAns&&p.tid=='T7'?`<div class="fig">${p.figAns.replace(/width="\d+"/,'width="200"')}</div>`:''}<details open><summary>解き方</summary><div style="font-size:9.5pt">${p.exp}</div></details></div>`}
+function doPrint(h){$('pr').innerHTML=h;setTimeout(()=>window.print(),300)}
+function printMock(){const L=mockSet();const no=p=>TBY[p.tid].no;
+ let q='<h2>1年数学 再テスト対策（本番そっくり・50点）　名前（　　　　　　）</h2><p style="font-size:9pt">(1)用語 2点×5　(2)3点×2　(3)3点×2　(4)3点×2　(5)①1点×2 ②2点 ③3点×2　(6)2点×6</p>';
+ q+=`<div class="pq"><b>(1)</b> 次の【　】にあてはまる語句を<b>漢字</b>で答えなさい。${L.slice(0,5).map((p,i)=>`<div>${'アイウエオ'[i]}　${p.q}</div>`).join('')}</div>`;
+ L.slice(5).forEach(p=>q+=pQ(p,no(p)));
+ let a='<div class="pg"></div><h2>解答・解き方</h2>'+`<div class="pq"><b>(1)</b> ${L.slice(0,5).map((p,i)=>'アイウエオ'[i]+' '+p.steps[0].slots[0].ans).join('　')}</div>`+L.slice(5).map(p=>pA(p,no(p))).join('');doPrint(q+a)}
+function printTypes(){const ts=[...document.querySelectorAll('#plist input:checked')].map(c=>c.value);if(!ts.length)return alert('型をえらんでね');const L=[];ts.forEach(t=>{for(let k=0;k<4;k++)L.push(makeP(t,t=='T7'?(k%2?'h':'v'):t=='T8'||t=='T9'?['a','f','x','x'][k]:t=='T4'?(k%2?'h':'v'):undefined))});
+ let q='<h2>比例・反比例 練習プリント　名前（　　　　　　）</h2>'+L.map((p,i)=>pQ(p,`${i+1}. ${TBY[p.tid].no}`)).join('');let a='<div class="pg"></div><h2>解答・解き方</h2>'+L.map((p,i)=>pA(p,`${i+1}.`)).join('');doPrint(q+a)}
+function printGrids(){let h='<h2>グラフ用 方眼</h2><div class="two">';for(let k=0;k<6;k++)h+=`<div class="pq">${k<3?'①②③'[k]:'④⑤⑥'[k-3]}<div class="fig">${grid({r:k%2?10:5,size:260})}</div></div>`;doPrint(h+'</div>')}
+
+// ===== 成績カード＋先生にLINEで送る（標準モジュール）=====
+const APPNAME='比例・反比例 再テスト特訓';
+function rcData(){const now=Date.now(),day=d=>{const x=new Date(d);return x.getFullYear()+'/'+(x.getMonth()+1)+'/'+x.getDate()};const today=day(now);
+ let all=[];TYPES.forEach(t=>rec(t.id).h.forEach(h=>all.push({t:h[0],ok:h[1],tid:t.id})));all.sort((a,b)=>a.t-b.t);
+ const td=all.filter(a=>day(a.t)==today);const last7=[];for(let k=6;k>=0;k--){const d=day(now-k*864e5);const L=all.filter(a=>day(a.t)==d);last7.push({d,n:L.length,ok:L.filter(a=>a.ok).length})}
+ const types=TYPES.map(t=>({no:t.no,name:t.name,id:t.id,n:rec(t.id).n,p:rate(t.id)}));
+ const weak=types.filter(t=>t.n>0).sort((a,b)=>a.p-b.p).filter(t=>t.p<80).slice(0,3);
+ const n=types.reduce((s,t)=>s+t.n,0),ok=TYPES.reduce((s,t)=>s+rec(t.id).ok,0);
+ return{name:store.get('name',''),today:td.length,todayOk:td.filter(a=>a.ok).length,n,ok,p:n?Math.round(ok/n*100):null,mock:store.get('mock',[]),types,weak,last7,last:all.length?all[all.length-1].t:null}}
+const fmtT=t=>{const x=new Date(t);return (x.getMonth()+1)+'/'+x.getDate()+' '+x.getHours()+':'+String(x.getMinutes()).padStart(2,'0')};
+function renderCard(){const D=rcData();const col=p=>p==null?'#bbb':p>=80?'#2b8a3e':p>=50?'#f59f00':'#c92a2a';
+ const mk=D.mock.slice(-8);let h=`<div class="card"><div class="row"><span style="font-size:14px">名前：</span><input id="nm" value="${(D.name||'').replace(/"/g,'')}" placeholder="名前（ニックネームでもOK）" style="flex:1;font-size:16px;padding:7px;border:2px solid #9fb3c8;border-radius:9px" onchange="store.set('name',this.value.trim());renderCard()"></div></div>`;
+ h+=`<div class="rc"><h2>📋 成績カード</h2><div class="sub">${APPNAME}　${D.name||'（名前未入力）'}　${fmtT(Date.now())} 現在</div>
+ <div class="kpi"><div>きょう<b>${D.today}</b>問（⭕${D.todayOk}）</div><div>ぜんぶで<b>${D.n}</b>問</div><div>正答率<b>${D.p??'−'}%</b></div></div>
+ <div class="kpi"><div>本番そっくり<b>${mk.length?mk[mk.length-1].s+'点':'−'}</b>最新</div><div>最高点<b>${mk.length?Math.max(...D.mock.map(m=>m.s))+'点':'−'}</b>${D.mock.length}回受験</div></div></div>`;
+ h+=`<div class="card"><h2>🎯 本番そっくりテストの点数</h2>${mk.length?`<div class="mk">${mk.map(m=>`<div style="height:${Math.max(4,m.s/50*100)}%"><span>${m.s}</span></div>`).join('')}</div><div class="days">${mk.map(m=>`<div>${fmtT(m.t).split(' ')[0]}</div>`).join('')}</div>`:'<p>まだ受けていません。</p>'}</div>`;
+ h+=`<div class="card"><h2>📅 この7日間</h2><div class="days">${D.last7.map(d=>`<div><i style="background:${d.n?'#d3f9d8':'#f1f3f5'};color:#2b8a3e">${d.n||''}</i>${d.d.split('/').slice(1).join('/')}</div>`).join('')}</div><p style="font-size:12px;color:#666;margin:6px 0 0">数字はその日に解いた問題数。最後の学習：${D.last?fmtT(D.last):'−'}</p></div>`;
+ h+=`<div class="card"><h2>📊 型ごとの正答率</h2>${D.types.map(t=>`<div style="margin:7px 0"><div class="row" style="justify-content:space-between;font-size:13px"><span>${t.no} ${t.name}</span><b style="color:${col(t.p)}">${t.n?t.p+'%':'まだ'}<span style="font-weight:normal;color:#666;font-size:11px">${t.n?'（'+t.n+'問）':''}</span></b></div><div class="bar"><div style="width:${t.p??0}%;background:${col(t.p)}"></div></div></div>`).join('')}${D.weak.length?`<p style="font-size:14px">⚠️ 苦手：<b>${D.weak.map(w=>w.no+' '+w.name).join('，')}</b></p>`:''}</div>`;
+ h+=`<div class="card"><h2>📨 先生に送る</h2><p style="font-size:13px;margin:0 0 8px">ボタンを押すとLINEが開きます。先生をえらんで送信してね。この画面のスクリーンショットを送ってもOK。<br><b style="color:#c92a2a">※LINEの中ではなく，Safari（AndroidはChrome）でアプリを開いてから押してね。</b></p><div class="row"><button class="btn ok" onclick="sendLine()">📨 先生にLINEで送る</button><button class="btn sub" onclick="copyRep()">📋 文をコピー</button></div><pre id="reptx" style="white-space:pre-wrap;font-size:12px;background:#f8f9fa;border-radius:8px;padding:8px;margin-top:10px">${repText().replace(/</g,'&lt;')}</pre></div>`;
+ $('card').innerHTML=h+`<div class="card" style="background:#f1f8ff;border:2px solid #a5d8ff"><h2>📢 この機能について（生徒のみなさん・おうちの方へ）</h2><div style="font-size:13.5px;line-height:1.8">・この「成績カード」と「先生にLINEで送る」は，<b>学習の様子を先生が知り，一人ひとりの苦手に合わせて指導する</b>ためのものです。<br>・学習の記録は<b>このスマホの中だけ</b>に保存されます。<b>自動でどこかへ送られることはありません。</b>先生に届くのは，<b>自分でボタンを押して送ったときだけ</b>です。<br>・送られる内容：名前（ニックネーム可）・解いた問題数・正答率・本番そっくりテストの点数・苦手な型・学習した日。<b>それ以外の情報は送られません</b>（送る前に，上の「先生に送る」の欄で全文を確認できます）。<br>・送られた記録は，<b>創才学院での指導のためだけ</b>に使います。<br>・LINEの中でこのアプリを開いていると，うまく送れないことがあります。<b>Safari（AndroidはChrome）で開いてください。</b></div></div>`}
+function repText(){const D=rcData();const L=[`【${APPNAME}】学習記録`,`名前：${D.name||'（未入力）'}`,`送信：${fmtT(Date.now())}`,`きょう：${D.today}問（正解${D.todayOk}）`,`ぜんぶ：${D.n}問（正答率${D.p??'−'}%）`];
+ if(D.mock.length)L.push(`本番そっくり：${D.mock.slice(-6).map(m=>m.s).join('→')}点（最高${Math.max(...D.mock.map(m=>m.s))}点・${D.mock.length}回）`);
+ L.push('型ごとの正答率：');D.types.forEach(t=>L.push(`${t.no}${t.name} ${t.n?t.p+'%('+t.n+'問)':'まだ'}`));
+ if(D.weak.length)L.push('苦手：'+D.weak.map(w=>w.no+w.name).join('，'));L.push('7日間：'+D.last7.map(d=>d.n).join(' ')+'問');L.push(`最後の学習：${D.last?fmtT(D.last):'−'}`);return L.join('\n')}
+function needName(){if(store.get('name',''))return true;const n=prompt('名前を入れてね（ニックネームでもOK）');if(n&&n.trim()){store.set('name',n.trim());return true}return false}
+function sendLine(){if(!needName())return;renderCard();location.href='https://line.me/R/msg/text/?'+encodeURIComponent(repText())}
+function copyRep(){if(!needName())return;renderCard();const tx=repText();(navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(()=>alert('コピーしました。LINEに貼りつけて送ってね。')).catch(()=>{const ta=document.createElement('textarea');ta.value=tx;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('コピーしました。')})}
+
+renderHome();if(location.hash=='#help')ov('help');
+</script></body></html>

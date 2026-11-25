@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>先生用 お知らせ文ボックス</title>
+<style>
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f3f6fa;color:#222}
+header{background:#1b4965;color:#fff;padding:12px;font-size:17px;font-weight:bold;position:sticky;top:0;z-index:5}
+.w{max-width:680px;margin:0 auto;padding:12px}
+.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+input.tt{width:100%;font-size:16px;font-weight:bold;border:0;border-bottom:2px solid #dde3ea;padding:6px 2px;margin-bottom:8px;color:#1b4965}
+textarea{width:100%;box-sizing:border-box;font-size:15px;line-height:1.7;padding:9px;border:2px solid #c5d0de;border-radius:10px;min-height:150px;font-family:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-size:15px;font-weight:bold;background:#1b4965;color:#fff}
+.ok{background:#06c755}.sub{background:#e7edf5;color:#1b4965}.del{background:#fff;color:#c92a2a;border:1px solid #ffc9c9}
+.note{font-size:13px;color:#555;line-height:1.7}
+</style></head><body>
+<header>📨 先生用 お知らせ文ボックス</header>
+<div class="w">
+<div class="card note">使い方：<b>「LINEで送る」</b>を押すとLINEが開くので，送る相手やグループをえらんで送信。<b>「コピー」</b>はほかのアプリに貼りつけたいとき。文は<b>その場で書きかえ</b>られ，自動で保存されます（このスマホのブラウザの中に保存）。<br>💡 ホーム画面に置くと1タップで開けます。<br>・<b>Android（Chrome）</b>：右上の「︙」→「ホーム画面に追加」<br>・<b>iPhone・iPad（Safari）</b>：「共有」→「ホーム画面に追加」</div>
+<div id="list"></div>
+<div class="row"><button class="btn" onclick="addMsg()">＋ 新しい文を追加</button><button class="btn sub" onclick="if(confirm('最初の文にもどしますか？（書きかえた内容は消えます）')){localStorage.removeItem('sensei_msgs');load();draw()}">最初の文にもどす</button></div>
+</div>
+<script>
+const DEF=[
+{t:'保護者向け：成績カード・LINE送信機能のお知らせ',b:`保護者の皆さま
+
+いつもお世話になっております。創才学院の古賀です。
+
+お子さまにお使いいただいている学習アプリに、「成績カード」と「先生にLINEで送る」という機能を加えました。
+
+【目的】
+ご家庭での学習の様子を私が把握し、一人ひとりの苦手に合わせて指導するためのものです。
+
+【しくみ】
+・学習の記録はお子さまのスマホの中だけに保存され、自動でどこかへ送られることはありません。
+・お子さまが自分でボタンを押したときだけ、LINEで私に届きます。
+・送られる内容は、名前（ニックネーム可）、解いた問題数、正答率、アプリ内テストの点数、苦手な単元、学習した日のみです。
+・お預かりした記録は、創才学院での指導のためだけに使います。
+
+ご不明な点がありましたら、お気軽にお声がけください。今後ともよろしくお願いいたします。`},
+{t:'生徒向け：成績カード・LINE送信機能のお知らせ',b:`みんなへ📢
+アプリに「📋 成績」画面と「先生にLINEで送る」ボタンを入れました。
+
+・勉強の記録はみんなのスマホの中だけに保存されます。勝手に送られることはありません。
+・ボタンを押したときだけ、名前・問題数・正答率・テストの点数・苦手なところが先生に届きます。
+・苦手に合わせて教えるために使います。
+
+1日の終わりに送ってくれるとうれしいです😊
+※LINEの中ではなく、Safari（AndroidはChrome）でアプリを開いてから送ってね。`}];
+let M=[];
+function load(){try{M=JSON.parse(localStorage.getItem('sensei_msgs'))||DEF.map(x=>({...x}))}catch(e){M=DEF.map(x=>({...x}))}}
+function save(){try{localStorage.setItem('sensei_msgs',JSON.stringify(M))}catch(e){}}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function draw(){document.getElementById('list').innerHTML=M.map((m,i)=>`<div class="card"><input class="tt" value="${esc(m.t)}" oninput="M[${i}].t=this.value;save()"><textarea oninput="M[${i}].b=this.value;save()">${esc(m.b)}</textarea><div class="row"><button class="btn ok" onclick="line(${i})">LINEで送る</button><button class="btn sub" onclick="cp(${i})">コピー</button><button class="btn del" onclick="if(confirm('この文を消しますか？')){M.splice(${i},1);save();draw()}">消す</button></div></div>`).join('')}
+function line(i){location.href='https://line.me/R/msg/text/?'+encodeURIComponent(M[i].b)}
+function cp(i){const tx=M[i].b;(navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(()=>alert('コピーしました')).catch(()=>{const a=document.createElement('textarea');a.value=tx;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();alert('コピーしました')})}
+function addMsg(){M.push({t:'新しい文（題名をタップして変更）',b:''});save();draw();window.scrollTo(0,document.body.scrollHeight)}
+load();draw();
+</script></body></html>
