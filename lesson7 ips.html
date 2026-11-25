@@ -117,6 +117,8 @@ function lsSet(k,v){try{localStorage.setItem(K+k,JSON.stringify(v))}catch(e){}}
 function lsDel(k){try{localStorage.removeItem(K+k)}catch(e){}}
 let REC=lsGet('rec',{}),READ=lsGet('read',{}),PARTS=lsGet('parts',[1,2,3,4,5,6,7,8,9,10,11]),RATE=lsGet('rate',0.85);
 const saveRec=()=>lsSet('rec',REC);
+let RLOG=lsGet('rlog',{});
+const dayKey=t=>{const d=new Date(t);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
 // ===== データ整形 =====
 const SENT=D.SENT.map(s=>({id:s[0],no:s[1],p:+s[0].split('-')[0],en:s[2],ja:s[3]}));
 const SBY={};SENT.forEach(s=>SBY[s.id]=s);
@@ -176,6 +178,7 @@ function renderHome(){
  h+=`<button class="step" onclick="openExplain()"><span class="n x">💬</span><span><div class="t">自分の言葉で説明</div><div class="s">録音して、キーワードをチェック</div></span><span class="pr">${stat(['説明']).join('/')}</span></button>
  <button class="step" onclick="openMatome()"><span class="n x">📚</span><span><div class="t">文法まとめ</div><div class="s">関係副詞・不定詞・仮定法・過去完了など</div></span></button>
  <button class="step" onclick="openPrint()"><span class="n x">🖨</span><span><div class="t">プリントを作る</div><div class="s">和訳・暗記・単語・熟語・指示語のテスト</div></span></button>
+ <button class="step" onclick="openReport()"><span class="n x">📋</span><span><div class="t">先生に報告する</div><div class="s">今日の学習と苦手を文章にして LINE で送る</div></span></button>
  <button class="step" onclick="startMix()"><span class="n x">🎯</span><span><div class="t">総合テスト（ランダム30問）</div><div class="s">1〜8 をまぜて出題</div></span></button>
  <div class="card"><h2>🔊 読み上げの速さ</h2><div class="row">${[[0.7,'ゆっくり'],[0.85,'ふつう'],[1,'速い']].map(r=>`<button class="chip ${RATE===r[0]?'on':''}" onclick="RATE=${r[0]};lsSet('rate',RATE);renderHome()">${r[1]}</button>`).join('')}</div><p class="note">音が出ないときは、LINEの中ではなく Safari（Androidは Chrome）で開き、マナーモードを解除してください。</p></div>`;
  $('#home').innerHTML=h;
@@ -310,7 +313,7 @@ function openRead(){closeM();go('play');let h=`<div class="card"><h2>6. 音読</
 function readPart(n){RP=n;const ss=SENT.filter(s=>s.p===n);
  $('#rp').innerHTML=`<div class="card"><h2>Part ${n}</h2>${playCtl(n)}<div class="row" style="margin-top:8px"><label class="note"><input type="checkbox" id="showja"> 和訳も表示</label></div><div class="slist">${ss.map(s=>`<div class="it" data-sid="${s.id}"><span class="num">${s.no}</span><span class="en">${enHTML(s,null,true)}</span><div class="ja rj" style="display:none;font-size:14px;color:#556">${esc(s.ja)}</div><div><button class="spk" onclick="speak(SBY['${s.id}'].en)">🔊</button><button class="spk" onclick="readOne('${s.id}')">✔ 読んだ</button><span class="cnt" id="c${s.id}">${READ[s.id]||0}回</span></div></div>`).join('')}</div></div>`;
  $('#showja').onchange=e=>document.querySelectorAll('.rj').forEach(x=>x.style.display=e.target.checked?'block':'none');$('#rp').scrollIntoView()}
-function readOne(id){READ[id]=(READ[id]||0)+1;lsSet('read',READ);$('#c'+id).textContent=READ[id]+'回'+(READ[id]>=5?' 🎉':'')}
+function readOne(id){READ[id]=(READ[id]||0)+1;lsSet('read',READ);const dk=dayKey(Date.now());RLOG[dk]=(RLOG[dk]||0)+1;lsSet('rlog',RLOG);$('#c'+id).textContent=READ[id]+'回'+(READ[id]>=5?' 🎉':'')}
 // 連続再生：q=Part番号 または 'all'（範囲の全部）。gap=まねする間をあける
 let PLAY=null;
 function playCtl(q){return `<div class="two"><button class="btn" onclick="playSeq('${q}',0)">▶ ${q==='all'?'範囲を全部':'Part '+q+' を'}通して聞く</button><button class="btn org" onclick="playSeq('${q}',1)">🗣 まね読み（間あり）</button></div><button class="btn ghost" onclick="stopPlay()">■ 止める</button>`}
@@ -372,6 +375,36 @@ function mkPrint(t){closeM();const ss=SENT.filter(s=>PARTS.includes(s.p));if(!ss
  if(t==='ref'){const l=Object.values(Q).filter(o=>o.k==='構文'&&PARTS.includes(o.p));q=l.map((o,i)=>`<div class="pq">(${i+1}) <span class="e">${esc(plain(SBY[o.s].en))}</span><br>${esc(o.q)}<div class="l"></div></div>`).join('');a=l.map((o,i)=>`<div class="pa">(${i+1}) ${esc(o.a)}（${esc(o.ja)}）</div>`).join('')}
  const nm={tr:'和訳プリント',mem:'暗記プリント',mem0:'暗記プリント',voc:'単語テスト',idi:'熟語テスト',ref:'指示語・構文テスト'}[t];
  $('#printArea').innerHTML=`<div class="pp">${H(nm)}${q}</div><div class="pp">${H(nm+'　解答')}${a}</div>`;setTimeout(()=>window.print(),200)}
+
+// ===== 先生への報告 =====
+function reportText(){
+ const now=Date.now(),today=dayKey(now),name=lsGet('name','');
+ let tn=0,to=0;const kindToday={};
+ Object.entries(REC).forEach(([id,r])=>{(r.h||[]).forEach(x=>{if(dayKey(x[0])===today&&Q[id]){tn++;if(x[1])to++;const k=Q[id].k;kindToday[k]=(kindToday[k]||0)+1}})});
+ const all=(kinds)=>{const ids=Object.values(Q).filter(o=>kinds.includes(o.k)).map(o=>o.id);return [ids.filter(id=>REC[id]&&REC[id].last==='o').length,ids.length]};
+ const lines=[];
+ lines.push(`【Lesson 7 学習報告】${name?name+'　':''}${new Date(now).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}`);
+ lines.push(`■今日：${tn}問（⭕${to}／❌${tn-to}${tn?'、正答率'+Math.round(to/tn*100)+'%':''}）、音読${RLOG[today]||0}回`);
+ if(Object.keys(kindToday).length)lines.push('　内訳：'+Object.entries(kindToday).map(([k,v])=>k+v).join('・'));
+ lines.push('■段階ごと（⭕になった数／全部）');
+ STEPS.forEach(st=>{if(st.n===6){const d=SENT.filter(x=>(READ[x.id]||0)>=5).length;lines.push(`　6 音読：5回読んだ文 ${d}／${SENT.length}`)}else{const [d,n]=all(st.kinds);lines.push(`　${st.n} ${st.t}：${d}／${n}`)}});
+ const [xd,xn]=all(['説明']);lines.push(`　💬 自分の言葉で説明：${xd}／${xn}`);
+ const weak=Object.keys(REC).filter(id=>Q[id]&&REC[id].x>0&&REC[id].last==='x').sort((a,b)=>REC[b].x-REC[a].x).slice(0,5);
+ if(weak.length){lines.push('■まだ❌の苦手（上位5）');weak.forEach(id=>{const o=Q[id];let t=o.k==='単語'||o.k==='熟語'?o.en+'＝'+o.ja:(o.k==='和訳'||o.k==='暗記')?sLabel(o.s)+'の'+o.k:(o.s?sLabel(o.s)+' ':'')+o.q;lines.push(`　・[${o.k}] ${t}（×${REC[id].x}）`)})}
+ const allIds=Object.values(Q).filter(o=>o.k!=='説明');const doneAll=allIds.filter(o=>REC[o.id]&&REC[o.id].last==='o').length,rate=doneAll/allIds.length;
+ lines.push('■ひとこと：'+(tn===0?'今日はまだ問題をやっていません。':rate>=0.9?'ほぼ全部⭕です。仕上げに暗記③（ヒントなし）をくり返します。':rate>=0.5?'半分以上⭕になりました。❌の問題を全部⭕にします。':'これから進めます。1→8の順に取り組んでいます。'));
+ return lines.join('\n');
+}
+function openReport(){const t=reportText();
+ openM(`<h2>📋 先生に報告する</h2><p class="note">名前を入れて「コピー」→ LINE に貼りつけて送ってください。</p>
+ <input type="search" id="rname" placeholder="名前" value="${esc(lsGet('name',''))}" style="margin:6px 0">
+ <textarea id="rtxt" style="width:100%;height:300px;font-size:14px;line-height:1.5;padding:8px;border:2px solid #b9c8d8;border-radius:10px">${esc(t)}</textarea>
+ <button class="btn" onclick="copyReport()">📋 コピーする</button><a class="btn org" style="text-align:center;text-decoration:none" id="rline" href="#">LINE で送る</a><p class="note" id="rmsg"></p><button class="btn ghost" onclick="closeM()">とじる</button>`);
+ const upd=()=>{$('#rline').href='https://line.me/R/msg/text/?'+encodeURIComponent($('#rtxt').value)};upd();
+ $('#rname').oninput=e=>{lsSet('name',e.target.value);$('#rtxt').value=reportText();upd()};$('#rtxt').oninput=upd;
+}
+function copyReport(){const t=$('#rtxt');const ok=()=>{$('#rmsg').textContent='コピーしました。LINE に貼りつけて送ってください。'};
+ try{navigator.clipboard.writeText(t.value).then(ok,()=>{t.select();document.execCommand('copy');ok()})}catch(e){t.select();try{document.execCommand('copy');ok()}catch(e2){$('#rmsg').textContent='長押しして全部選択→コピーしてください。'}}}
 // ===== 使い方 =====
 function renderHelp(){$('#help').innerHTML=`<div class="card"><h2>❓ 使い方</h2><div class="pt">
 <p><b>おすすめの順番</b>：ホームの 1 → 8 を上から順に。どの段階も「❌だけもう一度」で全部⭕にしてから次へ。</p>
@@ -387,6 +420,7 @@ function renderHelp(){$('#help').innerHTML=`<div class="card"><h2>❓ 使い方<
 <p><b>📖 本文</b>：文をタップすると、その文のポイント（単語・文法・指示語）と「この文の問題を全部やる」。</p>
 <p><b>🏆 苦手</b>：まちがえた回数が多い順。<b>🔍 検索</b>：英語でも日本語でも探せて、タップで「学習のあと」（何回・いつ⭕❌）と練習。</p>
 <p><b>📌 続きから</b>：1問ごとに自動保存。画面がもどっても、ホームの「続きから再開」で再開できる。</p>
+<p><b>📋 先生に報告する</b>：今日やった問題数・正答率・音読回数・段階ごとの進み具合・まだ❌の苦手を自動で文章にする。「コピー」または「LINEで送る」で先生に送ろう。</p>
 <p><b>🖨 プリント</b>：和訳・暗記・単語・熟語・指示語のテスト（解答つき）。</p>
 <p class="note">記録はこのスマホのこのブラウザだけに残ります（LINEの中と Safari では別々）。音が出ないときは Safari／Chrome で開いてください。</p></div></div>`}
 renderHome();
