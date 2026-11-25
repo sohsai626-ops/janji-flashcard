@@ -54,14 +54,20 @@ textarea{width:100%;font-size:16px;padding:10px;border:2px solid #9fb3c8;border-
 .tapinfo{font-size:14px;margin:4px 0;color:var(--p);font-weight:bold}
 .gsvg.tap{touch-action:manipulation;cursor:crosshair;border:2px solid var(--a);border-radius:8px}
 .sc{font-size:34px;font-weight:bold;color:var(--a);text-align:center}
+.rc{background:linear-gradient(135deg,#1b4965,#2c7da0);color:#fff;border-radius:14px;padding:14px}
+.rc h2{color:#fff;margin:0 0 4px}.rc .sub{font-size:12px;opacity:.85}
+.rc .kpi{display:flex;gap:8px;margin:10px 0}.rc .kpi div{flex:1;background:rgba(255,255,255,.15);border-radius:10px;padding:8px;text-align:center;font-size:12px}.rc .kpi b{display:block;font-size:22px}
+.bar{height:9px;background:#eee;border-radius:5px}.bar>div{height:9px;border-radius:5px}
+.mk{display:flex;align-items:flex-end;gap:6px;height:110px;margin:8px 0;padding:0 4px;border-bottom:1px solid #ccc}.mk div{flex:1;background:#e85d04;border-radius:4px 4px 0 0;position:relative;min-width:14px}.mk span{position:absolute;top:-17px;left:0;right:0;text-align:center;font-size:11px;font-weight:bold}
+.days{display:flex;gap:4px}.days div{flex:1;text-align:center;font-size:10px}.days i{display:block;height:24px;border-radius:4px;margin-bottom:2px;font-style:normal;font-size:12px;line-height:24px;font-weight:bold}
 .pr{display:none}
 @media print{body{background:#fff}header,nav,.scr,.ov,#kp{display:none!important}.pr{display:block!important;font-size:10.5pt}.pq{break-inside:avoid;margin-bottom:4mm;border:1px solid #999;padding:2.5mm}.pq .gsvg{width:210px}.pg{break-before:page}.pr h2{font-size:13pt;margin:0 0 3mm}.pr .fr{font-size:10pt}.ans{border-bottom:1px solid #999;min-height:9mm}.two{display:flex;gap:4mm;flex-wrap:wrap}.two>div{flex:1 1 45%}}
 </style></head><body>
-<header><h1>比例・反比例 再テスト特訓 <span class="badge">v1.0</span><button id="helpBtn" onclick="ov('help')">❓使い方</button></h1></header>
-<nav id="nav"><button data-t="home" class="on">🏠 練習</button><button data-t="solve">✏️ 解く</button><button data-t="miss">❌ ミス</button><button data-t="rank">📊 苦手</button><button data-t="find">🔍 検索</button><button data-t="print">🖨 印刷</button></nav>
+<header><h1>比例・反比例 再テスト特訓 <span class="badge">v1.1</span><button id="helpBtn" onclick="ov('help')">❓使い方</button></h1></header>
+<nav id="nav"><button data-t="home" class="on">🏠 練習</button><button data-t="solve">✏️ 解く</button><button data-t="miss">❌ ミス</button><button data-t="rank">📊 苦手</button><button data-t="find">🔍 検索</button><button data-t="print">🖨 印刷</button><button data-t="card">📋 成績</button></nav>
 
 <div id="home" class="scr show"><div id="resume"></div>
- <div class="card"><h2>🎯 本番そっくりテスト（50点満点）</h2><p style="font-size:14px;margin:0 0 8px">1年数学 第4回定期テストの<b>1（知識・技能）(1)〜(6)</b>と同じ形・同じ配点で，<b>数字を変えて</b>出題します（全22問）。毎回ちがう問題になります。</p><button class="btn a" onclick="startMock()">▶ 本番そっくりテストを始める</button><div id="mockHist" style="font-size:13px;margin-top:8px"></div></div>
+ <div class="card"><h2>🎯 本番そっくりテスト（50点満点）</h2><p style="font-size:14px;margin:0 0 8px">1年数学 第4回定期テストの<b>1（知識・技能）(1)〜(6)</b>と同じ形・同じ配点で，<b>数字を変えて</b>出題します（全22問）。毎回ちがう問題になります。</p><div class="row"><button class="btn a" onclick="startMock()">▶ 本番そっくりテストを始める</button><button class="btn ok" onclick="show('card')">📋 成績・先生に送る</button></div><div id="mockHist" style="font-size:13px;margin-top:8px"></div></div>
  <div class="card weak"><h2>⚠️ やり直し答案で見つかった「つまずき」</h2><div id="tsuma"></div></div>
  <div class="card"><h2>📚 型ごとに練習（数字は毎回かわる）</h2><p style="font-size:13px;margin:0 0 4px">「3問」でその型を3問。📈で「学習のあと」。</p><div id="tlist"></div>
  <div class="row" style="margin-top:10px"><button class="btn" onclick="startRand(9)">🎲 ぜんぶの型から9問</button><button class="btn sub" onclick="startWeak()">苦手な型から6問</button></div></div></div>
@@ -75,6 +81,7 @@ textarea{width:100%;font-size:16px;padding:10px;border:2px solid #9fb3c8;border-
  <p><button class="btn" onclick="printTypes()">🖨 えらんだ型を印刷</button></p>
  <p><button class="btn sub" onclick="printGrids()">🖨 グラフ用の白紙方眼（6面）</button></p>
  <p style="font-size:12px;color:#666">グラフをかく問題は，プリントの方眼に<b>紙と鉛筆</b>でかいて，解答ページのグラフと見くらべよう。iPhoneは「共有」→「プリント」でPDFにもできます。</p></div></div>
+<div id="card" class="scr"></div>
 <div class="pr" id="pr"></div>
 <div id="kp"><div class="g">
  <button onclick="kp('7')">7</button><button onclick="kp('8')">8</button><button onclick="kp('9')">9</button><button class="f" onclick="kp('/')">分数<br>／</button><button class="f" onclick="kp('BS')">⌫</button>
@@ -91,6 +98,7 @@ textarea{width:100%;font-size:16px;padding:10px;border:2px solid #9fb3c8;border-
 <p><b>グラフをかく問題</b>：方眼を<b>タップして点を打つ</b>と，正しければアプリが線（曲線）を引きます。まちがった点は赤くなって消えます。紙でも練習したいときは🖨印刷の方眼を使おう。</p>
 <p><b>大事なこと</b>：答えたら必ず<b>「解き方」を読む</b>。そのあと<b>💬 自分の言葉で説明</b>（20秒考えてから書く→お手本①②③とチェック）。</p>
 <p><b>❌ ミス</b>：今回まちがえた問題（解き方をもう一度見る・同じ型を新しい数字で）。<b>📊 苦手</b>：型ごとの正答率。<b>📈 学習のあと</b>：何回やったか・○×の記録・説明メモ。</p>
+<p><b>📋 成績</b>：成績カード（本番の点数の変化・型ごとの正答率・7日間の学習）。<b>「📨 先生にLINEで送る」</b>で記録を先生に送れます。1日の終わりに送ろう。記録はこのスマホの中だけに保存され，<b>自分でボタンを押したときだけ</b>先生に届きます（自動では送られません）。くわしくは📋成績の画面の下の「この機能について」。</p>
 <p><b>🔍 検索</b>：「はんぴれい」「座標」などで型や用語をさがせます。</p>
 <p><b>📌 とちゅうから再開</b>：1ステップごとに保存。画面が消えても「▶ 続きから再開」。</p>
 <p><b>うまく動かないとき</b>：LINEの中ではなくSafariで開く（記録はLINEとSafariで別々）。</p>
@@ -343,7 +351,7 @@ let REC=store.get('rec',{});function rec(t){return REC[t]||(REC[t]={n:0,ok:0,h:[
 function saveRec(){store.set('rec',REC)}
 // ---- 画面 ----
 function show(t){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('show',s.id==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t!='solve')kpHide();
- if(t=='home')renderHome();if(t=='miss')renderMiss();if(t=='rank')renderRank();if(t=='print')renderPList();window.scrollTo(0,0)}
+ if(t=='home')renderHome();if(t=='miss')renderMiss();if(t=='rank')renderRank();if(t=='print')renderPList();if(t=='card')renderCard();window.scrollTo(0,0)}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 function ov(id){$(id).classList.add('show')}function cov(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('show'))}
 function rate(t){const r=rec(t);return r.n?Math.round(r.ok/r.n*100):null}
@@ -393,7 +401,7 @@ function pickOpt(k){const p=cur(),r=resOf(p),st=p.steps[r.steps.length];if(st.mu
 function save(){store.set('sess',S)}
 function checkStep(){const p=cur(),r=resOf(p),i=r.steps.length,st=p.steps[i];if(!st||r.done)return;let res;
  if(st.opts){const v=(r.sel||[]).slice().sort();if(!v.length)return;const ok=v.length==st.ans.length&&st.ans.every(a=>v.includes(a));res={ok,v};r.sel=[]}
- else if(st.slots[0].t=='term'){const v=[$('term0').value];if(!v[0].trim()){alert('答えを入れてね');return}const j=judge(st.slots[0],v[0]);res={ok:j.ok,v,okk:[j.ok],msg:j.msg}}
+ else if(st.slots[0].t=='term'){const v=[$('term0').value];const j=judge(st.slots[0],v[0]);res={ok:j.ok,v,okk:[j.ok],msg:j.msg}}
  else if(st.online){const v=(r.draft||[]);const js=v.map(toJS);const xy=js.map(j=>j==null||/x/.test(j)?NaN:ev(j,1));let ok=xy.every(Number.isInteger)&&!(xy[0]==0&&xy[1]==0)&&xy[1]*st.online[1]==st.online[0]*xy[0]&&Math.abs(xy[0])<=5&&Math.abs(xy[1])<=5;res={ok,v,okk:[ok,ok],msg:ok?'':'その点は直線の上にありません（方眼の交わった点をちょうど通るところ）。'}}
  else{const v=st.slots.map((_,k)=>(r.draft||[])[k]||'');if(v.some(x=>!x)){alert('ワクに答えを入れてね');return}const js=st.slots.map((sl,k)=>judge(sl,v[k]));res={ok:js.every(j=>j.ok),v,okk:js.map(j=>j.ok),msg:js.map(j=>j.msg).filter(Boolean).join(' ')};
   if(p.tid=='T5'&&!res.ok&&st.slots.length==2&&norm(v[0])==norm(st.slots[1].can)&&norm(v[1])==norm(st.slots[0].can))res.msg='<i>x</i>と<i>y</i>が<b>逆</b>です。（横，縦）の順。'}
@@ -417,7 +425,7 @@ function needPts(tp){return tp.f=='lin'?null:latInv(tp.a,tp.r)}
 function updTapInfo(st){const r=resOf(cur()),tp=st.tap,t=r.taps||[];let done=false,msg;
  if(tp.f=='lin'){const hasO=t.some(q=>q[0]==0&&q[1]==0),other=t.filter(q=>q[0]||q[1]).length;done=hasO&&other>=1;msg=`原点：${hasO?'✔':'まだ'}　もう1つの点：${other?'✔':'まだ'}`}
  else{const P=needPts(tp);done=t.length>=P.length;msg=`打った点 ${t.length}／${P.length}`}
- if(done){finishStep(cur(),r,st,{ok:!(r.tmiss>0),v:[],msg:r.tmiss?`まちがえて打った点が ${r.tmiss} 個ありました。`:'すべて正しく打てました。線をかくとこうなります。'});return}
+ if(done){finishStep(cur(),r,st,{ok:!(r.tmiss>0)||S.mode!='mock'&&false,v:[],msg:r.tmiss?`まちがえて打った点が ${r.tmiss} 個ありました。`:'すべて正しく打てました。線をかくとこうなります。'});return}
  const e=$('tapinfo');if(e)e.innerHTML=msg+(r.tmiss?`　<span style="color:#c92a2a">（ミス ${r.tmiss}）</span>`:'')}
 function tapHint(){const st=cur().steps[resOf(cur()).steps.length],tp=st.tap,e=$('tapinfo');
  if(tp.f=='lin')e.innerHTML=`<i>x</i> = ${tp.a[1]} を代入：${Y} = ${qh(tp.a)} × ${tp.a[1]} = ${nm(tp.a[0])}　→ 点 (${tp.a[1]}, ${nm(tp.a[0])})`;
@@ -429,7 +437,7 @@ function finish(){kpHide();const n=S.list.length,ok=S.list.filter(p=>resOf(p).ok
   const sec={};S.list.forEach(p=>{const T=TBY[p.tid];const k=T.no;const pts=p.steps.reduce((a,b)=>a+(b.pts||0),0);const got=p.steps.reduce((a,b,i)=>a+((resOf(p).steps[i]||{}).ok?(b.pts||0):0),0);sec[k]=sec[k]||{n:T.name,t:p.tid,max:0,got:0};sec[k].max+=pts;sec[k].got+=got});
   h+='<table class="tb" style="font-size:14px">'+Object.entries(sec).map(([k,v])=>`<tr><th>${k}</th><td style="text-align:left">${v.n}</td><td><b style="color:${v.got==v.max?'#2b8a3e':'#c92a2a'}">${v.got}</b>／${v.max}</td><td>${v.got<v.max?`<button class="btn sm a" onclick="startType('${v.t}',3)">練習</button>`:'✔'}</td></tr>`).join('')+'</table>'}
  else h+=`<h2>おつかれさま！</h2><div class="sc">${ok} ／ ${n} 問 正解</div>`;
- h+=`<div class="row" style="margin-top:10px"><button class="btn" onclick="show('miss')">❌ ミスを見る</button><button class="btn sub" onclick="show('home')">🏠 練習へ</button></div></div>`;
+ h+=`<div class="row" style="margin-top:10px"><button class="btn ok" onclick="show('card')">📨 成績を先生に送る</button><button class="btn" onclick="show('miss')">❌ ミスを見る</button><button class="btn sub" onclick="show('home')">🏠 練習へ</button></div></div>`;
  $('sbox').innerHTML=h;store.set('sess',null)}
 function renderMiss(){const M=store.get('miss',[]);let h='<div class="card"><h2>❌ まちがえた問題（新しい順）</h2>';if(!M.length)h+='<p>まだありません。</p>';
  h+=M.slice().reverse().map((p,k)=>`<div class="list"><div class="it"><span class="no" style="font-size:12px;background:#1b4965;color:#fff;border-radius:5px;padding:1px 5px">${TBY[p.tid].no}</span> ${TBY[p.tid].name}<div style="font-size:14px;margin:4px 0">${p.q.replace(/<div class="big">/,'<div>')}</div><details><summary style="color:#1b4965">解き方を見る</summary><div class="ex">${p.exp}${p.figAns||''}</div></details><button class="btn sm a" style="margin-top:6px" onclick="startType('${p.tid}',3)">同じ型を新しい数字で3問</button></div></div>`).join('');
@@ -465,5 +473,34 @@ function printMock(){const L=mockSet();const no=p=>TBY[p.tid].no;
 function printTypes(){const ts=[...document.querySelectorAll('#plist input:checked')].map(c=>c.value);if(!ts.length)return alert('型をえらんでね');const L=[];ts.forEach(t=>{for(let k=0;k<4;k++)L.push(makeP(t,t=='T7'?(k%2?'h':'v'):t=='T8'||t=='T9'?['a','f','x','x'][k]:t=='T4'?(k%2?'h':'v'):undefined))});
  let q='<h2>比例・反比例 練習プリント　名前（　　　　　　）</h2>'+L.map((p,i)=>pQ(p,`${i+1}. ${TBY[p.tid].no}`)).join('');let a='<div class="pg"></div><h2>解答・解き方</h2>'+L.map((p,i)=>pA(p,`${i+1}.`)).join('');doPrint(q+a)}
 function printGrids(){let h='<h2>グラフ用 方眼</h2><div class="two">';for(let k=0;k<6;k++)h+=`<div class="pq">${k<3?'①②③'[k]:'④⑤⑥'[k-3]}<div class="fig">${grid({r:k%2?10:5,size:260})}</div></div>`;doPrint(h+'</div>')}
+
+// ===== 成績カード＋先生にLINEで送る（標準モジュール）=====
+const APPNAME='比例・反比例 再テスト特訓';
+function rcData(){const now=Date.now(),day=d=>{const x=new Date(d);return x.getFullYear()+'/'+(x.getMonth()+1)+'/'+x.getDate()};const today=day(now);
+ let all=[];TYPES.forEach(t=>rec(t.id).h.forEach(h=>all.push({t:h[0],ok:h[1],tid:t.id})));all.sort((a,b)=>a.t-b.t);
+ const td=all.filter(a=>day(a.t)==today);const last7=[];for(let k=6;k>=0;k--){const d=day(now-k*864e5);const L=all.filter(a=>day(a.t)==d);last7.push({d,n:L.length,ok:L.filter(a=>a.ok).length})}
+ const types=TYPES.map(t=>({no:t.no,name:t.name,id:t.id,n:rec(t.id).n,p:rate(t.id)}));
+ const weak=types.filter(t=>t.n>0).sort((a,b)=>a.p-b.p).filter(t=>t.p<80).slice(0,3);
+ const n=types.reduce((s,t)=>s+t.n,0),ok=TYPES.reduce((s,t)=>s+rec(t.id).ok,0);
+ return{name:store.get('name',''),today:td.length,todayOk:td.filter(a=>a.ok).length,n,ok,p:n?Math.round(ok/n*100):null,mock:store.get('mock',[]),types,weak,last7,last:all.length?all[all.length-1].t:null}}
+const fmtT=t=>{const x=new Date(t);return (x.getMonth()+1)+'/'+x.getDate()+' '+x.getHours()+':'+String(x.getMinutes()).padStart(2,'0')};
+function renderCard(){const D=rcData();const col=p=>p==null?'#bbb':p>=80?'#2b8a3e':p>=50?'#f59f00':'#c92a2a';
+ const mk=D.mock.slice(-8);let h=`<div class="card"><div class="row"><span style="font-size:14px">名前：</span><input id="nm" value="${(D.name||'').replace(/"/g,'')}" placeholder="名前（ニックネームでもOK）" style="flex:1;font-size:16px;padding:7px;border:2px solid #9fb3c8;border-radius:9px" onchange="store.set('name',this.value.trim());renderCard()"></div></div>`;
+ h+=`<div class="rc"><h2>📋 成績カード</h2><div class="sub">${APPNAME}　${D.name||'（名前未入力）'}　${fmtT(Date.now())} 現在</div>
+ <div class="kpi"><div>きょう<b>${D.today}</b>問（⭕${D.todayOk}）</div><div>ぜんぶで<b>${D.n}</b>問</div><div>正答率<b>${D.p??'−'}%</b></div></div>
+ <div class="kpi"><div>本番そっくり<b>${mk.length?mk[mk.length-1].s+'点':'−'}</b>最新</div><div>最高点<b>${mk.length?Math.max(...D.mock.map(m=>m.s))+'点':'−'}</b>${D.mock.length}回受験</div></div></div>`;
+ h+=`<div class="card"><h2>🎯 本番そっくりテストの点数</h2>${mk.length?`<div class="mk">${mk.map(m=>`<div style="height:${Math.max(4,m.s/50*100)}%"><span>${m.s}</span></div>`).join('')}</div><div class="days">${mk.map(m=>`<div>${fmtT(m.t).split(' ')[0]}</div>`).join('')}</div>`:'<p>まだ受けていません。</p>'}</div>`;
+ h+=`<div class="card"><h2>📅 この7日間</h2><div class="days">${D.last7.map(d=>`<div><i style="background:${d.n?'#d3f9d8':'#f1f3f5'};color:#2b8a3e">${d.n||''}</i>${d.d.split('/').slice(1).join('/')}</div>`).join('')}</div><p style="font-size:12px;color:#666;margin:6px 0 0">数字はその日に解いた問題数。最後の学習：${D.last?fmtT(D.last):'−'}</p></div>`;
+ h+=`<div class="card"><h2>📊 型ごとの正答率</h2>${D.types.map(t=>`<div style="margin:7px 0"><div class="row" style="justify-content:space-between;font-size:13px"><span>${t.no} ${t.name}</span><b style="color:${col(t.p)}">${t.n?t.p+'%':'まだ'}<span style="font-weight:normal;color:#666;font-size:11px">${t.n?'（'+t.n+'問）':''}</span></b></div><div class="bar"><div style="width:${t.p??0}%;background:${col(t.p)}"></div></div></div>`).join('')}${D.weak.length?`<p style="font-size:14px">⚠️ 苦手：<b>${D.weak.map(w=>w.no+' '+w.name).join('，')}</b></p>`:''}</div>`;
+ h+=`<div class="card"><h2>📨 先生に送る</h2><p style="font-size:13px;margin:0 0 8px">ボタンを押すとLINEが開きます。先生をえらんで送信してね。この画面のスクリーンショットを送ってもOK。<br><b style="color:#c92a2a">※LINEの中ではなく，Safariでアプリを開いてから押してね。</b></p><div class="row"><button class="btn ok" onclick="sendLine()">📨 先生にLINEで送る</button><button class="btn sub" onclick="copyRep()">📋 文をコピー</button></div><pre id="reptx" style="white-space:pre-wrap;font-size:12px;background:#f8f9fa;border-radius:8px;padding:8px;margin-top:10px">${repText().replace(/</g,'&lt;')}</pre></div>`;
+ $('card').innerHTML=h+`<div class="card" style="background:#f1f8ff;border:2px solid #a5d8ff"><h2>📢 この機能について（生徒のみなさん・おうちの方へ）</h2><div style="font-size:13.5px;line-height:1.8">・この「成績カード」と「先生にLINEで送る」は，<b>学習の様子を先生が知り，一人ひとりの苦手に合わせて指導する</b>ためのものです。<br>・学習の記録は<b>このスマホの中だけ</b>に保存されます。<b>自動でどこかへ送られることはありません。</b>先生に届くのは，<b>自分でボタンを押して送ったときだけ</b>です。<br>・送られる内容：名前（ニックネーム可）・解いた問題数・正答率・本番そっくりテストの点数・苦手な型・学習した日。<b>それ以外の情報は送られません</b>（送る前に，上の「先生に送る」の欄で全文を確認できます）。<br>・送られた記録は，<b>創才学院での指導のためだけ</b>に使います。<br>・LINEの中でこのアプリを開いていると，うまく送れないことがあります。<b>Safariで開いてください。</b></div></div>`}
+function repText(){const D=rcData();const L=[`【${APPNAME}】学習記録`,`名前：${D.name||'（未入力）'}`,`送信：${fmtT(Date.now())}`,`きょう：${D.today}問（正解${D.todayOk}）`,`ぜんぶ：${D.n}問（正答率${D.p??'−'}%）`];
+ if(D.mock.length)L.push(`本番そっくり：${D.mock.slice(-6).map(m=>m.s).join('→')}点（最高${Math.max(...D.mock.map(m=>m.s))}点・${D.mock.length}回）`);
+ L.push('型ごとの正答率：');D.types.forEach(t=>L.push(`${t.no}${t.name} ${t.n?t.p+'%('+t.n+'問)':'まだ'}`));
+ if(D.weak.length)L.push('苦手：'+D.weak.map(w=>w.no+w.name).join('，'));L.push('7日間：'+D.last7.map(d=>d.n).join(' ')+'問');L.push(`最後の学習：${D.last?fmtT(D.last):'−'}`);return L.join('\n')}
+function needName(){if(store.get('name',''))return true;const n=prompt('名前を入れてね（ニックネームでもOK）');if(n&&n.trim()){store.set('name',n.trim());return true}return false}
+function sendLine(){if(!needName())return;renderCard();location.href='https://line.me/R/msg/text/?'+encodeURIComponent(repText())}
+function copyRep(){if(!needName())return;renderCard();const tx=repText();(navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(()=>alert('コピーしました。LINEに貼りつけて送ってね。')).catch(()=>{const ta=document.createElement('textarea');ta.value=tx;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('コピーしました。')})}
+
 renderHome();if(location.hash=='#help')ov('help');
 </script></body></html>
