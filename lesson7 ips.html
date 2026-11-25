@@ -76,6 +76,7 @@ input[type=search]{width:100%;font-size:16px;padding:10px;border:2px solid #b9c8
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:30px 12px}
 .modal .in{background:#fff;border-radius:14px;max-width:640px;margin:0 auto;max-height:85vh;overflow:auto;padding:14px}
 #printArea{display:none}
+#pbar button{margin-left:8px;border:0;border-radius:8px;padding:5px 10px;font-weight:800;background:#fff;color:#123f6b}
 @media print{
  @page{size:A4;margin:12mm}
  body{background:#fff}header,.tab,.modal{display:none!important}
@@ -99,6 +100,7 @@ input[type=search]{width:100%;font-size:16px;padding:10px;border:2px solid #b9c8
 <div class="tab" id="rank"></div>
 <div class="tab" id="search"></div>
 <div class="tab" id="help"></div>
+<div id="pbar" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;background:#123f6b;color:#fff;padding:10px 12px;font-size:14px;font-weight:700"></div>
 <div class="modal" id="modal" onclick="if(event.target===this)closeM()"><div class="in" id="modalIn"></div></div>
 <div id="printArea"></div>
 
@@ -148,7 +150,7 @@ if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pick
 function speak(t,onend){if(!('speechSynthesis' in window)){onend&&onend();return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(plain(t).replace(/～/g,' '));u.lang='en-US';if(enVoice)u.voice=enVoice;u.rate=RATE;u.onend=()=>onend&&onend();u.onerror=()=>{};speechSynthesis.speak(u)}catch(e){}}
 function stopSpeak(){try{speechSynthesis.cancel()}catch(e){}}
 // ===== タブ =====
-function go(t){stopSpeak();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));window.scrollTo(0,0);
+function go(t){stopPlay&&PLAY&&stopPlay();stopSpeak();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));window.scrollTo(0,0);
  if(t==='home')renderHome();if(t==='text')renderText();if(t==='rank')renderRank();if(t==='search')renderSearch();if(t==='help')renderHelp()}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
 function openM(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
@@ -304,16 +306,28 @@ function bindExplain(o){
 function openExplain(){const l=pick(['説明']);run(l.sort((a,b)=>(a.p||99)-(b.p||99)),'card','自分の言葉で説明')}
 // ===== 音読 =====
 let RP=null;
-function openRead(){closeM();go('play');let h=`<div class="card"><h2>6. 音読</h2><p class="note">🔊で聞く → まねして声に出す → 「読んだ」を押す。1文5回が目標。スラッシュ（/）で区切って読もう。</p><div class="row">${[1,2,3,4,5,6,7,8,9,10,11].filter(n=>PARTS.includes(n)).map(n=>`<button class="chip" onclick="readPart(${n})">Part ${n}</button>`).join('')}</div></div>`;$('#play').innerHTML=h+'<div id="rp"></div>'}
+function openRead(){closeM();go('play');let h=`<div class="card"><h2>6. 音読</h2><p class="note">🔊で聞く → まねして声に出す → 「読んだ」を押す。1文5回が目標。スラッシュ（/）で区切って読もう。</p><div class="row">${[1,2,3,4,5,6,7,8,9,10,11].filter(n=>PARTS.includes(n)).map(n=>`<button class="chip" onclick="readPart(${n})">Part ${n}</button>`).join('')}</div>${playCtl('all')}</div>`;$('#play').innerHTML=h+'<div id="rp"></div>'}
 function readPart(n){RP=n;const ss=SENT.filter(s=>s.p===n);
- $('#rp').innerHTML=`<div class="card"><h2>Part ${n}</h2><button class="btn" onclick="playAll(${n},0)">▶ Part ${n} を通して聞く</button><button class="btn ghost" onclick="stopSpeak()">■ 止める</button><div class="row" style="margin-top:8px"><label class="note"><input type="checkbox" id="showja"> 和訳も表示</label></div><div class="slist">${ss.map(s=>`<div class="it" id="r${s.id}"><span class="num">${s.no}</span><span class="en">${enHTML(s,null,true)}</span><div class="ja rj" style="display:none;font-size:14px;color:#556">${esc(s.ja)}</div><div><button class="spk" onclick="speak(SBY['${s.id}'].en)">🔊</button><button class="spk" onclick="readOne('${s.id}')">✔ 読んだ</button><span class="cnt" id="c${s.id}">${READ[s.id]||0}回</span></div></div>`).join('')}</div></div>`;
+ $('#rp').innerHTML=`<div class="card"><h2>Part ${n}</h2>${playCtl(n)}<div class="row" style="margin-top:8px"><label class="note"><input type="checkbox" id="showja"> 和訳も表示</label></div><div class="slist">${ss.map(s=>`<div class="it" data-sid="${s.id}"><span class="num">${s.no}</span><span class="en">${enHTML(s,null,true)}</span><div class="ja rj" style="display:none;font-size:14px;color:#556">${esc(s.ja)}</div><div><button class="spk" onclick="speak(SBY['${s.id}'].en)">🔊</button><button class="spk" onclick="readOne('${s.id}')">✔ 読んだ</button><span class="cnt" id="c${s.id}">${READ[s.id]||0}回</span></div></div>`).join('')}</div></div>`;
  $('#showja').onchange=e=>document.querySelectorAll('.rj').forEach(x=>x.style.display=e.target.checked?'block':'none');$('#rp').scrollIntoView()}
 function readOne(id){READ[id]=(READ[id]||0)+1;lsSet('read',READ);$('#c'+id).textContent=READ[id]+'回'+(READ[id]>=5?' 🎉':'')}
-function playAll(n,i){const ss=SENT.filter(s=>s.p===n);if(i>=ss.length)return;const el=$('#r'+ss[i].id);document.querySelectorAll('.slist .it').forEach(x=>x.style.background='');if(el){el.style.background='#fff7d6';el.scrollIntoView({block:'center',behavior:'smooth'})}speak(ss[i].en,()=>setTimeout(()=>playAll(n,i+1),700))}
+// 連続再生：q=Part番号 または 'all'（範囲の全部）。gap=まねする間をあける
+let PLAY=null;
+function playCtl(q){return `<div class="two"><button class="btn" onclick="playSeq('${q}',0)">▶ ${q==='all'?'範囲を全部':'Part '+q+' を'}通して聞く</button><button class="btn org" onclick="playSeq('${q}',1)">🗣 まね読み（間あり）</button></div><button class="btn ghost" onclick="stopPlay()">■ 止める</button>`}
+function seqList(q){return SENT.filter(s=>q==='all'?PARTS.includes(s.p):s.p===+q)}
+function hlSent(id){document.querySelectorAll('[data-sid]').forEach(x=>x.style.background=x.dataset.sid===id?'#fff7d6':'');const el=document.querySelector(`.tab.show [data-sid="${id}"]`);if(el)el.scrollIntoView({block:'center',behavior:'smooth'});const b=$('#pbar');if(b&&PLAY)b.innerHTML=`🔊 ${sLabel(id)}　<button onclick="stopPlay()">■ 止める</button>`}
+function stopPlay(){PLAY=null;stopSpeak();const b=$('#pbar');if(b)b.style.display='none';document.querySelectorAll('[data-sid]').forEach(x=>x.style.background='')}
+function playSeq(q,gap){const l=seqList(q);if(!l.length){alert('範囲をえらんでください');return}if(!('speechSynthesis' in window)){alert('このブラウザは読み上げに対応していません');return}
+ stopSpeak();PLAY={l,gap,i:0};const b=$('#pbar');b.style.display='block';
+ if(!gap){ // 全部をまとめて予約（iPhoneでも途中で止まりにくい）
+  l.forEach(s=>{const u=new SpeechSynthesisUtterance(plain(s.en));u.lang='en-US';if(enVoice)u.voice=enVoice;u.rate=RATE;u.onstart=()=>{if(PLAY)hlSent(s.id)};speechSynthesis.speak(u)});
+  const last=new SpeechSynthesisUtterance(' ');last.onend=()=>{if(PLAY)stopPlay()};speechSynthesis.speak(last);return}
+ const step=()=>{if(!PLAY)return;if(PLAY.i>=l.length){stopPlay();return}const s=l[PLAY.i];hlSent(s.id);
+  speak(s.en,()=>{if(!PLAY)return;PLAY.i++;const wait=Math.max(2500,plain(s.en).split(' ').length*450/RATE);setTimeout(step,wait)})};step()}
 // ===== 本文 =====
 function renderText(){
- let h=`<div class="card"><h2>📖 本文とポイント</h2><p class="note">文をタップすると、単語・文法・指示語・説明のポイントが見られます。オレンジの◯は冠詞。</p><div class="row">${[1,2,3,4,5,6,7,8,9,10,11].map(n=>`<button class="chip" onclick="document.getElementById('pp${n}').scrollIntoView()">P${n}</button>`).join('')}</div></div>`;
- for(let n=1;n<=11;n++){h+=`<div class="card" id="pp${n}"><h2>Part ${n}</h2><div class="slist">${SENT.filter(s=>s.p===n).map(s=>`<div class="it" onclick="sentDetail('${s.id}')"><span class="num">${s.no}</span><span class="en">${enHTML(s,null,true)}</span></div>`).join('')}</div></div>`}
+ let h=`<div class="card"><h2>📖 本文とポイント</h2><p class="note">文をタップすると、単語・文法・指示語・説明のポイントが見られます。オレンジの◯は冠詞。</p>${playCtl('all')}<div class="row">${[1,2,3,4,5,6,7,8,9,10,11].map(n=>`<button class="chip" onclick="document.getElementById('pp${n}').scrollIntoView()">P${n}</button>`).join('')}</div></div>`;
+ for(let n=1;n<=11;n++){h+=`<div class="card" id="pp${n}"><h2>Part ${n}　<button class="spk" onclick="playSeq('${n}',0)">▶ 通して聞く</button></h2><div class="slist">${SENT.filter(s=>s.p===n).map(s=>`<div class="it" data-sid="${s.id}" onclick="sentDetail('${s.id}')"><span class="num">${s.no}</span><span class="en">${enHTML(s,null,true)}</span></div>`).join('')}</div></div>`}
  $('#text').innerHTML=h;
 }
 function pointsHTML(id,short){
@@ -366,7 +380,7 @@ function renderHelp(){$('#help').innerHTML=`<div class="card"><h2>❓ 使い方<
 <li><b>構文</b>：it・they・this method などが何を指すか（英語で言えたらベスト）、主語はどこまでか、何が省略されているか。</li>
 <li><b>本文内容</b>：日本語で内容を確認。</li>
 <li><b>その他</b>：原形・単数形・発音・数字の読み方・言いかえ・made of／from／into。</li>
-<li><b>音読</b>：🔊で聞いてまねする。「✔読んだ」で回数を記録。1文5回が目標。</li>
+<li><b>音読</b>：🔊で1文ずつ、または「▶通して聞く」で Part ごと・範囲全部を続けて聞ける。「🗣まね読み」は1文ごとに間があくので、そのあいだに声に出してまねする。「✔読んだ」で回数を記録。1文5回が目標。</li>
 <li><b>和訳</b>：英文を声に出して訳してから答えを見る。答えの下にその文のポイントが出る。</li>
 <li><b>暗記</b>：和訳を見て英文を言う。①頭文字 → ②語数だけ → ③ヒントなし の順に。🧩並べかえもある。<b>オレンジの◯は冠詞（a／an／the）</b>。暗記のとき特に注意！</li></ol>
 <p><b>💬 自分の言葉で説明</b>：問いに声で答えて🎙録音 → 聞き返す → 模範とくらべて、入っていたキーワードに✔。全部✔なら⭕。</p>
