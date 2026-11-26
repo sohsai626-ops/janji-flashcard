@@ -1,0 +1,2659 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>情報処理 授業プリント 完成アプリ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans CJK JP",sans-serif;background:#eef5f1;color:#1d2733;-webkit-text-size-adjust:100%}
+header{background:#1d6b45;color:#fff;padding:10px 12px 0;position:sticky;top:0;z-index:10}
+header h1{font-size:17px;font-weight:800}
+header .sub{font-size:11px;opacity:.85;margin:2px 0 6px}
+nav{display:flex;gap:3px}
+nav button{flex:1;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;font-weight:700;padding:9px 0;border-radius:10px 10px 0 0}
+nav button.on{background:#eef5f1;color:#1d6b45}
+.tab{display:none;padding:12px;max-width:720px;margin:0 auto}.tab.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(20,70,45,.12)}
+h2{font-size:16px;color:#1d6b45;margin-bottom:8px}
+h3{font-size:14px;color:#556;margin:10px 0 6px}
+.note{font-size:13px;color:#66788a;line-height:1.6}
+.step{display:flex;align-items:center;gap:10px;width:100%;border:0;background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px;box-shadow:0 1px 4px rgba(20,70,45,.12);text-align:left;color:#1d2733}
+.step .n{flex:none;width:36px;height:36px;border-radius:50%;background:#1d6b45;color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center}
+.step .t{font-size:15.5px;font-weight:800}.step .s{font-size:12px;color:#66788a;margin-top:2px}
+.step .pr{margin-left:auto;font-size:12px;font-weight:800;color:#2e7d32;text-align:right;white-space:nowrap}
+.big{display:flex;align-items:center;gap:10px;width:100%;border:0;border-radius:14px;padding:14px;margin-bottom:8px;color:#fff;text-align:left;font-size:16.5px;font-weight:800}
+.big small{display:block;font-size:12px;font-weight:600;opacity:.9;margin-top:2px}
+.btn{display:block;width:100%;border:0;background:#1d6b45;color:#fff;font-size:16px;font-weight:800;padding:13px;border-radius:12px;margin-top:8px}
+.btn.sub{background:#3d4b5a}.btn.ghost{background:#fff;color:#1d6b45;border:2px solid #1d6b45}.btn.org{background:#c2571a}
+.btn.ok{background:#2e7d32}.btn.ng{background:#c62828}
+.two{display:flex;gap:8px}.two .btn{flex:1}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chip{border:1.5px solid #1d6b45;background:#fff;color:#1d6b45;border-radius:18px;padding:7px 11px;font-size:13.5px;font-weight:700}
+.chip.on{background:#1d6b45;color:#fff}
+.bar{height:7px;background:#dde9e2;border-radius:4px;overflow:hidden;margin-bottom:8px}.bar i{display:block;height:100%;background:#1d6b45}
+.qhead{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#66788a;margin-bottom:6px;gap:6px}
+.qhead button{border:1px solid #aab;background:#fff;border-radius:10px;padding:3px 8px;font-size:12px}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;background:#1d6b45;border-radius:6px;padding:1px 7px;margin:0 4px 6px 0}
+.tag.w{background:#c62828}
+.qtext{font-size:17.5px;line-height:1.6;margin:6px 0;font-weight:700}
+.choice{display:block;width:100%;text-align:left;font-size:16.5px;border:2px solid #d3e0d8;background:#fff;border-radius:12px;padding:12px;margin:7px 0;color:#1d2733;line-height:1.45}
+.choice.ok{border-color:#2e7d32;background:#e8f5e9}.choice.ng{border-color:#c62828;background:#ffebee}
+.fb{border-radius:12px;padding:10px 12px;margin-top:8px;font-size:15px;line-height:1.7}
+.fb.ok{background:#e8f5e9}.fb.ng{background:#ffebee}
+.ex{background:#fff8e6;border-radius:10px;padding:10px;font-size:14.5px;line-height:1.7;margin-top:8px}
+.ansbox{font-size:19px;font-weight:800;color:#1d6b45;background:#e6f2ea;border-radius:12px;padding:12px;margin:8px 0;line-height:1.6;word-break:break-all}
+.fx{font-family:Menlo,Consolas,"Courier New",monospace;letter-spacing:.3px}
+.score{font-size:42px;font-weight:900;color:#1d6b45;text-align:center}
+/* シート */
+.shw{overflow-x:auto;margin:6px -4px 8px;padding:0 4px}
+.sht{border-collapse:collapse;font-size:11.5px;white-space:nowrap}
+.sht td,.sht th{border:1px solid #b8c6be;padding:3px 5px;text-align:right}
+.sht th{background:#e4ece7;color:#556;font-weight:700;text-align:center;font-size:10.5px}
+.sht td.s{text-align:left}.sht td.h{text-align:center;background:#f6f9f7;font-weight:700}
+.sht td.x{color:#99a;text-align:center}
+.sht td.tg{background:#ffe066;outline:3px solid #e0a000;outline-offset:-2px;text-align:center;font-weight:900;color:#7a5200}
+.shtitle{font-size:12px;color:#556;font-weight:700;margin-top:4px}
+/* タイル */
+.tiles{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tile{border:2px solid #1d6b45;background:#fff;color:#1d6b45;border-radius:10px;padding:8px 10px;font-size:17px;font-weight:700;min-width:38px}
+.tile.used{opacity:.2}
+.built{min-height:52px;background:#f3f8f5;border:2px dashed #b9d0c2;border-radius:10px;padding:10px;font-size:19px;line-height:1.5;word-break:break-all}
+.kb{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+.kb button{flex:1 0 11%;border:1.5px solid #9bb;background:#f6f9f7;border-radius:8px;padding:9px 0;font-size:17px;font-weight:700}
+input.fin{width:100%;font-size:19px;padding:10px;border:2px solid #b9d0c2;border-radius:10px;font-family:Menlo,Consolas,monospace}
+input.nin{width:60%;font-size:22px;padding:8px;border:2px solid #b9d0c2;border-radius:10px;text-align:center}
+.diff{background:#ffebee;border-radius:10px;padding:8px 10px;margin-top:6px;font-size:14px;line-height:1.6}
+/* 流れ図 */
+.trw{display:flex;gap:8px;align-items:flex-start}
+.flow{flex:none;width:44%;display:flex;flex-direction:column;align-items:center}
+.fl{width:100%;border:2px solid #1d6b45;background:#fff;font-size:12px;text-align:center;padding:5px 3px;line-height:1.3;position:relative;margin-bottom:9px}
+.fl:after{content:'';position:absolute;left:50%;bottom:-11px;height:9px;border-left:2px solid #1d6b45}
+.fl:last-child:after{display:none}
+.fl.t{border-radius:18px}.fl.d{transform:skewX(-14deg)}.fl.d span{display:inline-block;transform:skewX(14deg)}
+.fl.j{border-radius:4px;border-style:double;border-width:4px}.fl.ls{clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%,0 8px)}
+.fl.le{clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px))}
+.fl.now{background:#ffe066}
+.fl .jn{display:block;font-size:10.5px;color:#c2571a}
+.trt{border-collapse:collapse;font-size:13px;width:100%}
+.trt td,.trt th{border:1px solid #b8c6be;padding:3px;text-align:center}
+.trt th{background:#e4ece7}.trt td.chg{font-weight:900;color:#c2571a;background:#fff8e6}
+.trbox{flex:1;min-width:0}
+.mist{border-bottom:1px solid #e3ebe6;padding:9px 0;font-size:14px;line-height:1.55}
+.mist .c{float:right;background:#c62828;color:#fff;border-radius:999px;padding:0 8px;font-weight:800;margin-left:6px;font-size:12px}
+.mist .a{color:#2e7d32;font-weight:800}
+.kw label{display:flex;align-items:center;gap:8px;font-size:15px;padding:7px 2px;border-bottom:1px solid #eee}
+.kw input{width:22px;height:22px;flex:none}
+.rec{display:flex;gap:8px;align-items:center;margin:8px 0}
+.rec button{flex:1;border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:800;color:#fff;background:#c62828}
+.rec button.pl{background:#2e7d32}
+.resume{background:#fff7e8;border:2.5px solid #c2571a;border-radius:12px;padding:12px;margin-bottom:12px;font-size:14.5px;line-height:1.6}
+.pt{font-size:14.5px;line-height:1.75}.pt li{margin:3px 0 3px 1.2em}
+input[type=search]{width:100%;font-size:16px;padding:10px;border:2px solid #b9d0c2;border-radius:10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;padding:30px 12px}
+.modal .in{background:#fff;border-radius:14px;max-width:640px;margin:0 auto;max-height:85vh;overflow:auto;padding:14px}
+#printArea{display:none}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}header,.tab,.modal{display:none!important}
+ #printArea{display:block;color:#000}
+ .pp{page-break-after:always}.pp:last-child{page-break-after:auto}
+ .pp h1{font-size:14pt;border-bottom:2px solid #000;margin-bottom:3mm;display:flex;justify-content:space-between}
+ .pp h1 span{font-size:10pt;font-weight:400}
+ .pq{break-inside:avoid;margin-bottom:3mm;font-size:11pt;line-height:1.6}
+ .pq .l{border-bottom:1px solid #555;height:9mm}
+ .pa{font-size:10pt;line-height:1.55;margin-bottom:1.5mm;break-inside:avoid}
+}
+</style></head><body>
+<header><h1>💻 情報処理　授業プリント完成アプリ</h1><div class="sub">商業科1年　No.1〜24（Excel・関数・グラフ・単位・流れ図）</div>
+<nav><button data-t="home" class="on">🏠 ホーム</button><button data-t="mat">📘 まとめ</button><button data-t="rank">🏆 苦手</button><button data-t="search">🔍 検索</button><button data-t="help">❓</button></nav></header>
+<div class="tab show" id="home"></div>
+<div class="tab" id="mat"></div>
+<div class="tab" id="play"></div>
+<div class="tab" id="rank"></div>
+<div class="tab" id="search"></div>
+<div class="tab" id="help"></div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeM()"><div class="in" id="modalIn"></div></div>
+<div id="printArea"></div>
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>const D={"U": [["ops", "Excelの基本操作"], ["calc", "数式と演算子"], ["func", "SUM・AVERAGE・MAX・MIN"], ["count", "COUNT・COUNTA"], ["abs", "絶対番地と比率"], ["if", "IF関数と比較演算子"], ["rank", "RANK関数"], ["round", "端数処理（ROUND）"], ["graph", "グラフ"], ["unit", "処理速度・記憶容量の単位"], ["algo", "アルゴリズムと流れ図"], ["trace", "トレース（流れ図をたどる）"]], "Q": [{"k": "ops", "t": "ch", "q": "Enter キーを押すと、アクティブセルはどちらへ動く？", "a": "下", "ch": ["下", "右", "上", "左"], "ex": "Enter＝下へ。Tab＝右へ。", "src": "No.1", "warn": 0, "html": 0, "id": "q0"}, {"k": "ops", "t": "ch", "q": "Tab キーを押すと、アクティブセルはどちらへ動く？", "a": "右", "ch": ["右", "下", "左", "上"], "ex": "Tab＝右へ。Enter＝下へ。", "src": "No.1", "warn": 0, "html": 0, "id": "q1"}, {"k": "ops", "t": "ch", "q": "セルに「文字データ」を入力すると、セルの中でどちら寄せになる？", "a": "左詰め", "ch": ["左詰め", "右詰め", "中央", "上詰め"], "ex": "文字は左、数値は右。", "src": "No.1", "warn": 0, "html": 0, "id": "q2"}, {"k": "ops", "t": "ch", "q": "セルに「数値データ」を入力すると、セルの中でどちら寄せになる？", "a": "右詰め", "ch": ["右詰め", "左詰め", "中央", "下詰め"], "ex": "数値は右、文字は左。", "src": "No.1", "warn": 0, "html": 0, "id": "q3"}, {"k": "ops", "t": "ch", "q": "「棄権」と入力したセルは、どちら寄せで表示される？", "a": "左詰め（文字データだから）", "ch": ["左詰め（文字データだから）", "右詰め（数値データだから）", "中央（特別な文字だから）"], "ex": "「棄権」は文字データ。だから左詰め。COUNT でも数えられない。", "src": "No.1・8", "warn": 0, "html": 0, "id": "q4"}, {"k": "ops", "t": "ch", "q": "数式や関数は、何で入力する？", "a": "半角", "ch": ["半角", "全角", "どちらでもよい"], "ex": "半角／全角キーで切りかえる。数式・関数・セル番地は半角。", "src": "No.2", "warn": 1, "html": 0, "id": "q5"}, {"k": "ops", "t": "ch", "q": "数式は、どの記号から書き始める？", "a": "＝（イコール）", "ch": ["＝（イコール）", "＋（プラス）", "＄（ドル）", "＊（アスタリスク）"], "ex": "数式は必ず「=」から。=がないと、ただの文字になる。", "src": "No.2", "warn": 0, "html": 0, "id": "q6"}, {"k": "ops", "t": "ch", "q": "テスト（紙）に関数やセル番地を書くとき、アルファベットは？", "a": "大文字で書く", "ch": ["大文字で書く", "小文字で書く", "どちらでもよい"], "ex": "関数・セル番地は大文字。例：=SUM(B5:F5)", "src": "No.3", "warn": 0, "html": 0, "id": "q7"}, {"k": "ops", "t": "ch", "q": "表の「体裁」を整える作業に入らないものは？", "a": "関数で合計を求める", "ch": ["関数で合計を求める", "罫線を引く", "中央揃えにする", "列幅を調整する"], "ex": "体裁＝見た目を整えること（罫線・中央揃え・列幅・3桁ごとのコンマ・小数の表示桁数）。", "src": "No.3", "warn": 0, "html": 0, "id": "q8"}, {"k": "ops", "t": "ch", "q": "「1,050」のように3桁ごとに区切る表示を何という？", "a": "3桁ごとのコンマ（桁区切りスタイル）", "ch": ["3桁ごとのコンマ（桁区切りスタイル）", "小数の表示桁数", "中央揃え", "罫線"], "ex": "作成条件によく出る「3桁ごとのコンマ」。", "src": "No.6", "warn": 0, "html": 0, "id": "q9"}, {"k": "ops", "t": "ch", "q": "B5 から F5 まで、いくつかのセルをまとめて選ぶことを何という？", "a": "範囲選択", "ch": ["範囲選択", "セル全体修正", "一部修正", "列幅変更"], "ex": "ドラッグして範囲を選ぶ＝範囲選択。", "src": "No.1", "warn": 0, "html": 0, "id": "q10"}, {"k": "calc", "t": "ch", "q": "Excel で「たし算」に使う記号は？", "a": "+（プラス）", "ch": ["+（プラス）", "＆", "＃", "×"], "ex": "+ プラス＝たし算", "src": "No.2", "warn": 0, "html": 0, "id": "q11"}, {"k": "calc", "t": "ch", "q": "Excel で「ひき算」に使う記号は？", "a": "-（マイナス）", "ch": ["-（マイナス）", "÷", "％", "＿"], "ex": "- マイナス＝ひき算", "src": "No.2", "warn": 0, "html": 0, "id": "q12"}, {"k": "calc", "t": "ch", "q": "Excel で「かけ算」に使う記号は？", "a": "*（アスタリスク）", "ch": ["*（アスタリスク）", "×（かける）", "x（エックス）", "・（中点）"], "ex": "かけ算は * 。× は使えない。", "src": "No.2", "warn": 1, "html": 0, "id": "q13"}, {"k": "calc", "t": "ch", "q": "Excel で「わり算」に使う記号は？", "a": "/（スラッシュ）", "ch": ["/（スラッシュ）", "÷（わる）", "%（パーセント）", "\\（円マーク）"], "ex": "わり算は / 。÷ は使えない。", "src": "No.2", "warn": 1, "html": 0, "id": "q14"}, {"k": "calc", "t": "ch", "q": "「*」の読み方は？", "a": "アスタリスク", "ch": ["アスタリスク", "スラッシュ", "シャープ", "アンパサンド"], "ex": "* アスタリスク（かけ算）", "src": "No.2", "warn": 0, "html": 0, "id": "q15"}, {"k": "calc", "t": "ch", "q": "「/」の読み方は？", "a": "スラッシュ", "ch": ["スラッシュ", "アスタリスク", "バックスラッシュ", "ハイフン"], "ex": "/ スラッシュ（わり算）", "src": "No.2", "warn": 0, "html": 0, "id": "q16"}, {"k": "calc", "t": "ch", "q": "=SUM(B5:F5) の「:」（コロン）の意味は？", "a": "B5 から F5 まで", "ch": ["B5 から F5 まで", "B5 と F5 の2つだけ", "B5 わる F5", "B5 から F5 をひく"], "ex": "「:」は「〜から〜まで」。範囲を表す。", "src": "No.2", "warn": 0, "html": 0, "id": "q17"}, {"k": "calc", "t": "ch", "q": "=2+3*4 の計算結果は？", "a": "14", "ch": ["14", "20", "24", "9"], "ex": "かけ算・わり算が先。3*4=12、2+12=14。かっこ（ ）があれば、かっこが先。", "src": "No.2・21", "warn": 0, "html": 0, "id": "q18"}, {"k": "calc", "t": "ch", "q": "=(2+3)*4 の計算結果は？", "a": "20", "ch": ["20", "14", "24", "9"], "ex": "かっこの中が先。2+3=5、5*4=20。", "src": "No.12", "warn": 0, "html": 0, "id": "q19"}, {"k": "calc", "t": "f", "sheet": "s2", "cell": "G5", "q": "安藤の「合計」を、+ だけを使った式で書こう。", "a": "=B5+C5+D5+E5+F5", "alt": [], "d": ["G5", "*"], "ex": "国語〜社会（B5〜F5）を全部たす。関数を使うなら =SUM(B5:F5)。", "warn": 0, "src": "No.2", "id": "q20", "tk": ["=", "B5", "+", "C5", "+", "D5", "+", "E5", "+", "F5"]}, {"k": "calc", "t": "n", "q": "安藤の合計（64+89+90+80+71）はいくつ？", "a": "394", "ex": "64+89+90+80+71=394", "src": "No.2", "sheet": null, "warn": 0, "unit": "", "id": "q21"}, {"k": "calc", "t": "f", "sheet": "s7", "cell": "G5", "q": "たこ焼きの「2日間合計」（1日目と3日目の合計）を求める式は？", "a": "=B5+D5", "alt": ["=D5+B5"], "d": ["C5", "SUM", "B5:D5"], "ex": "1日目（B）と3日目（D）だけ。=SUM(B5:D5) だと2日目（C）まで入ってしまう！", "warn": 1, "src": "No.7", "id": "q22", "tk": ["=", "B5", "+", "D5"]}, {"k": "calc", "t": "f", "sheet": "s11", "cell": "D5", "q": "しょうゆの「売上数計」（昼＋夜）を求める式は？", "a": "=B5+C5", "alt": ["=C5+B5"], "d": ["E5", "*"], "ex": "昼（B）＋夜（C）。", "warn": 0, "src": "No.11", "id": "q23", "tk": ["=", "B5", "+", "C5"]}, {"k": "calc", "t": "f", "sheet": "s11", "cell": "F5", "q": "しょうゆの「売上金額」（単価×売上数計）を求める式は？", "a": "=D5*E5", "alt": ["=E5*D5"], "d": ["×", "B5", "+"], "ex": "売上数計（D）×単価（E）。かけ算は *。", "warn": 0, "src": "No.11", "id": "q24", "tk": ["=", "D5", "*", "E5"]}, {"k": "calc", "t": "f", "sheet": "s12", "cell": "E5", "q": "ブレンドコーヒーの「売上金額」＝（店内＋テイクアウト）×単価 を求める式は？", "a": "=(B5+C5)*D5", "alt": ["=D5*(B5+C5)", "=(C5+B5)*D5", "=D5*(C5+B5)"], "d": ["×", "E5"], "ex": "かっこが大事！ =B5+C5*D5 だと、C5*D5 が先に計算されてしまう。", "warn": 1, "src": "No.12・13", "id": "q25", "tk": ["=", "(", "B5", "+", "C5", ")", "*", "D5"]}, {"k": "calc", "t": "n", "q": "ブレンドコーヒーの売上金額（(85+70)×420）はいくら？", "a": "65100", "ex": "(85+70)×420=155×420=65,100", "src": "No.12", "sheet": null, "warn": 0, "unit": "円", "id": "q26"}, {"k": "func", "t": "ch", "q": "合計を求める関数は？", "a": "SUM", "ch": ["SUM", "AVERAGE", "MAX", "COUNT"], "ex": "SUM（サム）＝合計", "src": "No.2", "warn": 0, "html": 0, "id": "q27"}, {"k": "func", "t": "ch", "q": "平均を求める関数は？", "a": "AVERAGE", "ch": ["AVERAGE", "SUM", "MIN", "COUNTA"], "ex": "AVERAGE（アベレージ）＝平均", "src": "No.3", "warn": 0, "html": 0, "id": "q28"}, {"k": "func", "t": "ch", "q": "最大値（いちばん大きい値）を求める関数は？", "a": "MAX", "ch": ["MAX", "MIN", "SUM", "RANK"], "ex": "MAX（マックス）＝最大", "src": "No.4", "warn": 0, "html": 0, "id": "q29"}, {"k": "func", "t": "ch", "q": "最小値（いちばん小さい値）を求める関数は？", "a": "MIN", "ch": ["MIN", "MAX", "AVERAGE", "ROUND"], "ex": "MIN（ミニマム）＝最小", "src": "No.4", "warn": 0, "html": 0, "id": "q30"}, {"k": "func", "t": "ch", "q": "範囲の正しい書き方は？", "a": "B5:F5", "ch": ["B5:F5", "B5〜F5", "B5-F5", "B5,F5"], "ex": "範囲は「:」（コロン）でつなぐ。", "src": "No.2", "warn": 0, "html": 0, "id": "q31"}, {"k": "func", "t": "f", "sheet": "s2", "cell": "G5", "q": "安藤の「合計」を SUM 関数で求める式は？", "a": "=SUM(B5:F5)", "alt": [], "d": ["B5:G5", "AVERAGE"], "ex": "=SUM(合計を求めたい範囲)。国語〜社会は B5:F5。", "warn": 0, "src": "No.2", "id": "q32", "tk": ["=", "SUM", "(", "B5:F5", ")"]}, {"k": "func", "t": "f", "sheet": "s2", "cell": "H5", "q": "安藤の「平均」を求める式は？", "a": "=AVERAGE(B5:F5)", "alt": [], "d": ["B5:G5", "SUM", "G5"], "ex": "=AVERAGE(平均を求めたい範囲)。B5:G5 にすると「合計」まで入ってしまう！", "warn": 1, "src": "No.3", "id": "q33", "tk": ["=", "AVERAGE", "(", "B5:F5", ")"]}, {"k": "func", "t": "n", "q": "安藤の平均（合計394÷5科目）はいくつ？", "a": "78.8", "ex": "394÷5=78.8", "src": "No.3", "sheet": null, "warn": 0, "unit": "", "id": "q34"}, {"k": "func", "t": "f", "sheet": "s4", "cell": "B15", "q": "1日目の「最大」を求める式は？", "a": "=MAX(B5:B12)", "alt": [], "d": ["MIN", "B5:B16", "B4:B12"], "ex": "=MAX(範囲)。1日目は B5〜B12。", "warn": 0, "src": "No.4", "id": "q35", "tk": ["=", "MAX", "(", "B5:B12", ")"]}, {"k": "func", "t": "f", "sheet": "s4", "cell": "B16", "q": "1日目の「最小」を求める式は？", "a": "=MIN(B5:B12)", "alt": [], "d": ["MAX", "B5:B15"], "ex": "=MIN(範囲)。最大の行（15行目）を範囲に入れないこと。", "warn": 0, "src": "No.4", "id": "q36", "tk": ["=", "MIN", "(", "B5:B12", ")"]}, {"k": "func", "t": "f", "sheet": "s4", "cell": "C15", "q": "2日目の「最大」を求める式は？", "a": "=MAX(C5:C12)", "alt": [], "d": ["B5:B12", "MIN"], "ex": "2日目は C 列。", "warn": 0, "src": "No.4", "id": "q37", "tk": ["=", "MAX", "(", "C5:C12", ")"]}, {"k": "func", "t": "n", "q": "No.4 の1日目で、最大の数はいくつ？（グミ）", "a": "32", "ex": "1日目でいちばん多いのはグミの32。", "src": "No.4", "sheet": null, "warn": 0, "unit": "", "id": "q38"}, {"k": "func", "t": "f", "sheet": "s6", "cell": "E5", "q": "小説の「合計」を求める式は？", "a": "=SUM(B5:D5)", "alt": [], "d": ["B5:E5", "AVERAGE"], "ex": "4月〜6月（B5〜D5）の合計。", "warn": 0, "src": "No.6", "id": "q39", "tk": ["=", "SUM", "(", "B5:D5", ")"]}, {"k": "func", "t": "f", "sheet": "s6", "cell": "F5", "q": "小説の「平均」を求める式は？", "a": "=AVERAGE(B5:D5)", "alt": [], "d": ["B5:E5", "SUM"], "ex": "平均も 4月〜6月（B5〜D5）。E（合計）を入れないこと。", "warn": 0, "src": "No.6", "id": "q40", "tk": ["=", "AVERAGE", "(", "B5:D5", ")"]}, {"k": "func", "t": "f", "sheet": "s6", "cell": "B11", "q": "4月の「最大」を求める式は？", "a": "=MAX(B5:B10)", "alt": [], "d": ["MIN", "B5:B12"], "ex": "4月は B 列、6種類なので B5〜B10。", "warn": 0, "src": "No.6", "id": "q41", "tk": ["=", "MAX", "(", "B5:B10", ")"]}, {"k": "func", "t": "f", "sheet": "s6", "cell": "B12", "q": "4月の「最小」を求める式は？", "a": "=MIN(B5:B10)", "alt": [], "d": ["MAX", "B5:B11"], "ex": "最大の行（11行目）は入れない。", "warn": 0, "src": "No.6", "id": "q42", "tk": ["=", "MIN", "(", "B5:B10", ")"]}, {"k": "func", "t": "f", "sheet": "s7", "cell": "E5", "q": "たこ焼きの「売上合計」を求める式は？", "a": "=SUM(B5:D5)", "alt": [], "d": ["B5:G5", "AVERAGE"], "ex": "1日目〜3日目（B5〜D5）。", "warn": 0, "src": "No.7", "id": "q43", "tk": ["=", "SUM", "(", "B5:D5", ")"]}, {"k": "func", "t": "f", "sheet": "s7", "cell": "F5", "q": "たこ焼きの「平均」を求める式は？", "a": "=AVERAGE(B5:D5)", "alt": [], "d": ["B5:E5", "SUM"], "ex": "1日目〜3日目（B5〜D5）。", "warn": 0, "src": "No.7", "id": "q44", "tk": ["=", "AVERAGE", "(", "B5:D5", ")"]}, {"k": "func", "t": "n", "q": "たこ焼きの平均（530÷3）を、小数第1位まで表示するといくつ？", "a": "176.7", "ex": "530÷3=176.66…→ 小数第1位まで表示すると 176.7", "src": "No.7", "sheet": null, "warn": 0, "unit": "", "id": "q45"}, {"k": "func", "t": "f", "sheet": "s7", "cell": "B10", "q": "1日目の「最大」を求める式は？", "a": "=MAX(B5:B9)", "alt": [], "d": ["MIN", "B5:B11"], "ex": "5品目なので B5〜B9。", "warn": 0, "src": "No.7", "id": "q46", "tk": ["=", "MAX", "(", "B5:B9", ")"]}, {"k": "func", "t": "f", "sheet": "s7", "cell": "B11", "q": "1日目の「最小」を求める式は？", "a": "=MIN(B5:B9)", "alt": [], "d": ["MAX", "B5:B10"], "ex": "最大の行（10行目）は入れない。", "warn": 0, "src": "No.7", "id": "q47", "tk": ["=", "MIN", "(", "B5:B9", ")"]}, {"k": "func", "t": "f", "sheet": "s14", "cell": "E5", "q": "伊東の「合計」を求める式は？", "a": "=SUM(B5:D5)", "alt": [], "d": ["B5:E5", "AVERAGE"], "ex": "簿記〜ビジネス基礎（B5〜D5）。", "warn": 0, "src": "No.14", "id": "q48", "tk": ["=", "SUM", "(", "B5:D5", ")"]}, {"k": "func", "t": "f", "sheet": "s14", "cell": "F5", "q": "伊東の「平均」を求める式は？", "a": "=AVERAGE(B5:D5)", "alt": [], "d": ["B5:E5", "SUM"], "ex": "平均も B5〜D5。", "warn": 0, "src": "No.14", "id": "q49", "tk": ["=", "AVERAGE", "(", "B5:D5", ")"]}, {"k": "func", "t": "f", "sheet": "s16", "cell": "C10", "q": "数量の「合計」を求める式は？", "a": "=SUM(C5:C9)", "alt": [], "d": ["B5:B9", "AVERAGE"], "ex": "C5〜C9。", "warn": 0, "src": "No.16", "id": "q50", "tk": ["=", "SUM", "(", "C5:C9", ")"]}, {"k": "func", "t": "f", "sheet": "s16", "cell": "C11", "q": "数量の「平均」を求める式は？", "a": "=AVERAGE(C5:C9)", "alt": [], "d": ["C5:C10", "SUM"], "ex": "合計の行（10行目）を入れない。", "warn": 0, "src": "No.16", "id": "q51", "tk": ["=", "AVERAGE", "(", "C5:C9", ")"]}, {"k": "func", "t": "f", "sheet": "s16", "cell": "C12", "q": "数量の「最大」を求める式は？", "a": "=MAX(C5:C9)", "alt": [], "d": ["MIN", "C5:C11"], "ex": "", "warn": 0, "src": "No.16", "id": "q52", "tk": ["=", "MAX", "(", "C5:C9", ")"]}, {"k": "func", "t": "f", "sheet": "s16", "cell": "C13", "q": "数量の「最小」を求める式は？", "a": "=MIN(C5:C9)", "alt": [], "d": ["MAX", "C5:C12"], "ex": "", "warn": 0, "src": "No.16", "id": "q53", "tk": ["=", "MIN", "(", "C5:C9", ")"]}, {"k": "func", "t": "f", "sheet": "s18", "cell": "F5", "q": "上にぎりの「計」（7月〜10月の合計）を求める式は？", "a": "=SUM(B5:E5)", "alt": [], "d": ["B5:F5", "AVERAGE"], "ex": "7月〜10月は B〜E 列。", "warn": 0, "src": "No.18", "id": "q54", "tk": ["=", "SUM", "(", "B5:E5", ")"]}, {"k": "func", "t": "f", "sheet": "s18", "cell": "B10", "q": "7月の「合計」を求める式は？", "a": "=SUM(B5:B9)", "alt": [], "d": ["B5:E5", "B5:B10"], "ex": "たて（列）の合計。5品目なので B5〜B9。", "warn": 0, "src": "No.18", "id": "q55", "tk": ["=", "SUM", "(", "B5:B9", ")"]}, {"k": "func", "t": "f", "sheet": "s24", "cell": "B9", "q": "2024年の「合計」を求める式は？", "a": "=SUM(B5:B8)", "alt": [], "d": ["B5:D5", "B5:B9"], "ex": "4分類なので B5〜B8。", "warn": 0, "src": "No.23", "id": "q56", "tk": ["=", "SUM", "(", "B5:B8", ")"]}, {"k": "count", "t": "ch", "q": "COUNT 関数が数えるのは？", "a": "数値が入っているセルの数", "ch": ["数値が入っているセルの数", "空白でないセルの数（文字もふくむ）", "文字が入っているセルの数", "空白のセルの数"], "ex": "COUNT＝数値だけ数える。文字（「棄権」など）は数えない。", "src": "No.8", "warn": 1, "html": 0, "id": "q57"}, {"k": "count", "t": "ch", "q": "COUNTA 関数が数えるのは？", "a": "空白でないセルの数（文字もふくむ）", "ch": ["空白でないセルの数（文字もふくむ）", "数値が入っているセルの数だけ", "文字が入っているセルの数だけ", "空白のセルの数"], "ex": "COUNTA＝何か入っていれば数える（文字も数値も）。", "src": "No.8", "warn": 1, "html": 0, "id": "q58"}, {"k": "count", "t": "ch", "q": "「棄権」が入ったセルは、COUNT で数えられる？", "a": "数えられない（文字だから）", "ch": ["数えられない（文字だから）", "数えられる", "0として数える"], "ex": "「棄権」は文字データ。COUNT は数値だけ。だから「出場者数」を COUNT で数えると、棄権した人は入らない。", "src": "No.8", "warn": 1, "html": 0, "id": "q59"}, {"k": "count", "t": "f", "sheet": "s8", "cell": "B16", "q": "「生徒数」（名前の数）を求める式は？", "a": "=COUNTA(A5:A11)", "alt": [], "d": ["COUNT", "B5:B11"], "ex": "名前（文字）を数えるので COUNTA。範囲は名前の列 A5〜A11。生徒は範囲を書き忘れていた！", "warn": 1, "src": "No.8", "id": "q60", "tk": ["=", "COUNTA", "(", "A5:A11", ")"]}, {"k": "count", "t": "f", "sheet": "s8", "cell": "B17", "q": "1回目の「出場者数」を求める式は？", "a": "=COUNT(B5:B11)", "alt": [], "d": ["COUNTA", "A5:A11"], "ex": "記録（数値）が入っている人だけ数える＝COUNT。「棄権」（文字）は数えない。範囲を必ず書く！", "warn": 1, "src": "No.8", "id": "q61", "tk": ["=", "COUNT", "(", "B5:B11", ")"]}, {"k": "count", "t": "f", "sheet": "s8", "cell": "D17", "q": "3回目の「出場者数」を求める式は？", "a": "=COUNT(D5:D11)", "alt": [], "d": ["COUNTA", "B5:B11"], "ex": "3回目は D 列。棄権2人は数えない。", "warn": 1, "src": "No.8", "id": "q62", "tk": ["=", "COUNT", "(", "D5:D11", ")"]}, {"k": "count", "t": "n", "q": "3回目の出場者数（=COUNT(D5:D11)）はいくつ？", "a": "5", "ex": "7人のうち「棄権」が2人（戎谷・下平）。数値は5つ。", "src": "No.8", "sheet": null, "warn": 0, "unit": "人", "id": "q63"}, {"k": "count", "t": "n", "q": "4回目の出場者数（=COUNT(E5:E11)）はいくつ？", "a": "4", "ex": "4回目の「棄権」は3人（下平・安田・三浦）。7−3＝4。", "src": "No.8", "sheet": null, "warn": 0, "unit": "人", "id": "q64"}, {"k": "count", "t": "f", "sheet": "s12", "cell": "E12", "q": "「商品数」を求める式は？", "a": "=COUNTA(A5:A9)", "alt": [], "d": ["COUNT", "E5:E9"], "ex": "商品名（文字）を数える＝COUNTA。", "warn": 0, "src": "No.12", "id": "q65", "tk": ["=", "COUNTA", "(", "A5:A9", ")"]}, {"k": "count", "t": "f", "sheet": "s16", "cell": "C14", "q": "「商品数」を求める式は？", "a": "=COUNTA(A5:A9)", "alt": [], "d": ["COUNT", "C5:C9"], "ex": "「商品名の数」なので、商品名の列（A）を COUNTA で数える。生徒は =COUNT(C5:C9) と書いた。答えは同じ5でも、作成条件どおりではない。", "warn": 1, "src": "No.16", "id": "q66", "tk": ["=", "COUNTA", "(", "A5:A9", ")"]}, {"k": "count", "t": "ch", "q": "No.16 の「商品数」を =COUNT(C5:C9) と書いた。何がまずい？", "a": "「商品名の数」なので、A列を COUNTA で数えるべき", "ch": ["「商品名の数」なので、A列を COUNTA で数えるべき", "まずくない（答えが同じ5だから）", "COUNT ではなく SUM を使うべき", "範囲を C5:C10 にすべき"], "ex": "答えがたまたま同じでも、作成条件（商品名の数）とちがう式は×になることがある。", "src": "No.16", "warn": 1, "html": 0, "id": "q67"}, {"k": "abs", "t": "ch", "q": "「絶対番地」とは？", "a": "式をコピーしても変わらないセル番地", "ch": ["式をコピーしても変わらないセル番地", "式をコピーすると変わるセル番地", "いちばん大きい数が入ったセル", "合計が入ったセル"], "ex": "$E$10 のように $ をつけると、コピーしてもずれない。", "src": "No.12", "warn": 0, "html": 0, "id": "q68"}, {"k": "abs", "t": "ch", "q": "セル番地に $ をつけるときに押すキーは？", "a": "F4", "ch": ["F4", "F2", "Shift", "Ctrl"], "ex": "F4 を押すと、列と行の両方に $ がつく（例 $E$10）。", "src": "No.12", "warn": 0, "html": 0, "id": "q69"}, {"k": "abs", "t": "ch", "q": "E10 を選んで F4 キーを1回押すと？", "a": "$E$10", "ch": ["$E$10", "E$10", "$E10", "E10$"], "ex": "1回目は列にも行にも $ がつく。", "src": "No.12", "warn": 0, "html": 0, "id": "q70"}, {"k": "abs", "t": "ch", "q": "F5 に =E5/E10 と入れて、F6 にコピーすると、F6 の式は？", "a": "=E6/E11（合計のセルまでずれてしまう）", "ch": ["=E6/E11（合計のセルまでずれてしまう）", "=E6/E10", "=E5/E10", "=E6/$E$10"], "ex": "$ がないと分母（合計）もずれる。だから =E5/$E$10 と書く。", "src": "No.12", "warn": 1, "html": 0, "id": "q71"}, {"k": "abs", "t": "f", "sheet": "s12", "cell": "F5", "q": "ブレンドコーヒーの「売上比率」を求める式は？", "a": "=E5/$E$10", "alt": [], "d": ["E10", "$E$11", "*100"], "ex": "売上金額÷合計。合計（E10）はコピーしてもずれないように $E$10。", "warn": 1, "src": "No.12・13", "id": "q72", "tk": ["=", "E5", "/", "$E$10"]}, {"k": "abs", "t": "n", "q": "ブレンドコーヒーの売上比率（65,100÷262,650）は、%で小数第1位まで表示すると何%？", "a": "24.8", "ex": "65100÷262650＝0.2478…→ 24.8%", "src": "No.12", "sheet": null, "warn": 0, "unit": "%", "id": "q73"}, {"k": "abs", "t": "ch", "q": "売上比率を「%表示」にするとき、式に ×100 は必要？", "a": "必要ない（表示形式を%にする）", "ch": ["必要ない（表示形式を%にする）", "必要（=E5/$E$10*100 と書く）", "必要（=E5*100/E10 と書く）"], "ex": "式は =E5/$E$10 のまま。表示を「%」にすると 0.248→24.8% になる。", "src": "No.12", "warn": 0, "html": 0, "id": "q74"}, {"k": "abs", "t": "f", "sheet": "s16", "cell": "E5", "q": "焼きプリンの「売上比率」を求める式は？", "a": "=D5/$D$10", "alt": [], "d": ["D10", "$D$11"], "ex": "売上金額÷合計。合計 D10 に $。生徒は =D5/D10 と書いた（$ がない）。", "warn": 1, "src": "No.16", "id": "q75", "tk": ["=", "D5", "/", "$D$10"]}, {"k": "abs", "t": "f", "sheet": "s16", "cell": "D5", "q": "焼きプリンの「売上金額」（単価×数量）を求める式は？", "a": "=B5*C5", "alt": ["=C5*B5"], "d": ["×", "D10"], "ex": "単価（B）×数量（C）。", "warn": 0, "src": "No.16", "id": "q76", "tk": ["=", "B5", "*", "C5"]}, {"k": "abs", "t": "f", "sheet": "s18", "cell": "G5", "q": "上にぎりの「構成比」（計の合計に対する割合）を求める式は？", "a": "=F5/$F$10", "alt": [], "d": ["F10", "$G$10"], "ex": "計÷計の合計。F10 に $。", "warn": 1, "src": "No.18", "id": "q77", "tk": ["=", "F5", "/", "$F$10"]}, {"k": "abs", "t": "ch", "q": "構成比・売上比率の分母（わる数）には、何をつける？", "a": "$（絶対番地にする）", "ch": ["$（絶対番地にする）", "かっこ", "%", "\"（ダブルコーテーション）"], "ex": "分母はいつも同じ合計のセル。コピーしてもずれないよう $ をつける。", "src": "No.12・16・18", "warn": 0, "html": 0, "id": "q78"}, {"k": "if", "t": "ch", "q": "IF 関数の正しい形は？", "a": "=IF(条件,真の場合,偽の場合)", "ch": ["=IF(条件,真の場合,偽の場合)", "=IF(真の場合,偽の場合,条件)", "=IF(条件:真の場合:偽の場合)", "=IF(条件,偽の場合,真の場合)"], "ex": "条件 → 当てはまるとき（真）→ 当てはまらないとき（偽）の順。区切りはカンマ。", "src": "No.13", "warn": 1, "html": 0, "id": "q79"}, {"k": "if", "t": "ch", "q": "「以上」を表す比較演算子は？", "a": ">=", "ch": [">=", ">", "≧", "=>"], "ex": "以上＝>=（その数もふくむ）。≧ は Excel では使えない！", "src": "No.13", "warn": 1, "html": 0, "id": "q80"}, {"k": "if", "t": "ch", "q": "「以下」を表す比較演算子は？", "a": "<=", "ch": ["<=", "<", "≦", "=<"], "ex": "以下＝<=（その数もふくむ）。", "src": "No.13", "warn": 0, "html": 0, "id": "q81"}, {"k": "if", "t": "ch", "q": "「より大きい（超える）」を表す比較演算子は？", "a": ">", "ch": [">", ">=", "≧", "<"], "ex": "超える＝>（その数はふくまない）。", "src": "No.13", "warn": 1, "html": 0, "id": "q82"}, {"k": "if", "t": "ch", "q": "「より小さい（未満）」を表す比較演算子は？", "a": "<", "ch": ["<", "<=", ">", "≦"], "ex": "未満＝<（その数はふくまない）。", "src": "No.13", "warn": 0, "html": 0, "id": "q83"}, {"k": "if", "t": "ch", "q": "「等しくない」を表す比較演算子は？", "a": "<>", "ch": ["<>", "><", "≠", "!="], "ex": "<> ＝等しくない。", "src": "No.13", "warn": 0, "html": 0, "id": "q84"}, {"k": "if", "t": "ch", "q": "「等しい」を表す比較演算子は？", "a": "=", "ch": ["=", "==", "≒", "<>"], "ex": "= ＝等しい。", "src": "No.13", "warn": 0, "html": 0, "id": "q85"}, {"k": "if", "t": "ch", "q": "IF 関数で「人気」という文字を表示させるとき、どう書く？", "a": "\"人気\"", "ch": ["\"人気\"", "人気", "'人気'", "（人気）"], "ex": "文字はダブルコーテーション \" \" で囲む。数値（100など）はそのまま。", "src": "No.13", "warn": 1, "html": 0, "id": "q86"}, {"k": "if", "t": "ch", "q": "IF 関数で「何も表示しない」ときは、どう書く？", "a": "\"\"（\" を2つ、すき間なし）", "ch": ["\"\"（\" を2つ、すき間なし）", "\" \"（間にスペース）", "0", "（何も書かない）"], "ex": "\"\" の間にスペースを入れると「空白文字」になってしまう。すき間なし！", "src": "No.13", "warn": 1, "html": 0, "id": "q87"}, {"k": "if", "t": "f", "sheet": "s12", "cell": "G5", "q": "「評価」：売上金額が平均以上なら「人気」、そうでなければ「通常」を表示する式は？", "a": "=IF(E5>=$E$11,\"人気\",\"通常\")", "alt": [], "d": ["≧", "$E$10", ">", "\"人気\"\"通常\""], "ex": "平均は E11（E10 は合計）。「以上」は >=（≧ は使えない）。平均は全員同じセルなので $E$11。\"人気\" と \"通常\" の間にカンマ。", "warn": 1, "src": "No.13", "id": "q88", "tk": ["=", "IF", "(", "E5", ">=", "$E$11", ",", "\"人気\"", ",", "\"通常\"", ")"]}, {"k": "if", "t": "f", "sheet": "s12", "cell": "H5", "q": "「判定」：売上金額が 60,000 を超えていたら「○」、そうでなければ何も表示しない式は？", "a": "=IF(E5>60000,\"○\",\"\")", "alt": [], "d": [">=", "\" \"", "60,000"], "ex": "「超える」は >（>= は「以上」）。何も表示しない＝\"\"（すき間なし）。60,000 のコンマは書かない。", "warn": 1, "src": "No.13", "id": "q89", "tk": ["=", "IF", "(", "E5", ">", "60000", ",", "\"○\"", ",", "\"\"", ")"]}, {"k": "if", "t": "ch", "q": "No.12 のアイスティー（売上金額 40,950、平均 52,530）の「評価」は？", "a": "通常", "ch": ["通常", "人気", "何も表示しない"], "ex": "40,950 は平均 52,530 以上ではない → 偽 →「通常」。", "src": "No.13", "warn": 0, "html": 0, "id": "q90"}, {"k": "if", "t": "f", "sheet": "s14", "cell": "G5", "q": "「評価」：合計が 250 を超えたら「優秀」、そうでなければ何も表示しない式は？", "a": "=IF(E5>250,\"優秀\",\"\")", "alt": [], "d": [">=", "\" \""], "ex": "超える＝>。何も表示しない＝\"\"。", "warn": 0, "src": "No.14", "id": "q91", "tk": ["=", "IF", "(", "E5", ">", "250", ",", "\"優秀\"", ",", "\"\"", ")"]}, {"k": "if", "t": "f", "sheet": "s14", "cell": "H5", "q": "「判定」：平均が 70 以上なら「A」、そうでなければ「B」を表示する式は？", "a": "=IF(F5>=70,\"A\",\"B\")", "alt": [], "d": [">", "E5", "≧"], "ex": "以上＝>=。平均は F 列。", "warn": 0, "src": "No.14", "id": "q92", "tk": ["=", "IF", "(", "F5", ">=", "70", ",", "\"A\"", ",", "\"B\"", ")"]}, {"k": "if", "t": "ch", "q": "No.14 の保田（合計 250）の「評価」は？（250 を超えたら「優秀」）", "a": "何も表示しない", "ch": ["何も表示しない", "優秀"], "ex": "250 は「250を超えて」いない（> はその数をふくまない）。だから「優秀」にならない。", "src": "No.14", "warn": 1, "html": 0, "id": "q93"}, {"k": "if", "t": "f", "sheet": "s16", "cell": "F5", "q": "「評価」：売上金額が 20,000 を超えたら「良」、そうでなければ何も表示しない式は？", "a": "=IF(D5>20000,\"良\",\"\")", "alt": [], "d": [":", ">=", "\" \""], "ex": "生徒は =IF(D5:>20000,…) と書いた。「:」は範囲の記号なので、ここに入れてはいけない。", "warn": 1, "src": "No.16", "id": "q94", "tk": ["=", "IF", "(", "D5", ">", "20000", ",", "\"良\"", ",", "\"\"", ")"]}, {"k": "if", "t": "ch", "q": "No.16 のどら焼き（売上金額 20,000）の「評価」は？（20,000 を超えたら「良」）", "a": "何も表示しない", "ch": ["何も表示しない", "良"], "ex": "20,000 は 20,000 を「超えて」いない。", "src": "No.16", "warn": 1, "html": 0, "id": "q95"}, {"k": "if", "t": "f", "sheet": "s16", "cell": "G5", "q": "「判定」：数量が最小と同じなら「検討」、そうでなければ何も表示しない式は？", "a": "=IF(C5=$C$13,\"検討\",\"\")", "alt": [], "d": ["$C$12", "C13", "MIN"], "ex": "最小は C13。全員同じセルとくらべるので $C$13。等しい＝「=」。", "warn": 1, "src": "No.16", "id": "q96", "tk": ["=", "IF", "(", "C5", "=", "$C$13", ",", "\"検討\"", ",", "\"\"", ")"]}, {"k": "if", "t": "ch", "q": "No.16 で「判定」が「検討」になるのはどれ？（数量が最小と同じ）", "a": "カステラ（123）", "ch": ["カステラ（123）", "焼きプリン（154）", "シフォンケーキ（124）", "コーヒーゼリー（165）"], "ex": "数量の最小は 123（カステラ）。", "src": "No.16", "warn": 0, "html": 0, "id": "q97"}, {"k": "if", "t": "f", "sheet": "s18", "cell": "I5", "q": "「備考」：計が 5,000 以上なら ○、そうでなければ何も表示しない式は？", "a": "=IF(F5>=5000,\"○\",\"\")", "alt": [], "d": [">", "\" \"", "5,000"], "ex": "以上＝>=。", "warn": 1, "src": "No.18", "id": "q98", "tk": ["=", "IF", "(", "F5", ">=", "5000", ",", "\"○\"", ",", "\"\"", ")"]}, {"k": "if", "t": "ch", "q": "No.18 の上にぎり（計 5,000）の「備考」は？（5,000 以上なら ○）", "a": "○", "ch": ["○", "何も表示しない"], "ex": "「以上」はその数をふくむ。5,000 は 5,000 以上 → ○。", "src": "No.18", "warn": 1, "html": 0, "id": "q99"}, {"k": "rank", "t": "ch", "q": "順位をつける関数は？", "a": "RANK", "ch": ["RANK", "ROUND", "MAX", "COUNT"], "ex": "RANK（ランク）＝順位", "src": "No.18", "warn": 0, "html": 0, "id": "q100"}, {"k": "rank", "t": "ch", "q": "RANK 関数の正しい形は？", "a": "=RANK(数値,範囲,順序)", "ch": ["=RANK(数値,範囲,順序)", "=RANK(範囲,数値,順序)", "=RANK(順序,数値,範囲)", "=RANK(数値:範囲:順序)"], "ex": "何の順位か（数値）→ どの中で（範囲）→ どっち向き（順序）。", "src": "No.18", "warn": 1, "html": 0, "id": "q101"}, {"k": "rank", "t": "ch", "q": "RANK 関数の「順序」が 0 のときは？", "a": "降順（大きい順。いちばん大きいのが1位）", "ch": ["降順（大きい順。いちばん大きいのが1位）", "昇順（小さい順。いちばん小さいのが1位）", "ランダム"], "ex": "0＝降順（大きい順）、1＝昇順（小さい順）。売上や人数は大きい順＝0。", "src": "No.18", "warn": 0, "html": 0, "id": "q102"}, {"k": "rank", "t": "ch", "q": "RANK 関数の範囲に $ をつけるのはなぜ？", "a": "コピーしても、くらべる範囲がずれないように", "ch": ["コピーしても、くらべる範囲がずれないように", "見た目をよくするため", "大きい順にするため", "数値を固定するため"], "ex": "範囲は全員共通。$F$5:$F$9 のように $ をつける。", "src": "No.18", "warn": 1, "html": 0, "id": "q103"}, {"k": "rank", "t": "f", "sheet": "s18", "cell": "H5", "q": "上にぎりの「順位」（計を基準に降順）を求める式は？", "a": "=RANK(F5,$F$5:$F$9,0)", "alt": ["=RANK(F5,$F$5:$F$9)"], "d": ["F5:F9", "1", "$F$10"], "ex": "数値＝F5（自分の計）、範囲＝$F$5:$F$9（全員の計、$ をつける）、順序＝0（降順）。", "warn": 1, "src": "No.18", "id": "q104", "tk": ["=", "RANK", "(", "F5", ",", "$F$5:$F$9", ",", "0", ")"]}, {"k": "rank", "t": "n", "q": "No.18 で茶碗蒸し（計 4,930）の順位は？", "a": "3", "ex": "にぎり6,840 → 上にぎり5,000 → 茶碗蒸し4,930 → 助六4,690 → ちらし3,830", "src": "No.18", "sheet": null, "warn": 0, "unit": "位", "id": "q105"}, {"k": "rank", "t": "f", "sheet": "s24", "cell": "F5", "q": "シニアの「順位」（2026年の人数の多い順）を求める式は？", "a": "=RANK(D5,$D$5:$D$8,0)", "alt": ["=RANK(D5,$D$5:$D$8)"], "d": ["B5", "D5:D8", "1"], "ex": "2026年は D 列。多い順＝降順＝0。範囲に $。", "warn": 1, "src": "No.24", "id": "q106", "tk": ["=", "RANK", "(", "D5", ",", "$D$5:$D$8", ",", "0", ")"]}, {"k": "rank", "t": "n", "q": "No.24 で学生（2026年 5,029,886人）の順位は？", "a": "3", "ex": "一般 → シニア → 学生 → 幼児", "src": "No.24", "sheet": null, "warn": 0, "unit": "位", "id": "q107"}, {"k": "round", "t": "ch", "q": "四捨五入する関数は？", "a": "ROUND", "ch": ["ROUND", "ROUNDUP", "ROUNDDOWN", "RANK"], "ex": "ROUND（ラウンド）＝四捨五入", "src": "No.23", "warn": 0, "html": 0, "id": "q108"}, {"k": "round", "t": "ch", "q": "切り上げる関数は？", "a": "ROUNDUP", "ch": ["ROUNDUP", "ROUND", "ROUNDDOWN", "MAX"], "ex": "ROUNDUP（ラウンドアップ）＝切り上げ", "src": "No.23", "warn": 0, "html": 0, "id": "q109"}, {"k": "round", "t": "ch", "q": "切り捨てる関数は？", "a": "ROUNDDOWN", "ch": ["ROUNDDOWN", "ROUND", "ROUNDUP", "MIN"], "ex": "ROUNDDOWN（ラウンドダウン）＝切り捨て", "src": "No.23", "warn": 0, "html": 0, "id": "q110"}, {"k": "round", "t": "ch", "q": "ROUND 関数の正しい形は？", "a": "=ROUND(計算式または数値,桁数)", "ch": ["=ROUND(計算式または数値,桁数)", "=ROUND(桁数,計算式または数値)", "=ROUND(計算式または数値)", "=ROUND(計算式または数値:桁数)"], "ex": "ROUNDUP・ROUNDDOWN も使い方は同じ。", "src": "No.23", "warn": 1, "html": 0, "id": "q111"}, {"k": "round", "t": "ch", "q": "桁数が「0」のときは？", "a": "整数で表示", "ch": ["整数で表示", "小数第1位まで", "10の位まで", "そのまま"], "ex": "0＝整数、1＝小数第1位まで、−1＝10の位まで。", "src": "No.23", "warn": 0, "html": 0, "id": "q112"}, {"k": "round", "t": "ch", "q": "桁数が「1」のときは？", "a": "小数第1位まで表示", "ch": ["小数第1位まで表示", "整数で表示", "10の位まで", "小数第2位まで"], "ex": "", "src": "No.23", "warn": 0, "html": 0, "id": "q113"}, {"k": "round", "t": "ch", "q": "桁数が「−1」のときは？", "a": "10の位まで表示", "ch": ["10の位まで表示", "小数第1位まで", "整数で表示", "100の位まで"], "ex": "マイナスは整数部分（1の位を処理して10の位まで）。", "src": "No.23", "warn": 0, "html": 0, "id": "q114"}, {"k": "round", "t": "ch", "q": "=ROUND(1234.56,1) の結果は？", "a": "1234.6", "ch": ["1234.6", "1234.5", "1235", "1230"], "ex": "1234.56 → ROUND・桁数1 → 1234.6", "src": "No.23", "warn": 0, "html": 0, "id": "q115"}, {"k": "round", "t": "ch", "q": "=ROUNDUP(1234.56,1) の結果は？", "a": "1234.6", "ch": ["1234.6", "1234.5", "1235", "1240"], "ex": "1234.56 → ROUNDUP・桁数1 → 1234.6", "src": "No.23", "warn": 0, "html": 0, "id": "q116"}, {"k": "round", "t": "ch", "q": "=ROUNDDOWN(1234.56,1) の結果は？", "a": "1234.5", "ch": ["1234.5", "1234.6", "1234", "1230"], "ex": "1234.56 → ROUNDDOWN・桁数1 → 1234.5", "src": "No.23", "warn": 0, "html": 0, "id": "q117"}, {"k": "round", "t": "ch", "q": "=ROUND(1234.56,0) の結果は？", "a": "1235", "ch": ["1235", "1234", "1234.6", "1230"], "ex": "1234.56 → ROUND・桁数0 → 1235", "src": "No.23", "warn": 0, "html": 0, "id": "q118"}, {"k": "round", "t": "ch", "q": "=ROUNDUP(1234.56,0) の結果は？", "a": "1235", "ch": ["1235", "1234", "1240", "1234.6"], "ex": "1234.56 → ROUNDUP・桁数0 → 1235", "src": "No.23", "warn": 0, "html": 0, "id": "q119"}, {"k": "round", "t": "ch", "q": "=ROUNDDOWN(1234.56,0) の結果は？", "a": "1234", "ch": ["1234", "1235", "1230", "1234.5"], "ex": "1234.56 → ROUNDDOWN・桁数0 → 1234", "src": "No.23", "warn": 0, "html": 0, "id": "q120"}, {"k": "round", "t": "ch", "q": "=ROUND(1234.56,-1) の結果は？", "a": "1230", "ch": ["1230", "1240", "1235", "1234"], "ex": "1234.56 → ROUND・桁数-1 → 1230", "src": "No.23", "warn": 0, "html": 0, "id": "q121"}, {"k": "round", "t": "ch", "q": "=ROUNDUP(1234.56,-1) の結果は？", "a": "1240", "ch": ["1240", "1230", "1235", "1300"], "ex": "1234.56 → ROUNDUP・桁数-1 → 1240", "src": "No.23", "warn": 0, "html": 0, "id": "q122"}, {"k": "round", "t": "ch", "q": "=ROUNDDOWN(1234.56,-1) の結果は？", "a": "1230", "ch": ["1230", "1240", "1234", "1200"], "ex": "1234.56 → ROUNDDOWN・桁数-1 → 1230", "src": "No.23", "warn": 0, "html": 0, "id": "q123"}, {"k": "round", "t": "ch", "q": "「小数第3位未満を四捨五入」するとき、桁数は？", "a": "3", "ch": ["3", "2", "4", "1"], "ex": "小数第3位「まで」残す＝桁数3。0.2371… → 0.237（%にすると 23.7%）。", "src": "No.23", "warn": 1, "html": 0, "id": "q124"}, {"k": "round", "t": "ch", "q": "0.237 を「%で小数第1位まで」表示すると？", "a": "23.7%", "ch": ["23.7%", "0.2%", "2.37%", "237%"], "ex": "0.237×100＝23.7%。だから「小数第3位未満を処理」と「%で小数第1位」はセットで出る。", "src": "No.23", "warn": 0, "html": 0, "id": "q125"}, {"k": "round", "t": "f", "sheet": "s24", "cell": "E5", "q": "シニアの「割合」（2026年の各分類÷2026年の合計、小数第3位未満を四捨五入）を求める式は？", "a": "=ROUND(D5/$D$9,3)", "alt": [], "d": ["ROUNDUP", "D9", "2"], "ex": "四捨五入＝ROUND。計算式は D5/$D$9（合計に $）。桁数は 3。", "warn": 1, "src": "No.23", "id": "q126", "tk": ["=", "ROUND", "(", "D5", "/", "$D$9", ",", "3", ")"]}, {"k": "round", "t": "f", "sheet": "s24", "cell": "E9", "q": "「割合」の合計を求める式は？", "a": "=SUM(E5:E8)", "alt": [], "d": ["E5:E9", "AVERAGE"], "ex": "割合を全部たすと 100.0%。", "warn": 0, "src": "No.23", "id": "q127", "tk": ["=", "SUM", "(", "E5:E8", ")"]}, {"k": "round", "t": "ch", "q": "No.23 の表の「※※」の部分はどうする？", "a": "資料を見て、数値を入力する", "ch": ["資料を見て、数値を入力する", "関数で求める", "何も入力しない", "前の年の数をコピーする"], "ex": "※＝式や関数で求める、※※＝資料から値を入力する。", "src": "No.23", "warn": 0, "html": 0, "id": "q128"}, {"k": "round", "t": "f", "sheet": "s24", "cell": "G5", "q": "シニアの「伸び率」＝（2026年−2024年）÷2024年、小数第3位未満を切り捨て、を求める式は？", "a": "=ROUNDDOWN((D5-B5)/B5,3)", "alt": [], "d": ["ROUND", "$B$5", "2"], "ex": "切り捨て＝ROUNDDOWN。（D5−B5）にかっこ！ かっこがないと B5/B5 が先に計算される。桁数3。", "warn": 1, "src": "No.24", "id": "q129", "tk": ["=", "ROUNDDOWN", "(", "(", "D5", "-", "B5", ")", "/", "B5", ",", "3", ")"]}, {"k": "round", "t": "ch", "q": "伸び率の式で =ROUNDDOWN(D5-B5/B5,3) と書くと？", "a": "B5/B5 が先に計算されて、まちがった答えになる", "ch": ["B5/B5 が先に計算されて、まちがった答えになる", "正しく計算される", "エラーになる", "0 になる"], "ex": "わり算が先。だから (D5-B5) とかっこが必要。", "src": "No.24", "warn": 1, "html": 0, "id": "q130"}, {"k": "round", "t": "n", "q": "シニアの伸び率は、%で小数第1位まで表示すると何%？（6,210,828人→7,442,129人）", "a": "19.8", "ex": "(7442129−6210828)÷6210828＝0.19825…→ 切り捨てで 0.198 → 19.8%", "src": "No.24", "sheet": null, "warn": 0, "unit": "%", "id": "q131"}, {"k": "round", "t": "n", "q": "No.23 の一般の割合（14,974,094÷31,388,109）は、%で小数第1位まで何%？", "a": "47.7", "ex": "0.47706…→ 小数第3位未満を四捨五入で 0.477 → 47.7%", "src": "No.23", "sheet": null, "warn": 0, "unit": "%", "id": "q132"}, {"k": "graph", "t": "ch", "q": "項目ごとの大きさをくらべるのに向いているグラフは？", "a": "集合縦棒グラフ", "ch": ["集合縦棒グラフ", "円グラフ", "折れ線グラフ", "100%積み上げ縦棒グラフ"], "ex": "棒の高さで大きさをくらべる。", "src": "No.9", "warn": 0, "html": 0, "id": "q133"}, {"k": "graph", "t": "ch", "q": "時間による変化（推移）を表すのに向いているグラフは？", "a": "折れ線グラフ", "ch": ["折れ線グラフ", "円グラフ", "集合縦棒グラフ", "積み上げ横棒グラフ"], "ex": "No.18「商品別売上高の推移」は折れ線グラフ。", "src": "No.18", "warn": 0, "html": 0, "id": "q134"}, {"k": "graph", "t": "ch", "q": "全体に対する割合（内訳）を表すのに向いているグラフは？", "a": "円グラフ", "ch": ["円グラフ", "折れ線グラフ", "集合縦棒グラフ", "積み上げ縦棒グラフ"], "ex": "No.15・16・24 の割合は円グラフ。", "src": "No.15", "warn": 0, "html": 0, "id": "q135"}, {"k": "graph", "t": "ch", "q": "合計と、その内訳（昼・夜など）を1本の棒で同時に見せるグラフは？", "a": "積み上げ縦棒グラフ", "ch": ["積み上げ縦棒グラフ", "集合縦棒グラフ", "円グラフ", "折れ線グラフ"], "ex": "No.11（ラーメン：昼と夜を積み上げ）。", "src": "No.10・11", "warn": 0, "html": 0, "id": "q136"}, {"k": "graph", "t": "ch", "q": "どの項目も全体を100%として、内訳の割合をくらべるグラフは？", "a": "100%積み上げ縦棒グラフ", "ch": ["100%積み上げ縦棒グラフ", "積み上げ縦棒グラフ", "集合縦棒グラフ", "折れ線グラフ"], "ex": "棒の高さが全部同じ（100%）になる。No.14 で使った。", "src": "No.10・14", "warn": 0, "html": 0, "id": "q137"}, {"k": "graph", "t": "ch", "q": "No.18 の下のグラフ「商品別の売上高」（横向きの棒に7月〜10月を積み上げ）は何グラフ？", "a": "積み上げ横棒グラフ", "ch": ["積み上げ横棒グラフ", "集合横棒グラフ", "100%積み上げ横棒グラフ", "折れ線グラフ"], "ex": "横向き＋積み上げ。", "src": "No.18", "warn": 0, "html": 0, "id": "q138"}, {"k": "graph", "t": "ch", "q": "No.24「分類別来場者数」（2024〜2026年の棒が横にならぶ）は何グラフ？", "a": "集合縦棒グラフ", "ch": ["集合縦棒グラフ", "積み上げ縦棒グラフ", "折れ線グラフ", "円グラフ"], "ex": "年ごとの棒が並んでいる＝集合縦棒。", "src": "No.24", "warn": 0, "html": 0, "id": "q139"}, {"k": "graph", "t": "ch", "q": "グラフで「どの色（記号）が何のデータか」を示す部分は？", "a": "凡例", "ch": ["凡例", "データラベル", "軸ラベル", "タイトル"], "ex": "凡例（はんれい）。", "src": "No.9", "warn": 0, "html": 0, "id": "q140"}, {"k": "graph", "t": "ch", "q": "「凡例」の読み方は？", "a": "はんれい", "ch": ["はんれい", "ぼんれい", "ばんれい", "はんぴ"], "ex": "凡例＝はんれい。テストで読みを聞かれることがある。", "src": "No.9", "warn": 1, "html": 0, "id": "q141"}, {"k": "graph", "t": "ch", "q": "棒の上などに表示される、その値（数字）を何という？", "a": "データラベル", "ch": ["データラベル", "凡例", "軸ラベル", "目盛"], "ex": "", "src": "No.9", "warn": 0, "html": 0, "id": "q142"}, {"k": "graph", "t": "ch", "q": "グラフの数値を表す軸は？（集合縦棒グラフ）", "a": "縦（数値）軸", "ch": ["縦（数値）軸", "横（項目）軸", "凡例", "タイトル"], "ex": "縦＝数値、横＝項目。", "src": "No.9", "warn": 0, "html": 0, "id": "q143"}, {"k": "graph", "t": "ch", "q": "グラフの項目（商品名など）が並ぶ軸は？（集合縦棒グラフ）", "a": "横（項目）軸", "ch": ["横（項目）軸", "縦（数値）軸", "凡例", "データラベル"], "ex": "", "src": "No.9", "warn": 0, "html": 0, "id": "q144"}, {"k": "graph", "t": "ch", "q": "No.13 の表で「売上金額の割合」の円グラフを作るときの範囲は？", "a": "A4:A9,E4:E9", "ch": ["A4:A9,E4:E9", "A4:E9", "E4:E9", "A5:A9,E5:E10"], "ex": "商品名（A4:A9）と売上金額（E4:E9）。はなれた範囲はカンマで区切る（Ctrl を押しながら選ぶ）。合計の行（10行目）は入れない！", "src": "No.15", "warn": 1, "html": 0, "id": "q145"}, {"k": "graph", "t": "ch", "q": "円グラフの範囲に「合計」の行を入れてはいけないのはなぜ？", "a": "合計も1つの項目として円に入ってしまうから", "ch": ["合計も1つの項目として円に入ってしまうから", "円が小さくなるから", "エラーになるから", "色がつかないから"], "ex": "合計まで入れると、半分が「合計」の円になってしまう。", "src": "No.15", "warn": 0, "html": 0, "id": "q146"}, {"k": "unit", "t": "ch", "q": "1ms（ミリ秒）は何秒？", "a": "1/1,000秒", "ch": ["1/1,000秒", "1/1,000,000秒", "1/10⁹秒", "1,000秒"], "ex": "ms ミリセカンド＝1/1,000秒", "src": "No.5", "warn": 0, "html": 0, "id": "q147"}, {"k": "unit", "t": "ch", "q": "1μs（マイクロ秒）は何秒？", "a": "1/1,000,000秒（100万分の1）", "ch": ["1/1,000,000秒（100万分の1）", "1/1,000秒", "1/10⁹秒", "1/10¹²秒"], "ex": "μs マイクロセカンド＝10⁻⁶秒", "src": "No.5", "warn": 0, "html": 0, "id": "q148"}, {"k": "unit", "t": "ch", "q": "1ns（ナノ秒）は何秒？", "a": "1/10⁹秒（10億分の1）", "ch": ["1/10⁹秒（10億分の1）", "1/10⁶秒", "1/10¹²秒", "1/1,000秒"], "ex": "ns ナノセカンド＝10⁻⁹秒", "src": "No.5", "warn": 0, "html": 0, "id": "q149"}, {"k": "unit", "t": "ch", "q": "1ps（ピコ秒）は何秒？", "a": "1/10¹²秒（1兆分の1）", "ch": ["1/10¹²秒（1兆分の1）", "1/10⁹秒", "1/10¹⁵秒", "1/10⁶秒"], "ex": "ps ピコセカンド＝10⁻¹²秒", "src": "No.5", "warn": 0, "html": 0, "id": "q150"}, {"k": "unit", "t": "ch", "q": "1fs（フェムト秒）は何秒？", "a": "1/10¹⁵秒（1000兆分の1）", "ch": ["1/10¹⁵秒（1000兆分の1）", "1/10¹²秒", "1/10⁹秒", "1/10¹⁸秒"], "ex": "fs フェムトセカンド＝10⁻¹⁵秒", "src": "No.5", "warn": 0, "html": 0, "id": "q151"}, {"k": "unit", "t": "ch", "q": "1ms の 1/1000 は？", "a": "1μs", "ch": ["1μs", "1ns", "1ps", "1s"], "ex": "ms → μs → ns → ps → fs と、1/1000 ずつ小さくなる。", "src": "No.5", "warn": 1, "html": 0, "id": "q152"}, {"k": "unit", "t": "ch", "q": "1μs の 1/1000 は？", "a": "1ns", "ch": ["1ns", "1ms", "1ps", "1fs"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q153"}, {"k": "unit", "t": "ch", "q": "1ns の 1/1000 は？", "a": "1ps", "ch": ["1ps", "1fs", "1μs", "1ms"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q154"}, {"k": "unit", "t": "ch", "q": "1ps の 1/1000 は？", "a": "1fs", "ch": ["1fs", "1ns", "1μs", "1ms"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q155"}, {"k": "unit", "t": "ch", "q": "いちばん短い（速い）時間は？", "a": "1fs", "ch": ["1fs", "1ps", "1ns", "1ms"], "ex": "速い順：fs → ps → ns → μs → ms", "src": "No.5", "warn": 0, "html": 0, "id": "q156"}, {"k": "unit", "t": "ch", "q": "いちばん長い（遅い）時間は？", "a": "1ms", "ch": ["1ms", "1μs", "1ns", "1ps"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q157"}, {"k": "unit", "t": "ch", "q": "短い（速い）順に正しく並んでいるのは？", "a": "fs → ps → ns → μs → ms", "ch": ["fs → ps → ns → μs → ms", "ms → μs → ns → ps → fs", "ns → ps → fs → μs → ms", "ps → fs → ns → ms → μs"], "ex": "フェムト・ピコ・ナノ・マイクロ・ミリ", "src": "No.5", "warn": 0, "html": 0, "id": "q158"}, {"k": "unit", "t": "ch", "q": "1B（バイト）は何ビット？", "a": "8ビット", "ch": ["8ビット", "10ビット", "2ビット", "1,000ビット"], "ex": "1B＝8bit", "src": "No.5", "warn": 0, "html": 0, "id": "q159"}, {"k": "unit", "t": "ch", "q": "1KB（キロバイト）は約何B？", "a": "約1,000B（10³）", "ch": ["約1,000B（10³）", "約100万B", "約10億B", "8B"], "ex": "KB キロ＝約10³B", "src": "No.5", "warn": 0, "html": 0, "id": "q160"}, {"k": "unit", "t": "ch", "q": "1MB（メガバイト）は約何B？", "a": "約100万B（10⁶）", "ch": ["約100万B（10⁶）", "約1,000B", "約10億B", "約1兆B"], "ex": "MB メガ＝約10⁶B", "src": "No.5", "warn": 0, "html": 0, "id": "q161"}, {"k": "unit", "t": "ch", "q": "1GB（ギガバイト）は約何B？", "a": "約10億B（10⁹）", "ch": ["約10億B（10⁹）", "約100万B", "約1兆B", "約1,000B"], "ex": "GB ギガ＝約10⁹B", "src": "No.5", "warn": 0, "html": 0, "id": "q162"}, {"k": "unit", "t": "ch", "q": "1TB（テラバイト）は約何B？", "a": "約1兆B（10¹²）", "ch": ["約1兆B（10¹²）", "約10億B", "約1000兆B", "約100万B"], "ex": "TB テラ＝約10¹²B", "src": "No.5", "warn": 0, "html": 0, "id": "q163"}, {"k": "unit", "t": "ch", "q": "1PB（ペタバイト）は約何B？", "a": "約1000兆B（10¹⁵）", "ch": ["約1000兆B（10¹⁵）", "約1兆B", "約10億B", "約100万B"], "ex": "PB ペタ＝約10¹⁵B", "src": "No.5", "warn": 0, "html": 0, "id": "q164"}, {"k": "unit", "t": "ch", "q": "1KB の約百万倍は？", "a": "1GB", "ch": ["1GB", "1MB", "1TB", "1PB"], "ex": "KB ×1000→ MB ×1000→ GB。1000×1000＝百万倍。", "src": "No.5", "warn": 1, "html": 0, "id": "q165"}, {"k": "unit", "t": "ch", "q": "1MB の約1000倍は？", "a": "1GB", "ch": ["1GB", "1KB", "1TB", "1PB"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q166"}, {"k": "unit", "t": "ch", "q": "1GB の約1000倍は？", "a": "1TB", "ch": ["1TB", "1MB", "1PB", "1KB"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q167"}, {"k": "unit", "t": "ch", "q": "1TB の約1000倍は？", "a": "1PB", "ch": ["1PB", "1GB", "1MB", "1KB"], "ex": "", "src": "No.5", "warn": 0, "html": 0, "id": "q168"}, {"k": "unit", "t": "ch", "q": "記憶容量が大きい順に正しく並んでいるのは？", "a": "PB → TB → GB → MB → KB", "ch": ["PB → TB → GB → MB → KB", "TB → PB → GB → MB → KB", "GB → TB → PB → KB → MB", "KB → MB → GB → TB → PB"], "ex": "ペタ・テラ・ギガ・メガ・キロ", "src": "No.5", "warn": 0, "html": 0, "id": "q169"}, {"k": "unit", "t": "ch", "q": "「アクセスタイム」とは？", "a": "データを読み書きするのにかかる時間", "ch": ["データを読み書きするのにかかる時間", "データを保存できる量", "パソコンの電源が入るまでの時間", "インターネットにつなぐ時間"], "ex": "記憶装置にデータを読み書きする命令を出してから、終わるまでの時間。単位は ms・μs・ns など。", "src": "No.5", "warn": 0, "html": 0, "id": "q170"}, {"k": "algo", "t": "ch", "q": "問題を解決するための具体的な処理方法の手順（考え方）を何という？", "a": "アルゴリズム", "ch": ["アルゴリズム", "プログラム", "トレース", "フローチャート"], "ex": "", "src": "No.19", "warn": 0, "html": 0, "id": "q171"}, {"k": "algo", "t": "ch", "q": "アルゴリズムを図式化したものを何という？", "a": "流れ図（フローチャート）", "ch": ["流れ図（フローチャート）", "トレース表", "プログラム言語", "変数"], "ex": "", "src": "No.19", "warn": 0, "html": 0, "id": "q172"}, {"k": "algo", "t": "ch", "q": "プログラムを記述することを何という？", "a": "プログラミング", "ch": ["プログラミング", "トレース", "アルゴリズム", "代入"], "ex": "", "src": "No.19", "warn": 0, "html": 0, "id": "q173"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><rect x=\"10\" y=\"10\" width=\"100\" height=\"30\" rx=\"15\"/></svg></div>", "a": "端子", "ch": ["端子", "線", "準備", "判断"], "ex": "端子：流れ図の始まりと終わり", "src": "No.19", "warn": 0, "html": 1, "id": "q174"}, {"k": "algo", "t": "ch", "q": "流れ図で「流れ図の始まりと終わり」を表す記号の名称は？", "a": "端子", "ch": ["端子", "処理", "データ", "ループ始端"], "ex": "端子：流れ図の始まりと終わり", "src": "No.19", "warn": 0, "html": 0, "id": "q175"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><rect x=\"10\" y=\"10\" width=\"100\" height=\"30\"/></svg></div>", "a": "処理", "ch": ["処理", "データ", "準備", "線"], "ex": "処理：演算などの処理（＋−×÷など）", "src": "No.19", "warn": 0, "html": 1, "id": "q176"}, {"k": "algo", "t": "ch", "q": "流れ図で「演算などの処理（＋−×÷など）」を表す記号の名称は？", "a": "処理", "ch": ["処理", "ループ始端", "端子", "判断"], "ex": "処理：演算などの処理（＋−×÷など）", "src": "No.19", "warn": 0, "html": 0, "id": "q177"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M18 10H102L110 18V40H10V18Z\"/></svg></div>", "a": "ループ始端", "ch": ["ループ始端", "ループ終端", "線", "判断"], "ex": "ループ始端：繰り返しの始まり", "src": "No.19", "warn": 1, "html": 1, "id": "q178"}, {"k": "algo", "t": "ch", "q": "流れ図で「繰り返しの始まり」を表す記号の名称は？", "a": "ループ始端", "ch": ["ループ始端", "処理", "端子", "準備"], "ex": "ループ始端：繰り返しの始まり", "src": "No.19", "warn": 0, "html": 0, "id": "q179"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M10 10H110V32L102 40H18L10 32Z\"/></svg></div>", "a": "ループ終端", "ch": ["ループ終端", "データ", "線", "ループ始端"], "ex": "ループ終端：繰り返しの終わり", "src": "No.19", "warn": 1, "html": 1, "id": "q180"}, {"k": "algo", "t": "ch", "q": "流れ図で「繰り返しの終わり」を表す記号の名称は？", "a": "ループ終端", "ch": ["ループ終端", "処理", "準備", "判断"], "ex": "ループ終端：繰り返しの終わり", "src": "No.19", "warn": 0, "html": 0, "id": "q181"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M28 10H110L92 40H10Z\"/></svg></div>", "a": "データ", "ch": ["データ", "処理", "ループ始端", "線"], "ex": "データ：データの入出力", "src": "No.19", "warn": 1, "html": 1, "id": "q182"}, {"k": "algo", "t": "ch", "q": "流れ図で「データの入出力」を表す記号の名称は？", "a": "データ", "ch": ["データ", "端子", "ループ終端", "準備"], "ex": "データ：データの入出力", "src": "No.19", "warn": 0, "html": 0, "id": "q183"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M60 6L112 25L60 44L8 25Z\"/></svg></div>", "a": "判断", "ch": ["判断", "線", "準備", "端子"], "ex": "判断：条件による分岐", "src": "No.19", "warn": 0, "html": 1, "id": "q184"}, {"k": "algo", "t": "ch", "q": "流れ図で「条件による分岐」を表す記号の名称は？", "a": "判断", "ch": ["判断", "ループ終端", "ループ始端", "処理"], "ex": "判断：条件による分岐", "src": "No.19", "warn": 0, "html": 0, "id": "q185"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M10 25H110\"/></svg></div>", "a": "線", "ch": ["線", "ループ終端", "判断", "端子"], "ex": "線：データや制御の流れ", "src": "No.19", "warn": 0, "html": 1, "id": "q186"}, {"k": "algo", "t": "ch", "q": "流れ図で「データや制御の流れ」を表す記号の名称は？", "a": "線", "ch": ["線", "処理", "準備", "ループ始端"], "ex": "線：データや制御の流れ", "src": "No.19", "warn": 0, "html": 0, "id": "q187"}, {"k": "algo", "t": "ch", "q": "この記号の名称は？<div style=\"margin:8px 0\"><svg viewBox=\"0 0 120 50\" width=\"120\" height=\"50\" fill=\"none\" stroke=\"#123f6b\" stroke-width=\"2.5\"><path d=\"M28 10H92L110 25L92 40H28L10 25Z\"/></svg></div>", "a": "準備", "ch": ["準備", "処理", "ループ終端", "線"], "ex": "準備：初期値の設定", "src": "No.19", "warn": 1, "html": 1, "id": "q188"}, {"k": "algo", "t": "ch", "q": "流れ図で「初期値の設定」を表す記号の名称は？", "a": "準備", "ch": ["準備", "判断", "データ", "端子"], "ex": "準備：初期値の設定", "src": "No.19", "warn": 0, "html": 0, "id": "q189"}, {"k": "algo", "t": "ch", "q": "プログラム上で、値や文字列を入れておく箱で、中の値を何度でも変更できるものは？", "a": "変数", "ch": ["変数", "定数", "代入", "端子"], "ex": "変数＝何度でも変更できる。定数＝一度設定すると変更できない。", "src": "No.19", "warn": 1, "html": 0, "id": "q190"}, {"k": "algo", "t": "ch", "q": "プログラム上で、一度設定すると変更できない値を入れておく箱は？", "a": "定数", "ch": ["定数", "変数", "トレース", "ループ"], "ex": "", "src": "No.19", "warn": 1, "html": 0, "id": "q191"}, {"k": "algo", "t": "ch", "q": "変数に値を入れることを何という？", "a": "代入", "ch": ["代入", "トレース", "処理", "準備"], "ex": "「1 → c」は「c に 1 を代入する」。", "src": "No.19", "warn": 1, "html": 0, "id": "q192"}, {"k": "algo", "t": "ch", "q": "アルゴリズムの流れにそって順番に命令を実行し、計算過程や変数の内容を確認することを何という？", "a": "トレース", "ch": ["トレース", "代入", "プログラミング", "アルゴリズム"], "ex": "各変数の値の変化をまとめた表を「トレース表」という。", "src": "No.19", "warn": 1, "html": 0, "id": "q193"}, {"k": "algo", "t": "ch", "q": "各変数の値の変化をまとめた表を何という？", "a": "トレース表", "ch": ["トレース表", "流れ図", "真理値表", "集計表"], "ex": "", "src": "No.19", "warn": 0, "html": 0, "id": "q194"}, {"k": "algo", "t": "ch", "q": "アルゴリズムの3つの基本構造は？", "a": "順次・選択・繰り返し", "ch": ["順次・選択・繰り返し", "順次・判断・処理", "入力・処理・出力", "変数・定数・代入"], "ex": "順次構造・選択構造・繰り返し構造。", "src": "No.20", "warn": 1, "html": 0, "id": "q195"}, {"k": "algo", "t": "ch", "q": "各処理が直線的につながり、上から下へと順番に実行される構造は？", "a": "順次構造", "ch": ["順次構造", "選択構造", "繰り返し構造"], "ex": "", "src": "No.20", "warn": 0, "html": 0, "id": "q196"}, {"k": "algo", "t": "ch", "q": "条件によって異なる処理を実行する構造は？", "a": "選択構造（判断分岐）", "ch": ["選択構造（判断分岐）", "順次構造", "繰り返し構造（ループ）"], "ex": "ひし形（判断）で YES／NO に分かれる。", "src": "No.20", "warn": 0, "html": 0, "id": "q197"}, {"k": "algo", "t": "ch", "q": "示された条件を満たす間、処理を繰り返す構造は？", "a": "繰り返し構造（ループ）", "ch": ["繰り返し構造（ループ）", "選択構造（判断分岐）", "順次構造"], "ex": "ループ始端・ループ終端の記号ではさむ。条件を満たさなくなったらループを抜ける。", "src": "No.20", "warn": 0, "html": 0, "id": "q198"}, {"k": "algo", "t": "ch", "q": "繰り返し構造で、条件を満たさなくなったらどうなる？", "a": "ループを抜けて次へ進む", "ch": ["ループを抜けて次へ進む", "最初から全部やり直す", "エラーで止まる", "もう1回だけ繰り返す"], "ex": "", "src": "No.20", "warn": 0, "html": 0, "id": "q199"}, {"k": "algo", "t": "ch", "q": "カレーの流れ図の「味がうすい？」（YES なら調味料を加える）は、どの構造？", "a": "選択構造", "ch": ["選択構造", "順次構造", "繰り返し構造"], "ex": "条件（味がうすいか）で処理が分かれる。", "src": "No.21", "warn": 0, "html": 0, "id": "q200"}, {"k": "algo", "t": "ch", "q": "カレーの流れ図の「具材に火が通っていない間（アクを取る）」は、どの構造？", "a": "繰り返し構造", "ch": ["繰り返し構造", "選択構造", "順次構造"], "ex": "「〜の間」くり返す＝ループ。", "src": "No.21", "warn": 0, "html": 0, "id": "q201"}, {"k": "algo", "t": "ch", "q": "流れ図の「1 → c」の意味は？", "a": "c に 1 を代入する", "ch": ["c に 1 を代入する", "1 を c に表示する", "c が 1 と等しいか調べる", "c から 1 をひく"], "ex": "→ の左の値を、右の変数に入れる。", "src": "No.22", "warn": 1, "html": 0, "id": "q202"}, {"k": "algo", "t": "ch", "q": "流れ図の「c + 1 → c」の意味は？", "a": "c に 1 をたした値を、c に入れる（c が 1 ふえる）", "ch": ["c に 1 をたした値を、c に入れる（c が 1 ふえる）", "c と 1 が等しいか調べる", "c に 1 を入れる", "c を表示する"], "ex": "今の c に 1 たして、新しい c にする。", "src": "No.22", "warn": 1, "html": 0, "id": "q203"}, {"k": "algo", "t": "ch", "q": "ループ条件「c ≠ b + 1 の間」の「≠」の意味は？", "a": "等しくない", "ch": ["等しくない", "等しい", "以上", "以下"], "ex": "c が b+1 と等しくない間はくり返す。等しくなったら抜ける。", "src": "No.22", "warn": 0, "html": 0, "id": "q204"}, {"k": "trace", "t": "tr", "id": "tr1_0", "q": "問1型（a=2, b=3, c=5）", "src": "No.21", "warn": 1}, {"k": "trace", "t": "tr", "id": "tr1_1", "q": "問1型（a=1, b=2, c=3）", "src": "No.21 練習", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr1_2", "q": "問1型（a=3, b=1, c=2）", "src": "No.21 練習", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr2_0", "q": "問2型（a=1, b=5）", "src": "No.22", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr2_1", "q": "問2型（a=0, b=20）", "src": "No.22", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr2_2", "q": "問2型（a=1, b=12）", "src": "No.22 練習", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr2_3", "q": "問2型（a=2, b=7）", "src": "No.22 練習", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr3_0", "q": "問3型 ループ（a=0, b=3）", "src": "No.22", "warn": 1}, {"k": "trace", "t": "tr", "id": "tr3_1", "q": "問3型 ループ（a=1, b=2）", "src": "No.22 練習", "warn": 0}, {"k": "trace", "t": "tr", "id": "tr3_2", "q": "問3型 ループ（a=0, b=4）", "src": "No.22 練習", "warn": 0}, {"k": "count", "t": "x", "q": "COUNT と COUNTA のちがいを、「棄権」を例にして説明しよう。", "hint": "何を数える？ 文字は？", "model": "COUNT は数値が入っているセルだけを数える。COUNTA は空白でないセル（文字も数値も）を数える。「棄権」は文字なので COUNT では数えない。だから出場者数は COUNT、生徒数（名前）は COUNTA。", "kw": ["COUNT は数値だけ数える", "COUNTA は空白以外（文字も）数える", "「棄権」は文字なので COUNT では数えない"], "id": "q215"}, {"k": "abs", "t": "x", "q": "売上比率の式で、合計のセルに $ をつけるのはなぜ？", "hint": "コピーすると…", "model": "式を下にコピーすると、セル番地が1つずつずれる。合計のセルまでずれると正しく計算できないので、$ をつけて絶対番地にし、合計のセルを固定する。$ は F4 キーでつける。", "kw": ["コピーするとセル番地がずれる", "$ をつけると固定される（絶対番地）", "F4 キーでつける"], "id": "q216"}, {"k": "if", "t": "x", "q": "IF 関数の3つの部分と、文字の書き方を説明しよう。", "hint": "=IF(？,？,？)", "model": "=IF(条件,真の場合,偽の場合)。条件に当てはまれば真の場合、当てはまらなければ偽の場合を表示する。文字は \" \" で囲む。何も表示しないときは \"\" （すき間なし）。", "kw": ["条件・真の場合・偽の場合の順", "区切りはカンマ", "文字は \" \" で囲む、何もなしは \"\""], "id": "q217"}, {"k": "if", "t": "x", "q": "「以上」と「超える」のちがいを、記号と例で説明しよう。", "hint": "5,000 以上／5,000 を超える", "model": "以上は >= で、その数をふくむ（5,000 以上なら 5,000 も入る）。超えるは > で、その数をふくまない（5,000 を超えるなら 5,000 は入らない）。≧ は Excel では使えない。", "kw": ["以上は >=（その数をふくむ）", "超えるは >（ふくまない）", "≧ は使えない"], "id": "q218"}, {"k": "rank", "t": "x", "q": "RANK 関数の書き方を、No.18 の上にぎりの順位を例に説明しよう。", "hint": "何の順位？ どの中で？ どっち向き？", "model": "=RANK(F5,$F$5:$F$9,0)。F5 は自分の計（数値）、$F$5:$F$9 は全員の計（範囲。コピーしてもずれないよう $）、0 は降順（大きい順）。", "kw": ["数値・範囲・順序の順", "範囲に $ をつける", "0 は降順（大きい順）"], "id": "q219"}, {"k": "round", "t": "x", "q": "ROUND・ROUNDUP・ROUNDDOWN と「桁数」を説明しよう。", "hint": "1234.56 で考える", "model": "ROUND は四捨五入、ROUNDUP は切り上げ、ROUNDDOWN は切り捨て。桁数 1 は小数第1位まで、0 は整数、−1 は10の位まで。「小数第3位未満を処理して%で小数第1位まで」なら桁数は 3。", "kw": ["四捨五入・切り上げ・切り捨て", "桁数 1・0・−1 の意味", "小数第3位未満 → 桁数3"], "id": "q220"}, {"k": "algo", "t": "x", "q": "アルゴリズムの3つの基本構造を説明しよう。", "hint": "順次・選択・？", "model": "順次構造は上から下へ順番に実行する。選択構造は条件によって異なる処理を実行する（YES／NO で分かれる）。繰り返し構造は条件を満たす間、処理を繰り返し、満たさなくなったらループを抜ける。", "kw": ["順次＝上から順番に", "選択＝条件で処理が分かれる", "繰り返し＝条件を満たす間くり返す"], "id": "q221"}, {"k": "algo", "t": "x", "q": "変数と定数のちがい、代入、トレースを説明しよう。", "hint": "箱", "model": "変数は値を入れておく箱で、何度でも変更できる。定数は一度設定すると変更できない。変数に値を入れることを代入という。トレースは、流れ図の順に命令を実行して、計算の過程や変数の値を確認すること。", "kw": ["変数は何度でも変更できる", "定数は変更できない", "代入＝変数に値を入れる", "トレース＝順番に実行して値を確認"], "id": "q222"}, {"k": "graph", "t": "x", "q": "集合縦棒・折れ線・円グラフは、それぞれ何を表すのに向いている？", "hint": "大きさ・変化・割合", "model": "集合縦棒グラフは項目ごとの大きさをくらべる。折れ線グラフは時間による変化（推移）を表す。円グラフは全体に対する割合を表す。", "kw": ["集合縦棒＝大きさをくらべる", "折れ線＝推移（変化）", "円＝割合"], "id": "q223"}], "SH": {"s2": {"title": "成績一覧表", "src": "No.2・3", "cols": ["氏名", "国語", "数学", "英語", "理科", "社会", "合計", "平均"], "rows": {"5": ["安藤", 64, 89, 90, 80, 71, "※", "※"], "6": ["伊藤", 85, 82, 88, 84, 86, "※", "※"], "7": ["浮中", 24, 60, 54, 62, 68, "※", "※"], "8": ["江崎", 44, 68, 71, 79, 74, "※", "※"], "9": ["落合", 62, 87, 86, 70, 74, "※", "※"], "10": ["加藤", 31, 55, 42, 72, 80, "※", "※"]}}, "s4": {"title": "富田高校購買部 売上数", "src": "No.4", "cols": ["商品名", "1日目", "2日目", "3日目"], "rows": {"5": ["ポテトチップス", 18, 20, 22], "6": ["チョコレート", 25, 23, 28], "7": ["グミ", 32, 30, 35], "8": ["クッキー", 15, 18, 20], "9": ["キャラメル", 20, 22, 19], "10": ["せんべい", 12, 15, 16], "11": ["ラムネ", 28, 35, 32], "12": ["キャンディ", 22, 25, 24], "15": ["最大", "※", "※", "※"], "16": ["最小", "※", "※", "※"]}}, "s6": {"title": "富田図書館 貸出冊数", "src": "No.6", "cols": ["分類", "4月", "5月", "6月", "合計", "平均"], "rows": {"5": ["小説", 350, 410, 380, "※", "※"], "6": ["漫画", 880, 920, 950, "※", "※"], "7": ["雑誌", 680, 720, 810, "※", "※"], "8": ["歴史書", 540, 620, 700, "※", "※"], "9": ["科学書", 730, 810, 890, "※", "※"], "10": ["英語本", 460, 520, 610, "※", "※"], "11": ["最大", "※", "※", "※"], "12": ["最小", "※", "※", "※"]}}, "s7": {"title": "富田文化祭 売上数", "src": "No.7", "cols": ["品名", "1日目", "2日目", "3日目", "売上合計", "平均", "2日間合計"], "rows": {"5": ["たこ焼き", 156, 178, 196, "※", "※", "※"], "6": ["焼きそば", 235, 250, 305, "※", "※", "※"], "7": ["フランクフルト", 381, 346, 403, "※", "※", "※"], "8": ["かき氷", 150, 122, 98, "※", "※", "※"], "9": ["ポップコーン", 98, 88, 154, "※", "※", "※"], "10": ["最大", "※", "※", "※"], "11": ["最小", "※", "※", "※"]}}, "s8": {"title": "シャトルラン記録", "src": "No.8", "cols": ["氏名", "1回目", "2回目", "3回目", "4回目"], "rows": {"5": ["伊藤", 112, 110, 105, 120], "6": ["戎谷", 80, 89, "棄権", 76], "7": ["加藤", 35, 52, 50, 46], "8": ["下平", 68, 78, "棄権", "棄権"], "9": ["谷口", 120, 110, 126, 115], "10": ["安田", 30, "棄権", 39, "棄権"], "11": ["三浦", 72, 80, 81, "棄権"], "16": ["生徒数", "※"], "17": ["出場者数", "※", "※", "※", "※"]}}, "s11": {"title": "ラーメン売上集計表", "src": "No.11", "cols": ["商品名", "昼", "夜", "売上数計", "単価", "売上金額"], "rows": {"5": ["しょうゆ", 24, 42, "※", 580, "※"], "6": ["ピリ辛みそ", 45, 78, "※", 620, "※"], "7": ["和風みそ", 23, 40, "※", 650, "※"], "8": ["しおネギ", 31, 17, "※", 600, "※"], "9": ["つけめん", 55, 25, "※", 720, "※"], "10": ["まぜそば", 40, 92, "※", 680, "※"]}}, "s12": {"title": "トミーバックス 売上表", "src": "No.12・13", "cols": ["商品名", "店内", "テイクアウト", "単価", "売上金額", "売上比率", "評価", "判定"], "rows": {"5": ["ブレンドコーヒー", 85, 70, 420, "※", "※", "※", "※"], "6": ["カフェラテ", 73, 78, 480, "※", "※", "※", "※"], "7": ["アイスティー", 55, 50, 390, "※", "※", "※", "※"], "8": ["抹茶ラテ", 62, 45, 520, "※", "※", "※", "※"], "9": ["オレンジジュース", 49, 40, 320, "※", "※", "※", "※"], "10": ["合計", "", "", "", "※"], "11": ["平均", "", "", "", "※"], "12": ["商品数", "", "", "", "※"]}}, "s14": {"title": "商業科目テスト成績", "src": "No.14", "cols": ["氏名", "簿記", "情報処理", "ビジネス基礎", "合計", "平均", "評価", "判定"], "rows": {"5": ["伊東悟", 60, 59, 71, "※", "※", "※", "※"], "6": ["谷口淳", 75, 72, 89, "※", "※", "※", "※"], "7": ["加藤健介", 100, 99, 93, "※", "※", "※", "※"], "8": ["保田聡", 88, 71, 91, "※", "※", "※", "※"], "9": ["美浦智子", 70, 65, 69, "※", "※", "※", "※"]}}, "s16": {"title": "9月の富田スイーツ", "src": "No.16", "cols": ["商品名", "単価", "数量", "売上金額", "売上比率", "評価", "判定"], "rows": {"5": ["焼きプリン", 120, 154, "※", "※", "※", "※"], "6": ["カステラ", 110, 123, "※", "※", "※", "※"], "7": ["シフォンケーキ", 220, 124, "※", "※", "※", "※"], "8": ["どら焼き", 160, 125, "※", "※", "※", "※"], "9": ["コーヒーゼリー", 140, 165, "※", "※", "※", "※"], "10": ["合計", "", "※", "※"], "11": ["平均", "", "※", "※"], "12": ["最大", "", "※"], "13": ["最小", "", "※"], "14": ["商品数", "", "※"]}}, "s18": {"title": "富田寿司の月別売上高（単位：千円）", "src": "No.18", "cols": ["商品名", "7月", "8月", "9月", "10月", "計", "構成比", "順位", "備考"], "rows": {"5": ["上にぎり", 1050, 980, 1430, 1540, "※", "※", "※", "※"], "6": ["にぎり", 1780, 1560, 1900, 1600, "※", "※", "※", "※"], "7": ["ちらし", 980, 800, 750, 1300, "※", "※", "※", "※"], "8": ["助六", 740, 1200, 1450, 1300, "※", "※", "※", "※"], "9": ["茶碗蒸し", 1460, 1100, 1250, 1120, "※", "※", "※", "※"], "10": ["合計", "※", "※", "※", "※", "※", "※"]}}, "s24": {"title": "来場者数集計表（単位：人）", "src": "No.23・24", "cols": ["分類", "2024年", "2025年", "2026年", "割合", "順位", "伸び率"], "rows": {"5": ["シニア", 6210828, 7249537, 7442129, "※", "※", "※"], "6": ["一般", 15320245, 15261878, 14974094, "※", "※", "※"], "7": ["学生", 4080544, 4176972, 5029886, "※", "※", "※"], "8": ["幼児", 4680624, 3830560, 3942000, "※", "※", "※"], "9": ["合計", "※", "※", "※", "※"]}}}, "TR": [{"id": "tr1_0", "title": "問1型（a=2, b=3, c=5）", "src": "No.21", "flow": ["はじめ|t", "a を入力|d", "b を入力|d", "c を入力|d", "a + b → z|p", "c × z → z|p", "a + c + z × 100 → z|p", "z を出力する|d", "おわり|t"], "vars": ["a", "b", "c", "z"], "inp": {"a": 2, "b": 3, "c": 5}, "steps": [["①", "a", 2, "a を入力"], ["②", "b", 3, "b を入力"], ["③", "c", 5, "c を入力"], ["④", "z", 5, "a+b＝2+3＝5"], ["⑤", "z", 25, "c×z＝5×5＝25"], ["⑥", "z", 2507, "a+c+z×100＝2+5+25×100＝2507（かけ算が先！）"], ["⑦", "out", 2507, "z を出力 → 2507"]], "q": "a の値が 2、b の値が 3、c の値が 5 のとき、出力される z の値は？"}, {"id": "tr1_1", "title": "問1型（a=1, b=2, c=3）", "src": "No.21 練習", "flow": ["はじめ|t", "a を入力|d", "b を入力|d", "c を入力|d", "a + b → z|p", "c × z → z|p", "a + c + z × 100 → z|p", "z を出力する|d", "おわり|t"], "vars": ["a", "b", "c", "z"], "inp": {"a": 1, "b": 2, "c": 3}, "steps": [["①", "a", 1, "a を入力"], ["②", "b", 2, "b を入力"], ["③", "c", 3, "c を入力"], ["④", "z", 3, "a+b＝1+2＝3"], ["⑤", "z", 9, "c×z＝3×3＝9"], ["⑥", "z", 904, "a+c+z×100＝1+3+9×100＝904（かけ算が先！）"], ["⑦", "out", 904, "z を出力 → 904"]], "q": "a の値が 1、b の値が 2、c の値が 3 のとき、出力される z の値は？"}, {"id": "tr1_2", "title": "問1型（a=3, b=1, c=2）", "src": "No.21 練習", "flow": ["はじめ|t", "a を入力|d", "b を入力|d", "c を入力|d", "a + b → z|p", "c × z → z|p", "a + c + z × 100 → z|p", "z を出力する|d", "おわり|t"], "vars": ["a", "b", "c", "z"], "inp": {"a": 3, "b": 1, "c": 2}, "steps": [["①", "a", 3, "a を入力"], ["②", "b", 1, "b を入力"], ["③", "c", 2, "c を入力"], ["④", "z", 4, "a+b＝3+1＝4"], ["⑤", "z", 8, "c×z＝2×4＝8"], ["⑥", "z", 805, "a+c+z×100＝3+2+8×100＝805（かけ算が先！）"], ["⑦", "out", 805, "z を出力 → 805"]], "q": "a の値が 3、b の値が 1、c の値が 2 のとき、出力される z の値は？"}, {"id": "tr2_0", "title": "問2型（a=1, b=5）", "src": "No.22", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ b + 1988 → c|p", "④ a = 1 ?|j|YES → ⑤ ／ NO → ⑥", "⑤ c + 30 → c|p", "⑥ c を表示|d", "おわり|t"], "vars": ["a", "b", "c"], "inp": {"a": 1, "b": 5}, "steps": [["①", "a", 1, "a を入力"], ["②", "b", 5, "b を入力"], ["③", "c", 1993, "b+1988＝5+1988＝1993"], ["④", "?", "YES", "a＝1 なので「a＝1」は成り立つ → YES → ⑤へ"], ["⑤", "c", 2023, "c+30＝1993+30＝2023"], ["⑥", "out", 2023, "c を表示 → 2023"]], "q": "a の値が 1、b の値が 5 のとき、出力される c の値は？"}, {"id": "tr2_1", "title": "問2型（a=0, b=20）", "src": "No.22", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ b + 1988 → c|p", "④ a = 1 ?|j|YES → ⑤ ／ NO → ⑥", "⑤ c + 30 → c|p", "⑥ c を表示|d", "おわり|t"], "vars": ["a", "b", "c"], "inp": {"a": 0, "b": 20}, "steps": [["①", "a", 0, "a を入力"], ["②", "b", 20, "b を入力"], ["③", "c", 2008, "b+1988＝20+1988＝2008"], ["④", "?", "NO", "a＝0 なので「a＝1」は成り立たない → NO → ⑥へ（⑤はとばす）"], ["⑥", "out", 2008, "c を表示 → 2008"]], "q": "a の値が 0、b の値が 20 のとき、出力される c の値は？"}, {"id": "tr2_2", "title": "問2型（a=1, b=12）", "src": "No.22 練習", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ b + 1988 → c|p", "④ a = 1 ?|j|YES → ⑤ ／ NO → ⑥", "⑤ c + 30 → c|p", "⑥ c を表示|d", "おわり|t"], "vars": ["a", "b", "c"], "inp": {"a": 1, "b": 12}, "steps": [["①", "a", 1, "a を入力"], ["②", "b", 12, "b を入力"], ["③", "c", 2000, "b+1988＝12+1988＝2000"], ["④", "?", "YES", "a＝1 なので「a＝1」は成り立つ → YES → ⑤へ"], ["⑤", "c", 2030, "c+30＝2000+30＝2030"], ["⑥", "out", 2030, "c を表示 → 2030"]], "q": "a の値が 1、b の値が 12 のとき、出力される c の値は？"}, {"id": "tr2_3", "title": "問2型（a=2, b=7）", "src": "No.22 練習", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ b + 1988 → c|p", "④ a = 1 ?|j|YES → ⑤ ／ NO → ⑥", "⑤ c + 30 → c|p", "⑥ c を表示|d", "おわり|t"], "vars": ["a", "b", "c"], "inp": {"a": 2, "b": 7}, "steps": [["①", "a", 2, "a を入力"], ["②", "b", 7, "b を入力"], ["③", "c", 1995, "b+1988＝7+1988＝1995"], ["④", "?", "NO", "a＝2 なので「a＝1」は成り立たない → NO → ⑥へ（⑤はとばす）"], ["⑥", "out", 1995, "c を表示 → 1995"]], "q": "a の値が 2、b の値が 7 のとき、出力される c の値は？"}, {"id": "tr3_0", "title": "問3型 ループ（a=0, b=3）", "src": "No.22", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ 1 → c|p", "④ 0 → d|p", "⑤ ループ c ≠ b + 1 の間|ls", "⑥ c × 2 − a → e|p", "⑦ d + e → d|p", "⑧ c + 1 → c|p", "⑨ ループ|le", "⑩ d を表示|d", "おわり|t"], "vars": ["a", "b", "c", "d", "e"], "inp": {"a": 0, "b": 3}, "steps": [["①", "a", 0, "a を入力"], ["②", "b", 3, "b を入力"], ["③", "c", 1, "1 → c"], ["④", "d", 0, "0 → d"], ["⑤", "?", "YES", "c＝1、b+1＝4。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 2, "c×2−a＝1×2−0＝2"], ["⑦", "d", 2, "d+e＝0+2＝2"], ["⑧", "c", 2, "c+1＝1+1＝2"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝2、b+1＝4。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 4, "c×2−a＝2×2−0＝4"], ["⑦", "d", 6, "d+e＝2+4＝6"], ["⑧", "c", 3, "c+1＝2+1＝3"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝3、b+1＝4。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 6, "c×2−a＝3×2−0＝6"], ["⑦", "d", 12, "d+e＝6+6＝12"], ["⑧", "c", 4, "c+1＝3+1＝4"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "NO", "c＝4、b+1＝4。c≠b+1 は成り立たない（等しい）→ ループを抜けて ⑩へ"], ["⑩", "out", 12, "d を表示 → 12"]], "q": "a の値が 0、b の値が 3 のとき、出力される d の値は？"}, {"id": "tr3_1", "title": "問3型 ループ（a=1, b=2）", "src": "No.22 練習", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ 1 → c|p", "④ 0 → d|p", "⑤ ループ c ≠ b + 1 の間|ls", "⑥ c × 2 − a → e|p", "⑦ d + e → d|p", "⑧ c + 1 → c|p", "⑨ ループ|le", "⑩ d を表示|d", "おわり|t"], "vars": ["a", "b", "c", "d", "e"], "inp": {"a": 1, "b": 2}, "steps": [["①", "a", 1, "a を入力"], ["②", "b", 2, "b を入力"], ["③", "c", 1, "1 → c"], ["④", "d", 0, "0 → d"], ["⑤", "?", "YES", "c＝1、b+1＝3。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 1, "c×2−a＝1×2−1＝1"], ["⑦", "d", 1, "d+e＝0+1＝1"], ["⑧", "c", 2, "c+1＝1+1＝2"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝2、b+1＝3。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 3, "c×2−a＝2×2−1＝3"], ["⑦", "d", 4, "d+e＝1+3＝4"], ["⑧", "c", 3, "c+1＝2+1＝3"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "NO", "c＝3、b+1＝3。c≠b+1 は成り立たない（等しい）→ ループを抜けて ⑩へ"], ["⑩", "out", 4, "d を表示 → 4"]], "q": "a の値が 1、b の値が 2 のとき、出力される d の値は？"}, {"id": "tr3_2", "title": "問3型 ループ（a=0, b=4）", "src": "No.22 練習", "flow": ["はじめ|t", "① a を入力|d", "② b を入力|d", "③ 1 → c|p", "④ 0 → d|p", "⑤ ループ c ≠ b + 1 の間|ls", "⑥ c × 2 − a → e|p", "⑦ d + e → d|p", "⑧ c + 1 → c|p", "⑨ ループ|le", "⑩ d を表示|d", "おわり|t"], "vars": ["a", "b", "c", "d", "e"], "inp": {"a": 0, "b": 4}, "steps": [["①", "a", 0, "a を入力"], ["②", "b", 4, "b を入力"], ["③", "c", 1, "1 → c"], ["④", "d", 0, "0 → d"], ["⑤", "?", "YES", "c＝1、b+1＝5。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 2, "c×2−a＝1×2−0＝2"], ["⑦", "d", 2, "d+e＝0+2＝2"], ["⑧", "c", 2, "c+1＝1+1＝2"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝2、b+1＝5。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 4, "c×2−a＝2×2−0＝4"], ["⑦", "d", 6, "d+e＝2+4＝6"], ["⑧", "c", 3, "c+1＝2+1＝3"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝3、b+1＝5。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 6, "c×2−a＝3×2−0＝6"], ["⑦", "d", 12, "d+e＝6+6＝12"], ["⑧", "c", 4, "c+1＝3+1＝4"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "YES", "c＝4、b+1＝5。c≠b+1 は成り立つ → くり返す"], ["⑥", "e", 8, "c×2−a＝4×2−0＝8"], ["⑦", "d", 20, "d+e＝12+8＝20"], ["⑧", "c", 5, "c+1＝4+1＝5"], ["⑨", "loop", "", "ループの終わり → ⑤ にもどる"], ["⑤", "?", "NO", "c＝5、b+1＝5。c≠b+1 は成り立たない（等しい）→ ループを抜けて ⑩へ"], ["⑩", "out", 20, "d を表示 → 20"]], "q": "a の値が 0、b の値が 4 のとき、出力される d の値は？"}], "M": {"ops": "<ul><li>Enter → <b>下</b>へ、Tab → <b>右</b>へ</li><li>文字データは<b>左</b>詰め、数値データは<b>右</b>詰め</li><li>数式は<b>半角</b>で、<b>＝</b>から書く。関数・セル番地は<b>大文字</b></li><li>体裁：罫線・中央揃え・列幅・3桁ごとのコンマ・小数の表示桁数</li></ul>", "calc": "<ul><li>+ プラス（たす）／ - マイナス（ひく）／ <b>* アスタリスク（かける）</b>／ <b>/ スラッシュ（わる）</b></li><li>× ÷ は使えない</li><li><b>かけ算・わり算が先</b>。先にたしたいときは（　）</li><li>例：=(B5+C5)*D5　(店内＋テイクアウト)×単価</li></ul>", "func": "<ul><li>=SUM(範囲) 合計、=AVERAGE(範囲) 平均、=MAX(範囲) 最大、=MIN(範囲) 最小</li><li>範囲は <b>B5:F5</b>（コロン）</li><li>合計・平均の列や行を範囲に入れない！</li></ul>", "count": "<ul><li>=COUNT(範囲)：<b>数値</b>が入っているセルの数</li><li>=COUNTA(範囲)：<b>空白でない</b>セルの数（文字も）</li><li>「棄権」は文字 → COUNT では数えない</li><li>商品数・生徒数（名前の数）＝ COUNTA(A5:A9) など</li></ul>", "abs": "<ul><li>絶対番地＝コピーしても変わらない番地。<b>$E$10</b></li><li><b>F4</b> キーで $ がつく</li><li>比率・構成比＝ =E5/<b>$E$10</b>（分母の合計に $）</li><li>%表示にするので ×100 はいらない</li></ul>", "if": "<ul><li>=IF(<b>条件</b>,<b>真の場合</b>,<b>偽の場合</b>)</li><li>以上 &gt;=　以下 &lt;=　超える &gt;　未満 &lt;　等しい =　等しくない &lt;&gt;</li><li>≧ ≦ は使えない</li><li>文字は \"人気\"、何も表示しない＝\"\"（すき間なし）</li><li>平均・最小など全員共通のセルには $</li></ul>", "rank": "<ul><li>=RANK(<b>数値</b>,<b>範囲</b>,<b>順序</b>)</li><li>範囲に $：$F$5:$F$9</li><li>順序 0＝降順（大きい順）、1＝昇順</li><li>例：=RANK(F5,$F$5:$F$9,0)</li></ul>", "round": "<ul><li>ROUND 四捨五入／ROUNDUP 切り上げ／ROUNDDOWN 切り捨て</li><li>=ROUND(計算式または数値,<b>桁数</b>)</li><li>桁数 1＝小数第1位まで、0＝整数、−1＝10の位まで</li><li>「小数第3位未満を処理、%で小数第1位まで」→ 桁数 <b>3</b></li><li>伸び率 =ROUNDDOWN(<b>(D5-B5)</b>/B5,3)</li></ul>", "graph": "<ul><li>集合縦棒＝大きさをくらべる、積み上げ縦棒＝合計と内訳、100%積み上げ＝内訳の割合</li><li>折れ線＝推移、円＝割合、積み上げ横棒（No.18）</li><li>部品：タイトル・データラベル・縦（数値）軸・横（項目）軸・軸ラベル・<b>凡例（はんれい）</b></li><li>円グラフの範囲：A4:A9,E4:E9（合計は入れない）</li></ul>", "unit": "<ul><li>速い順：<b>fs → ps → ns → μs → ms</b>（1/1000 ずつ）</li><li>ms ミリ 10⁻³、μs マイクロ 10⁻⁶、ns ナノ 10⁻⁹、ps ピコ 10⁻¹²、fs フェムト 10⁻¹⁵</li><li>1B＝8bit</li><li>大きい順：<b>PB → TB → GB → MB → KB</b>（約1000倍ずつ）</li><li>1KB の約百万倍＝1GB</li></ul>", "algo": "<ul><li>アルゴリズム＝処理の手順、流れ図（フローチャート）＝図にしたもの</li><li>端子・処理・ループ始端・ループ終端・データ・判断・線・準備</li><li>変数＝何度でも変更、定数＝変更できない、代入＝値を入れる</li><li>順次・選択・繰り返し</li></ul>", "trace": "<ul><li>流れ図を上から1つずつ実行して、変数の値を表に書く（トレース表）</li><li>かけ算が先：a+c+z×100 は z×100 を先に</li><li>判断：YES／NO で行き先が変わる（とばす箱に注意）</li><li>ループ：条件を毎回チェック。成り立たなくなったら抜ける</li></ul>"}};</script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const K='jhxl_';
+function lsGet(k,d){try{const v=localStorage.getItem(K+k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(K+k,JSON.stringify(v))}catch(e){}}
+function lsDel(k){try{localStorage.removeItem(K+k)}catch(e){}}
+let REC=lsGet('rec',{}),FMODE=lsGet('fmode','tile');
+const saveRec=()=>lsSet('rec',REC);
+const dayKey=t=>{const d=new Date(t);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const Q={};D.Q.forEach(o=>Q[o.id]=o);
+const UN={};D.U.forEach(u=>UN[u[0]]=u[1]);
+const TR={};D.TR.forEach(t=>TR[t.id]=t);
+const COLS='ABCDEFGHI';
+let S=null,rec=null,chunksA=[],audioURL=null;
+function go(t){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('show',x.id===t));window.scrollTo(0,0);
+ if(t==='home')renderHome();if(t==='mat')renderMat();if(t==='rank')renderRank();if(t==='search')renderSearch();if(t==='help')renderHelp()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+function openM(h){$('#modalIn').innerHTML=h;$('#modal').style.display='block'}
+function closeM(){$('#modal').style.display='none'}
+// ===== ホーム =====
+function st(list){const d=list.filter(o=>REC[o.id]&&REC[o.id].last==='o').length;return [d,list.length]}
+const byU=u=>D.Q.filter(o=>o.k===u&&o.t!=='x');
+function renderHome(){
+ const p=lsGet('prog',null);let h='';
+ if(p&&p.i<p.ids.length)h+=`<div class="resume">📌 <b>続きがあります</b>：${esc(p.title)}（${p.i+1}問目から／全${p.ids.length}問）<button class="btn org" onclick="resume()">続きから再開</button></div>`;
+ const W=D.Q.filter(o=>o.warn),F=D.Q.filter(o=>o.t==='f');const [wd,wn]=st(W),[fd,fn]=st(F);
+ h+=`<button class="big" style="background:#c62828" onclick="startSet('warn')">⚠️<div>まちがえやすい所・重点（${wn}問）<small>プリントで生徒がまちがえた式・テストに出やすい所　⭕${wd}/${wn}</small></div></button>
+ <button class="big" style="background:#1d6b45" onclick="startSet('f')">✍️<div>式を書く練習（${fn}問）<small>ペーパーテスト対策。表を見て、黄色のセルの式を書く　⭕${fd}/${fn}</small></div></button>
+ <button class="big" style="background:#2b5f8a" onclick="startSet('mix')">🎯<div>総合テスト（ランダム30問）<small>全部の単元からまぜて出題</small></div></button>
+ <div class="card"><h2>式の答え方</h2><div class="row">${[['tile','🧩 タイルを並べる'],['key','⌨ 入力する'],['paper','📝 紙に書く']].map(m=>`<button class="chip ${FMODE===m[0]?'on':''}" onclick="setF('${m[0]}')">${m[1]}</button>`).join('')}</div><p class="note">${FMODE==='paper'?'ノートや紙に式を書いてから答えを見て、自分で⭕❌をつけます。<b>本番に一番近い練習</b>です。':FMODE==='key'?'自分で式を入力します（記号ボタンつき）。':'部品（タイル）を正しい順にタップします。まちがえやすい部品もまざっています。'}</p></div>
+ <h2 style="margin:4px 2px 8px">単元ごとに</h2>`;
+ D.U.forEach((u,i)=>{const [d,n]=st(byU(u[0]));h+=`<button class="step" onclick="openUnit('${u[0]}')"><span class="n">${i+1}</span><span><div class="t">${u[1]}</div><div class="s">${unitSrc(u[0])}</div></span><span class="pr">⭕${d}/${n}</span></button>`});
+ const X=D.Q.filter(o=>o.t==='x');const [xd,xn]=st(X);
+ h+=`<button class="step" onclick="run(D.Q.filter(o=>o.t==='x'),'💬 自分の言葉で説明')"><span class="n" style="background:#c2571a">💬</span><span><div class="t">自分の言葉で説明</div><div class="s">声に出して説明 → 録音 → 模範とくらべる</div></span><span class="pr">⭕${xd}/${xn}</span></button>
+ <div class="two"><button class="btn sub" onclick="openPrint()">🖨 プリント</button><button class="btn org" onclick="openReport()">📋 先生に報告</button></div>
+ <button class="btn ghost" onclick="if(confirm('記録を全部消しますか？')){REC={};saveRec();lsDel('prog');renderHome()}" style="font-size:13px;padding:8px">記録をリセット</button>`;
+ $('#home').innerHTML=h;
+}
+function unitSrc(u){const s=new Set();D.Q.filter(o=>o.k===u&&o.src).forEach(o=>o.src.split(/[・ ]/).forEach(x=>{const m=x.match(/\d+/);if(m)s.add(+m[0])}));const a=[...s].sort((x,y)=>x-y);return a.length?'プリント No.'+a.join('・'):''}
+function setF(m){FMODE=m;lsSet('fmode',m);renderHome()}
+function openUnit(u){const l=byU(u);const f=l.filter(o=>o.t==='f'),c=l.filter(o=>o.t!=='f');
+ openM(`<h2>${UN[u]}</h2><div class="pt">${D.M[u]}</div>
+ <button class="btn" onclick="closeM();run(byU('${u}'),'${UN[u]}')">全部やる（${l.length}問）</button>
+ ${f.length&&c.length?`<div class="two"><button class="btn sub" onclick="closeM();run(byU('${u}').filter(o=>o.t!=='f'),'${UN[u]}（用語）')">用語・計算（${c.length}）</button><button class="btn sub" onclick="closeM();run(byU('${u}').filter(o=>o.t==='f'),'${UN[u]}（式）')">式を書く（${f.length}）</button></div>`:''}
+ <button class="btn ghost" onclick="closeM()">とじる</button>`)}
+function startSet(k){
+ if(k==='warn')run(shuffle(D.Q.filter(o=>o.warn)),'⚠️ 重点');
+ if(k==='f')run(D.Q.filter(o=>o.t==='f'),'✍️ 式を書く練習');
+ if(k==='mix')run(shuffle(D.Q.filter(o=>o.t!=='x')).slice(0,30),'🎯 総合テスト');
+}
+// ===== 出題 =====
+function run(list,title,keep){if(!keep)S={ids:list.map(o=>o.id),i:0,ok:0,miss:[],title};saveProg();go('play');draw()}
+function saveProg(){if(S)lsSet('prog',S)}
+function resume(){S=lsGet('prog',null);if(!S)return;go('play');draw()}
+function mark(id,ok){const r=REC[id]||{n:0,x:0,h:[]};r.n++;if(!ok){r.x++;if(!S.miss.includes(id))S.miss.push(id)}else S.ok++;r.last=ok?'o':'x';r.h=(r.h||[]).slice(-9);r.h.push([Date.now(),ok?1:0]);REC[id]=r;saveRec();saveProg()}
+function head(o){return `<div class="bar"><i style="width:${S.i/S.ids.length*100}%"></i></div><div class="qhead"><span>${esc(S.title)}　${S.i+1}/${S.ids.length}</span><span><button onclick="showMissNow()">×一覧</button> <button onclick="quit()">やめる</button></span></div><span class="tag">${UN[o.k]}</span>${o.src?`<span class="tag" style="background:#6b7f74">${o.src}</span>`:''}${o.warn?'<span class="tag w">⚠ 重点</span>':''}`}
+function nxBtn(){return `<button class="btn" onclick="nx()">${S.i+1<S.ids.length?'次へ':'結果を見る'}</button>`}
+function exHTML(o){return o.ex?`<div class="ex">📘 ${esc(o.ex)}</div>`:''}
+function draw(){
+ if(S.i>=S.ids.length){finish();return}
+ const o=Q[S.ids[S.i]];if(!o){S.i++;draw();return}
+ const p=$('#play');let h=`<div class="card">${head(o)}`;let done=false;
+ if(o.t==='ch'){
+  h+=`<div class="qtext">${o.html?o.q:esc(o.q)}</div>`+shuffle(o.ch).map(c=>`<button class="choice" data-v="${esc(c)}">${esc(c)}</button>`).join('')+`<div id="fb"></div></div>`;p.innerHTML=h;
+  p.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{if(done)return;done=true;const ok=b.dataset.v===o.a;
+   p.querySelectorAll('.choice').forEach(x=>{if(x.dataset.v===o.a)x.classList.add('ok')});if(!ok)b.classList.add('ng');mark(o.id,ok);
+   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ 正解は「'+esc(o.a)+'」'}</b></div>${exHTML(o)}${nxBtn()}`});
+ }else if(o.t==='n'){
+  h+=`<div class="qtext">${esc(o.q)}</div><div style="display:flex;align-items:center;gap:8px"><input class="nin" id="nin" inputmode="decimal" autocomplete="off"> <b>${esc(o.unit||'')}</b></div><button class="btn" id="nok">答える</button><div id="fb"></div></div>`;p.innerHTML=h;
+  const go1=()=>{if(done)return;const v=normNum($('#nin').value);if(v==='')return;done=true;const ok=v===o.a;mark(o.id,ok);$('#nok').style.display='none';
+   $('#fb').innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ 正解は '+esc(o.a)+esc(o.unit||'')}</b></div>${exHTML(o)}${nxBtn()}`};
+  $('#nok').onclick=go1;$('#nin').onkeydown=e=>{if(e.key==='Enter')go1()};
+ }else if(o.t==='f'){drawF(o,h);return}
+ else if(o.t==='tr'){drawTR(o,h);return}
+ else if(o.t==='x'){h+=explainBody(o)+'</div>';p.innerHTML=h;bindExplain(o)}
+ window.scrollTo(0,0);
+}
+function normNum(s){s=String(s).replace(/[０-９．－ー−]/g,c=>({'．':'.','－':'-','ー':'-','−':'-'})[c]||String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[,，\s%％]/g,'');if(s==='')return '';const n=Number(s);return isNaN(n)?s:String(n)}
+// ---- シート ----
+function sheetHTML(key,target){const s=D.SH[key];const rows=Object.keys(s.rows).map(Number).sort((a,b)=>a-b);const nc=s.cols.length;
+ let h=`<div class="shtitle">📄 ${esc(s.title)}（${s.src}）</div><div class="shw"><table class="sht"><tr><th></th>${[...COLS.slice(0,nc)].map(c=>`<th>${c}</th>`).join('')}</tr><tr><th>4</th>${s.cols.map(c=>`<td class="h">${esc(c)}</td>`).join('')}</tr>`;
+ let prev=4;
+ rows.forEach(r=>{if(r>prev+1)h+=`<tr><th>⋮</th><td colspan="${nc}" class="x" style="text-align:left">（${prev+1}〜${r-1}行目 省略）</td></tr>`;prev=r;
+  const row=s.rows[r];h+=`<tr><th>${r}</th>`;for(let i=0;i<nc;i++){const v=row[i]===undefined?'':row[i];const ref=COLS[i]+r;
+   if(ref===target)h+=`<td class="tg">？</td>`;else if(v==='※')h+=`<td class="x">※</td>`;else if(typeof v==='number')h+=`<td>${v.toLocaleString()}</td>`;else h+=`<td class="${i===0?'s':''}">${esc(v)}</td>`}
+  h+='</tr>'});
+ return h+'</table></div>'}
+function fitSheet(){const w=document.querySelector('.shw'),t=document.querySelector('.sht');if(!w||!t)return;t.style.zoom=1;const r=(w.clientWidth-12)/t.scrollWidth;if(r<1)t.style.zoom=Math.max(r,.7).toFixed(3)}
+// ---- 式 ----
+function normF(s){let out='',q=false;s=String(s).replace(/[“”＂]/g,'"').replace(/[！-～]/g,c=>c==='＂'?'"':String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/〇/g,'○').replace(/[×✕]/g,'×');
+ for(const c of s){if(c==='"'){q=!q;out+=c}else if(!q&&/[\s　]/.test(c)){}else out+=q?c:c.toUpperCase()}return out}
+function fOK(o,v){const n=normF(v);return n===o.a||o.alt.includes(n)}
+function diffMsg(o,v){const n=normF(v),m=[];
+ if(!n.startsWith('='))m.push('「=」から書き始めよう。');
+ if(/[≧≦≠]/.test(n))m.push('≧ ≦ ≠ は使えない。>= <= <> を使う。');
+ if(/[×÷]/.test(n))m.push('× ÷ は使えない。* / を使う。');
+ if(/" "/.test(n))m.push('「何も表示しない」は "" （すき間なし）。');
+ if(o.a.includes('$')&&!n.includes('$'))m.push('$（絶対番地）がぬけていない？');
+ const pa=(o.a.match(/\(/g)||[]).length,pn=(n.match(/\(/g)||[]).length;if(pa!==pn)m.push('かっこ（ ）の数をたしかめよう。');
+ const ca=(o.a.match(/,/g)||[]).length,cn=(n.match(/,/g)||[]).length;if(ca!==cn)m.push('カンマ（,）の数をたしかめよう。');
+ const fa=(o.a.match(/[A-Z]+(?=\()/g)||[]).join(),fn=(n.match(/[A-Z]+(?=\()/g)||[]).join();if(fa!==fn)m.push('関数名がちがう。');
+ return m.length?`<div class="diff">🔎 ${m.join('<br>🔎 ')}</div>`:''}
+function fAfter(o,ok,v){const r=$('#fr');r.innerHTML=`<div class="fb ${ok?'ok':'ng'}"><b>${ok?'⭕ 正解！':'❌ ざんねん'}</b>${v!=null&&!ok?`<div class="fx" style="margin-top:4px">あなた：${esc(v)}</div>`:''}</div>${!ok&&v!=null?diffMsg(o,v):''}<div class="ansbox fx">${esc(o.a)}</div>${o.alt.length?`<div class="note">これも正解：${o.alt.map(esc).join('　')}</div>`:''}${exHTML(o)}${nxBtn()}`}
+function drawF(o,h){
+ const p=$('#play');let done=false;
+ setTimeout(fitSheet,0);
+ h+=sheetHTML(o.sheet,o.cell)+`<div class="qtext"><span style="background:#ffe066;padding:0 6px;border-radius:4px">${o.cell}</span> ${esc(o.q)}</div>`;
+ if(FMODE==='tile'){
+  const tiles=shuffle([...o.tk.map((t,i)=>({t,i})),...o.d.map((t,i)=>({t,i:100+i}))]);
+  h+=`<div class="built fx" id="built">&nbsp;</div><div class="tiles fx" id="tiles">${tiles.map((x,k)=>`<button class="tile" data-k="${k}">${esc(x.t)}</button>`).join('')}</div>
+  <div class="two"><button class="btn sub" id="b1">← 1つ消す</button><button class="btn sub" id="b0">全部消す</button></div><button class="btn" id="chk">答え合わせ</button><div id="fr"></div></div>`;p.innerHTML=h;
+  let built=[];const upd=()=>{$('#built').textContent=built.map(k=>tiles[k].t).join('')||' ';p.querySelectorAll('.tile').forEach(b=>b.classList.toggle('used',built.includes(+b.dataset.k)))};
+  p.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{if(done)return;const k=+b.dataset.k;if(built.includes(k))return;built.push(k);upd()});
+  $('#b1').onclick=()=>{if(!done){built.pop();upd()}};$('#b0').onclick=()=>{if(!done){built=[];upd()}};
+  $('#chk').onclick=()=>{if(done||!built.length)return;done=true;const v=built.map(k=>tiles[k].t).join('');const ok=fOK(o,v);mark(o.id,ok);$('#chk').style.display='none';fAfter(o,ok,v)};
+ }else if(FMODE==='key'){
+  h+=`<input class="fin" id="fin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="=SUM(B5:F5) のように"><div class="kb">${['=','(',')',',',':','$','"','*','/','+','-','>','<','.'].map(c=>`<button data-c='${c}'>${c}</button>`).join('')}<button data-c="BS">⌫</button></div>
+  <button class="btn" id="chk">答え合わせ</button><div id="fr"></div></div>`;p.innerHTML=h;
+  const fin=$('#fin');p.querySelectorAll('.kb button').forEach(b=>b.onclick=()=>{const c=b.dataset.c;const s=fin.selectionStart??fin.value.length,e=fin.selectionEnd??s;
+   if(c==='BS'){if(s===e&&s>0){fin.value=fin.value.slice(0,s-1)+fin.value.slice(e);fin.setSelectionRange(s-1,s-1)}else{fin.value=fin.value.slice(0,s)+fin.value.slice(e);fin.setSelectionRange(s,s)}}
+   else{fin.value=fin.value.slice(0,s)+c+fin.value.slice(e);fin.setSelectionRange(s+1,s+1)}});
+  const ck=()=>{if(done||!fin.value.trim())return;done=true;const v=fin.value;const ok=fOK(o,v);mark(o.id,ok);$('#chk').style.display='none';fAfter(o,ok,v)};
+  $('#chk').onclick=ck;fin.onkeydown=e=>{if(e.key==='Enter')ck()};
+ }else{
+  h+=`<p class="note">📝 紙に式を書いてから「答えを見る」。</p><div id="fr"><button class="btn sub" id="rv">答えを見る</button></div></div>`;p.innerHTML=h;
+  $('#rv').onclick=()=>{$('#fr').innerHTML=`<div class="ansbox fx">${esc(o.a)}</div>${o.alt.length?`<div class="note">これも正解：${o.alt.map(esc).join('　')}</div>`:''}${exHTML(o)}<p class="note">1文字ずつくらべよう（= ( ) , $ " の書きわすれは×）</p><div class="two"><button class="btn ok" id="o1">⭕ 全部同じ</button><button class="btn ng" id="x1">❌ ちがった</button></div>`;
+   const fin=ok=>{if(done)return;done=true;mark(o.id,ok);nx()};$('#o1').onclick=()=>fin(true);$('#x1').onclick=()=>fin(false)};
+ }
+ window.scrollTo(0,0);
+}
+// ---- トレース ----
+function drawTR(o,h0){
+ const t=TR[o.id],p=$('#play');let k=0,miss=false;const vals={};
+ const flowH=cur=>t.flow.map(f=>{const [txt,ty,j]=f.split('|');const num=(txt.match(/^[①-⑩]/)||[''])[0];
+  return `<div class="fl ${ty} ${num&&num===cur?'now':''}"><span>${esc(txt)}</span>${j?`<span class="jn">${esc(j)}</span>`:''}</div>`}).join('');
+ const rowsDone=[];
+ const tblH=()=>`<table class="trt"><tr><th></th>${t.vars.map(v=>`<th>${v}</th>`).join('')}</tr>${rowsDone.map(r=>`<tr><th>${r.n}</th>${t.vars.map(v=>`<td class="${r.v===v?'chg':''}">${r.vals[v]??''}</td>`).join('')}</tr>`).join('')}</table>`;
+ const render=()=>{
+  const s=t.steps[k];let h=h0+`<div class="qtext">${esc(t.q)}</div><div class="note">1つずつ実行して、トレース表をうめよう。</div><div class="trw"><div class="flow">${flowH(s?s[0]:'')}</div><div class="trbox"><b style="font-size:13px">▼トレース表</b>${tblH()}<div id="tq" style="margin-top:8px"></div></div></div><div id="tf"></div></div>`;
+  p.innerHTML=h;if(!s)return fin();
+  const tq=$('#tq');
+  if(s[1]==='?'){tq.innerHTML=`<div style="font-size:14.5px;font-weight:700">${s[0]} の判断は？</div><div class="two"><button class="btn" data-a="YES">YES</button><button class="btn sub" data-a="NO">NO</button></div>`;
+   tq.querySelectorAll('button').forEach(b=>b.onclick=()=>answer(b.dataset.a))}
+  else if(s[1]==='loop'){tq.innerHTML=`<div class="ex" style="margin:0">${s[0]} ${esc(s[3])}</div><button class="btn" id="tn">次へ</button>`;$('#tn').onclick=()=>{k++;render()}}
+  else{tq.innerHTML=`<div style="font-size:14.5px;font-weight:700">${s[0]} のあと<br>${s[1]==='out'?'出力される値は？':s[1]+' の値は？'}</div><input class="nin" id="tv" inputmode="numeric" style="width:100%" autocomplete="off"><button class="btn" id="ta">答える</button>`;
+   const a=()=>{const v=normNum($('#tv').value);if(v!=='')answer(v)};$('#ta').onclick=a;$('#tv').onkeydown=e=>{if(e.key==='Enter')a()};setTimeout(()=>{try{$('#tv').focus({preventScroll:true})}catch(e){}},50)}
+ };
+ const answer=v=>{const s=t.steps[k];const ok=String(v)===String(s[2]);if(!ok)miss=true;
+  $('#tq').innerHTML=`<div class="fb ${ok?'ok':'ng'}" style="font-size:14px"><b>${ok?'⭕':'❌ 正しくは '+s[2]}</b><br>${esc(s[3])}</div><button class="btn" id="tn">次へ</button>`;
+  $('#tn').onclick=()=>{if(s[1]!=='?'&&s[1]!=='out'){vals[s[1]]=s[2]}
+   if(s[1]!=='out'&&s[1]!=='?')rowsDone.push({n:s[0],v:s[1],vals:{...vals}});k++;render()}};
+ const fin=()=>{const last=t.steps[t.steps.length-1];mark(o.id,!miss);
+  $('#tf').innerHTML=`<div class="fb ${miss?'ng':'ok'}"><b>${miss?'❌ とちゅうでまちがいあり':'⭕ 全部正解！'}</b>　答え：<b>${last[2]}</b></div>${nxBtn()}`};
+ render();window.scrollTo(0,0);
+}
+// ---- 説明 ----
+function explainBody(o){
+ return `<div class="qtext">💬 ${esc(o.q)}</div><div class="note">ヒント：${esc(o.hint)}</div>
+ <div class="rec"><button id="rb">🎙 録音する</button><button class="pl" id="pb" disabled>▶ 聞き返す</button></div><p class="note" id="rs">録音できないときは、声に出して言うだけでOK。</p>
+ <div id="xa"><button class="btn sub" id="xm">模範の説明を見る</button></div>`}
+function bindExplain(o){
+ const rb=$('#rb'),pb=$('#pb');
+ rb.onclick=async()=>{if(rec&&rec.state==='recording'){rec.stop();return}
+  try{const st=await navigator.mediaDevices.getUserMedia({audio:true});rec=new MediaRecorder(st);chunksA=[];rec.ondataavailable=e=>chunksA.push(e.data);
+   rec.onstop=()=>{st.getTracks().forEach(t=>t.stop());if(audioURL)URL.revokeObjectURL(audioURL);audioURL=URL.createObjectURL(new Blob(chunksA,{type:rec.mimeType||'audio/mp4'}));pb.disabled=false;rb.textContent='🎙 録音しなおす';$('#rs').textContent='録音できました。聞き返して、模範とくらべよう。'};
+   rec.start();rb.textContent='■ 止める';$('#rs').textContent='録音中…';
+  }catch(e){$('#rs').textContent='このブラウザでは録音できません。声に出して言うだけでOK。'}};
+ pb.onclick=()=>{if(audioURL)new Audio(audioURL).play()};
+ $('#xm').onclick=()=>{$('#xa').innerHTML=`<div class="ex">📘 ${esc(o.model)}</div><h3>チェック：自分の説明に入っていた？</h3><div class="kw">${o.kw.map(k=>`<label><input type="checkbox" class="kwc"> ${esc(k)}</label>`).join('')}</div><button class="btn" id="xf">チェックした → 次へ</button>`;
+  $('#xf').onclick=()=>{const all=[...document.querySelectorAll('.kwc')].every(c=>c.checked);mark(o.id,all);nx()}};
+}
+function nx(){S.i++;saveProg();draw()}
+function finish(){lsDel('prog');const n=S.ids.length;
+ $('#play').innerHTML=`<div class="card"><h2>${esc(S.title)}　結果</h2><div class="score">${S.ok} / ${n}</div><p style="text-align:center;margin:6px 0">${S.ok===n?'🎉 全部⭕！':'❌の問題を、全部⭕になるまでくり返そう！'}</p>
+ ${S.miss.length?`<button class="btn org" onclick="retry()">❌だけもう一度（${S.miss.length}問）</button><button class="btn ghost" onclick="showMissNow()">❌の問題を見る</button>`:''}<button class="btn sub" onclick="go('home')">ホームへ</button></div>`}
+function retry(){const l=shuffle(S.miss);S={ids:l,i:0,ok:0,miss:[],title:S.title.replace(/（❌だけ）$/,'')+'（❌だけ）'};run(null,null,true)}
+function quit(){saveProg();go('home')}
+function qText(o){return o.t==='tr'?'トレース '+o.q:o.t==='f'?o.cell+' '+o.q:o.q.replace(/<[^>]+>/g,'').replace(/この記号の名称は？.*/,'この記号の名称は？')}
+function aText(o){return o.t==='tr'?String(TR[o.id].steps.slice(-1)[0][2]):o.t==='x'?o.model:o.a+(o.unit||'')}
+function qLine(o){return `${esc(qText(o))}<br><span class="a">→ ${esc(aText(o))}</span>`}
+function showMissNow(){const l=(S&&S.miss)||[];openM(`<h2>まちがえた問題</h2>${l.length?l.map(id=>`<div class="mist">${qLine(Q[id])}</div>`).join(''):'<p class="note">まだありません。</p>'}<button class="btn ghost" onclick="closeM()">とじる</button>`)}
+// ===== まとめ =====
+function renderMat(){$('#mat').innerHTML=`<div class="card"><h2>📘 まとめ（テスト前に読む）</h2><p class="note">単元をタップすると、その単元の問題ができます。</p></div>`+D.U.map((u,i)=>`<div class="card"><h2>${i+1}. ${u[1]}</h2><div class="pt">${D.M[u[0]]}</div><button class="btn ghost" onclick="run(byU('${u[0]}'),'${u[1]}')">この単元の問題をやる</button></div>`).join('')}
+// ===== 苦手 =====
+function renderRank(){const ids=Object.keys(REC).filter(id=>Q[id]&&REC[id].x>0).sort((a,b)=>REC[b].x-REC[a].x);
+ $('#rank').innerHTML=`<div class="card"><h2>🏆 苦手ランキング</h2><p class="note">まちがえた回数が多い順。最後に⭕なら「克服」。</p>${ids.length?`<button class="btn org" onclick="run(Object.keys(REC).filter(id=>Q[id]&&REC[id].last==='x').map(id=>Q[id]),'🏆 まだ❌の問題')">まだ❌の問題をやる（${ids.filter(id=>REC[id].last==='x').length}問）</button>`:''}</div><div class="card">${ids.length?ids.map(id=>`<div class="mist"><span class="c">×${REC[id].x}</span>${REC[id].last==='o'?'✅ ':''}${qLine(Q[id])}</div>`).join(''):'<p class="note">まだありません。</p>'}</div>`}
+// ===== 検索 =====
+function renderSearch(){$('#search').innerHTML=`<div class="card"><h2>🔍 検索</h2><input type="search" id="sq" placeholder="例：COUNTA、絶対番地、凡例、ナノ"><p class="note" style="margin-top:6px">問題・答え・解説から探します。タップでその問題を練習できます。</p></div><div id="sr"></div>`;$('#sq').oninput=e=>doSearch(e.target.value.trim())}
+function doSearch(w){if(!w){$('#sr').innerHTML='';return}const lw=w.toLowerCase();
+ const hit=D.Q.filter(o=>[qText(o),aText(o),o.ex||'',o.src||''].join(' ').toLowerCase().includes(lw)).slice(0,40);
+ $('#sr').innerHTML=`<div class="card">${hit.length?hit.map(o=>`<div class="mist" onclick="run([Q['${o.id}']],'検索から')" style="cursor:pointer">${REC[o.id]?`<span class="c" style="background:${REC[o.id].last==='o'?'#2e7d32':'#c62828'}">${REC[o.id].last==='o'?'⭕':'❌'}${REC[o.id].n}回</span>`:''}<span class="tag">${UN[o.k]}</span> ${qLine(o)}</div>`).join(''):'<p class="note">見つかりませんでした。</p>'}</div>`}
+// ===== 印刷 =====
+function openPrint(){openM(`<h2>🖨 プリントを作る</h2><p class="note">解答ページつき。印刷画面で「PDFに保存」もできます。</p>
+ <button class="btn" onclick="mkPrint('f')">式を書くテスト（${D.Q.filter(o=>o.t==='f').length}問）</button><button class="btn sub" onclick="mkPrint('ch')">用語の一問一答（${D.Q.filter(o=>o.t==='ch'&&!o.html).length}問）</button><button class="btn org" onclick="mkPrint('w')">⚠ 重点だけ</button><button class="btn ghost" onclick="closeM()">とじる</button>`)}
+function mkPrint(t){closeM();let l=t==='f'?D.Q.filter(o=>o.t==='f'):t==='ch'?D.Q.filter(o=>o.t==='ch'&&!o.html):D.Q.filter(o=>o.warn&&o.t!=='tr'&&!o.html);
+ const name=t==='f'?'式を書くテスト':t==='ch'?'用語の一問一答':'重点テスト';
+ const qs=l.map((o,i)=>`<div class="pq">${i+1}. ${o.t==='f'?`［${esc(D.SH[o.sheet].title)}（${o.src}）］ <b>${o.cell}</b>：`:''}${esc(qText(o).replace(/^[A-I]\d+ /,''))}<div class="l"></div></div>`).join('');
+ const as=l.map((o,i)=>`<div class="pa">${i+1}. <b>${esc(aText(o))}</b></div>`).join('');
+ $('#printArea').innerHTML=`<div class="pp"><h1>情報処理　${name}<span>名前（　　　　　　　）</span></h1>${qs}</div><div class="pp"><h1>解答　${name}<span></span></h1>${as}</div>`;
+ setTimeout(()=>window.print(),300)}
+// ===== 報告 =====
+function reportText(){const now=Date.now(),today=dayKey(now),name=lsGet('name','');let tn=0,to=0;
+ Object.entries(REC).forEach(([id,r])=>(r.h||[]).forEach(x=>{if(dayKey(x[0])===today&&Q[id]){tn++;if(x[1])to++}}));
+ const L=[`【情報処理 学習報告】${name?name+'　':''}${new Date(now).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}`,
+ `■今日：${tn}問（⭕${to}／❌${tn-to}${tn?'、正答率'+Math.round(to/tn*100)+'%':''}）`];
+ const [wd,wn]=st(D.Q.filter(o=>o.warn)),[fd,fn]=st(D.Q.filter(o=>o.t==='f'));
+ L.push(`■⚠重点 ${wd}/${wn}　✍式 ${fd}/${fn}`);L.push('■単元ごと（⭕／全部）');
+ D.U.forEach((u,i)=>{const [d,n]=st(byU(u[0]));L.push(`　${i+1} ${u[1]}：${d}/${n}`)});
+ const [xd,xn]=st(D.Q.filter(o=>o.t==='x'));L.push(`　💬 説明：${xd}/${xn}`);
+ const weak=Object.keys(REC).filter(id=>Q[id]&&REC[id].last==='x').sort((a,b)=>REC[b].x-REC[a].x).slice(0,5);
+ if(weak.length){L.push('■まだ❌の苦手（上位5）');weak.forEach(id=>L.push(`　・${qText(Q[id]).slice(0,40)}（×${REC[id].x}）`))}
+ return L.join('\n')}
+function shortReport(){const now=Date.now(),today=dayKey(now),name=lsGet('name','');let tn=0,to=0;
+ Object.entries(REC).forEach(([id,r])=>(r.h||[]).forEach(x=>{if(dayKey(x[0])===today&&Q[id]){tn++;if(x[1])to++}}));
+ const s=l=>st(l).join('/');const [wd,wn]=st(D.Q.filter(o=>o.warn)),[fd,fn]=st(D.Q.filter(o=>o.t==='f'));
+ const L=[`情報処理報告 ${name} ${new Date(now).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}`,`今日${tn}問 ⭕${to} 重点${wd}/${wn} 式${fd}/${fn}`,
+  D.U.map((u,i)=>`${i+1}:${s(byU(u[0]))}`).join(' ')];
+ const weak=Object.keys(REC).filter(id=>Q[id]&&REC[id].last==='x').sort((a,b)=>REC[b].x-REC[a].x).slice(0,3);
+ if(weak.length)L.push('苦手:'+weak.map(id=>qText(Q[id]).slice(0,16)).join('／'));return L.join('\n')}
+function openReport(){const t=reportText();
+ openM(`<h2>📋 先生に報告する</h2><p class="note">名前を入れて送ってください。</p><input type="search" id="rname" placeholder="名前" value="${esc(lsGet('name',''))}" style="margin:6px 0">
+ <textarea id="rtxt" style="width:100%;height:260px;font-size:14px;line-height:1.5;padding:8px;border:2px solid #b9d0c2;border-radius:10px">${esc(t)}</textarea>
+ <button class="btn" onclick="copyReport()">📋 コピーする</button><a class="btn org" style="text-align:center;text-decoration:none" id="rline" href="#">LINE で先生に送る</a><a class="btn sub" style="text-align:center;text-decoration:none" id="rhome" href="#">👪 おうちの人に送る（LINE）</a><button class="btn" style="background:#2e7d32" onclick="showQR()">📱 QRコードで先生に見せる</button><p class="note" id="rmsg"></p><button class="btn ghost" onclick="closeM()">とじる</button>`);
+ const upd=()=>{$('#rline').href='https://line.me/R/msg/text/?'+encodeURIComponent($('#rtxt').value);$('#rhome').href='https://line.me/R/msg/text/?'+encodeURIComponent('【古賀先生に転送してください】\n'+$('#rtxt').value)};upd();
+ $('#rname').oninput=e=>{lsSet('name',e.target.value);$('#rtxt').value=reportText();upd()};$('#rtxt').oninput=upd}
+function showQR(){const t=shortReport();let svg='';
+ try{qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];const q=qrcode(0,'M');q.addData(t,'Byte');q.make();svg=q.createSvgTag({cellSize:5,margin:4,scalable:true})}catch(e){svg='<p class="note">QRコードを作れませんでした。報告画面を見せてください。</p>'}
+ openM(`<h2>📱 QRコードで先生に見せる</h2><p class="note">先生のスマホのカメラで読み取ってもらってね。</p><div style="background:#fff;padding:8px;max-width:340px;margin:8px auto">${svg}</div><pre style="white-space:pre-wrap;font-size:12.5px;background:#f3f8f5;border-radius:8px;padding:8px">${esc(t)}</pre><button class="btn ghost" onclick="openReport()">報告の画面にもどる</button><button class="btn ghost" onclick="closeM()">とじる</button>`)}
+function copyReport(){const t=$('#rtxt');const ok=()=>{$('#rmsg').textContent='コピーしました。LINE に貼りつけて送ってください。'};
+ try{navigator.clipboard.writeText(t.value).then(ok,()=>{t.select();document.execCommand('copy');ok()})}catch(e){t.select();try{document.execCommand('copy');ok()}catch(e2){$('#rmsg').textContent='長押しして全部選択→コピーしてください。'}}}
+// ===== 使い方 =====
+function renderHelp(){$('#help').innerHTML=`<div class="card"><h2>❓ 使い方</h2><div class="pt">
+<p><b>テスト前日のおすすめ</b></p><ol><li>📘 まとめ を読む（5分）</li><li>⚠️ 重点 を全部⭕に</li><li>✍️ 式を書く練習 を「📝紙に書く」で（本番と同じ）</li><li>単元ごとに、❌だけもう一度 → 全部⭕</li></ol>
+<p><b>✍️ 式の問題</b>：表の<b>黄色いセル（？）</b>に入る式を答えます。答え方は3つ。<br>🧩 タイル：部品を順にタップ（まぎらわしい部品もまざっている）<br>⌨ 入力：記号ボタンつき。小文字・全角で打っても大丈夫（テストでは大文字・半角で書くこと）<br>📝 紙に書く：紙に書いてから答えを見て、自分で⭕❌</p>
+<p><b>🔁 トレース</b>：流れ図の黄色の箱を実行して、変数の値を答える。表が1行ずつうまっていく。</p>
+<p><b>💬 自分の言葉で説明</b>：声に出して説明 → 🎙録音 → 模範とくらべてキーワードに✔。</p>
+<p><b>📌 続きから</b>：1問ごとに自動保存。ホームの「続きから再開」で再開。</p>
+<p><b>📋 先生に報告</b>：LINEで先生へ、👪おうちの人へ（転送してもらう）、📱QRコードを塾で見せる、のどれかで。</p>
+<p class="note">記録はこのスマホのこのブラウザだけに残ります。</p></div></div>`}
+renderHome();
+</script></body></html>
