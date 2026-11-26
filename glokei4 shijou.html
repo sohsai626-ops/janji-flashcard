@@ -1,0 +1,3071 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>グロ経 4章 市場と経済</title>
+<style>
+:root{--pri:#0f4c5c;--pri2:#16708a;--acc:#e36414;--bg:#f6f4ef;--card:#fff;--ok:#2a9d8f;--ng:#d62828;--mut:#6b7280;--line:#e5e1d8}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;background:var(--bg);color:#1f2933;line-height:1.6;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:20;background:var(--pri);color:#fff;padding:8px 12px;display:flex;align-items:center;gap:8px}
+header h1{font-size:16px;margin:0;flex:1;line-height:1.3}
+header small{display:block;font-size:11px;opacity:.85;font-weight:normal}
+.badge{background:#fff;color:var(--pri);font-weight:bold;font-size:11px;border-radius:10px;padding:2px 7px}
+.hbtn{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:8px;padding:6px 9px;font-size:13px}
+nav{display:flex;overflow-x:auto;gap:4px;padding:6px 8px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:48px;z-index:19}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:16px;padding:6px 11px;font-size:13px;color:#333}
+nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+main{max-width:640px;margin:0 auto;padding:12px 12px 80px}
+.screen{display:none}.screen.show{display:block}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+h2{font-size:17px;margin:4px 0 8px;color:var(--pri)}
+h3{font-size:15px;margin:12px 0 6px;color:var(--pri2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;font-size:13px;text-align:left}
+.chip.on{border-color:var(--pri2);background:#e3f2f6;color:var(--pri);font-weight:bold}
+.chip small{display:block;font-weight:normal;color:var(--mut);font-size:11px}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:bold;background:var(--pri);color:#fff}
+.btn.sub{background:#fff;color:var(--pri);border:1.5px solid var(--pri)}
+.btn.acc{background:var(--acc)}
+.btn.sm{padding:8px 10px;font-size:13px}
+.btn.wide{width:100%;margin-top:8px}
+.btn:disabled{opacity:.4}
+.resume{background:#fff7e6;border:2px solid #f4a261}
+.prog{height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:6px 0}
+.prog>div{height:100%;background:var(--ok);width:0}
+.qmeta{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:6px}
+.ctx{font-size:14px;color:#9aa1a9;margin-bottom:4px}
+.qtext{font-size:17px;line-height:1.85}
+.blank{display:inline-block;min-width:4.5em;border-bottom:3px solid var(--acc);color:var(--acc);font-weight:bold;text-align:center;padding:0 4px}
+.fill{color:var(--pri2);font-weight:bold}
+.uline{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;font-weight:bold}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px;font-size:16px;text-align:left;color:#1f2933}
+.opt.ok{border-color:var(--ok);background:#e6f6f3}
+.opt.ng{border-color:var(--ng);background:#fdecec}
+.tfrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.tfrow .opt{text-align:center;font-size:28px;font-weight:bold;padding:10px}
+.fb{margin-top:10px;padding:10px;border-radius:10px;font-size:15px}
+.fb.ok{background:#e6f6f3;color:#1d6f65}
+.fb.ng{background:#fdecec;color:#9b1c1c}
+.ans{font-size:20px;font-weight:bold;color:var(--acc);text-align:center;margin:10px 0}
+.note{font-size:12px;color:var(--mut)}
+.tag{display:inline-block;font-size:11px;border-radius:6px;padding:1px 6px;background:#eef2f3;color:var(--pri);margin-right:4px}
+table.rk{width:100%;border-collapse:collapse;font-size:14px}
+table.rk td,table.rk th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.ovl.show{display:flex}
+.ovl .panel{background:#fff;width:100%;max-width:640px;max-height:88vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px}
+input[type=search],textarea{width:100%;font-size:16px;padding:10px;border:1.5px solid var(--line);border-radius:10px}
+.kw label{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:15px}
+.kw input{width:22px;height:22px;flex:0 0 auto}
+svg text{font-family:inherit}
+.sumtbl{width:100%;border-collapse:collapse;font-size:14px;text-align:center}
+.sumtbl th,.sumtbl td{border:1px solid var(--line);padding:6px 3px}
+.sumtbl th{background:#eef6f8}
+.up{color:var(--ng);font-weight:bold}.dn{color:#1d4ed8;font-weight:bold}
+#printArea{display:none}
+@media print{
+ body{background:#fff}
+ header,nav,main,.ovl{display:none!important}
+ #printArea{display:block;font-size:11pt;line-height:1.7;color:#000}
+ #printArea h1{font-size:14pt;margin:0 0 4px}
+ #printArea h2{font-size:12pt;margin:12px 0 4px;border-bottom:1px solid #000;color:#000}
+ #printArea .pq{margin:3px 0;page-break-inside:avoid}
+ #printArea .pb{display:inline-block;min-width:6em;border-bottom:1px solid #000}
+ .pgbr{page-break-before:always}
+}
+</style>
+</head>
+<body>
+<header>
+ <h1>グロ経 4章 市場と経済<small>準拠問題集 1節(1)〜2節(3)</small></h1>
+ <span class="badge">v1.0</span>
+ <button class="hbtn" onclick="openHelp()">❓使い方</button>
+</header>
+<nav id="nav">
+ <button data-t="home" class="on">🏠 ホーム</button>
+ <button data-t="graph">📈 グラフ</button>
+ <button data-t="explain">💬 説明</button>
+ <button data-t="rank">⭐ 苦手</button>
+ <button data-t="search">🔍 検索</button>
+ <button data-t="print">🖨 印刷</button>
+ <button data-t="report">📋 報告</button>
+</nav>
+<main>
+
+<!-- ホーム -->
+<section id="s-home" class="screen show">
+ <div id="resumeBox"></div>
+ <div class="card">
+  <h2>① 範囲をえらぶ</h2>
+  <div class="chips" id="unitChips"></div>
+  <div class="row" style="margin-top:8px"><button class="btn sm sub" onclick="selAll(true)">ぜんぶ</button><button class="btn sm sub" onclick="selAll(false)">はずす</button></div>
+ </div>
+ <div class="card">
+  <h2>② 問題の種類</h2>
+  <div class="chips" id="kindChips"></div>
+  <h2 style="margin-top:12px">③ 答え方</h2>
+  <div class="chips" id="modeChips"></div>
+  <h2 style="margin-top:12px">④ 順番</h2>
+  <div class="chips" id="orderChips"></div>
+  <label class="row" style="margin-top:10px;font-size:14px"><input type="checkbox" id="weakOnly" style="width:20px;height:20px"> ⭐ 苦手な問題だけ（まちがえた回数＞正解の回数）</label>
+  <div class="note" id="countNote" style="margin-top:6px"></div>
+  <button class="btn wide acc" onclick="startQuiz()">▶ スタート</button>
+ </div>
+ <div class="card note">
+  おすすめ：まず「要点整理・4択」→「要点整理・思い出す」→「Step問題」。最後に⭐苦手だけをくり返す。図の問題は📈グラフで動かして確認。
+ </div>
+</section>
+
+<!-- 出題 -->
+<section id="s-quiz" class="screen">
+ <div class="card">
+  <div class="qmeta"><span id="qPos"></span><span id="qScore"></span></div>
+  <div class="prog"><div id="qBar"></div></div>
+  <div class="qmeta"><span id="qUnit"></span><button class="btn sm sub" onclick="showMiss()">✗ 今回のミス</button></div>
+ </div>
+ <div class="card" id="qCard"></div>
+ <div class="row"><button class="btn sm sub" onclick="quitQuiz()">■ やめてホームへ</button></div>
+</section>
+
+<!-- 結果 -->
+<section id="s-result" class="screen"><div class="card" id="resultCard"></div></section>
+
+<!-- グラフ -->
+<section id="s-graph" class="screen">
+ <div class="card">
+  <h2>📈 需要・供給のグラフを動かそう</h2>
+  <div class="note">D＝需要曲線（右下がり）、S＝供給曲線（右上がり）。点線はもとの曲線。</div>
+  <svg id="gsvg" viewBox="0 0 320 300" style="width:100%;max-width:420px;display:block;margin:6px auto"></svg>
+  <div class="row" style="justify-content:center">
+   <button class="btn sm" onclick="shift('D',40)">需要↑（Dを右へ）</button>
+   <button class="btn sm" onclick="shift('D',-40)">需要↓（Dを左へ）</button>
+  </div>
+  <div class="row" style="justify-content:center;margin-top:6px">
+   <button class="btn sm acc" onclick="shift('S',40)">供給↑（Sを右へ）</button>
+   <button class="btn sm acc" onclick="shift('S',-40)">供給↓（Sを左へ）</button>
+  </div>
+  <div class="row" style="justify-content:center;margin-top:6px"><button class="btn sm sub" onclick="gReset()">↺ もとにもどす</button></div>
+  <div id="gMsg" class="fb ok" style="margin-top:10px"></div>
+ </div>
+ <div class="card">
+  <h3>価格を動かしてみよう（均衡価格からずれると？）</h3>
+  <input type="range" id="pSlider" min="0" max="160" step="10" value="80" style="width:100%">
+  <div id="pMsg" style="font-size:15px"></div>
+ </div>
+ <div class="card">
+  <h3>まとめ表（テストに出る！）</h3>
+  <table class="sumtbl">
+   <tr><th>できごと</th><th>曲線</th><th>もとの価格では</th><th>均衡価格</th><th>均衡量</th></tr>
+   <tr><td>需要が増える<br><small>（好みが増す・所得↑）</small></td><td>Dが右</td><td>超過需要</td><td class="up">上昇</td><td class="up">増加</td></tr>
+   <tr><td>需要が減る</td><td>Dが左</td><td>超過供給</td><td class="dn">下落</td><td class="dn">減少</td></tr>
+   <tr><td>供給が増える<br><small>（原材料費↓・技術進歩・新規参入）</small></td><td>Sが右</td><td>超過供給</td><td class="dn">下落</td><td class="up">増加</td></tr>
+   <tr><td>供給が減る<br><small>（原材料費↑）</small></td><td>Sが左</td><td>超過需要</td><td class="up">上昇</td><td class="dn">減少</td></tr>
+  </table>
+  <div class="note" style="margin-top:6px">超過需要＝品不足・売り手市場 → 価格は上がる／超過供給＝売れ残り・買い手市場 → 価格は下がる</div>
+ </div>
+ <div class="card">
+  <h3>問題集の図：需要の増加（p.5 4番）</h3>
+  <svg id="shiftSvg" viewBox="0 0 320 290" style="width:100%;max-width:420px;display:block;margin:auto"></svg>
+  <div class="note">140円：20→40　80円：80→120　20円：140→200　→ 需要曲線の「右シフト」</div>
+ </div>
+</section>
+
+<!-- 説明 -->
+<section id="s-explain" class="screen"><div id="exList"></div></section>
+
+<!-- 苦手 -->
+<section id="s-rank" class="screen">
+ <div class="card">
+  <h2>⭐ これまでの苦手ランキング</h2>
+  <div class="note">まちがえた回数が多い順。タップするとその問題だけ練習できます。</div>
+  <div id="rankBody"></div>
+  <div class="row" style="margin-top:10px"><button class="btn sm sub" onclick="practiceWeak()">⭐ 苦手だけ練習</button><button class="btn sm sub" onclick="resetRank()">記録をリセット</button></div>
+ </div>
+</section>
+
+<!-- 検索 -->
+<section id="s-search" class="screen">
+ <div class="card">
+  <h2>🔍 検索</h2>
+  <input type="search" id="sq" placeholder="例：超過需要、GNP、カルテル" oninput="doSearch()">
+  <div class="chips" style="margin-top:8px" id="sFilter"></div>
+  <div id="sRes"></div>
+ </div>
+</section>
+
+<!-- 印刷 -->
+<section id="s-print" class="screen">
+ <div class="card">
+  <h2>🖨 プリントを作る</h2>
+  <div class="chips" id="pUnits"></div>
+  <h3>種類</h3>
+  <div class="chips" id="pKinds"></div>
+  <label class="row" style="margin-top:8px;font-size:14px"><input type="checkbox" id="pShuffle" style="width:20px;height:20px"> 問題の順番をシャッフル</label>
+  <label class="row" style="font-size:14px"><input type="checkbox" id="pWeak" style="width:20px;height:20px"> ⭐ 苦手な問題だけ</label>
+  <button class="btn wide" onclick="makePrint()">🖨 印刷する（解答ページつき）</button>
+  <div class="note" style="margin-top:6px">iPhone：印刷画面で「プリンタ」またはPDFで保存。</div>
+ </div>
+</section>
+
+<!-- 報告 -->
+<section id="s-report" class="screen">
+ <div class="card">
+  <h2>📋 先生に報告</h2>
+  <textarea id="repText" rows="9" readonly></textarea>
+  <div class="row" style="margin-top:8px">
+   <button class="btn sm" onclick="sendLine(false)">LINEで先生へ</button>
+   <button class="btn sm acc" onclick="sendLine(true)">👪 おうちの人に送る</button>
+   <button class="btn sm sub" onclick="showQR()">📱 QRコード</button>
+   <button class="btn sm sub" onclick="copyRep()">コピー</button>
+  </div>
+  <div id="qrBox" style="text-align:center;margin-top:10px"></div>
+ </div>
+</section>
+</main>
+
+<div id="printArea"></div>
+
+<!-- オーバーレイ -->
+<div class="ovl" id="ovl" onclick="if(event.target===this)closeOvl()"><div class="panel" id="ovlBody"></div></div>
+
+<script>
+// ===== データ（734 グロ経 4章 市場と経済 準拠問題集）=====
+// 要点整理：[n:答え] が空欄、<n> は同じ空欄の答えをくり返し使う所
+const UNITS = [
+{ id:'u1', name:'1節(1) 財と資源配分', page:'教科書 p.78〜80',
+  unordered:[[2,3,4]],
+  text:`経済活動に利用されるさまざまな財が[1:経済主体]である[2:家計]・[3:企業]・[4:政府]によって，生産や消費のために利用されている。どの<1>に，どれだけ利用されるかという財の配分を[5:資源配分]という。また，どのように<5>を行うかを決める社会的な仕組みを[6:資源配分メカニズム]という。<6>の一つに[7:市場メカニズム]がある。<7>は，分けようとする財に価格を付け，買い手と売り手の希望が一致するところで配分を実行する仕組みである。[8:オークション]は，有効な<7>の例となる場合がある。<7>は，「[9:効率的]な<5>を実現させる」という長所をもっている。<9>とは無駄がないことである。<7>以外の<6>では，必ずしも<9>にはならない。市場経済においても，例えば，企業の内部では，市場を通じることなく，さまざまな財の<5>が行われている。企業にはたくさんの[10:労働者]がいる。<10>が提供する財である労働は，市場において売買されている。労働が売買される市場を[11:労働市場]というが，この市場は，労働の価格である[12:賃金率]による調整が働いて成り立っている。企業は内部に多数の<10>を雇用していて，必要に応じて彼らをさまざまな部署に配置して仕事をさせている。このような<10>の配置は，企業内での労働という財の<5>である。企業内部におけるこの<5>は，経営者の命令によって行われているのである。このように，企業という[13:組織]の内部では，権限のある者の命令によって<5>が行われている。このことから，<13>は市場とは異なる<5>機能を持っていることがわかる。`,
+  step:[
+   {g:'1', q:'経済活動に利用されるさまざまな財は，【①】によって，生産や消費のために利用されている。', opts:['ア オークション','イ 抽選','ウ 資源配分メカニズム','エ 市場メカニズム','オ 経済主体','カ 資源配分'], a:'オ 経済主体', fixed:true},
+   {g:'1', q:'どの経済主体に，どれだけ利用されるかという財の配分を【②】という。', opts:['ア オークション','イ 抽選','ウ 資源配分メカニズム','エ 市場メカニズム','オ 経済主体','カ 資源配分'], a:'カ 資源配分', fixed:true},
+   {g:'1', q:'限られた資源の配分を決める社会的な仕組みを【③】という。', opts:['ア オークション','イ 抽選','ウ 資源配分メカニズム','エ 市場メカニズム','オ 経済主体','カ 資源配分'], a:'ウ 資源配分メカニズム', fixed:true},
+   {g:'1', q:'資源配分メカニズムの一つに【④】がある。これは効率的な資源配分を実現する長所をもっている。', opts:['ア オークション','イ 抽選','ウ 資源配分メカニズム','エ 市場メカニズム','オ 経済主体','カ 資源配分'], a:'エ 市場メカニズム', fixed:true},
+   {g:'1', q:'【⑤】は，市場メカニズムの例となる場合がある。', opts:['ア オークション','イ 抽選','ウ 資源配分メカニズム','エ 市場メカニズム','オ 経済主体','カ 資源配分'], a:'ア オークション', fixed:true},
+   {g:'2', fix:true, q:'労働が売買される市場を〔商品市場〕という。', opts:['○（正しい）','労働市場','生産物市場','資本市場'], a:'労働市場'},
+   {g:'2', fix:true, q:'労働の価格である賃金率は，給与総額を〔労働人数〕で割って求められる。', opts:['○（正しい）','労働時間','生産量','労働日数'], a:'労働時間', exp:'賃金率＝給与総額÷労働時間（1時間あたりの労働の値段）。'},
+   {g:'2', fix:true, q:'企業内における資源配分は，権限のある者の〔命令〕によって行われている。', opts:['○（正しい）','価格','市場','抽選'], a:'○（正しい）'},
+   {g:'2', fix:true, q:'抽選による資源配分は，オークションによる資源配分よりも〔効率的〕といえる。', opts:['○（正しい）','非効率的','公平','安定的'], a:'非効率的', exp:'抽選では，その財を一番ほしい人に届くとは限らない。だから非効率的。'},
+   {g:'2', fix:true, q:'ある財に最も高い価値を見出している人が，その財を最終的に購入し，消費することになれば，〔効率的〕に財が利用されているといえる。', opts:['○（正しい）','非効率的','公平','平等'], a:'○（正しい）'},
+   {g:'3', q:'【オークション】Aさんは180円，Bさんは220円，Cさんは280円まで払ってよいと思っている。100円から始まり10円ずつ上がる。この財を購入できるのは誰？', opts:['Aさん','Bさん','Cさん','だれも買えない'], a:'Cさん', fixed:true, exp:'180円をこえるとAさん，220円をこえるとBさんがおりる。最後に残るのはCさん。'},
+   {g:'3', q:'【オークション】Aさん180円・Bさん220円・Cさん280円まで。100円から10円ずつ上がる。Cさんはいくらで購入できる？', opts:['180円','220円','230円','280円'], a:'230円', fixed:true, exp:'Bさんは220円まで。230円になるとBさんがおりるので，Cさんは230円で買える（280円まで払う必要はない）。'},
+  ]},
+{ id:'u2', name:'1節(2) 需要と供給', page:'教科書 p.81〜85',
+  text:`私たちが財を購入したいとき，[1:需要]があるという。<1>の法則について，X財市場を例に考えてみよう。X財市場における買い手のことを[2:需要者]という。Xの価格がある金額のときに，Xの買い手全体が購入したいと思う量のことをXの[3:需要量]といい，その価格と<3>の関係を表に表したものを[4:需要表]という。<4>の情報を図に移し，縦軸を価格（P），横軸を数量（Q）で示したものを[5:需要曲線]という。価格が下がると<3>が増え，価格が上がると<3>が減る。つまり，価格と<3>との間には逆の関係が成り立ち，<5>は[6:右下がり]となり，その傾きは負となる。一般的に価格と<3>にはこのような関係があり，これを[7:需要法則]という。通常の市場において，<5>は<6>（傾きは負）である。消費者は価格が下がれば，前と同じ量か，前より多くの量が欲しくなるからである。つまり，消費者はどの財に対しても<6>の<5>を持ち，市場の<5>は全ての消費者の<5>を足し合わせたものになるので，やはり<6>の曲線となり，<7>を満たすことになる。<3>を決める最も重要な指標は価格であるが，需要全体に影響を与える要因は他にもある。最も代表的な要因は，<2>の[8:所得]である。多くの<2>の<8>が増えて前より豊かになれば，どの価格に対しても<3>は多くなるので，<5>は右に[9:シフト]する。逆に，所得が減れば，需要曲線は左に<9>する。企業などが製品を生産し，商品を販売することを[10:供給]という。<10>の法則について，X財市場を例に考えてみよう。X財市場における売り手のことを[11:供給者]という。Xの価格がある金額のときに，Xの売り手全体がその財を生産し，売りたいと思う量のことをXの[12:供給量]という。その価格と<12>の関係を表に表したものを[13:供給表]という。<13>の情報を図に移し，縦軸を価格（P），横軸を数量（Q）で示したものを[14:供給曲線]という。価格と<12>との間には正の関係が成り立つ。<14>は[15:右上がり]となり，その傾きは正となる。この価格と供給量との関係を[16:供給法則]という。どの市場でも<14>は<15>である。供給者はどの財に対しても，価格が上がれば，前と同じ量か，前より多くの量を売りたくなるからである。つまり，供給者はどの財に対しても<15>の<14>を持ち，市場の<14>は全ての供給者の<14>を足し合わせたものになるので，<15>の曲線となり，<16>を満たすことになる。<12>を決める最も重要な指標は[17:価格]であるが，供給全体に影響を与える代表的な要因には，[18:生産設備]や[19:生産技術]がある。新しい企業が市場に参入すると，市場全体の生産規模が増し，<14>は[20:右]にシフトする。また，<11>の<19>が進歩すると各企業の費用負担が減り，どの価格に対しても最適な生産量は増加する。つまり，供給曲線は<20>にシフトする。原材料の価格が下がると，変動費が低下し，生産がしやすくなる。その結果，<12>は増加し，供給曲線は<20>にシフトする。逆に，原材料の価格が上がると<12>は減少し，曲線は[21:左]にシフトする。`,
+  step:[
+   {g:'1', q:'りんご市場の需要表（160円→0個，80円→80万個，0円→160万個）から需要曲線をかいた。需要曲線は右上がり・右下がりのどちら？ 傾きは正・負のどちら？', opts:['右下がり・負','右下がり・正','右上がり・正','右上がり・負'], a:'右下がり・負', exp:'価格が下がるほど需要量が増える → 右下がり（傾きは負）。'},
+   {g:'1', q:'需要曲線が右下がり（傾きが負）になるような，価格と需要量の関係を何という？', opts:['需要法則','供給法則','ペティ・クラークの法則','市場メカニズム'], a:'需要法則'},
+   {g:'2', tf:true, q:'需要全体に影響を与える代表的な要因は，需要者の所得である。', a:'○'},
+   {g:'2', tf:true, q:'供給全体に影響を与える代表的な要因には，生産設備や生産技術がある。', a:'○'},
+   {g:'2', tf:true, q:'市場の需要曲線は全ての消費者の需要曲線を足し合わせたものになるので，右上がりの曲線となる。', a:'×', exp:'需要曲線は右下がり。足し合わせても右下がりのまま。'},
+   {g:'3', q:'パン市場の供給表（160円→160万個，80円→80万個，0円→0個）から供給曲線をかいた。供給曲線は右上がり・右下がりのどちら？ 傾きは正・負のどちら？', opts:['右上がり・正','右上がり・負','右下がり・負','右下がり・正'], a:'右上がり・正', exp:'価格が上がるほど供給量が増える → 右上がり（傾きは正）。'},
+   {g:'3', q:'供給曲線が右上がり（傾きが正）になるような，価格と供給量の関係を何という？', opts:['供給法則','需要法則','ペティ・クラークの法則','市場メカニズム'], a:'供給法則'},
+   {g:'4', fig:'shift', q:'【需要の増加の図】価格が140円のときは（①）個から（②）個に需要量は変化する。①は？', opts:['20','40','80','140'], a:'20', exp:'もとの需要曲線Dでは，140円のとき需要量20。'},
+   {g:'4', fig:'shift', q:'【需要の増加の図】価格が140円のときは20個から（②）個に需要量は変化する。②は？', opts:['40','20','80','120'], a:'40', exp:'右にシフトしたD′では，140円のとき需要量40。'},
+   {g:'4', fig:'shift', q:'【需要の増加の図】価格が80円のときは（③）個から（④）個に変化する。③は？', opts:['80','40','120','140'], a:'80'},
+   {g:'4', fig:'shift', q:'【需要の増加の図】価格が80円のときは80個から（④）個に変化する。④は？', opts:['120','80','140','200'], a:'120'},
+   {g:'4', fig:'shift', q:'【需要の増加の図】（⑤）円のときは140個から200個に需要量が増加する。⑤は？', opts:['20','40','80','140'], a:'20', exp:'Dで需要量140になるのは20円。そのときD′では200。'},
+   {g:'4', fig:'shift', q:'各価格に対する需要量が増加するので，需要曲線DがD′に移動する。これを「右（⑥）」という。', opts:['シフト','スライド','ジャンプ','カーブ'], a:'シフト'},
+  ]},
+{ id:'u3', name:'1節(3) 価格決定と均衡', page:'教科書 p.86〜91',
+  text:`同じ図にX財の需要曲線と供給曲線を表すと，二つの曲線の交点が一つ存在する。市場取引はこの交点で実行され，これを[1:市場の均衡]という。<1>では，買い手側の買いたい量と売り手側の売りたい量がある価格で一致している。この価格のことを，[2:均衡価格]といい，需要と供給が同じになる量のことを[3:均衡量]という。<2>において，需要と供給が過不足なく満たされる。完全競争においては，供給者は市場から与えられた価値を純粋に受け入れる存在である[4:プライステーカー]として，市場価格を受け入れている。市場において<2>が示されると，消費者の買いたい量（需要）と企業の売りたい量（供給）が一致し，その価格で取引は成立する。この状態は，完全競争市場における均衡，つまり[5:競争均衡]または[6:完全競争均衡]という。需要法則と供給法則が満たされていれば，この均衡は存在する。そのため，ほとんどの財において，市場には[7:均衡点]が存在することになる。つまり，どのような市場でも，<2>のもと，買い手と売り手の両者が満足する量の取引が成立する。市場価格が最初から<2>と同じになるとは限らない。それでは市場価格が<2>からずれるとどうなるのだろうか。市場価格が<2>よりも低くなれば，消費者の購買意欲が促進され，需要量は<3>より大きくなる。一方，生産者の販売意欲は減退し，供給量が<3>より小さくなる。つまり，需要量と供給量の差による[8:超過需要]が発生し，品不足や売り切れの状態となる。<8>により，財を購入できなかった需要者のなかには，価格が上昇しても買いたいと思う人が存在する。また，供給者も，価格が上昇すれば前より多く生産できるため，売りたいと思うようになる。このように売り手に有利な市場である[9:売り手市場]では，価格が上昇するように圧力がかかるため，価格は少しずつ上昇し，それに応じて<8>も減少する。最終的に価格が<2>と等しくなると，<8>はゼロになり，再び均衡が達成される。市場価格が<2>よりも高い場合はどうなるだろうか。生産者が売りたい量（供給）が増加する一方，消費者が買いたい量（需要）は減少し，供給量が需要量より大きくなる状態である[10:超過供給]が発生し，買い手に有利な市場である[11:買い手市場]で財が売れ残っている状態となる。そのため，価格は徐々に下落していき，最終的には，また<2>に戻る。価格が需要と供給を調整するメカニズムにより，価格が制限なく自由に動くような市場では，一つだけ安定的な<5>が存在する。X財市場の均衡から，需要が増加した場合を考えてみよう。X財に対する好みが増すと，需要曲線は[12:右]にシフトする。このとき，前の均衡価格において[13:超過需要]が発生するため，市場価格が[14:上昇]する。その際，最終的に新たな均衡価格に到達することになる。新しい均衡は前の均衡に比べ，均衡価格は<14>し，均衡量は[15:増加]することになる。<13>が発生すると，品不足を解消するには，財の値上げをするしか方法はなく，需要と供給を一致させるためには，価格の<14>が必要なのである。逆に，需要が減ると，需要曲線が[16:左]にシフトし，[17:超過供給]が発生して，均衡価格が[18:下落]し，均衡量は[19:減少]する。X財市場の均衡から，供給が増加した場合を考えてみよう。原材料費の低下により供給が増加し，供給曲線が[20:右]にシフトする場合，前の均衡価格のもとでは，[21:超過供給]が発生して，市場価格は[22:下落]する。売れ残りを解消するためには，値下げするしかなく，供給に合った需要を生み出すためには，その対価である価格の低下が必要である。一方，供給が減った場合は供給曲線が[23:左]にシフトし，[24:超過需要]が発生する。均衡価格は[25:上昇]し，均衡量は[26:減少]する。上記のような需要や供給の変化に対応するため，価格は常に変化する。自由競争のもと，価格の自由な動きによって，生産者と消費者が互いに満足する形で需要と供給が一致し，[27:均衡]が達成されるのである。`,
+  step:[
+   {g:'1', fig:'eq', q:'需要曲線と供給曲線の交点で市場取引が実行される。これを（①）という。', opts:['市場の均衡','均衡価格','均衡量','競争均衡'], a:'市場の均衡'},
+   {g:'1', fig:'eq', q:'市場の均衡では，買い手の買いたい量と売り手の売りたい量がある価格で一致している。この価格を（②）という。', opts:['均衡価格','均衡量','独占価格','競争価格'], a:'均衡価格'},
+   {g:'1', fig:'eq', q:'需要と供給が同じになる量のことを（③）という。', opts:['均衡量','均衡価格','需要量','供給量'], a:'均衡量'},
+   {g:'1', fig:'eq', q:'完全競争においては，供給者は市場から与えられた価値を純粋に受け入れる存在である（④）として，市場価格を受け入れている。', opts:['プライステーカー','プライスメーカー','価格カルテル','需要者'], a:'プライステーカー'},
+   {g:'1', fig:'eq', q:'完全競争市場における均衡を（⑤）という。', opts:['競争均衡（完全競争均衡）','独占均衡','市場メカニズム','均衡量'], a:'競争均衡（完全競争均衡）'},
+   {g:'1', fig:'eq', q:'【図】りんごの需要表と供給表から曲線をかくと，交点（均衡点）はどこ？', opts:['80円・80万個','160円・160万個','40円・120万個','120円・40万個'], a:'80円・80万個', exp:'80円のとき，需要量も供給量も80万個で一致する。'},
+   {g:'2', q:'ある財に対する好みが増すと，需要曲線は【①】にシフトする。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'ア 右', fixed:true},
+   {g:'2', q:'需要曲線が右にシフトしたとき，価格が変わらなければ【②】が発生することになる。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'ウ 超過需要', fixed:true},
+   {g:'2', q:'超過需要が発生するので，市場価格は【③】することになり，新たな均衡では，均衡価格が【③】する。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'オ 上昇', fixed:true},
+   {g:'2', q:'需要が増えたときの新たな均衡では，均衡価格が上昇し，均衡量は【④】することになる。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'キ 増加', fixed:true},
+   {g:'2', q:'逆に，需要が減ると，需要曲線は【⑤】にシフトする。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'イ 左', fixed:true},
+   {g:'2', q:'需要が減ると，需要曲線は左にシフトし，【⑥】が発生する。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'エ 超過供給', fixed:true},
+   {g:'2', q:'需要が減ると，超過供給が発生して，均衡価格は【⑦】する。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'カ 下落', fixed:true},
+   {g:'2', q:'需要が減ると，均衡価格は下落し，均衡量が【⑧】することで，新たな均衡点に達する。', opts:['ア 右','イ 左','ウ 超過需要','エ 超過供給','オ 上昇','カ 下落','キ 増加','ク 減少'], a:'ク 減少', fixed:true},
+   {g:'4', tf:true, q:'原材料費の低下は，供給を減少させることになる。', a:'×', exp:'原材料費が下がると作りやすくなる → 供給は増加（供給曲線は右へ）。'},
+   {g:'4', tf:true, q:'超過供給が発生すると，市場価格は上昇する。', a:'×', exp:'売れ残り（超過供給）→ 値下げ → 価格は下落。'},
+   {g:'4', tf:true, q:'供給が減った場合は，供給曲線は左にシフトするので，超過需要が発生する。', a:'○'},
+   {g:'4', tf:true, q:'自由競争のもとでは，価格が自由に変化することで，市場の調整が行われている。', a:'○'},
+   {g:'4', tf:true, q:'価格の自由な動きによって，生産者と消費者の少なくともどちらか一方は不満な状態ではあるが，均衡が達成されることになる。', a:'×', exp:'生産者と消費者が「互いに満足する形」で均衡が達成される。'},
+  ]},
+{ id:'u4', name:'1節(4) 市場の役割と課題', page:'教科書 p.92〜98',
+  text:`さまざまな企業が供給者として生産する財を，家計が需要者として消費する市場のことを[1:生産物市場]という。<1>で取引される財を生産するためには，土地・資本・労働といった[2:生産要素]が必要である。この<2>の配分はどのように行われるのであろうか。労働と資本も市場を通して取引される。例えば，就職活動では，労働市場において企業が買い手として労働を[3:需要]し，家計が売り手として労働を[4:供給]する。完全競争のもと均衡が達成されると，企業の労働需要量と家計の労働供給量が一致する。結果として，理想的な労働の配分が実現する。資本も原則的には，企業が買い手となり，家計が売り手となる。[5:資本市場]では，家計の[6:貯蓄]が供給され，企業の[7:投資資金]として需要される。完全競争のもと均衡が達成されると，企業の資本需要量と家計の資本供給量が一致し，理想的な資本の配分が実現する。このように，市場経済では，<1>において理想的な配分が決定されるのと同時に，その配分の生産を実現するため，[8:生産要素市場]で労働や資本の理想的な配分が決定される。もし市場で競争が制限され，完全競争の条件に当てはまらない[9:不完全競争]になった場合，その結果は理想的なものにはならない。市場に唯一の生産者しか存在しない最もかたよった状態を[10:独占]という。<10>では，生産者間の競争が全く行われないため，独占企業は自分の好きなように市場価格を決定でき，完全な価格支配力を持つ[11:プライスメーカー]になる。市場が<10>のとき，市場の需要は全て独占企業のものなので，需要曲線上のどの点でも取引ができるようになる。収入と費用を比較しながら，価格を調節することにより，最終的に最大利潤を達成する取引点である[12:独占均衡]に行きつく。結果として，その価格である[13:独占価格]は競争価格より高くなり，[14:独占取引量]は競争均衡量より少なくなる。独占企業は，供給量を少なくすることにより，市場価格を上げて，消費者から利潤を得る。したがって，社会全体からみて財の配分は公正でなく，理想的でもなくなる。市場に供給する企業数が複数かつ少数の場合もある。その<9>の状態を[15:寡占]という。市場が<15>の場合，完全競争と比較すると競争は緩くなり，市場価格が競争価格より高くなると想定される。一方，<10>と比較すると<15>のほうが競争が激しくなり，市場価格が<13>より高くなることはない。<15>は完全競争ではないため，<15>企業は完全なプライステーカーにはなれない。また，<10>でもないため，寡占企業は完全な<11>にもなれない。工業製品などでは，主要な参加企業が協力して，横並びで高い市場価格を設定することがある。これを[16:価格カルテル]という。この場合も，それが客観的に証明されれば[17:独占禁止法]違反となる。また，市場占有率が比較的大きな企業どうしの合併や統合は，競争を制限することにもなりかねないので，[18:公正取引委員会]の審議の対象になる。このように政府は，競争を制限するさまざまな活動に対して，市場における[19:自由競争]を保証している。しかし，国際的に激しい競争のなかにある産業や構造的な業績不振に苦しんでいる産業では，[20:過当競争]を防ぐため，大企業どうしの合併も認められることがある。外食産業では，それぞれの商品に対してある程度の[21:価格支配力]を持っている。このように，自社の商品に<21>を持っているが，競争相手も存在する<9>の状況を，[22:独占的競争]という。`,
+  step:[
+   {g:'1', fix:true, q:'企業が供給者として生産する財を，家計が需要者として消費する市場を〔労働市場〕という。', opts:['○（正しい）','生産物市場','資本市場','生産要素市場'], a:'生産物市場'},
+   {g:'1', fix:true, q:'資本は原則的には労働と同じように，家計が〔買い手〕となる。', opts:['○（正しい）','売り手','需要者','生産者'], a:'売り手', exp:'労働も資本も，企業が買い手・家計が売り手。'},
+   {g:'1', fix:true, q:'資本市場では，家計の貯蓄が供給され，企業の〔投資資金〕として需要される。', opts:['○（正しい）','生産要素','賃金','消費財'], a:'○（正しい）'},
+   {g:'1', fix:true, q:'市場経済では，〔生産要素市場〕で労働や資本の理想的な配分が決定される。', opts:['○（正しい）','生産物市場','商品市場','独占市場'], a:'○（正しい）'},
+   {g:'1', fix:true, q:'日本を含めた世界のほとんどの国では，市場が独占にならないように〔製造物責任法〕が制定されている。', opts:['○（正しい）','独占禁止法','消費者基本法','労働基準法'], a:'独占禁止法'},
+   {g:'2', q:'市場で競争が制限され，【①】になった場合，その結果は理想的なものにはならない。', opts:['ア 安く','イ 高く','ウ プライスメーカー','エ 独占','オ 不完全競争','カ 独占均衡'], a:'オ 不完全競争', fixed:true},
+   {g:'2', q:'最もかたよった不完全競争のケースは，市場に唯一の生産者しか存在しない【②】の状態である。', opts:['ア 安く','イ 高く','ウ プライスメーカー','エ 独占','オ 不完全競争','カ 独占均衡'], a:'エ 独占', fixed:true},
+   {g:'2', q:'独占のとき，独占企業は，完全な価格支配力を持つ【③】となる。', opts:['ア 安く','イ 高く','ウ プライスメーカー','エ 独占','オ 不完全競争','カ 独占均衡'], a:'ウ プライスメーカー', fixed:true},
+   {g:'2', q:'最大利潤を達成する【④】では，独占価格は競争価格より高くなる。', opts:['ア 安く','イ 高く','ウ プライスメーカー','エ 独占','オ 不完全競争','カ 独占均衡'], a:'カ 独占均衡', fixed:true},
+   {g:'2', q:'独占均衡では，独占価格は競争価格より【⑤】なる。', opts:['ア 安く','イ 高く','ウ プライスメーカー','エ 独占','オ 不完全競争','カ 独占均衡'], a:'イ 高く', fixed:true},
+   {g:'3', q:'市場に供給する企業数が複数かつ少数の場合の不完全競争の状態', opts:['ア 寡占','イ 独占的競争','ウ 価格カルテル','エ 過当競争','オ 公正取引委員会'], a:'ア 寡占', fixed:true},
+   {g:'3', q:'独占禁止法を運用するために設置された機関', opts:['ア 寡占','イ 独占的競争','ウ 価格カルテル','エ 過当競争','オ 公正取引委員会'], a:'オ 公正取引委員会', fixed:true},
+   {g:'3', q:'同じ産業の中の企業どうしが，適正な利潤を得ることができない状態', opts:['ア 寡占','イ 独占的競争','ウ 価格カルテル','エ 過当競争','オ 公正取引委員会'], a:'エ 過当競争', fixed:true},
+   {g:'3', q:'主要な参加企業が協力して，横並びで高い市場価格を設定すること', opts:['ア 寡占','イ 独占的競争','ウ 価格カルテル','エ 過当競争','オ 公正取引委員会'], a:'ウ 価格カルテル', fixed:true},
+   {g:'3', q:'自社の商品に価格支配力を持っているが，競争相手も存在する不完全競争の状況', opts:['ア 寡占','イ 独占的競争','ウ 価格カルテル','エ 過当競争','オ 公正取引委員会'], a:'イ 独占的競争', fixed:true},
+  ]},
+{ id:'u5', name:'2節(1) GDP', page:'教科書 p.99〜102',
+  unordered:[[12,13,14],[23,24]],
+  text:`GDP［[1:国内総生産]］とは，マクロ経済の活発さを表す指標である。他の財の生産のために利用され，かつ生産された期間中に消えてしまう生産物を[2:中間生産物]といい，<2>以外の生産物を[3:最終生産物]という。また，ある企業の生産額から，その生産過程で使われた<2>の価値である中間費用を差し引いたものを[4:付加価値]という。GDPとは，全ての生産者が生み出した<4>の合計であり，その期間中に生み出された<3>の生産額に相当する。2020年における日本のGDPは[5:540]兆円程度であった。第二次世界大戦前の主要産業であった[6:第一次]産業は，その比重を急激に低下させており，近年では[7:第三次]産業の比重が高い。このように，経済の発展とともに，産業の主力が<6>産業から，[8:第二次]産業，<7>産業に移っていく現象は，[9:ペティ・クラーク]の法則と呼ばれている。第二次世界大戦前は，生産設備が比較的小さい[10:軽工業]が<8>産業の主力であった。戦後は自動車など，より巨額の生産設備を必要とする[11:重化学工業]が発達した。近年では，多くの産業で知識，[12:情報]，[13:アイディア]，[14:デザイン]などの果たす役割が大きくなっている。GDPの基礎となる付加価値は，[15:市場]の価格に基づいて計算されるため，<15>で適正な価格が付かない財・サービスの価値は，GDPに正しく反映されない。GDPの限界は以前から指摘されているが，一国の生産力の指標として，GDPより優れていると広く認められたものは，現時点では存在しない。GDPは，それぞれの国の[16:通貨]単位で表示されているため，国際比較をするためには，[17:アメリカドル]のような共通の通貨単位に換算する必要がある。しかし，1ドル分の貨幣でどれだけ財を購入できるかは国によって異なるので，市場の為替レートでドル換算されたGDPの国際比較は，生活実感からずれる可能性がある。この点に配慮して計算されたものが[18:購買力平価]（PPP）の為替レートである。GDPは[19:国内]で生産された[20:付加価値]の総額であるから，海外で日本国民（個人や法人）が<20>を生み出したとしても，それが日本のGDPに算入されることはない。一方，外国民が日本国内で生産した<20>は日本のGDPに含まれる。国内と国外において，日本国民の貢献により生み出された<20>の合計を[21:GNP]（国民総生産）という。<21>は次の式で求められる。<21>＝GDP＋（日本国民が外国で得た〔[22:所得]〕）－外国民が日本国内で得た<22>。日本国民が外国で得る<22>のなかで大きな割合を占めるものは，私たちが持つ海外資産からの[23:利子]・[24:配当]である。近年，日本が外国で得る<23>・<24>は，日本から外国民に支払われるものより大きいため，近年の日本の<21>はGDPよりも大きくなっている。一定期間中に生み出された価値を表すGDPは，水に例えるならば，一定期間中にどれだけの水が流れたかを表す流量に相当するものであり，[25:フロー変数]と呼ばれる。日本国内では，1年間にGDPに相当する額の最終生産物が生産され，その一部が消費される。消費されなかった生産物の多くは，将来の生産活動のために[26:投資]される。過去の<26>が累積した結果として，ある一時点に存在する機械設備やオフィスビルなど生産設備の総計を[27:資本ストック]（固定資本）という。<27>は桶に貯まっている貯水量のようなものであり，[28:ストック変数]と呼ばれる。<27>は，日々の生産活動に利用されるなかで壊れたりして，その価値の一部が失われていく。これを[29:固定資本減耗]という。<27>に，住宅，自家用車のような耐久消費財，土地，対外純資産などを加えたものを[30:国富]といい，私たちが保有する資産の総額を表す。`,
+  step:[
+   {g:'1', tf:true, q:'トラクターなどの耐久的生産設備は中間生産物ではない。', a:'○', exp:'中間生産物は「その期間中に消えてしまう」もの。トラクターは何年も使うので中間生産物ではない。'},
+   {g:'1', tf:true, q:'家族による介護労働によって生み出された価値はGDPに加算される。', a:'×', exp:'市場で価格が付かない（お金のやりとりがない）ので，GDPには入らない。'},
+   {g:'1', tf:true, q:'平均的な国民の経済状態を比較するには，国民一人当たりのGDPをみるとよい。', a:'○'},
+   {g:'1', tf:true, q:'海外に住んでいる日本人が生み出した付加価値はGNPに算入されない。', a:'×', exp:'GNPは「日本国民」が生み出した付加価値の合計。海外にいても日本国民なので算入される（GDPには入らない）。'},
+   {g:'1', tf:true, q:'近年，日本におけるGNPの額はGDPの額よりも少なくなっている。', a:'×', exp:'海外からの利子・配当が多いので，近年の日本はGNPのほうが大きい。'},
+   {g:'2', fix:true, q:'GDPとは，マクロ経済の活発さを表す指標であり，日本語では〔国民総生産〕と呼ばれる。', opts:['○（正しい）','国内総生産','国民所得','国富'], a:'国内総生産', exp:'GDP＝国内総生産，GNP＝国民総生産。'},
+   {g:'2', fix:true, q:'ある企業の生産額から中間費用を差し引いたものを〔付加価値〕という。', opts:['○（正しい）','最終生産物','中間生産物','利潤'], a:'○（正しい）'},
+   {g:'2', fix:true, q:'ある国における，ある期間中に生み出された最終生産物の生産額の合計は100億円であった。GDPは〔50〕億円である。', opts:['○（正しい）','100','150','200'], a:'100', exp:'GDPは最終生産物の生産額に相当する → 100億円。'},
+   {g:'2', fix:true, q:'ある国における産業の主力が第一次産業から，第二次，第三次産業へ移っていく現象を〔資源配分メカニズム〕という。', opts:['○（正しい）','ペティ・クラークの法則','需要法則','市場メカニズム'], a:'ペティ・クラークの法則'},
+   {g:'2', fix:true, q:'各国の物価が同程度となるように計算された通貨の換算率を〔購買力平価〕（PPP）という。', opts:['○（正しい）','為替レート','GDPデフレーター','物価上昇率'], a:'○（正しい）'},
+  ]},
+{ id:'u6', name:'2節(2) 実質GDPと経済成長率', page:'教科書 p.103〜104',
+  text:`GDPは全ての財の価格が2倍になれば，実質的な生産活動に変化がなくとも，生産額は2倍になり，GDPの値も2倍になる。経済活動の活発さの指標としてGDPをみるためには，[1:物価]の変動による影響を取り除く必要がある。この調整を行ったGDPを[2:実質GDP]，調整を行う前の，その時々の価格で評価されたGDPを[3:名目GDP]という。実質GDPの増加率を[4:経済成長率]という。実質GDPは，長期的にみれば緩やかな上昇傾向を持つが，短期的には細かく上下に揺れている。この長期的な動きを[5:経済成長]といい，短期的な振動を景気変動あるいは[6:景気循環]という。`,
+  step:[
+   {g:'1', tf:true, q:'実質GDPについて，長期的な動きを景気循環，短期的な振動を経済成長という。', a:'×', exp:'逆。長期的な動き＝経済成長，短期的な振動＝景気循環（景気変動）。'},
+   {g:'1', tf:true, q:'全ての財の価格が5倍になれば，GDPの値も5倍になる。', a:'○', exp:'生産活動が同じでも，価格が5倍なら（名目）GDPも5倍。だから物価の影響を取り除いた実質GDPが必要。'},
+  ]},
+{ id:'u7', name:'2節(3) 物価指数と経済成長の要因', page:'教科書 p.104〜108',
+  text:`さまざまな財の価格の全体的な動きである物価の動向をみるために，GDPデフレーター，消費者物価指数（CPI），企業物価指数など，いくつかの指数が作られている。名目GDPを実質GDPで割った値は[1:物価]の尺度となる。この考え方に基づき，作成される物価指数がGDPデフレーターである。消費者物価指数は，一般的な消費者の生計費の変化をみるために使われることが多い。消費者物価指数は，基準年において一般的な消費者が購入する消費財の組み合わせである[2:基準バスケット]を決めておき，その購入費用が基準年と比べてどれだけ変化したかを示すものである。これと同様に，企業物価指数は，鉄，原油，電力など，一般的な企業が購入する財の組み合わせを<2>にして計算される。時代の変化とともに，人々の購入する財のリストは変化する。そのため，基準バスケットの内容は，[3:5]年ごとに見直されている。生鮮食品の価格はその時々の気候などの影響を強く受けるため，日本では<2>から生鮮食品を除外し，計算した消費者物価指数を[4:コア指数]という。また，生鮮食品と中東情勢などの影響を強く受けるエネルギーの両方を除いて計算した消費者物価指数を[5:コアコア指数]という。物価指数が1年の間にどれだけ変化したかを表す割合のことを[6:物価上昇率]［[7:インフレ率]］という。どの物価指数を用いるかによって，<6>の値は若干異なるが，それらの値はおおむね[8:同じ]動きをする。物価が持続的に上昇する現象を[9:インフレーション]といい，以前と同じ金額で購入できる財の量は少なくなる。それとは逆に，物価が持続的に下落し，以前と同じ金額でより多くの財が購入できるようになる現象を[10:デフレーション]という。実質GDPは個別の財の需要額と供給額を合計したものである[11:総需要]と[12:総供給]の影響を受けると考えられる。経済全体としての供給能力を表す<12>は，❶[13:生産要素]がどれだけ利用可能であるか，❷生産を行う際の[14:技術]がどのような水準にあるか，❸<13>が無駄なく利用されているか，といった要因で決まる。日本経済が全体として供給できる労働時間の総量である[15:労働供給量]は，今後どのように推移するか考える。日本の人口は1億3,000万人弱であるが，15歳から64歳までの[16:生産年齢人口]は7,500万人程度である。日本の<16>は，少子高齢化の進展により低下傾向にあるが，[17:労働参加率]が上昇すれば，<15>は増加する可能性がある。`,
+  step:[]},
+];
+
+// 4択のまぎらわしい選択肢グループ
+const GROUPS = [
+ ['右','左','上','下'],
+ ['上昇','下落','増加','減少'],
+ ['超過需要','超過供給','均衡量','均衡価格'],
+ ['右下がり','右上がり','水平','垂直'],
+ ['需要法則','供給法則','市場メカニズム','資源配分'],
+ ['ペティ・クラーク','アダム・スミス','ケインズ','リカード'],
+ ['第一次','第二次','第三次'],
+ ['インフレーション','デフレーション','スタグフレーション','デノミネーション'],
+ ['コア指数','コアコア指数','GDPデフレーター','企業物価指数'],
+ ['独占','寡占','独占的競争','不完全競争'],
+ ['プライステーカー','プライスメーカー','価格カルテル','独占均衡'],
+ ['フロー変数','ストック変数','資本ストック','固定資本減耗'],
+ ['生産物市場','生産要素市場','労働市場','資本市場'],
+ ['売り手市場','買い手市場','生産物市場','労働市場'],
+ ['需要','供給','需要量','供給量'],
+ ['需要者','供給者','経済主体','労働者'],
+ ['需要表','供給表','需要曲線','供給曲線'],
+ ['需要曲線','供給曲線','需要表','供給表'],
+ ['実質GDP','名目GDP','GNP','国富'],
+ ['経済成長','景気循環','経済成長率','物価上昇率'],
+ ['経済成長率','物価上昇率','インフレ率','経済成長'],
+ ['物価上昇率','経済成長率','インフレ率','総需要'],
+ ['540','300','1,000','100'],
+ ['5','1','3','10'],
+ ['国内総生産','国民総生産','国民所得','国富'],
+ ['中間生産物','最終生産物','付加価値','資本ストック'],
+ ['軽工業','重化学工業','情報','第三次'],
+ ['競争均衡','完全競争均衡','独占均衡','均衡点'],
+ ['市場の均衡','均衡価格','均衡量','均衡点'],
+ ['総需要','総供給','労働供給量','生産要素'],
+ ['生産年齢人口','労働参加率','労働供給量','人的資本'],
+ ['独占価格','独占取引量','独占均衡','競争価格'],
+ ['公正取引委員会','独占禁止法','価格カルテル','自由競争'],
+ ['自由競争','過当競争','独占的競争','価格支配力'],
+ ['同じ','逆の','反対の','ばらばらの'],
+];
+
+// 自分の言葉で説明
+const EXPLAINS = [
+ {id:'ex1', unit:'u4', title:'政府はどのように自由競争を保証している？（問題集 p.12 4番・100字程度）',
+  q:'政府は，市場において競争を制限するさまざまな活動に対して，どのように自由競争を保証しているか説明しよう。',
+  hint:'カルテル／合併／2つの例を出す',
+  keys:['価格カルテル','独占禁止法（違反）','大きな企業どうしの合併・統合','公正取引委員会（の審議）','自由競争を保証'],
+  model:'主要な企業が協力して横並びで高い市場価格を設定する価格カルテルを独占禁止法で違反としたり，市場占有率が比較的大きな企業どうしの合併や統合は，公正取引委員会の審議対象とするなどして自由競争を保証している。（101字）',
+  modelNote:'問題集の解答例'},
+ {id:'ex2', unit:'u3', title:'需要が増えると，なぜ価格が上がる？',
+  q:'ある財の人気が出て需要が増えた。均衡価格と均衡量はどうなる？ 理由も図を思いうかべて説明しよう。',
+  hint:'曲線が動く → もとの価格では？ → 価格は？',
+  keys:['需要曲線が右にシフト','もとの価格では超過需要（品不足）','価格が上昇','新しい均衡では価格↑・量↑'],
+  model:'①好みが増すと需要曲線が右にシフトする。②もとの均衡価格のままだと，買いたい量が売りたい量より多い「超過需要（品不足）」になる。③品不足を解消するには値上げしかないので価格が上昇し，新しい均衡では均衡価格が上昇し，均衡量は増加する。',
+  modelNote:'Claudeが要点整理の内容から作成'},
+];
+
+</script>
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+// ===== 保存 =====
+const KEY={rank:'glk4_rank',prog:'glk4_prog',day:'glk4_day',ex:'glk4_ex'};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const circ=n=>'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚'[n-1]||('('+n+')');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+// ===== 問題を組み立てる =====
+const ITEMS=[]; const BYID={};
+UNITS.forEach(u=>{
+ // 文に分ける
+ const sents=u.text.replace(/。/g,'。\u0001').split('\u0001').filter(s=>s.trim());
+ const ans={}; sents.forEach(s=>{s.replace(/\[(\d+):([^\]]+)\]/g,(m,n,a)=>{ans[n]=a})});
+ u.ans=ans;
+ const unord={}; (u.unordered||[]).forEach(g=>g.forEach(n=>unord[n]=g));
+ sents.forEach((s,si)=>{
+  s.replace(/\[(\d+):([^\]]+)\]/g,(m,n,a)=>{
+   n=+n;
+   const it={id:u.id+'_k'+n,unit:u.id,kind:'k',no:n,a:a,sent:s,prev:si>0?sents[si-1]:'',unord:unord[n]||null};
+   ITEMS.push(it);BYID[it.id]=it;
+  });
+ });
+ (u.step||[]).forEach((st,i)=>{
+  const it=Object.assign({},st,{id:u.id+'_s'+(i+1),unit:u.id,kind:'s'});
+  ITEMS.push(it);BYID[it.id]=it;
+ });
+});
+ITEMS.sort((x,y)=>{const ux=UNITS.findIndex(u=>u.id===x.unit),uy=UNITS.findIndex(u=>u.id===y.unit);if(ux!==uy)return ux-uy;if(x.kind!==y.kind)return x.kind==='k'?-1:1;return 0});
+const unitOf=id=>UNITS.find(u=>u.id===id);
+
+// 文を表示用に（target番号を空欄に）
+function renderSent(s,u,target,mode){
+ return esc(s).replace(/\[(\d+):([^\]]+)\]/g,(m,n,a)=>{
+   n=+n; if(n===target) return mode==='plain'?'（　？　）':mode==='print'?'<span class="pb">'+circ(n)+'</span>':'<span class="blank">'+circ(n)+'</span>';
+   return mode==='plain'?a:mode==='print'?'（'+circ(n)+'）':'<span class="fill">'+esc(a)+'</span>';
+ }).replace(/&lt;(\d+)&gt;/g,(m,n)=>{
+   n=+n; if(n===target) return mode==='plain'?'（　？　）':mode==='print'?'（'+circ(n)+'）':'<span class="blank">'+circ(n)+'</span>';
+   return mode==='plain'?u.ans[n]:mode==='print'?'（'+circ(n)+'）':'<span class="fill">'+esc(u.ans[n])+'</span>';
+ });
+}
+function plainQ(it){
+ const u=unitOf(it.unit);
+ if(it.kind==='k') return renderSent(it.sent,u,it.no,'plain');
+ return it.q.replace(/〔|〕/g,'');
+}
+function ansText(it){return it.kind==='k'?it.a:(it.tf?it.a:it.a)}
+
+// 4択の選択肢
+function optsFor(it){
+ if(it.kind==='s'){ if(it.tf) return ['○','×']; return it.fixed?it.opts.slice():shuffle(it.opts); }
+ const u=unitOf(it.unit); const ex=new Set([it.a]);
+ if(it.unord) it.unord.forEach(n=>ex.add(u.ans[n]));
+ let pool=[];
+ const g=GROUPS.find(g=>g.includes(it.a));
+ if(g) pool=g.filter(x=>!ex.has(x));
+ const same=Object.values(u.ans).filter(x=>!ex.has(x)&&!pool.includes(x));
+ const all=[...new Set(ITEMS.filter(x=>x.kind==='k').map(x=>x.a))].filter(x=>!ex.has(x)&&!pool.includes(x)&&!same.includes(x));
+ let ds=shuffle(pool).slice(0,3);
+ if(ds.length<3) ds=ds.concat(shuffle([...new Set(same)]).slice(0,3-ds.length));
+ if(ds.length<3) ds=ds.concat(shuffle(all).slice(0,3-ds.length));
+ return shuffle([it.a,...ds]);
+}
+
+// ===== ホーム =====
+let selUnits=new Set(UNITS.map(u=>u.id)), kind='k', mode='mc', order='seq';
+function chip(label,on,fn,sub){const b=document.createElement('button');b.className='chip'+(on?' on':'');b.innerHTML=label+(sub?'<small>'+sub+'</small>':'');b.onclick=fn;return b}
+function countFor(u,k){return ITEMS.filter(i=>i.unit===u&&(k==='all'||i.kind===k)).length}
+function renderHome(){
+ const uc=document.getElementById('unitChips');uc.innerHTML='';
+ UNITS.forEach(u=>uc.appendChild(chip(u.name,selUnits.has(u.id),()=>{selUnits.has(u.id)?selUnits.delete(u.id):selUnits.add(u.id);renderHome()},u.page+'・要点'+countFor(u.id,'k')+'＋Step'+countFor(u.id,'s'))));
+ const kc=document.getElementById('kindChips');kc.innerHTML='';
+ [['k','要点整理（穴うめ）'],['s','Step問題'],['all','両方']].forEach(([v,l])=>kc.appendChild(chip(l,kind===v,()=>{kind=v;renderHome()})));
+ const mc=document.getElementById('modeChips');mc.innerHTML='';
+ [['mc','4択で答える'],['rc','思い出す（答えを見て○×）']].forEach(([v,l])=>mc.appendChild(chip(l,mode===v,()=>{mode=v;renderHome()})));
+ const oc=document.getElementById('orderChips');oc.innerHTML='';
+ [['seq','教科書の順'],['shuf','シャッフル']].forEach(([v,l])=>oc.appendChild(chip(l,order===v,()=>{order=v;renderHome()})));
+ document.getElementById('countNote').textContent='この条件で '+buildList().length+' 問';
+ renderResume();
+}
+function selAll(f){selUnits=f?new Set(UNITS.map(u=>u.id)):new Set();renderHome()}
+document.getElementById('weakOnly').onchange=renderHome;
+function isWeak(id){const r=store.get(KEY.rank,{})[id];return r&&r.w>r.r}
+function buildList(){
+ const w=document.getElementById('weakOnly').checked;
+ return ITEMS.filter(i=>selUnits.has(i.unit)&&(kind==='all'||i.kind===kind)&&(!w||isWeak(i.id)));
+}
+function renderResume(){
+ const p=store.get(KEY.prog,null);const b=document.getElementById('resumeBox');
+ if(p&&p.ids&&p.i<p.ids.length){b.innerHTML='<div class="card resume"><b>📌 前回の続きがあります</b>（'+(p.i+1)+'問目／'+p.ids.length+'問）<div class="row" style="margin-top:8px"><button class="btn sm acc" onclick="resume()">▶ 続きから再開</button><button class="btn sm sub" onclick="clearProg();renderHome()">最初からやり直す</button></div></div>'}
+ else b.innerHTML='';
+}
+
+// ===== 出題 =====
+let S=null;
+function startQuiz(list){
+ let L=list||buildList(); if(!L.length){alert('問題がありません。範囲や条件をえらび直してください。');return}
+ if(!list&&order==='shuf') L=shuffle(L);
+ S={ids:L.map(i=>i.id),i:0,ok:0,miss:[],mode:mode,answered:false,cur:null};
+ saveProg(); show('quiz'); renderQ();
+}
+function resume(){const p=store.get(KEY.prog,null);if(!p)return;S=Object.assign(p,{answered:false,cur:null});show('quiz');renderQ()}
+function saveProg(){if(S)store.set(KEY.prog,{ids:S.ids,i:S.i,ok:S.ok,miss:S.miss,mode:S.mode})}
+function clearProg(){try{localStorage.removeItem(KEY.prog)}catch(e){}}
+function quitQuiz(){saveProg();show('home')}
+function renderQ(){
+ if(S.i>=S.ids.length){return finish()}
+ const it=BYID[S.ids[S.i]]; const u=unitOf(it.unit); S.answered=false;
+ document.getElementById('qPos').textContent=(S.i+1)+' / '+S.ids.length+' 問';
+ document.getElementById('qScore').textContent='正解 '+S.ok;
+ document.getElementById('qBar').style.width=(S.i/S.ids.length*100)+'%';
+ document.getElementById('qUnit').innerHTML='<span class="tag">'+esc(u.name)+'</span>'+(it.kind==='k'?'<span class="tag">要点整理'+circ(it.no)+'</span>':'<span class="tag">Step '+it.g+'</span>');
+ let h='';
+ if(it.kind==='k'){
+  if(it.prev) h+='<div class="ctx">…'+renderSent(it.prev,u,-1,'html').replace(/<span class="fill">/g,'<span>')+'</div>';
+  h+='<div class="qtext">'+renderSent(it.sent,u,it.no,'html')+'</div>';
+  if(it.unord) h+='<div class="note">※'+it.unord.map(circ).join('・')+'は順不同</div>';
+ } else {
+  let q=esc(it.q).replace(/〔([^〕]+)〕/g,'<span class="uline">$1</span>').replace(/【([^】]+)】/g,'<span class="blank">$1</span>');
+  if(it.tf) h+='<div class="note">正しければ○，誤っていれば×</div>';
+  if(it.fix) h+='<div class="note">下線部が正しければ○，誤っていれば正しい語句をえらぶ</div>';
+  if(it.fig==='shift') h+=shiftFigSmall();
+  if(it.fig==='eq') h+=eqFigSmall();
+  h+='<div class="qtext">'+q+'</div>';
+ }
+ if(S.mode==='mc'||it.kind==='s'&&(it.tf)){
+  const os=optsFor(it); S.cur=os;
+  if(it.tf) h+='<div class="tfrow">'+os.map((o,k)=>'<button class="opt" onclick="pick('+k+')">'+o+'</button>').join('')+'</div>';
+  else h+='<div class="opts">'+os.map((o,k)=>'<button class="opt" onclick="pick('+k+')">'+esc(o)+'</button>').join('')+'</div>';
+ } else {
+  h+='<button class="btn wide sub" id="revBtn" onclick="reveal()">👀 答えを見る</button><div id="revArea"></div>';
+ }
+ h+='<div id="fbArea"></div>';
+ document.getElementById('qCard').innerHTML=h;
+ window.scrollTo(0,0);
+}
+function pick(k){
+ if(S.answered)return; S.answered=true;
+ const it=BYID[S.ids[S.i]]; const ch=S.cur[k]; const ok=ch===it.a;
+ document.querySelectorAll('#qCard .opt').forEach((b,j)=>{if(S.cur[j]===it.a)b.classList.add('ok');else if(j===k)b.classList.add('ng')});
+ judge(ok,ch);
+}
+function reveal(){
+ const it=BYID[S.ids[S.i]];
+ document.getElementById('revBtn').style.display='none';
+ document.getElementById('revArea').innerHTML='<div class="ans">'+esc(it.a)+'</div><div class="tfrow"><button class="opt" style="font-size:18px" onclick="selfJ(true)">⭕ 言えた</button><button class="opt" style="font-size:18px" onclick="selfJ(false)">❌ 言えなかった</button></div>';
+}
+function selfJ(ok){if(S.answered)return;S.answered=true;document.getElementById('revArea').querySelector('.tfrow').remove();judge(ok,null)}
+function judge(ok,ch){
+ const it=BYID[S.ids[S.i]];
+ const r=store.get(KEY.rank,{}); r[it.id]=r[it.id]||{w:0,r:0,last:''}; ok?r[it.id].r++:r[it.id].w++; r[it.id].last=new Date().toISOString().slice(0,16); store.set(KEY.rank,r);
+ const d=store.get(KEY.day,{}); const t=today(); d[t]=d[t]||{n:0,ok:0}; d[t].n++; if(ok)d[t].ok++; store.set(KEY.day,d);
+ if(ok)S.ok++; else S.miss.push(it.id);
+ let fb='<div class="fb '+(ok?'ok':'ng')+'">'+(ok?'⭕ 正解！':'❌ 正解は「'+esc(it.a)+'」');
+ if(it.exp) fb+='<br>'+esc(it.exp);
+ if(it.kind==='k'){fb+='<br><span class="note">完成した文：'+esc(renderSent(it.sent,unitOf(it.unit),-1,'plain'))+'</span>'}
+ fb+='</div><button class="btn wide" onclick="nextQ()">次へ ▶</button>';
+ document.getElementById('fbArea').innerHTML=fb;
+ S.i++; saveProg(); S.i--;
+}
+function nextQ(){S.i++;saveProg();renderQ()}
+function finish(){
+ clearProg();
+ const n=S.ids.length; const pct=Math.round(S.ok/n*100);
+ let h='<h2>おつかれさま！</h2><div class="ans">'+S.ok+' / '+n+' 問正解（'+pct+'%）</div>';
+ if(S.miss.length){h+='<h3>まちがえた問題</h3>'+missHtml(S.miss)+'<button class="btn wide acc" onclick="startQuiz(S.miss.map(id=>BYID[id]))">❌ まちがえた問題だけもう一度</button>'}
+ else h+='<p>全問正解！ 🎉 「思い出す」モードやシャッフルでもためしてみよう。</p>';
+ h+='<button class="btn wide sub" onclick="show(\'home\')">🏠 ホームへ</button>';
+ document.getElementById('resultCard').innerHTML=h; show('result');
+}
+function missHtml(ids){return '<table class="rk">'+[...new Set(ids)].map(id=>{const it=BYID[id];return '<tr><td style="font-size:13px">'+esc(plainQ(it))+'</td><td><b>'+esc(it.a)+'</b></td></tr>'}).join('')+'</table>'}
+function showMiss(){openOvl('<h2>✗ 今回のミス</h2>'+(S&&S.miss.length?missHtml(S.miss):'<p>まだありません 👍</p>')+'<button class="btn wide" onclick="closeOvl()">閉じる</button>')}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+
+// ===== 小さい図（問題用）=====
+function axes(w,h,o){return `<line x1="${o}" y1="10" x2="${o}" y2="${h-o}" stroke="#333"/><line x1="${o}" y1="${h-o}" x2="${w-8}" y2="${h-o}" stroke="#333"/><text x="${o-4}" y="12" font-size="11" text-anchor="end">P</text><text x="${w-8}" y="${h-o+14}" font-size="11" text-anchor="end">Q</text>`}
+function shiftFigSmall(){return '<svg viewBox="0 0 320 290" style="width:100%;max-width:340px;display:block;margin:4px auto">'+shiftFigInner()+'</svg>'}
+function shiftFigInner(){
+ // x: 0..220 → 40..300 ; y: 0..180 → 260..20
+ const X=q=>40+q*1.18, Y=p=>260-p*1.33;
+ let s=axes(310,290,40);
+ [20,80,140,160].forEach(p=>s+=`<text x="35" y="${Y(p)+4}" font-size="10" text-anchor="end">${p}</text>`);
+ [20,40,80,120,140,200].forEach(q=>s+=`<text x="${X(q)}" y="275" font-size="9" text-anchor="middle">${q}</text>`);
+ [[140,20,40],[80,80,120],[20,140,200]].forEach(([p,a,b])=>{s+=`<line x1="${X(0)}" y1="${Y(p)}" x2="${X(b)}" y2="${Y(p)}" stroke="#bbb" stroke-dasharray="3 3"/><line x1="${X(a)}" y1="${Y(p)}" x2="${X(a)}" y2="${Y(0)}" stroke="#bbb" stroke-dasharray="3 3"/><line x1="${X(b)}" y1="${Y(p)}" x2="${X(b)}" y2="${Y(0)}" stroke="#bbb" stroke-dasharray="3 3"/>`});
+ s+=`<line x1="${X(0)}" y1="${Y(160)}" x2="${X(160)}" y2="${Y(0)}" stroke="#0f4c5c" stroke-width="2.5"/><text x="${X(150)}" y="${Y(18)}" font-size="13" font-weight="bold" fill="#0f4c5c">D</text>`;
+ // D': Q=40+(140-P)*4/3 ; P=170 at Q=0, P=-? at Q=226
+ s+=`<line x1="${X(0)}" y1="${Y(170)}" x2="${X(215)}" y2="${Y(8.75)}" stroke="#e36414" stroke-width="2.5"/><text x="${X(205)}" y="${Y(25)}" font-size="13" font-weight="bold" fill="#e36414">D′</text>`;
+ s+=`<text x="${X(95)}" y="${Y(120)}" font-size="12" fill="#e36414">右にシフト →</text>`;
+ return s;
+}
+function eqFigSmall(){
+ const X=q=>40+q*1.5, Y=p=>260-p*1.4;
+ let s='<svg viewBox="0 0 320 290" style="width:100%;max-width:300px;display:block;margin:4px auto">'+axes(310,290,40);
+ [40,80,120,160].forEach(v=>{s+=`<text x="35" y="${Y(v)+4}" font-size="10" text-anchor="end">${v}</text><text x="${X(v)}" y="275" font-size="10" text-anchor="middle">${v}</text>`});
+ s+=`<line x1="${X(0)}" y1="${Y(160)}" x2="${X(160)}" y2="${Y(0)}" stroke="#0f4c5c" stroke-width="2.5"/><text x="${X(150)}" y="${Y(20)}" font-size="13" fill="#0f4c5c" font-weight="bold">D</text>`;
+ s+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(160)}" y2="${Y(160)}" stroke="#e36414" stroke-width="2.5"/><text x="${X(150)}" y="${Y(140)}" font-size="13" fill="#e36414" font-weight="bold">S</text>`;
+ s+=`<circle cx="${X(80)}" cy="${Y(80)}" r="5" fill="#d62828"/><text x="${X(80)+8}" y="${Y(80)-6}" font-size="11" fill="#d62828">交点</text></svg>`;
+ return s;
+}
+
+// ===== グラフページ =====
+let dD=0,dS=0;
+function eq(dd,ds){const P=(160+dd-ds)/2;return{P,Q:P+ds}}
+function drawG(){
+ const svg=document.getElementById('gsvg');
+ const X=q=>40+q*1.15, Y=p=>260-p*1.35;
+ const p=+document.getElementById('pSlider').value;
+ let s=axes(320,300,40);
+ [40,80,120,160].forEach(v=>{s+=`<text x="35" y="${Y(v)+4}" font-size="10" text-anchor="end">${v}</text>`});
+ [40,80,120,160,200,240].forEach(v=>{if(X(v)<312)s+=`<text x="${X(v)}" y="276" font-size="10" text-anchor="middle">${v}</text>`});
+ const line=(d,isD,col,dash)=>{ // D: Q=160-P+d ; S: Q=P+d
+   let pts=[];for(let P=0;P<=180;P+=1){const Q=isD?160-P+d:P+d;if(Q>=0&&Q<=235)pts.push([X(Q),Y(P)])}
+   if(pts.length<2)return'';return `<polyline points="${pts.map(a=>a.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="${dash?1.5:2.8}" ${dash?'stroke-dasharray="5 4"':''}/>`};
+ if(dD)s+=line(0,true,'#7aa',true); if(dS)s+=line(0,false,'#e9a',true);
+ s+=line(dD,true,'#0f4c5c',false)+line(dS,false,'#e36414',false);
+ const e0=eq(0,0), e=eq(dD,dS);
+ s+=`<text x="${X(Math.min(160+dD,230))-14}" y="${Y(6)}" font-size="13" font-weight="bold" fill="#0f4c5c">D</text>`;
+ s+=`<text x="${X(Math.min(160+dS,215))+2}" y="${Y(Math.min(160,215-dS))+12}" font-size="13" font-weight="bold" fill="#e36414">S</text>`;
+ // 価格ライン
+ const qd=Math.max(0,160-p+dD), qs=Math.max(0,p+dS);
+ s+=`<line x1="40" y1="${Y(p)}" x2="312" y2="${Y(p)}" stroke="#888" stroke-dasharray="2 3"/>`;
+ if(Math.abs(qd-qs)>0.1){const a=Math.min(qd,qs),b=Math.max(qd,qs);s+=`<line x1="${X(a)}" y1="${Y(p)}" x2="${X(b)}" y2="${Y(p)}" stroke="${qd>qs?'#d62828':'#1d4ed8'}" stroke-width="5" opacity=".55"/>`}
+ if(dD||dS) s+=`<circle cx="${X(e0.Q)}" cy="${Y(e0.P)}" r="4" fill="#aaa"/>`;
+ s+=`<circle cx="${X(e.Q)}" cy="${Y(e.P)}" r="6" fill="#d62828"/><text x="${X(e.Q)+8}" y="${Y(e.P)-6}" font-size="11" fill="#d62828">均衡 ${e.P}円・${e.Q}</text>`;
+ svg.innerHTML=s;
+ // メッセージ
+ let m;
+ if(!dD&&!dS) m='いまは均衡価格 80円・均衡量 80。ボタンで曲線を動かしてみよう。';
+ else{
+  const arrow=(a,b)=>a>b?'<span class="up">上昇↑</span>':a<b?'<span class="dn">下落↓</span>':'変わらない';
+  const arrowQ=(a,b)=>a>b?'<span class="up">増加↑</span>':a<b?'<span class="dn">減少↓</span>':'変わらない';
+  const qd0=160-80+dD, qs0=80+dS; const ex=qd0>qs0?'<b>超過需要</b>（品不足）→ 価格が上がる':qd0<qs0?'<b>超過供給</b>（売れ残り）→ 価格が下がる':'';
+  m='もとの価格80円のままだと：'+ex+'<br>新しい均衡：均衡価格は '+arrow(e.P,e0.P)+'（'+e.P+'円），均衡量は '+arrowQ(e.Q,e0.Q)+'（'+e.Q+'）';
+ }
+ document.getElementById('gMsg').innerHTML=m;
+ let pm='価格 <b>'+p+'円</b>：需要量 '+qd+'・供給量 '+qs+'<br>';
+ if(qd>qs) pm+='<span class="up">超過需要（品不足・売り手市場）</span> → 価格は少しずつ<b>上昇</b>して均衡価格へ';
+ else if(qd<qs) pm+='<span class="dn">超過供給（売れ残り・買い手市場）</span> → 価格は少しずつ<b>下落</b>して均衡価格へ';
+ else pm+='需要量＝供給量。ここが<b>均衡価格</b>！';
+ document.getElementById('pMsg').innerHTML=pm;
+}
+function shift(w,v){if(w==='D'){dD=Math.max(-80,Math.min(80,dD+v))}else{dS=Math.max(-80,Math.min(80,dS+v))}document.getElementById('pSlider').value=80;drawG()}
+function gReset(){dD=0;dS=0;document.getElementById('pSlider').value=80;drawG()}
+document.getElementById('pSlider').oninput=drawG;
+
+// ===== 説明 =====
+let rec=null,chunks=[];
+function renderExplain(){
+ const st=store.get(KEY.ex,{});
+ document.getElementById('exList').innerHTML=EXPLAINS.map(e=>`<div class="card"><h2>💬 ${esc(e.title)}</h2>
+ <p class="qtext" style="font-size:16px">${esc(e.q)}</p><div class="note">ヒント：${esc(e.hint)}</div>
+ <div class="row" style="margin-top:8px"><button class="btn sm acc" id="rb_${e.id}" onclick="toggleRec('${e.id}')">🎙 録音する</button><span id="rs_${e.id}" class="note"></span></div>
+ <div id="ra_${e.id}"></div>
+ <h3>チェック：自分の説明に入っていた？</h3><div class="kw">${e.keys.map((k,i)=>`<label><input type="checkbox" ${st[e.id]&&st[e.id][i]?'checked':''} onchange="kwSave('${e.id}',${i},this.checked)">${esc(k)}</label>`).join('')}</div>
+ <button class="btn sm sub" onclick="this.nextElementSibling.style.display='block';this.remove()">📖 模範の説明を見る</button>
+ <div style="display:none" class="fb ok">${esc(e.model)}<br><span class="note">（${esc(e.modelNote)}）</span></div></div>`).join('')+'<div class="card note">✅がつかなかった言葉を入れて，もう一度説明してみよう。</div>';
+}
+function kwSave(id,i,v){const st=store.get(KEY.ex,{});st[id]=st[id]||{};st[id][i]=v;store.set(KEY.ex,st)}
+async function toggleRec(id){
+ const b=document.getElementById('rb_'+id),s=document.getElementById('rs_'+id);
+ if(rec&&rec.state==='recording'){rec.stop();return}
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  rec=new MediaRecorder(stream);chunks=[];
+  rec.ondataavailable=e=>chunks.push(e.data);
+  rec.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const url=URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||'audio/mp4'}));document.getElementById('ra_'+id).innerHTML='<audio controls src="'+url+'" style="width:100%;margin-top:6px"></audio>';b.textContent='🎙 もう一度録音';s.textContent='聞き返してチェックしよう'};
+  rec.start();b.textContent='⏹ 止める';s.textContent='録音中…声に出して説明しよう';
+ }catch(e){s.textContent='録音できませんでした（Safariで開くと録音できます）。声に出して説明するだけでもOK！'}
+}
+
+// ===== 苦手 =====
+function renderRank(){
+ const r=store.get(KEY.rank,{});
+ const list=Object.keys(r).filter(id=>BYID[id]&&r[id].w>0).sort((a,b)=>r[b].w-r[a].w||r[a].r-r[b].r);
+ document.getElementById('rankBody').innerHTML=list.length?'<table class="rk"><tr><th>#</th><th>問題</th><th>✗/○</th></tr>'+list.slice(0,60).map((id,i)=>{const it=BYID[id];return `<tr onclick="startQuiz([BYID['${id}']])"><td>${i+1}</td><td style="font-size:13px">${esc(plainQ(it)).slice(0,70)}<br><b>${esc(it.a)}</b> <span class="tag">${esc(unitOf(it.unit).name)}</span></td><td>${r[id].w}/${r[id].r}</td></tr>`}).join('')+'</table>':'<p>まだ記録がありません。</p>';
+}
+function practiceWeak(){const L=ITEMS.filter(i=>isWeak(i.id));if(!L.length){alert('苦手な問題はありません 🎉');return}startQuiz(shuffle(L))}
+function resetRank(){if(confirm('苦手の記録を消しますか？')){store.set(KEY.rank,{});renderRank()}}
+
+// ===== 検索 =====
+let sMode='all';
+function renderSF(){const f=document.getElementById('sFilter');f.innerHTML='';[['all','ぜんぶ'],['ans','答えだけ'],['weak','苦手だけ'],['done','学習したもの']].forEach(([v,l])=>f.appendChild(chip(l,sMode===v,()=>{sMode=v;renderSF();doSearch()})))}
+function doSearch(){
+ const q=document.getElementById('sq').value.trim(); const r=store.get(KEY.rank,{});
+ const out=document.getElementById('sRes');
+ if(!q&&sMode==='all'){out.innerHTML='<p class="note">言葉を入れてください。</p>';return}
+ const L=ITEMS.filter(it=>{
+  const hay=sMode==='ans'?it.a:(plainQ(it)+' '+it.a+' '+(it.exp||''));
+  if(q&&!hay.includes(q))return false;
+  if(sMode==='weak'&&!isWeak(it.id))return false;
+  if(sMode==='done'&&!r[it.id])return false;
+  return true});
+ out.innerHTML='<p class="note">'+L.length+'件</p>'+L.slice(0,80).map(it=>{const x=r[it.id];const others=ITEMS.filter(o=>o!==it&&it.a.length>1&&plainQ(o).includes(it.a)).length;
+  return `<div class="card" style="margin:6px 0;padding:10px"><div style="font-size:13px">${esc(plainQ(it))}</div><div><b style="color:var(--acc)">${esc(it.a)}</b> <span class="tag">${esc(unitOf(it.unit).name)}</span></div>
+  <div class="note">学習のあと：${x?('○'+x.r+'回・✗'+x.w+'回（最後 '+x.last.replace('T',' ')+'）'):'まだ解いていません'}${others?' ／ ほかの問題文に '+others+'回 出てくる':''}</div>
+  <button class="btn sm sub" style="margin-top:4px" onclick="startQuiz([BYID['${it.id}']])">この問題を練習</button></div>`}).join('');
+}
+
+// ===== 印刷 =====
+let pSel=new Set(UNITS.map(u=>u.id)),pKind='all';
+function renderPrintUI(){
+ const pu=document.getElementById('pUnits');pu.innerHTML='';
+ UNITS.forEach(u=>pu.appendChild(chip(u.name,pSel.has(u.id),()=>{pSel.has(u.id)?pSel.delete(u.id):pSel.add(u.id);renderPrintUI()})));
+ const pk=document.getElementById('pKinds');pk.innerHTML='';
+ [['k','要点整理'],['s','Step問題'],['all','両方']].forEach(([v,l])=>pk.appendChild(chip(l,pKind===v,()=>{pKind=v;renderPrintUI()})));
+}
+function makePrint(){
+ const sh=document.getElementById('pShuffle').checked, wk=document.getElementById('pWeak').checked;
+ let q='<h1>グロ経 4章 市場と経済　テスト対策プリント</h1><div>名前（　　　　　　　　）　日付（　　／　　）</div>';
+ let a='<div class="pgbr"></div><h1>解答</h1>';
+ let num=0;
+ UNITS.filter(u=>pSel.has(u.id)).forEach(u=>{
+  let L=ITEMS.filter(i=>i.unit===u.id&&(pKind==='all'||i.kind===pKind)&&(!wk||isWeak(i.id)));
+  if(sh)L=shuffle(L); if(!L.length)return;
+  q+='<h2>'+esc(u.name)+'（'+esc(u.page)+'）</h2>'; a+='<h2>'+esc(u.name)+'</h2>';
+  L.forEach(it=>{num++;
+   let t;
+   if(it.kind==='k') t=renderSent(it.sent,u,it.no,'print').replace(/<span class="pb">[^<]*<\/span>/,'<span class="pb">　　　　　</span>');
+   else{t=esc(it.q).replace(/〔([^〕]+)〕/g,'<u>$1</u>').replace(/【([^】]+)】/g,'（　　）');
+    if(it.tf)t+='　〔○・×〕'; else if(it.opts)t+='<br><small>'+it.opts.map(esc).join('　／　')+'</small>'}
+   q+='<div class="pq">'+num+'. '+t+'</div>';
+   a+='<span style="display:inline-block;width:48%">'+num+'. '+esc(it.a)+'</span>';
+  });
+ });
+ if(!num){alert('印刷する問題がありません');return}
+ document.getElementById('printArea').innerHTML=q+a;
+ setTimeout(()=>window.print(),100);
+}
+
+// ===== 報告 =====
+function repText(fam){
+ const d=store.get(KEY.day,{}),r=store.get(KEY.rank,{});
+ const t=d[today()]||{n:0,ok:0}; let tot=0,ok=0; Object.values(d).forEach(x=>{tot+=x.n;ok+=x.ok});
+ const weak=Object.keys(r).filter(id=>BYID[id]&&r[id].w>r[id].r).sort((a,b)=>r[b].w-r[a].w).slice(0,5).map(id=>'・'+BYID[id].a);
+ const ex=store.get(KEY.ex,{});const exN=Object.values(ex).reduce((s,o)=>s+Object.values(o).filter(Boolean).length,0);
+ return (fam?'【古賀先生に転送してください】\n':'')+'【グロ経4章 学習報告】'+today()+'\n今日：'+t.n+'問（正解'+t.ok+'）\nこれまで：'+tot+'問（正答率'+(tot?Math.round(ok/tot*100):0)+'%）\n苦手：'+(weak.length?'\n'+weak.join('\n'):'なし')+'\n説明チェック：'+exN+'個';
+}
+function renderReport(){document.getElementById('repText').value=repText(false);document.getElementById('qrBox').innerHTML=''}
+function sendLine(fam){location.href='https://line.me/R/share?text='+encodeURIComponent(repText(fam))}
+function copyRep(){const t=repText(false);try{navigator.clipboard.writeText(t).then(()=>alert('コピーしました'),()=>alert('長押しでコピーしてください'))}catch(e){alert('長押しでコピーしてください')}}
+function showQR(){
+ try{qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];const q=qrcode(0,'L');q.addData(repText(false));q.make();document.getElementById('qrBox').innerHTML=q.createSvgTag(4,8)+'<div class="note">塾で先生のスマホに読み取ってもらおう</div>'}
+ catch(e){document.getElementById('qrBox').textContent='QRコードを作れませんでした'}
+}
+
+// ===== 使い方 =====
+function openHelp(){openOvl(`<h2>❓ 使い方</h2>
+<h3>このアプリは？</h3><p>富田高校 グローバル経済「4章 市場と経済」準拠問題集（1節(1)〜2節(3)）の定期テスト対策アプリです。×印の問題とp.15は範囲外なので入れていません。</p>
+<h3>🏠 ホーム</h3><p>①範囲 ②種類（要点整理の穴うめ／Step問題）③答え方（4択／思い出す）④順番 をえらんで「スタート」。<br>・要点整理は，上の行に前の文（うすい字）が出ます。青い字はほかの空欄の答えです。<br>・「思い出す」は，頭の中で答えを言ってから「答えを見る」→ 自分で⭕/❌。</p>
+<h3>📈 グラフ</h3><p>需要曲線・供給曲線をボタンで動かすと，均衡価格と均衡量がどう変わるか分かります。価格のスライダーで「超過需要」「超過供給」も確認できます。まとめ表はテストによく出ます。</p>
+<h3>💬 説明</h3><p>声に出して説明（録音して聞き返せる）→ チェックリストに✅ → 模範の説明と比べよう。</p>
+<h3>記録</h3><p>・「✗ 今回のミス」：その回にまちがえた問題（途中でも見られる）<br>・⭐苦手：これまでにまちがえた回数のランキング<br>・途中でやめても，次に開くと「▶ 続きから再開」できます。<br>・記録はこのスマホの中だけに残ります。LINEの中とSafariでは記録が別々になります。</p>
+<h3>🔍 検索・🖨 印刷・📋 報告</h3><p>検索：言葉で問題を探し，何回正解・まちがいしたか見られます。<br>印刷：範囲をえらんで解答つきプリントを作れます。<br>報告：LINEで先生へ／おうちの人へ／QRコードで送れます。</p>
+<h3>おすすめの使い方</h3><p>①要点整理を4択で1周 → ②思い出すで1周 → ③Step問題 → ④⭐苦手だけ → ⑤📈グラフと💬説明</p>
+<h3>うまく動かないとき</h3><p>LINEで開いて音や録音が使えないときは「…」→「Safariで開く」。古い版が出るときはURLの最後に ?v=2 を付けて開く。</p>
+<button class="btn wide" onclick="closeOvl()">閉じる</button>`)}
+function openOvl(h){document.getElementById('ovlBody').innerHTML=h;document.getElementById('ovl').classList.add('show')}
+function closeOvl(){document.getElementById('ovl').classList.remove('show')}
+
+// ===== タブ =====
+function show(t){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+ document.getElementById('s-'+t).classList.add('show');
+ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t||(t==='quiz'||t==='result')&&b.dataset.t==='home'));
+ if(t==='home')renderHome(); if(t==='graph')drawG(); if(t==='explain')renderExplain(); if(t==='rank')renderRank();
+ if(t==='search'){renderSF();doSearch()} if(t==='print')renderPrintUI(); if(t==='report')renderReport();
+ window.scrollTo(0,0);
+}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{if(S&&document.getElementById('s-quiz').classList.contains('show'))saveProg();show(b.dataset.t)});
+document.getElementById('shiftSvg').innerHTML=shiftFigInner();
+renderHome();
+</script>
+</body>
+</html>
