@@ -56,7 +56,7 @@ sup{font-size:.68em;line-height:0}sub{font-size:.68em}
 </head>
 <body>
 <header>
- <div class="htop"><h1>指数関数・対数関数 マスター<small>数学Ⅱ 第5章　数字が毎回かわる型別練習</small></h1><span class="badge">v1.1</span></div>
+ <div class="htop"><h1>指数関数・対数関数 マスター<small>数学Ⅱ 第5章　数字が毎回かわる型別練習</small></h1><span class="badge">v1.2</span></div>
  <div class="tabs" id="tabs"><button data-t="home" class="on">🏠 ホーム</button><button data-t="test">🎓 テスト</button><button data-t="sum">📘 まとめ</button><button data-t="rank">⭐ 苦手</button><button data-t="search">🔍</button><button data-t="help">❓</button></div>
 </header>
 <main>
@@ -3045,7 +3045,7 @@ const TYPES=[
 const TB={};TYPES.forEach(t=>TB[t.id]=t);
 const circ=n=>n<=20?'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'[n-1]:'㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺'[n-21];
 // ===== 保存 =====
-const K={st:'kj5_st',day:'kj5_day',prog:'kj5_prog',th:'kj5_th',ex:'kj5_ex',name:'kj5_name',mode:'kj5_mode'};
+const K={st:'kj5_st',day:'kj5_day',prog:'kj5_prog',th:'kj5_th',ex:'kj5_ex',name:'kj5_name',mode:'kj5_mode',note:'kj5_note'};
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -3161,8 +3161,32 @@ async function toggleRec(id){const b=document.getElementById('rb_'+id),s=documen
 function renderRank(){const L=TYPES.filter(t=>st(t.id).n).sort((a,b)=>rate(a.id)-rate(b.id));
  document.getElementById('rankBody').innerHTML=L.length?'<table class="rk">'+L.map(t=>{const s=st(t.id);return `<tr onclick="openSetup('${t.id}')"><td>${circ(t.no)}</td><td>${esc(t.name)}<br><span class="note">${s.n}問・正答率 ${rate(t.id)}%</span></td><td>${s.pass?'✅':'🔥'+s.s+'/3'}</td></tr>`}).join('')+'</table>':'<p class="note">まだ記録がありません。</p>'}
 function kata2hira(s){return s.replace(/[ァ-ン]/g,c=>String.fromCharCode(c.charCodeAt(0)-96))}
-function doSearch(){const q=kata2hira(document.getElementById('sq').value.trim());const out=document.getElementById('sRes');if(!q){out.innerHTML='<p class="note">型の名前・ひらがな・問題番号で探せます（例：334，ていのへんかん）。</p>';return}
- const L=TYPES.filter(t=>(t.name+t.yomi+t.src).includes(q));out.innerHTML='<p class="note">'+L.length+'件</p>'+L.map(t=>{const s=st(t.id);return `<div class="card" style="margin:6px 0;padding:10px"><b>${circ(t.no)} ${esc(t.name)}</b><div class="note">${esc(t.src)}</div><div class="note">学習のあと：${s.n?`${s.n}問・正答率 ${rate(t.id)}%・連続 ${s.s}/3・${s.pass?'✅合格 '+fmtT(s.pass):'未合格'}　最近：${s.h.slice(-10).map(x=>x[1]?'⭕':'❌').join('')}`:'まだ解いていません'}</div><button class="btn sm sub" style="margin-top:4px" onclick="openSetup('${t.id}')">この型を練習</button></div>`}).join('')}
+let SF='all';
+function noteOf(id){return (store.get(K.note,{})[id])||{memo:'',sc:[]}}
+function setNote(id,f){const N=store.get(K.note,{});const n=N[id]||{memo:'',sc:[]};f(n);N[id]=n;store.set(K.note,N)}
+function lastSc(id){const n=noteOf(id);return n.sc.length?n.sc[n.sc.length-1]:null}
+function doSearch(){const q=kata2hira(document.getElementById('sq').value.trim());const out=document.getElementById('sRes');
+ const fl=[['all','ぜんぶ'],['weak','⭐苦手だけ'],['done','学習した型'],['memo','📝メモあり'],['ng','❌学校テストで間違えた']];
+ let h='<div class="chips" style="margin:8px 0">'+fl.map(f=>chip(f[1],SF==f[0],`SF='${f[0]}';doSearch()`)).join('')+'</div>';
+ if(!q&&SF=='all'){out.innerHTML=h+'<p class="note">型の名前・ひらがな・問題番号・<b>自分のメモ</b>で探せます（例：334，ていのへんかん，真数）。<br>見つかった型をタップすると「学習のあと」（いつ・どの形で解いたか，テストの結果，ふり返りメモ）が見られます。</p>';return}
+ const L=TYPES.filter(t=>{const s=st(t.id),n=noteOf(t.id),ls=lastSc(t.id);
+  if(q&&!(t.name+t.yomi+t.src+n.memo).includes(q))return false;
+  if(SF=='weak')return s.n&&(!s.pass||rate(t.id)<80);if(SF=='done')return s.n>0;if(SF=='memo')return !!n.memo.trim();if(SF=='ng')return ls&&!ls[1];return true});
+ out.innerHTML=h+'<p class="note">'+L.length+'件</p>'+L.map(t=>{const s=st(t.id),n=noteOf(t.id),ls=lastSc(t.id);return `<div class="card" style="margin:6px 0;padding:10px;cursor:pointer" onclick="openAfter('${t.id}')"><b>${circ(t.no)} ${esc(t.name)}</b><div class="note">${esc(t.src)}</div><div class="note">${s.n?`${s.n}問・正答率 ${rate(t.id)}%・${s.pass?'✅合格':'連続 '+s.s+'/3'}　最近：${s.h.slice(-10).map(x=>x[1]?'⭕':'❌').join('')}`:'まだ解いていません'}${ls?`　学校テスト：${ls[1]?'⭕':'❌'}`:''}${n.memo.trim()?'　📝メモあり':''}</div><div class="note" style="color:var(--pri)">▶ タップで「学習のあと」</div></div>`}).join('')}
+function openAfter(id){const t=TB[id],s=st(id),n=noteOf(id);
+ const mc=s.h.filter(x=>x[3]),pp=s.h.filter(x=>!x[3]),hi=s.h.filter(x=>x[2]).length;
+ const studied=TYPES.filter(x=>st(x.id).n).sort((a,b)=>rate(a.id)-rate(b.id));const rk=studied.findIndex(x=>x.id==id);
+ const TH=store.get(K.th,[]).filter(x=>x.res&&x.res[id]!=null);
+ let h=`<h2>📒 学習のあと</h2><p><b>${circ(t.no)} ${esc(t.name)}</b><br><span class="note">${esc(t.src)}</span></p>`;
+ h+=`<h3>練習</h3><p>${s.n?`${s.n}問・正答率 <b>${rate(id)}%</b>・今の連続 ${s.s}/3・最高連続 ${s.best||0}<br>${s.pass?'✅合格（'+fmtT(s.pass)+'）':'まだ合格していません'}<br>4択：⭕${mc.filter(x=>x[1]).length}/${mc.length}　紙に解いて：⭕${pp.filter(x=>x[1]).length}/${pp.length}　ヒントを見た：${hi}回<br>苦手ランキング：${rk+1}位／${studied.length}型中`:'まだ解いていません'}</p>`;
+ if(s.h.length)h+='<table class="rk">'+s.h.slice(-10).reverse().map(x=>`<tr><td>${fmtT(x[0])}</td><td>${x[3]?'4択':'紙に解いて'}${x[2]?'・💡':''}</td><td>${x[1]?'⭕':'❌'}</td></tr>`).join('')+'</table><p class="note">最近10回（新しい順）</p>';
+ h+=`<h3>🎓 アプリの確認テスト</h3><p>${TH.length?TH.map(x=>`${fmtT(x.t)} ${x.res[id]?'⭕':'❌'}`).join('<br>'):'まだ出ていません'}</p>`;
+ h+=`<h3>📝 学校のテスト</h3><p class="note">返ってきたテストで，この型の問題ができたかを記録しよう。</p><div class="row"><button class="btn sm ok" onclick="addSc('${id}',1)">⭕ テストで正解</button><button class="btn sm" style="background:#c0392b" onclick="addSc('${id}',0)">❌ テストで間違えた</button></div><p>${n.sc.length?n.sc.map((x,i)=>`${fmtT(x[0])} ${x[1]?'⭕正解':'❌間違えた'} <button class="btn sm sub" style="padding:2px 8px" onclick="delSc('${id}',${i})">取り消す</button>`).join('<br>'):'<span class="note">まだ記録がありません</span>'}</p>`;
+ h+=`<h3>✏️ ふり返りメモ</h3><textarea id="memoT" rows="4" placeholder="例：真数条件を忘れた／不等号の向きを変え忘れた">${esc(n.memo)}</textarea><button class="btn sm" style="margin-top:4px" onclick="saveMemo('${id}')">メモを保存</button> <span id="memoOk" class="note"></span><p class="note">メモも🔍検索で探せます。</p>`;
+ h+=`<button class="btn wide" onclick="closeOvl();openSetup('${id}')">▶ この型を練習する</button><button class="btn wide sub" onclick="closeOvl();doSearch()">閉じる</button>`;openOvl(h)}
+function addSc(id,ok){setNote(id,n=>n.sc.push([Date.now(),ok]));openAfter(id)}
+function delSc(id,i){if(!confirm('この記録を取り消しますか？'))return;setNote(id,n=>n.sc.splice(i,1));openAfter(id)}
+function saveMemo(id){const v=document.getElementById('memoT').value;setNote(id,n=>n.memo=v);document.getElementById('memoOk').textContent='保存しました ✅'}
 // ===== 印刷 =====
 let pSel=new Set(),pN=3;
 function openPrint(){if(!pSel.size)TYPES.forEach(t=>pSel.add(t.id));renderPrint()}
@@ -3181,6 +3205,7 @@ function repText(fam){const D=store.get(K.day,{}),td=D[today()]||{n:0,ok:0},S2=s
  if(TH.length){const b=TH.reduce((m,x)=>x.sc>m.sc?x:m,TH[0]);s+=`■確認テスト：${TH.length}回，最高 ${b.sc}点（${b.scope}，${fmtT(b.t)}）${b.sc>=80?' 🏅合格証あり':''}\n`}
  const notp=TYPES.filter(t=>(S2[t.id]||{}).n&&!(S2[t.id]||{}).pass).sort((a,b)=>rate(a.id)-rate(b.id)).slice(0,5);
  s+='■まだ合格していない型（正答率の低い順）\n'+(notp.length?notp.map(t=>`　${circ(t.no)}${t.name}：${rate(t.id)}%（連続${st(t.id).s}/3）`).join('\n'):'　なし');
+ const ng=TYPES.filter(t=>{const l=lastSc(t.id);return l&&!l[1]});if(ng.length)s+='\n■学校のテストで間違えた型\n'+ng.map(t=>`　${circ(t.no)}${t.name}${noteOf(t.id).memo.trim()?'（メモ：'+noteOf(t.id).memo.trim().slice(0,30)+'）':''}`).join('\n');
  const ex=store.get(K.ex,{});s+=`\n■💬説明：${EXPLAINS.filter(e=>(ex[e.id]||{}).done).length}/${EXPLAINS.length}`;return s}
 function openReport(){openOvl(`<h2>📋 先生に報告</h2><textarea id="repT" rows="14" readonly style="font-size:13px">${esc(repText(false))}</textarea>
  <div class="row" style="margin-top:8px"><button class="btn sm" onclick="sendLine(false)">LINEで先生へ</button><button class="btn sm acc" onclick="sendLine(true)">👪 おうちの人に送る</button><button class="btn sm sub" onclick="showQR()">📱 QR</button><button class="btn sm sub" onclick="copyRep()">コピー</button></div><div id="qrBox" style="text-align:center;margin-top:8px"></div><button class="btn wide sub" onclick="closeOvl()">閉じる</button>`)}
@@ -3275,6 +3300,7 @@ const HELP=`<h2>❓ 使い方</h2>
 <h3>💡 ヒント</h3><p>考え方の手がかりが出ます。ヒントを見た問題は，連続正解に数えません。</p>
 <h3>🎓 確認テスト・合格証</h3><p>型ごとに1問ずつ，ヒントなしで出題。<b>80点以上で合格証</b>。日時・点数・合格した型の数がのります。先生に見せたり，報告で送ったりできます。</p>
 <h3>💬 自分の言葉で説明</h3><p>教科書の【？】を，声に出して説明 → 録音して聞き返す → チェック → 模範の説明。</p>
+<h3>🔍 検索と「学習のあと」</h3><p>型の名前・ひらがな・問題番号・自分のメモで探せます。型をタップすると「学習のあと」：いつ・4択か紙か・⭕❌，苦手ランキングの順位，アプリの確認テストの結果が見られます。<br><b>学校のテストが返ってきたら</b>，型ごとに「⭕テストで正解／❌テストで間違えた」を記録し，<b>ふり返りメモ</b>（なぜ間違えたか）を書こう。「❌学校テストで間違えた」でしぼりこめて，先生への報告にも入ります。</p>
 <h3>そのほか</h3><p>📘まとめ：公式と考え方。⭐苦手：正答率の低い型。🔍検索：型の名前・問題番号・ひらがなで探す。🖨プリント：毎回ちがう数字で，解答・解き方つき。📋報告：LINEで先生へ／👪おうちの人へ／📱QR。<br>途中でやめても「▶ 続きから再開」できます。記録はこのスマホの中だけ。LINEの中とSafariでは記録が別々になります。</p>
 <h3>おすすめの使い方</h3><p>① 📘まとめを読む → ② ①から順に🏆合格チャレンジ → ③ ⭐苦手をもう一度 → ④ 🎓確認テストで合格証 → ⑤ 📋先生に報告</p>
 <h3>うまく動かないとき</h3><p>古い版が出るときは，URLの最後に ?v=3 を付けて開く。</p>`;
