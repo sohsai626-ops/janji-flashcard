@@ -1,0 +1,3311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>指数関数・対数関数 マスター</title>
+<style>
+:root{--pri:#5b2a86;--pri2:#7d4bb0;--acc:#e07a1f;--bg:#f5f3f9;--ok:#2a9d6f;--ng:#d64545;--mut:#6b7280;--line:#e2dcea}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:#1f2933;line-height:1.6;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:20;background:var(--pri);color:#fff;padding:10px 12px 0}
+.htop{display:flex;align-items:center;gap:8px}header h1{font-size:17px;margin:0;flex:1;line-height:1.3}header small{display:block;font-size:11px;opacity:.85;font-weight:normal}
+.badge{background:#fff;color:var(--pri);font-weight:bold;font-size:11px;border-radius:10px;padding:2px 7px}
+.tabs{display:flex;gap:3px;margin-top:8px}.tabs button{flex:1;border:0;border-radius:10px 10px 0 0;padding:8px 0;font-size:11.5px;white-space:nowrap;background:rgba(255,255,255,.18);color:#fff;font-weight:bold}.tabs button.on{background:var(--bg);color:var(--pri)}
+main{max-width:640px;margin:0 auto;padding:10px 12px 90px}.screen{display:none}.screen.show{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.sec{font-weight:bold;color:var(--pri);margin:16px 4px 4px;font-size:14px;display:flex;justify-content:space-between}
+.urow{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:10px 12px;margin:7px 0;box-shadow:0 1px 3px rgba(0,0,0,.07);border:0;width:100%;text-align:left;color:inherit;font:inherit}
+.num{flex:0 0 34px;height:34px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px}
+.num.ok{background:var(--ok)}.num.ex{background:var(--acc)}.num.all{background:#0f766e}
+.uname{flex:1;font-weight:bold;font-size:14.5px;line-height:1.35}.uname small{display:block;color:var(--mut);font-weight:normal;font-size:11.5px;margin-top:2px}
+.ucnt{font-weight:bold;font-size:13px;white-space:nowrap;text-align:right}.pass{color:var(--ok)}.strk{color:var(--acc)}
+.bigbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.btn{border:0;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:bold;background:var(--pri);color:#fff}.btn.sub{background:#fff;color:var(--pri);border:1.5px solid var(--pri)}.btn.acc{background:var(--acc)}.btn.dark{background:#3f4a5a}.btn.ok{background:var(--ok)}
+.btn.sm{padding:8px 10px;font-size:13px}.btn.wide{width:100%;margin-top:8px}.btn:disabled{opacity:.4}
+h2{font-size:17px;margin:4px 0 8px;color:var(--pri)}h3{font-size:15px;margin:12px 0 6px;color:var(--pri2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 11px;font-size:14px;color:#333}.chip.on{border-color:var(--pri2);background:#f0e8fa;color:var(--pri);font-weight:bold}.chip small{display:block;font-size:11px;font-weight:normal;color:var(--mut)}
+.prog{height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:6px 0}.prog>div{height:100%;background:var(--ok)}
+.qmeta{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.tag{display:inline-block;font-size:11px;border-radius:6px;padding:1px 6px;background:#efe8f7;color:var(--pri);margin:0 4px 2px 0}
+.q{font-size:16px;line-height:1.9}.big{font-size:22px;text-align:center;margin:10px 0;line-height:2.2;font-family:"Times New Roman","Hiragino Mincho ProN",serif}
+.opts{display:grid;gap:8px;margin-top:12px}.opt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;font-size:18px;text-align:left;color:#1f2933;line-height:2;font-family:"Times New Roman","Hiragino Mincho ProN",serif}
+.opt.ok{border-color:var(--ok);background:#e6f6ef}.opt.ng{border-color:var(--ng);background:#fdecec}
+.fb{margin-top:10px;padding:10px;border-radius:10px;font-size:15px}.fb.ok{background:#e6f6ef;color:#17623f}.fb.ng{background:#fdecec;color:#922}
+.ex{background:#f7f4fb;border-left:5px solid var(--pri2);padding:8px 10px;border-radius:8px;margin-top:10px;font-size:15.5px;line-height:2.1}.ex div{margin:2px 0}
+.hint{background:#fff7e6;border-radius:8px;padding:8px;margin-top:8px;font-size:15px}
+.note{font-size:12px;color:var(--mut)}.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center}.ovl.show{display:flex}
+.ovl .panel{background:#fff;width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px}
+table.rk{width:100%;border-collapse:collapse;font-size:14px}table.rk td,table.rk th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:middle}
+input[type=search],input[type=text],textarea{width:100%;font-size:16px;padding:10px;border:1.5px solid var(--line);border-radius:10px}
+.kw label{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:15px}.kw input{width:22px;height:22px;flex:0 0 auto}
+.resume{background:#fff7e6;border:2px solid #f4a261}
+.cert{border:6px double #b8860b;background:linear-gradient(#fffdf5,#fff8e1);border-radius:10px;padding:18px;text-align:center}
+.cert h2{font-size:24px;color:#8a5a00;letter-spacing:.3em;margin:4px 0}.cert .sc{font-size:30px;font-weight:bold;color:#8a5a00}
+/* 数式 */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1.3px solid currentColor;padding:0 2px}.fr>span{padding:0 1px}
+.fr.sm{font-size:.62em;vertical-align:.25em;margin:0 1px}sup .fr.sm{font-size:.8em;vertical-align:.1em}
+sup{font-size:.68em;line-height:0}sub{font-size:.68em}
+.rt{display:inline-flex;align-items:flex-start;white-space:nowrap}.rt .ix{font-size:.55em;margin-right:-.45em;margin-top:-.15em}.rt .rad{border-top:1.4px solid currentColor;padding:0 .12em;margin-left:.05em}
+.sum{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}.sum td,.sum th{border:1px solid var(--line);padding:6px;text-align:left}.sum th{background:#f3edfa}
+#printArea{display:none}
+@media print{body{background:#fff}header,main,.ovl{display:none!important}#printArea{display:block;font-size:11pt;line-height:1.8;color:#000}#printArea h1{font-size:14pt;margin:0}#printArea h2{font-size:12pt;border-bottom:1px solid #000;margin:10px 0 4px;color:#000}.pq{margin:4px 0 10px;page-break-inside:avoid}.pgbr{page-break-before:always}.big{font-size:15pt;text-align:left;margin:4px 0}}
+</style>
+</head>
+<body>
+<header>
+ <div class="htop"><h1>指数関数・対数関数 マスター<small>数学Ⅱ 第5章　数字が毎回かわる型別練習</small></h1><span class="badge">v1.2</span></div>
+ <div class="tabs" id="tabs"><button data-t="home" class="on">🏠 ホーム</button><button data-t="test">🎓 テスト</button><button data-t="sum">📘 まとめ</button><button data-t="rank">⭐ 苦手</button><button data-t="search">🔍</button><button data-t="help">❓</button></div>
+</header>
+<main>
+<section id="s-home" class="screen show"><div id="resumeBox"></div><div class="card" id="overview"></div><div id="unitList"></div>
+ <div class="bigbtns"><button class="btn dark" onclick="openPrint()">🖨 プリント</button><button class="btn acc" onclick="openReport()">📋 先生に報告</button></div>
+ <button class="btn sub wide" onclick="resetAll()">記録をリセット</button></section>
+<section id="s-quiz" class="screen"><div class="card"><div class="qmeta"><span id="qPos"></span><span id="qScore"></span></div><div class="prog"><div id="qBar"></div></div><div class="qmeta"><span id="qTag"></span><button class="btn sm sub" onclick="showMiss()">✗ 今回のミス</button></div></div><div class="card" id="qCard"></div><button class="btn sm sub" onclick="quitQuiz()">■ やめてホームへ</button></section>
+<section id="s-result" class="screen"><div class="card" id="resultCard"></div></section>
+<section id="s-test" class="screen"><div id="testBody"></div></section>
+<section id="s-explain" class="screen"><div id="exList"></div></section>
+<section id="s-sum" class="screen"><div class="card" id="sumBody"></div></section>
+<section id="s-rank" class="screen"><div class="card"><h2>⭐ 苦手な型</h2><div class="note">正答率の低い順。タップで練習。</div><div id="rankBody"></div></div></section>
+<section id="s-search" class="screen"><div class="card"><h2>🔍 検索</h2><input type="search" id="sq" placeholder="例：底の変換，真数，桁数，ていのへんかん" oninput="doSearch()"><div id="sRes"></div></div></section>
+<section id="s-help" class="screen"><div class="card" id="helpBody"></div></section>
+</main>
+<div id="printArea"></div>
+<div class="ovl" id="ovl" onclick="if(event.target===this)closeOvl()"><div class="panel" id="ovlBody"></div></div>
+<script>
+// ===== 共通：分数・表示 =====
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a||1};
+function Q(n,d=1){if(d<0){n=-n;d=-d}const g=gcd(n,d);return[n/g,d/g]}
+const qa=(a,b)=>Q(a[0]*b[1]+b[0]*a[1],a[1]*b[1]),qs=(a,b)=>qa(a,[-b[0],b[1]]),qm=(a,b)=>Q(a[0]*b[0],a[1]*b[1]),qd=(a,b)=>Q(a[0]*b[1],a[1]*b[0]),qv=a=>a[0]/a[1],qeq=(a,b)=>a[0]==b[0]&&a[1]==b[1];
+const qn=a=>[-a[0],a[1]];
+function qpow(q,k){return k>=0?Q(q[0]**k,q[1]**k):Q(q[1]**(-k),q[0]**(-k))}
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[R(0,a.length-1)];
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const MI='−',LE='≦',GE='≧';
+const nm=n=>n<0?MI+(-n):''+n,np=n=>n<0?'('+MI+(-n)+')':''+n;
+const fr=(a,b,c='')=>`<span class="fr ${c}"><span>${a}</span><span>${b}</span></span>`;
+const qh=q=>q[1]==1?nm(q[0]):(q[0]<0?MI:'')+fr(Math.abs(q[0]),q[1]);
+const qp=q=>q[0]<0?'('+qh(q)+')':qh(q);
+const eh=q=>{if(!Array.isArray(q))q=[q,1];return q[1]==1?nm(q[0]):(q[0]<0?MI:'')+fr(Math.abs(q[0]),q[1],'sm')};
+const pw=(b,e)=>`${b}<sup>${typeof e=='string'?e:eh(e)}</sup>`;
+const rt=(n,x)=>`<span class="rt">${n==2?'':`<span class="ix">${n}</span>`}√<span class="rad">${x}</span></span>`;
+const lg=(a,M)=>`log<sub>${a}</sub>${M}`;
+const X='<i>x</i>',Y='<i>y</i>',T='<i>t</i>';
+const bh=q=>q[1]==1?(q[0]<0?`(${nm(q[0])})`:''+q[0]):`(${qh(q)})`; // 底の表示
+const lcm=(a,b)=>a/gcd(a,b)*b;
+// p^E（Eは有理数）を「数・累乗根」で表示
+function pv(p,E){const v=Math.pow(p,qv(E));if(E[1]==1)return{h:qh(qpow([p,1],E[0])),v};
+ const k=Math.floor(qv(E)),f=qs(E,[k,1]),r=rt(f[1],f[0]==1?p:p**f[0]);
+ return{h:k==0?r:k>0?(p**k)+r:fr(r,p**(-k)),v}}
+// 選択肢づくり（数値が同じものは除く）
+function mk(ans,cands,fb){const A=typeof ans=='string'?{h:ans}:ans;const out=[],seen=new Set([A.h]);
+ const ok=c=>c&&!seen.has(c.h)&&!(A.v!=null&&c.v!=null&&(Math.abs(c.v-A.v)<1e-9||out.some(o=>o.v!=null&&Math.abs(o.v-c.v)<1e-9)));
+ for(let c of cands){if(c==null)continue;c=typeof c=='string'?{h:c}:c;if(ok(c)){seen.add(c.h);out.push(c)}if(out.length==3)break}
+ let g=0;while(out.length<3&&fb&&g++<80){let c=fb();c=typeof c=='string'?{h:c}:c;if(ok(c)){seen.add(c.h);out.push(c)}}
+ return{a:A.h,opts:shuf([A.h,...out.map(c=>c.h)])}}
+const close=(a,b)=>Math.abs(a-b)<1e-7*Math.max(1,Math.abs(a));
+// 不等式の答えの表示
+const ineq=(rel,v)=>`${X} ${rel} ${typeof v=='string'?v:qh(v)}`;
+const flip={'<':'>','>':'<',[LE]:GE,[GE]:LE};
+const relf={'<':(a,b)=>a<b,'>':(a,b)=>a>b,[LE]:(a,b)=>a<=b+1e-12,[GE]:(a,b)=>a>=b-1e-12};
+// グラフ（解説用）
+function plot(fs,o={}){const W=240,H=200,x0=o.x0??-3,x1=o.x1??3,y0=o.y0??-4,y1=o.y1??6;const sx=x=>(x-x0)/(x1-x0)*W,sy=y=>H-(y-y0)/(y1-y0)*H;
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:280px;display:block;margin:6px auto;background:#fff;border:1px solid #ddd;border-radius:6px">`;
+ for(let x=Math.ceil(x0);x<=x1;x++)s+=`<line x1="${sx(x)}" y1="0" x2="${sx(x)}" y2="${H}" stroke="#eee"/>`;
+ for(let y=Math.ceil(y0);y<=y1;y++)s+=`<line x1="0" y1="${sy(y)}" x2="${W}" y2="${sy(y)}" stroke="#eee"/>`;
+ s+=`<line x1="0" y1="${sy(0)}" x2="${W}" y2="${sy(0)}" stroke="#333"/><line x1="${sx(0)}" y1="0" x2="${sx(0)}" y2="${H}" stroke="#333"/><text x="${W-10}" y="${sy(0)-4}" font-size="11">x</text><text x="${sx(0)+4}" y="11" font-size="11">y</text><text x="${sx(0)-10}" y="${sy(0)+12}" font-size="10">O</text>`;
+ (o.lines||[]).forEach(l=>{s+=l.v!=null?`<line x1="${sx(l.v)}" y1="0" x2="${sx(l.v)}" y2="${H}" stroke="#999" stroke-dasharray="4 3"/>`:`<line x1="0" y1="${sy(l.h)}" x2="${W}" y2="${sy(l.h)}" stroke="#999" stroke-dasharray="4 3"/>`});
+ fs.forEach(F=>{let d='',pen=false;for(let i=0;i<=300;i++){const x=x0+(x1-x0)*i/300,y=F.f(x);if(!isFinite(y)||y<y0-5||y>y1+5){pen=false;continue}d+=(pen?'L':'M')+sx(x).toFixed(1)+' '+sy(Math.max(y0-2,Math.min(y1+2,y))).toFixed(1);pen=true}
+  s+=`<path d="${d}" fill="none" stroke="${F.c||'#1d4e89'}" stroke-width="${F.w||2.2}" ${F.dash?'stroke-dasharray="5 4"':''}/>`;if(F.lab)s+=`<text x="${sx(F.lx??x1-1)}" y="${(v=>isFinite(v)?Math.max(12,Math.min(H-4,sy(v)-5)):12)(F.f(F.lx??x1-1))}" font-size="11" fill="${F.c||'#1d4e89'}">${F.lab}</text>`});
+ (o.pts||[]).forEach(p=>{s+=`<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="3.5" fill="#d64545"/>`;if(p[2])s+=`<text x="${sx(p[0])+5}" y="${sy(p[1])-5}" font-size="10">${p[2]}</text>`});
+ return s+'</svg>'}
+
+
+</script>
+<script>
+// ===== 第1節 指数関数：20型 =====
+const G={};
+// ①0・負の指数
+G.e01=()=>{const a=pick([2,3,4,5,10,-2,-3,-5,6]);let n=pick([0,-1,-2,-3,-2,-1]);if(Math.abs(a)>=5&&n==-3)n=-2;
+ const B=bh([a,1]),m=-n,val=n==0?[1,1]:Q(a<0&&m%2?-1:1,Math.abs(a)**m);
+ const cand=[{h:nm(a*n),v:a*n},{h:qh(qn(val)),v:-qv(val)},{h:qh(Q(Math.abs(a)**m*(a<0&&m%2?-1:1))),v:(a<0&&m%2?-1:1)*Math.abs(a)**m},{h:'0',v:0},{h:nm(a),v:a}];
+ return{q:`次の値を求めよ。<div class="big">${pw(B,n)}</div>`,...mk({h:qh(val),v:qv(val)},cand,()=>{const k=R(2,40);return{h:qh(Q(1,k)),v:1/k}}),
+  exp:n==0?[`0でない数の<b>0乗は必ず1</b>：${pw(B,0)} = 1`]:[`${pw('<i>a</i>','−<i>n</i>')} = ${fr(1,pw('<i>a</i>','<i>n</i>'))}（マイナスの指数は<b>分母に</b>）`,`${pw(B,n)} = ${fr(1,pw(B,m))} = ${fr(1,nm((a<0&&m%2?-1:1)*Math.abs(a)**m))} = <b>${qh(val)}</b>`],
+  hint:`${pw('<i>a</i>','−<i>n</i>')} = ${fr(1,pw('<i>a</i>','<i>n</i>'))}`,ck:close(Math.pow(a,n),qv(val))}};
+// ②指数法則（文字式）
+function mono(ea,eb){const p=[];const f=(c,e)=>e==0?'':e==1?c:pw(c,e);if(ea)p.push(f('<i>a</i>',ea));if(eb)p.push(f('<i>b</i>',eb));return p.join('')||'1'}
+G.e02=()=>{const nz=()=>pick([-5,-4,-3,-2,-1,2,3,4,5,6,7,8]);const p=nz(),q=nz(),r=pick([2,3,-1,-2]),f=R(1,4),A=1.37,Bv=0.83;
+ let qq,ea,eb=0,cand,num,ex;
+ if(f==1){qq=`${pw('<i>a</i>',p)}${pw('<i>a</i>',q)}`;ea=p+q;cand=[[p*q,0],[p-q,0],[-(p+q),0]];num=A**p*A**q;ex=`${pw('<i>a</i>','<i>m</i>')}${pw('<i>a</i>','<i>n</i>')} = ${pw('<i>a</i>','<i>m</i>＋<i>n</i>')}（かけ算は<b>たす</b>）：${p}＋${np(q)} = ${p+q}`}
+ else if(f==2){qq=`(${pw('<i>a</i>',p)})<sup>${nm(r)}</sup>`;ea=p*r;cand=[[p+r,0],[-p*r,0],[p-r,0]];num=(A**p)**r;ex=`(${pw('<i>a</i>','<i>m</i>')})<sup><i>n</i></sup> = ${pw('<i>a</i>','<i>mn</i>')}（累乗の累乗は<b>かける</b>）：${p}×${np(r)} = ${p*r}`}
+ else if(f==3){qq=`${pw('<i>a</i>',p)}(${pw('<i>a</i>',q)}<i>b</i>)<sup>${nm(r)}</sup>`;ea=p+q*r;eb=r;cand=[[p+q+r,r],[p+q*r,1],[p*q*r,r],[p+q,r]];num=A**p*(A**q*Bv)**r;ex=`(${pw('<i>a</i>',q)}<i>b</i>)<sup>${nm(r)}</sup> = ${pw('<i>a</i>',q*r)}${pw('<i>b</i>',r)}　→　${pw('<i>a</i>',p)}×${pw('<i>a</i>',q*r)} = ${pw('<i>a</i>',p+q*r)}`}
+ else{qq=`${pw('<i>a</i>',p)} ÷ ${pw('<i>a</i>',q)}`;ea=p-q;cand=[[p+q,0],[q-p,0],[p*q,0]];num=A**p/A**q;ex=`${pw('<i>a</i>','<i>m</i>')} ÷ ${pw('<i>a</i>','<i>n</i>')} = ${pw('<i>a</i>','<i>m</i>−<i>n</i>')}（わり算は<b>ひく</b>）：${p}−${np(q)} = ${p-q}`}
+ const val=(x,y)=>A**x*Bv**y;
+ return{q:`次の式を計算せよ。（<i>a</i>≠0，<i>b</i>≠0）<div class="big">${qq}</div>`,...mk({h:mono(ea,eb),v:val(ea,eb)},cand.map(c=>({h:mono(c[0],c[1]),v:val(c[0],c[1])})),()=>{const d=R(-3,3)||1;return{h:mono(ea+d,eb),v:val(ea+d,eb)}}),
+  exp:[ex,`答え：<b>${mono(ea,eb)}</b>`],hint:'かけ算→たす，わり算→ひく，累乗の累乗→かける',ck:close(num,val(ea,eb))}};
+// ③指数法則（数の計算）
+G.e03=()=>{const f=R(1,3);let qq,e,p,sgn=1,ex,num;
+ if(f==1){p=pick([2,3,5,7]);const lim=p==2?5:p==3?3:2;e=R(-2,lim);const x=R(-3,5)||2,y=R(-4,4)||-1,z=x+y-e;qq=`${pw(p,x)} × ${pw(p,y)} ÷ ${pw(p,z)}`;num=p**x*p**y/p**z;ex=[`指数だけを計算：${x}＋${np(y)}−${np(z)} = ${e}`,`${pw(p,e)} = <b>${qh(qpow([p,1],e))}</b>`]}
+ else if(f==2){p=pick([3,5,2]);const q2=pick([2,3,5,7].filter(v=>v!=p)),x=pick([1,2]);qq=`(${x==1?p:pw(p,x)} × ${pw(q2,-1)})<sup>2</sup>`;const val=Q(p**(2*x),q2**2);num=qv(val);
+  return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk({h:qh(val),v:num},[{h:qh(Q(p**(2*x),q2*2)),v:p**(2*x)/(2*q2)},{h:qh(Q(p**(2*x)*q2**2)),v:p**(2*x)*q2**2},{h:qh(Q(q2**2,p**(2*x))),v:q2**2/p**(2*x)}],()=>{const d=R(2,30);return{h:qh(Q(p**(2*x),d)),v:p**(2*x)/d}}),
+   exp:[`(<i>ab</i>)<sup>2</sup> = ${pw('<i>a</i>',2)}${pw('<i>b</i>',2)}：${pw(p,2*x)} × ${pw(q2,-2)}`,`= ${p**(2*x)} × ${fr(1,q2**2)} = <b>${qh(val)}</b>`],hint:'かっこの中の1つ1つを2乗する',ck:close(Math.pow(p**x*q2**-1,2),num)}}
+ else{p=2;const m=pick([1,2,3]),j=R(1,3),k=R(1,4);e=m+j+k;sgn=m%2?-1:1;qq=`(${MI}${pw(2,-1)})<sup>${MI}${m}</sup> ÷ ${pw(2,-j)} × ${pw(2,k)}`;num=Math.pow(-(2**-1),-m)/2**-j*2**k;
+  ex=[`(${MI}${pw(2,-1)})<sup>${MI}${m}</sup> = ${sgn<0?MI:''}${pw(2,m)}（${m%2?'奇数乗なのでマイナスが残る':'偶数乗なのでプラス'}）`,`指数：${m}−(${MI}${j})＋${k} = ${e}　→　${sgn<0?MI:''}${pw(2,e)} = <b>${nm(sgn*2**e)}</b>`]}
+ const val=f==3?[sgn*2**e,1]:qpow([p,1],e);
+ return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk({h:qh(val),v:qv(val)},[{h:qh(qn(val)),v:-qv(val)},{h:qh(qpow([p,1],e+1)),v:p**(e+1)},{h:qh(qpow([p,1],-e)),v:p**-e},{h:qh(qpow([p,1],e-1)),v:p**(e-1)}],()=>{const d=R(-3,4);return{h:qh(qpow([p,1],d)),v:p**d}}),
+  exp:ex,hint:'同じ底にそろえて，指数だけをたしたりひいたりする',ck:close(num,qv(val))}};
+// ④n乗根の意味
+G.e04=()=>{const b=pick([2,3,5,10]);let n=R(2,6);while(b**n>100000)n--;const neg=Math.random()<.35,N=neg?-(b**n):b**n,ev=n%2==0;
+ const o=[`${b} と ${MI}${b}`,`${b} だけ`,`${MI}${b} だけ`,'実数の範囲にはない'];const a=ev?(neg?o[3]:o[0]):(neg?o[2]:o[1]);
+ return{q:`${nm(N)} の ${n} 乗根を，実数の範囲ですべて求めよ。`,a,opts:o.slice(),
+  exp:[`${n}乗して ${nm(N)} になる数をさがす（${pw(X,n)} = ${nm(N)} の解）`,ev?(neg?`${n}は偶数。偶数乗は必ず0以上なので，マイナスの数の${n}乗根は<b>実数にはない</b>`:`${pw(b,n)} = ${N}，(${MI}${b})<sup>${n}</sup> = ${N}　→　<b>${b} と ${MI}${b}</b>（偶数乗根は2つ）`):`${n}は奇数。(${neg?MI:''}${b})<sup>${n}</sup> = ${nm(N)}　→　<b>${neg?MI:''}${b} だけ</b>（奇数乗根は1つ）`],
+  hint:'偶数乗はプラスとマイナスの2つ，奇数乗は1つ',ck:Math.pow(neg&&!ev?-b:b,n)==N||ev&&neg}};
+// ⑤累乗根の値
+function dec(k,p){const s=String(k).padStart(p+1,'0');return s.slice(0,s.length-p)+'.'+s.slice(s.length-p)}
+G.e05=()=>{const t=R(1,4);let n,bh_,Nh,bv,cand=[];
+ if(t==1){const b=pick([2,3,4,5,6,10]);n=R(2,5);while(b**n>10000)n--;bh_=''+b;Nh=''+b**n;bv=b;cand=[{h:nm(-b),v:-b},{h:''+b*b,v:b*b},{h:qh(Q(b**n,n)),v:b**n/n},{h:''+(b+1),v:b+1}]}
+ else if(t==2){const [u,d]=pick([[1,2],[1,3],[1,5],[2,3],[3,4],[5,4],[1,4]]);n=pick([2,3,4]);while(d**n>1000)n--;bh_=qh([u,d]);Nh=fr(u**n,d**n);bv=u/d;cand=[{h:qh([d,u]),v:d/u},{h:qh(qn([u,d])),v:-u/d},{h:qh(Q(u,d*d)),v:u/d/d},{h:qh(Q(u*n,d)),v:u*n/d}]}
+ else if(t==3){const k=pick([1,2,3,5]);n=pick([2,3,4,5]);const p=n;bh_='0.'+k;Nh=dec(k**n,n);bv=k/10;cand=[{h:'0.0'+k,v:k/100},{h:''+k,v:k},{h:MI+'0.'+k,v:-k/10},{h:'0.'+(k+1),v:(k+1)/10}]}
+ else{const b=pick([2,3,5,6,10]);n=pick([3,5]);while(b**n>100000)n-=2;bh_=nm(-b);Nh=nm(-(b**n));bv=-b;cand=[{h:''+b,v:b},{h:'実数ではない',v:999},{h:nm(-b*b),v:-b*b},{h:nm(-b-1),v:-b-1}]}
+ const N=t==4?-(Math.abs(bv)**n):bv**n;
+ return{q:`次の値を求めよ。<div class="big">${rt(n,Nh)}</div>`,...mk({h:bh_,v:bv},cand),
+  exp:[`${n}乗して ${Nh} になる数をさがす`,`(${bh_})<sup>${n}</sup> = ${Nh}${t==4?`（${n}は奇数なのでマイナスもOK）`:''}`,`よって <b>${rt(n,Nh)} = ${bh_}</b>${t!=4?'（累乗根はプラスのほう）':''}`],
+  hint:`□<sup>${n}</sup> = ${Nh} の□をさがす`,ck:close(Math.pow(bv,n),N)}};
+// ⑥累乗根の性質
+G.e06=()=>{const f=R(1,5);let qq,ah,av,cand=[],ex,num;
+ if(f==1){const n=pick([2,3,4]),b=pick(n==4?[2,3]:[2,3,4,5,6]),N=b**n;const ds=[];for(let d=2;d<N;d++)if(N%d==0&&d*d!=N)ds.push(d);if(!ds.length)return G.e06();const x=pick(ds),y=N/x;
+  qq=`${rt(n,x)} ${rt(n,y)}`;ah=''+b;av=b;num=Math.pow(x,1/n)*Math.pow(y,1/n);cand=[{h:rt(n,x+y),v:Math.pow(x+y,1/n)},{h:''+b*b,v:b*b},{h:''+(x*y),v:x*y},{h:rt(2*n,N),v:Math.pow(N,1/2/n)}];
+  ex=[`${rt('<i>n</i>','<i>a</i>')} ${rt('<i>n</i>','<i>b</i>')} = ${rt('<i>n</i>','<i>ab</i>')}：${rt(n,x+'×'+y)} = ${rt(n,N)}`,`${N} = ${pw(b,n)} なので　<b>${b}</b>`]}
+ else if(f==2){const n=pick([3,4]),b=pick([2,3]),y=pick([2,3,5,6].filter(v=>v!=b)),x=b**n*y;qq=fr(rt(n,x),rt(n,y));ah=''+b;av=b;num=Math.pow(x/y,1/n);cand=[{h:rt(n,x-y),v:Math.pow(x-y,1/n)},{h:''+b**n,v:b**n},{h:rt(n,b),v:Math.pow(b,1/n)}];
+  ex=[`${fr(rt('<i>n</i>','<i>a</i>'),rt('<i>n</i>','<i>b</i>'))} = ${rt('<i>n</i>',fr('<i>a</i>','<i>b</i>'))}：${rt(n,fr(x,y))} = ${rt(n,b**n)}`,`= <b>${b}</b>`]}
+ else if(f==3){const n=pick([3,4,5]),m=pick([2,3].filter(v=>v<n)),k=pick([2,3,5]);qq=`(${rt(n,k)})<sup>${m}</sup>`;ah=rt(n,k**m);av=Math.pow(k,m/n);num=Math.pow(Math.pow(k,1/n),m);cand=[{h:rt(n*m,k),v:Math.pow(k,1/n/m)},{h:rt(n,k*m),v:Math.pow(k*m,1/n)},{h:rt(n+m,k),v:Math.pow(k,1/(n+m))}];
+  ex=[`(${rt('<i>n</i>','<i>a</i>')})<sup><i>m</i></sup> = ${rt('<i>n</i>',pw('<i>a</i>','<i>m</i>'))}`,`${rt(n,pw(k,m))} = <b>${rt(n,k**m)}</b>`]}
+ else if(f==4){const [m,n]=pick([[2,3],[3,2],[5,2],[2,5],[2,2],[3,3]]),b=m*n<=6&&Math.random()<.5?3:2,N=b**(m*n);if(N>2000)return G.e06();
+  qq=rt(m,rt(n,N));ah=''+b;av=b;num=Math.pow(Math.pow(N,1/n),1/m);cand=[{h:rt(m+n,N),v:Math.pow(N,1/(m+n))},{h:''+b*b,v:b*b},{h:rt(2,b),v:Math.sqrt(b)}];
+  ex=[`${rt('<i>m</i>',rt('<i>n</i>','<i>a</i>'))} = ${rt('<i>mn</i>','<i>a</i>')}：${rt(m*n,N)}`,`${N} = ${pw(b,m*n)} なので　<b>${b}</b>`]}
+ else{const [k,j,p]=pick([[10,5,2],[6,3,2],[6,2,3],[8,4,2],[6,4,2],[9,6,2],[4,2,3],[6,2,2],[10,4,2]]);const g=gcd(k,j),N=p**j;qq=rt(k,N);ah=rt(k/g,j/g==1?p:p**(j/g));av=Math.pow(p,j/k);num=Math.pow(N,1/k);cand=[{h:rt(k-j,p),v:Math.pow(p,1/(k-j))},{h:rt(k/g,N),v:Math.pow(N,g/k)},{h:''+p,v:p}];
+  ex=[`${N} = ${pw(p,j)}`,`${rt('<i>np</i>',pw('<i>a</i>','<i>mp</i>'))} = ${rt('<i>n</i>',pw('<i>a</i>','<i>m</i>'))}（根指数と指数を同じ数でわる）`,`${rt(k,pw(p,j))} = <b>${ah}</b>（${g}でわった）`]}
+ return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk({h:ah,v:av},cand,()=>{const k=R(2,9),n2=R(2,5);return{h:rt(n2,k),v:Math.pow(k,1/n2)}}),exp:ex,hint:'累乗根の性質1〜5のどれを使うか考える',ck:close(num,av)}};
+// ⑦分数指数の値
+G.e07=()=>{const [b,q]=pick([[[2,1],2],[[3,1],2],[[7,1],2],[[2,1],3],[[3,1],3],[[5,1],3],[[2,1],4],[[3,1],4],[[2,1],5],[[5,4],3],[[2,3],3],[[3,2],2],[[4,5],2]]);
+ let p=pick([1,2,3,-1,-2,-3,4,-4].filter(x=>gcd(x,q)==1||q==4&&x==2&&false));if(Math.abs(qv(qpow(b,p)))>300||qpow(b,Math.abs(p))[0]>300)p=p>0?1:-1;
+ const N=qpow(b,q),val=qpow(b,p),Nh=qh(N),B=N[1]==1?Nh:`(${Nh})`;
+ return{q:`次の値を求めよ。<div class="big">${pw(B,[p,q])}</div>`,...mk({h:qh(val),v:qv(val)},[{h:qh(qpow(b,-p)),v:qv(qpow(b,-p))},{h:qh(qn(val)),v:-qv(val)},{h:qh(qpow(b,p+1)),v:qv(qpow(b,p+1))},{h:qh(Q(N[0]*p,N[1]*q)),v:qv(N)*p/q}]),
+  exp:[`${Nh} = ${pw(bh(b),q)} と，${q}乗の形にする`,`${pw(B,[p,q])} = (${pw(bh(b),q)})<sup>${eh([p,q])}</sup> = ${pw(bh(b),p)}${p<0?`（マイナスは逆数）`:''}`,`= <b>${qh(val)}</b>`],
+  hint:`まず ${Nh} を □<sup>${q}</sup> の形に`,ck:close(Math.pow(qv(N),p/q),qv(val))}};
+// ⑧分数指数の計算
+const DEN=[2,3,4,6];
+function rq(){return Q(pick([1,1,2,3,5,-1,-2]),pick(DEN))}
+G.e08=()=>{const f=R(1,4),p=pick([2,3,5]);let qq,E,num,ex,parts=[];
+ if(f==1){E=Q(pick([1,1,2,3,1,3]),pick([1,1,1,2]));const r=rq(),s=rq(),t=qs(qa(r,s),E);if(t[0]==0)return G.e08();qq=`${pw(p,r)} × ${pw(p,s)} ÷ ${pw(p,t)}`;num=Math.pow(p,qv(r))*Math.pow(p,qv(s))/Math.pow(p,qv(t));
+  ex=[`指数だけを計算：${eh(r)}＋${qp(s)}−${qp(t)} = ${qh(E)}`];parts=[r,s,t]}
+ else if(f==2){E=[pick([1,2,3,4]),1];const r=Q(pick([1,2,3,4,5]),pick([2,3,4,5,6]));const s=qd(E,r);qq=`(${pw(p,r)})<sup>${eh(s)}</sup>`;num=Math.pow(Math.pow(p,qv(r)),qv(s));ex=[`累乗の累乗は指数をかける：${eh(r)} × ${eh(s)} = ${qh(E)}`];parts=[r,s]}
+ else if(f==3){let a,b,c,tries=0;do{a=[R(1,2),pick([2,3,4,6])];b=[1,pick([2,3,4,6,12])];c=[1,pick([2,3,4,6,12])];E=qs(qa(Q(...a),Q(...b)),Q(...c));tries++}while((E[0]<=0||![1,2].includes(E[1]))&&tries<200);if(E[0]<=0||E[1]>2)return G.e08();
+  const r=(x)=>rt(x[1],x[0]==1?p:p**x[0]);qq=`${r(a)} × ${r(b)} ÷ ${r(c)}`;num=Math.pow(p,a[0]/a[1])*Math.pow(p,1/b[1])/Math.pow(p,1/c[1]);
+  ex=[`累乗根を分数の指数に：${r(a)} = ${pw(p,Q(...a))}，${r(b)} = ${pw(p,Q(...b))}，${r(c)} = ${pw(p,Q(...c))}`,`指数：${eh(Q(...a))}＋${eh(Q(...b))}−${eh(Q(...c))} = ${qh(E)}`];parts=[Q(...a),Q(...b),Q(...c)]}
+ else{const pp=2;const cs=[[4,2],[8,3],[16,4],[32,5],[64,6]];let A,B2,r,s;do{A=pick(cs);B2=pick(cs);r=Q(pick([1,2,-1,3,-3,-2]),pick([2,3,4,6]));s=Q(pick([1,-1,3,-3,2]),pick([2,3,4]));E=qa(qm(r,[A[1],1]),qm(s,[B2[1],1]))}while(E[1]!=1||Math.abs(E[0])>5||E[0]==0||A[0]==B2[0]);
+  qq=`${pw(A[0],r)} × ${pw(B2[0],s)}`;num=Math.pow(A[0],qv(r))*Math.pow(B2[0],qv(s));
+  const v=Math.pow(2,E[0]);ex=[`底を2にそろえる：${A[0]} = ${pw(2,A[1])}，${B2[0]} = ${pw(2,B2[1])}`,`${pw(2,qm(r,[A[1],1]))} × ${pw(2,qm(s,[B2[1],1]))} = ${pw(2,E)}`];
+  const ans=pv(2,E);return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk(ans,[pv(2,qn(E)),pv(2,qa(E,[1,1])),pv(2,qs(E,[1,1])),pv(2,qa(qm(r,[A[1],1]),qn(qm(s,[B2[1],1]))))],()=>pv(2,[R(-4,5),1])),exp:ex.concat([`= <b>${ans.h}</b>`]),hint:'底を2にそろえる',ck:close(num,ans.v)}}
+ const ans=pv(p,E);const wrong=[pv(p,qn(E)),pv(p,qa(E,[1,1])),pv(p,qs(E,[1,2])),pv(p,parts.length==3?qa(qa(parts[0],parts[1]),parts[2]):qa(parts[0],parts[1]))];
+ return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk(ans,wrong,()=>pv(p,qa(E,[R(-2,2)||1,R(1,3)]))),exp:ex.concat([`${pw(p,E)} = <b>${ans.h}</b>`]),hint:'すべて「底の分数乗」にして，指数を計算',ck:close(num,ans.v)}};
+// ⑨累乗根を a^r に
+function ar(E,F){const f=(c,e)=>e[0]==0?'':qeq(e,[1,1])?c:pw(c,e);return (f('<i>a</i>',E)+(F?f('<i>b</i>',F):''))||'1'}
+G.e09=()=>{const f=R(1,3),A=1.73,B=0.61;let qq,E,F=null,num,ex;
+ if(f==1){let a,b,c;do{a=[R(1,4),pick([2,3,4])];b=[R(1,3),pick([2,3,4,6])];c=[R(1,5),pick([2,3,4,6])];E=qs(qa(Q(...a),Q(...b)),Q(...c))}while(E[0]==0||gcd(a[0],a[1])>1||gcd(b[0],b[1])>1||gcd(c[0],c[1])>1);
+  const r=x=>rt(x[1],x[0]==1?'<i>a</i>':pw('<i>a</i>',x[0]));const use3=Math.random()<.6;if(!use3)E=qa(Q(...a),Q(...b));
+  qq=`${r(a)} × ${r(b)}${use3?' ÷ '+r(c):''}`;num=Math.pow(A,a[0]/a[1])*Math.pow(A,b[0]/b[1])/(use3?Math.pow(A,c[0]/c[1]):1);
+  ex=[`${rt('<i>n</i>',pw('<i>a</i>','<i>m</i>'))} = ${pw('<i>a</i>',fr('<i>m</i>','<i>n</i>','sm'))}：${eh(Q(...a))}，${eh(Q(...b))}${use3?'，'+eh(Q(...c)):''}`,`指数：${eh(Q(...a))}＋${eh(Q(...b))}${use3?'−'+eh(Q(...c)):''} = ${qh(E)}`]}
+ else if(f==2){const m=pick([2,3,4]),k=pick([1,1,2]),n=pick([2,3]);const inner=qa([k,1],[1,m]);E=qm(inner,[1,n]);
+  qq=rt(n,(k==1?'<i>a</i>':pw('<i>a</i>',k))+' × '+rt(m,'<i>a</i>'));num=Math.pow(Math.pow(A,k)*Math.pow(A,1/m),1/n);
+  ex=[`中から：${k==1?'<i>a</i>':pw('<i>a</i>',k)} × ${pw('<i>a</i>',[1,m])} = ${pw('<i>a</i>',inner)}`,`${rt(n,'□')} は ${pw('□',[1,n])}：${pw('<i>a</i>',inner)} の ${eh([1,n])} 乗 → 指数 ${qh(inner)}×${eh([1,n])} = ${qh(E)}`]}
+ else{const r=Q(pick([-1,1,-2,3]),pick([2,3,4])),s=Q(pick([1,-1,1]),pick([2,3,4])),t=pick([2,3,4]),u=Q(pick([1,2,-1,5,3]),pick([3,2,4]));E=qa(qm(r,[t,1]),u);F=qm(s,[t,1]);
+  qq=`(${ar(r,s)})<sup>${t}</sup> × ${ar(u)}`;num=Math.pow(Math.pow(A,qv(r))*Math.pow(B,qv(s)),t)*Math.pow(A,qv(u));
+  ex=[`(${ar(r,s)})<sup>${t}</sup> = ${ar(qm(r,[t,1]),F)}`,`<i>a</i> の指数：${qh(qm(r,[t,1]))}＋${qp(u)} = ${qh(E)}`]}
+ const val=(e,g)=>Math.pow(A,qv(e))*(g?Math.pow(B,qv(g)):1);
+ const w=[[qn(E),F],[qa(E,[1,2]),F],[qs(E,[1,3]),F],[qm(E,[2,1]),F]];
+ return{q:`<i>a</i>＞0${F?'，<i>b</i>＞0':''} とする。次の式を ${F?pw('<i>a</i>','<i>r</i>')+pw('<i>b</i>','<i>s</i>'):pw('<i>a</i>','<i>r</i>')} の形で表せ。<div class="big">${qq}</div>`,...mk({h:ar(E,F),v:val(E,F)},w.map(x=>({h:ar(x[0],x[1]),v:val(x[0],x[1])})),()=>{const e=qa(E,Q(R(-3,3)||1,R(2,4)));return{h:ar(e,F),v:val(e,F)}}),exp:ex.concat([`答え：<b>${ar(E,F)}</b>`]),hint:'累乗根はすべて分数の指数に直す',ck:close(num,val(E,F))}};
+// ⑩累乗根のたし算・ひき算
+G.e10=()=>{const n=pick([3,3,4,2]),k=n==4?pick([2,3]):n==2?pick([2,3,5]):pick([2,3,5]);const T=R(2,3);let C=[0,1],terms=[],ex=[],num=0;
+ for(let i=0;i<T;i++){const sg=i==0?1:pick([1,-1]);let c,inner,cv;
+  if(i==T-1&&n==3&&Math.random()<.4){const d=pick([2,3]);const fq=Q(k,d**3);inner=fr(fq[0],fq[1]);cv=Q(1,d);ex.push(`${rt(n,inner)} = ${rt(n,fr(k,pw(d,3)))} = ${fr(rt(n,k),d)}`)}
+  else{c=R(1,n==4?3:n==2?4:4);if(c**n*k>1000)c=2;inner=''+c**n*k;cv=[c,1];ex.push(`${rt(n,inner)} = ${rt(n,pw(c,n)+'×'+k)} = ${c==1?'':c}${rt(n,k)}`)}
+  C=qa(C,sg>0?cv:qn(cv));num+=sg*Math.pow(eval0(inner),1/n);terms.push((i==0?'':sg>0?' ＋ ':' − ')+rt(n,inner))}
+ if(C[0]==0)return G.e10();
+ const rk=rt(n,k),show=c=>{if(c[0]==0)return'0';const s=c[0]<0?MI:'',a=Math.abs(c[0]);return c[1]==1?s+(a==1?'':a)+rk:s+fr((a==1?'':a)+rk,c[1])};
+ const kv=Math.pow(k,1/n),ans={h:show(C),v:qv(C)*kv};
+ return{q:`次の式を計算せよ。<div class="big">${terms.join('')}</div>`,...mk(ans,[{h:show(qa(C,[1,1])),v:(qv(C)+1)*kv},{h:show(qs(C,[1,1])),v:(qv(C)-1)*kv},{h:show(qn(C)),v:-qv(C)*kv},{h:show(qm(C,[2,1])),v:2*qv(C)*kv}]),
+  exp:[`中の数を「□<sup>${n}</sup>×${k}」に分けて，${rk} をそろえる`].concat(ex).concat([`${rk} でまとめる → <b>${ans.h}</b>`]),hint:`どれも ${rk} の何倍かにする`,ck:close(num,ans.v)}};
+function eval0(h){const m=h.match(/<span>(\d+)<\/span><span>(\d+)<\/span>/);return m?+m[1]/+m[2]:+h}
+// ⑪展開
+G.e11=()=>{const f=R(1,4),A=2.3,B=1.7;let qq,ans,c=[],num,ex;
+ if(f==1){const r=pick([[1,2],[1,3],[1,4]]),sg=pick([1,-1]);const r2=Q(2*r[0],r[1]);const P=qeq(r2,[1,1])?'<i>a</i>':pw('<i>a</i>',r2),N=qeq(r2,[1,1])?fr(1,'<i>a</i>'):pw('<i>a</i>',qn(r2));
+  qq=`(${pw('<i>a</i>',r)} ${sg>0?'＋':'−'} ${pw('<i>a</i>',qn(r))})<sup>2</sup>`;const s=sg>0?'＋':'−';ans={h:`${P} ＋ ${N} ${s} 2`,v:Math.pow(A,qv(r2))+Math.pow(A,-qv(r2))+2*sg};num=Math.pow(Math.pow(A,qv(r))+sg*Math.pow(A,-qv(r)),2);
+  c=[{h:`${P} ＋ ${N}`,v:Math.pow(A,qv(r2))+Math.pow(A,-qv(r2))},{h:`${P} ＋ ${N} ${sg>0?'−':'＋'} 2`,v:Math.pow(A,qv(r2))+Math.pow(A,-qv(r2))-2*sg},{h:`${P} − ${N} ${s} 2`,v:Math.pow(A,qv(r2))-Math.pow(A,-qv(r2))+2*sg}];
+  ex=[`(<i>p</i>${s}<i>q</i>)<sup>2</sup> = <i>p</i><sup>2</sup> ${s} 2<i>pq</i> ＋ <i>q</i><sup>2</sup>`,`<i>pq</i> = ${pw('<i>a</i>',r)}×${pw('<i>a</i>',qn(r))} = ${pw('<i>a</i>',0)} = 1 がポイント`,`→ <b>${ans.h}</b>`]}
+ else if(f==2){const n=pick([2,4]),p=pick([3,5,7]),q=pick([2,3].filter(x=>x<p));qq=`(${rt(n,p)} ＋ ${rt(n,q)})(${rt(n,p)} − ${rt(n,q)})`;num=Math.pow(p,2/n)-Math.pow(q,2/n);
+  ans=n==2?{h:''+(p-q),v:p-q}:{h:`${rt(2,p)} − ${rt(2,q)}`,v:num};c=n==2?[{h:''+(p+q),v:p+q},{h:''+(p*p-q*q),v:p*p-q*q},{h:`${rt(2,p-q)}`,v:Math.sqrt(p-q)}]:[{h:rt(4,p-q),v:Math.pow(p-q,.25)},{h:''+(p-q),v:p-q},{h:`${rt(2,p)} ＋ ${rt(2,q)}`,v:Math.sqrt(p)+Math.sqrt(q)}];
+  ex=[`(<i>A</i>＋<i>B</i>)(<i>A</i>−<i>B</i>) = <i>A</i><sup>2</sup> − <i>B</i><sup>2</sup>`,`(${rt(n,p)})<sup>2</sup> = ${n==2?p:rt(2,p)}，(${rt(n,q)})<sup>2</sup> = ${n==2?q:rt(2,q)}`,`→ <b>${ans.h}</b>`]}
+ else if(f==3){const sg=pick([1,-1]);qq=`(${pw('<i>a</i>',[1,3])} ${sg<0?'−':'＋'} ${pw('<i>b</i>',[1,3])})(${pw('<i>a</i>',[2,3])} ${sg<0?'＋':'−'} ${pw('<i>a</i>',[1,3])}${pw('<i>b</i>',[1,3])} ＋ ${pw('<i>b</i>',[2,3])})`;
+  num=(Math.cbrt(A)+sg*Math.cbrt(B))*(Math.cbrt(A)**2-sg*Math.cbrt(A*B)+Math.cbrt(B)**2);ans={h:`<i>a</i> ${sg<0?'−':'＋'} <i>b</i>`,v:A+sg*B};c=[{h:`<i>a</i> ${sg<0?'＋':'−'} <i>b</i>`,v:A-sg*B},{h:`${pw('<i>a</i>',[2,3])} ${sg<0?'−':'＋'} ${pw('<i>b</i>',[2,3])}`,v:Math.cbrt(A)**2+sg*Math.cbrt(B)**2},{h:`${pw('<i>a</i>',3)} ${sg<0?'−':'＋'} ${pw('<i>b</i>',3)}`,v:A**3+sg*B**3}];
+  ex=[`公式 (<i>A</i>${sg<0?'−':'＋'}<i>B</i>)(<i>A</i><sup>2</sup>${sg<0?'＋':'−'}<i>AB</i>＋<i>B</i><sup>2</sup>) = <i>A</i><sup>3</sup> ${sg<0?'−':'＋'} <i>B</i><sup>3</sup>`,`<i>A</i> = ${pw('<i>a</i>',[1,3])}，<i>B</i> = ${pw('<i>b</i>',[1,3])} → (${pw('<i>a</i>',[1,3])})<sup>3</sup> = <i>a</i>`,`→ <b>${ans.h}</b>`]}
+ else{const p=pick([2,3,5]);qq=`(${pw(p,[1,3])} − ${pw(p,[-1,3])})(${pw(p,[2,3])} ＋ 1 ＋ ${pw(p,[-2,3])})`;num=(Math.cbrt(p)-1/Math.cbrt(p))*(Math.cbrt(p)**2+1+1/Math.cbrt(p)**2);
+  const v=Q(p*p-1,p);ans={h:qh(v),v:qv(v)};c=[{h:qh(Q(p*p+1,p)),v:(p*p+1)/p},{h:''+(p-1),v:p-1},{h:qh(Q(p**3-1,p**3)),v:(p**3-1)/p**3}];
+  ex=[`<i>A</i> = ${pw(p,[1,3])}，<i>B</i> = ${pw(p,[-1,3])} とすると，<i>AB</i> = 1 なので　(<i>A</i>−<i>B</i>)(<i>A</i><sup>2</sup>＋<i>AB</i>＋<i>B</i><sup>2</sup>) = <i>A</i><sup>3</sup>−<i>B</i><sup>3</sup>`,`= ${p} − ${pw(p,-1)} = ${p} − ${fr(1,p)} = <b>${qh(v)}</b>`]}
+ return{q:`次の式を計算せよ。${f==1||f==3?'（<i>a</i>＞0，<i>b</i>＞0）':''}<div class="big">${qq}</div>`,...mk(ans,c,()=>{const k=R(1,12);return{h:''+k,v:k}}),exp:ex,hint:'乗法公式を使う',ck:close(num,ans.v)}};
+// ⑫対称式
+G.e12=()=>{const r=pick([[1,2],[1,2],[1,4]]),k=R(3,6),m=pick([2,3,4]);const xr=qeq(qm(r,[m,1]),[1,1]);
+ const term=e=>qeq(e,[1,1])?X:pw(X,e),em=qm(r,[m,1]);const val=m==2?k*k-2:m==3?k**3-3*k:(k*k-2)**2-2;
+ const t=(k+Math.sqrt(k*k-4))/2,num=Math.pow(t,m)+Math.pow(t,-m);
+ const c=m==2?[k*k,k*k+2,2*k]:m==3?[k**3,k**3-3,k**3-3*k*k]:[k**4,(k*k-2)**2,k**4-2];
+ const ex=m==2?[`（あたえられた式）<sup>2</sup> を考える`,`(${term(r)}＋${term(qn(r))})<sup>2</sup> = ${term(qm(r,[2,1]))} ＋ 2 ＋ ${term(qn(qm(r,[2,1])))}`,`よって ${term(em)}＋${term(qn(em))} = ${k}<sup>2</sup> − 2 = <b>${val}</b>`]
+  :m==3?[`<i>A</i><sup>3</sup>＋<i>B</i><sup>3</sup> = (<i>A</i>＋<i>B</i>)<sup>3</sup> − 3<i>AB</i>(<i>A</i>＋<i>B</i>)`,`<i>A</i> = ${term(r)}，<i>B</i> = ${term(qn(r))} → <i>AB</i> = 1`,`${k}<sup>3</sup> − 3·1·${k} = <b>${val}</b>`]
+  :[`まず ${term(qm(r,[2,1]))}＋${term(qn(qm(r,[2,1])))} = ${k}<sup>2</sup>−2 = ${k*k-2}`,`もう一度2乗：${term(em)}＋${term(qn(em))} = ${k*k-2}<sup>2</sup> − 2 = <b>${val}</b>`];
+ return{q:`${term(r)} ＋ ${term(qn(r))} = ${k} のとき，次の式の値を求めよ。<div class="big">${term(em)} ＋ ${term(qn(em))}</div>`,...mk({h:''+val,v:val},c.map(v=>({h:''+v,v}))),exp:ex,hint:'2乗または3乗すると「かけて1」の項が消える',ck:close(num,val)}};
+// ⑬10ⁿを使う計算
+G.e13=()=>{let a,b,c,e,m,n;do{a=pick([1.5,3.0,4.5,6.0,9.0,1.2,2.4,3.6,4.8,7.2,1.8]);b=pick([1.5,3.0,1.2,2.4]);m=R(6,12);n=R(3,8);c=Math.round(a/b*1000)/1000;e=m-n}while(Math.round(c*100)!=c*100||m<=n);
+ if(c<1){c=Math.round(c*1000)/100;e--}
+ const sh=(c,e)=>`${c}×${pw(10,e)}`;const ans={h:sh(c,e)+' 秒',v:c*10**e};
+ const ch=[{h:sh(c,e+1)+' 秒',v:c*10**(e+1)},{h:sh(c,e-1)+' 秒',v:c*10**(e-1)},{h:sh(c,m+n)+' 秒',v:c*10**(m+n)},{h:sh(Math.round(b/a*1000)/1000,e)+' 秒',v:b/a*10**e}];
+ return{q:`${sh(a.toFixed(1),m)} m の距離を，毎秒 ${sh(b.toFixed(1),n)} m の速さで進むと，何秒かかるか。`,...mk(ans,ch),
+  exp:[`時間 = 距離 ÷ 速さ`,`(${a.toFixed(1)}÷${b.toFixed(1)}) × ${pw(10,m)}÷${pw(10,n)} = ${a/b} × ${pw(10,m-n)}`,`= <b>${ans.h}</b>`],hint:'10の指数どうしはひき算',ck:close(a*10**m/(b*10**n),ans.v)}};
+// ⑭グラフと位置関係
+G.e14=()=>{const a=pick([2,3]);const base=`${a}<sup>${X}</sup>`;const ty=R(1,6);let fh,desc,F,ex;const g=x=>Math.pow(a,x);
+ const D={xs:'<i>x</i>軸に関して対称',ys:'<i>y</i>軸に関して対称',os:'原点に関して対称'};
+ if(ty==1){fh=`${MI}${a}<sup>${X}</sup>`;desc=D.xs;F=x=>-g(x);ex='<i>y</i> → −<i>y</i>：上下がひっくり返る'}
+ else if(ty==2){fh=Math.random()<.5?`${a}<sup>${MI}${X}</sup>`:`(${fr(1,a)})<sup>${X}</sup>`;desc=D.ys;F=x=>g(-x);ex=`(${fr(1,a)})<sup><i>x</i></sup> = ${a}<sup>−<i>x</i></sup>：<i>x</i> → −<i>x</i> で左右がひっくり返る`}
+ else if(ty==3){fh=Math.random()<.5?`${MI}${a}<sup>${MI}${X}</sup>`:`${MI}(${fr(1,a)})<sup>${X}</sup>`;desc=D.os;F=x=>-g(-x);ex='<i>x</i> → −<i>x</i>，<i>y</i> → −<i>y</i> の両方：原点に関して対称'}
+ else if(ty==4){const p=pick([1,2,3,-1,-2]);fh=`${a}<sup>${X}${p>0?'−'+p:'＋'+(-p)}</sup>`;desc=`<i>x</i>軸方向に ${nm(p)} だけ平行移動`;F=x=>g(x-p);ex=`<i>x</i> を <i>x</i>−(${nm(p)}) におきかえた形 → <i>x</i>軸方向に ${nm(p)}`}
+ else if(ty==5){const q=pick([1,2,3,-1,-2]);fh=`${a}<sup>${X}</sup> ${q>0?'＋':'−'} ${Math.abs(q)}`;desc=`<i>y</i>軸方向に ${nm(q)} だけ平行移動`;F=x=>g(x)+q;ex=`全体に ${nm(q)} をたす → <i>y</i>軸方向に ${nm(q)}`}
+ else{const k=pick([1,2,3]);fh=`${a**k}·${a}<sup>${X}</sup>`;desc=`<i>x</i>軸方向に ${MI}${k} だけ平行移動`;F=x=>a**k*g(x);ex=`${a**k}·${a}<sup><i>x</i></sup> = ${a}<sup>${k}</sup>·${a}<sup><i>x</i></sup> = ${a}<sup><i>x</i>＋${k}</sup> → <i>x</i>軸方向に −${k}`}
+ const all=[D.xs,D.ys,D.os,`<i>x</i>軸方向に 1 だけ平行移動`,`<i>x</i>軸方向に ${MI}1 だけ平行移動`,`<i>y</i>軸方向に 1 だけ平行移動`,`<i>x</i>軸方向に 2 だけ平行移動`,`<i>x</i>軸方向に ${MI}2 だけ平行移動`,`<i>y</i>軸方向に ${MI}1 だけ平行移動`];
+ const near=desc.includes('方向に')?[desc.replace(/(−?)(\d)/,(m,s,d)=>s?d:MI+d),desc.includes('<i>x</i>軸方向')?desc.replace('<i>x</i>軸方向','<i>y</i>軸方向'):desc.replace('<i>y</i>軸方向','<i>x</i>軸方向')]:[];
+ const pts=[-1,0,0.5,1.3];
+ return{q:`<i>y</i> = ${fh} のグラフは，<i>y</i> = ${base} のグラフをどのように移したものか。`,...mk(desc,near.concat(shuf(all))),
+  exp:[ex,plot([{f:g,c:'#999',dash:true,lab:`y=${a}^x`},{f:F,c:'#d64545',lab:'答え',lx:F(2)>6||F(2)<-4?0.6:2}],{lines:ty==5?[{h:+fh.match(/[−＋] (\d)/)?.[1]*(fh.includes('−')?-1:1)||0}]:[]}),`答え：<b>${desc}</b>`],hint:'<i>x</i>→−<i>x</i> は<i>y</i>軸対称，<i>y</i>→−<i>y</i> は<i>x</i>軸対称',
+  ck:pts.every(x=>{const t=desc;let v;if(t==D.xs)v=-g(x);else if(t==D.ys)v=g(-x);else if(t==D.os)v=-g(-x);else{const s=t.match(/(−?)(\d)/);const d=(s[1]?-1:1)*+s[2];v=t.includes('<i>x</i>軸方向')?g(x-d):g(x)+d}return close(v,F(x))})}};
+// ⑮値域
+G.e15=()=>{const ab=pick([[2,1],[3,1],[1,2],[1,3]]),s=pick([1,1,-1]);let m,n;do{m=R(-2,1);n=R(m+1,3)}while(Math.max(Math.abs(qv(qpow(ab,m))),Math.abs(qv(qpow(ab,n))))>27);
+ const f=x=>qm([s,1],qpow(ab,x)),fm=f(m),fn=f(n);const lo=qv(fm)<qv(fn)?fm:fn,hi=qv(fm)<qv(fn)?fn:fm;
+ const Bh=ab[1]==1?''+ab[0]:`(${fr(1,ab[1])})`,fh=`${s<0?MI:''}${Bh}<sup>${X}</sup>`,rg=(a,b,l='≦',r='≦')=>`${qh(a)} ${l} ${Y} ${r} ${qh(b)}`;
+ const ans=rg(lo,hi);const inc=(ab[0]>ab[1])==(s>0);
+ const ds=[rg(qn(hi),qn(lo)),`0 ＜ ${Y} ≦ ${qh(qv(hi)>0?hi:qn(lo))}`,rg(lo,hi,'＜','＜'),!inc?`${qh(fm)} ≦ ${Y} ≦ ${qh(fn)}`:null,rg(f(m-1),hi)];
+ return{q:`次の関数の値域を求めよ。<div class="big">${Y} = ${fh}　（${nm(m)} ≦ ${X} ≦ ${nm(n)}）</div>`,...mk(ans,ds),
+  exp:[`底 ${Bh} は1より${ab[0]>ab[1]?'大きい→増加':'小さい→減少'}${s<0?'。マイナスがつくので増減が逆':''}。よって<b>${inc?'増加':'減少'}関数</b>`,`${X} = ${nm(m)} のとき ${Y} = ${qh(fm)}，${X} = ${nm(n)} のとき ${Y} = ${qh(fn)}`,plot([{f:x=>s*Math.pow(qv(ab),x),c:'#1d4e89'}],{x0:-3,x1:4,y0:s<0?-10:-1,y1:s<0?2:10,pts:[[m,qv(fm)],[n,qv(fn)]]}),`値域：<b>${ans}</b>`],hint:'まず増加か減少かを見て，両はしの値を計算',ck:qv(lo)<=qv(hi)&&inc==(qv(fn)>qv(fm))}};
+// ⑯大小比較
+G.e16=()=>{const f=R(1,3);let items=[];
+ if(f==1){const p=pick([2,3]),inv=Math.random()<.35;const es=shuf([[1,2],[1,3],[2,3],[3,4],[2,5],[3,5],[1,4],[3,7],[0,1],[-1,1],[-2,1],[3,2],[5,1],[2,1]]).slice(0,3);
+  items=es.map(e=>{const E=Q(...e),ve=inv?-qv(E):qv(E);let h;const mkI=(hh,v)=>({h:hh,v,E,inv,p});
+   if(inv){const pb=`(${fr(1,p)})`;h=E[0]==0?'1':Math.random()<.5&&E[1]==1&&E[0]<0?`${p}<sup>${-E[0]}</sup>`:pw(pb,qn(E));return mkI(h,Math.pow(p,qv(E)))}
+   if(E[0]==0)h='1';else if(E[1]==1)h=E[0]<0?(Math.random()<.5?pw(p,E):fr(1,p**-E[0])):(E[0]<=3?''+p**E[0]:pw(p,E));else if(E[0]>0&&p**E[0]<=200&&Math.random()<.7)h=rt(E[1],p**E[0]);else h=pw(p,E);return mkI(h,Math.pow(p,qv(E)))})}
+ else if(f==2){const g=pick([5,6,10]);let ps;do{ps=shuf([[2,3],[3,2],[5,1],[6,1],[7,1],[2,2],[3,1],[10,1],[11,1],[2,4],[5,2],[15,1]]).slice(0,3)}while(new Set(ps.map(x=>x[0])).size<3||new Set(ps.map(x=>x[0]**x[1])).size<3);
+  items=ps.map(x=>({h:pw(x[0],x[1]*g),v:x[1]*g*Math.log(x[0]),base:x[0]**x[1],g}))}
+ else{let rs;do{rs=shuf([[2,2],[3,3],[4,5],[6,11],[3,2],[2,3],[4,3],[6,7],[3,4],[2,5],[6,9],[3,5]]).slice(0,3)}while(new Set(rs.map(r=>Math.pow(r[1],1/r[0]).toFixed(9))).size<3);
+  items=rs.map(r=>({h:rt(r[0],r[1]),v:Math.log(r[1])/r[0],r}))}
+ const sorted=items.slice().sort((a,b)=>a.v-b.v);if(Math.min(sorted[1].v-sorted[0].v,sorted[2].v-sorted[1].v)<1e-9)return G.e16();
+ const ord=o=>o.map(i=>i.h).join(' ＜ ');const perms=[[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]].map(p=>p.map(i=>sorted[i]));
+ let ex;if(f==1){const inv=items[0].inv,p=items[0].p,pb=inv?`(${fr(1,p)})`:''+p;const E2=i=>inv?qn(i.E):i.E;const so=items.slice().sort((a,b)=>qv(E2(a))-qv(E2(b)));ex=[`底を ${pb} にそろえる：`+items.map(i=>`${i.h} = ${pw(pb,E2(i))}`).join('，'),`指数の大小：${so.map(i=>eh(E2(i))).join(' ＜ ')}`,`底 ${pb} は1より${inv?'小さい → 大小が<b>逆</b>':'大きい → 大小は<b>そのまま</b>'}`,`→ <b>${ord(sorted)}</b>`]}
+ else if(f==2){const g=items[0].g;ex=[`指数を ${g} でそろえる`,items.map(i=>`${i.h} = (${i.base})<sup>${g}</sup>`).join('，'),`中の数 ${sorted.map(i=>i.base).join(' ＜ ')} なので　<b>${ord(sorted)}</b>`]}
+ else{const L=items.reduce((a,i)=>lcm(a,i.r[0]),1);ex=[`それぞれを ${L} 乗すると，整数になる`,items.map(i=>`(${i.h})<sup>${L}</sup> = ${pw(i.r[1],L/i.r[0])} = ${i.r[1]**(L/i.r[0])}`).join('，'),`正の数なので，${L}乗の大小と同じ　→ <b>${ord(sorted)}</b>`]}
+ return{q:`次の3つの数の大小を不等号を用いて表せ。<div class="big">${shuf(items).map(i=>i.h).join('，　')}</div>`,...mk(ord(sorted),perms.map(ord)),exp:ex,hint:f==2?'指数をそろえる':f==3?'何乗かして整数にする':'底をそろえる',ck:true}};
+// ⑰指数方程式
+const mul=(i,e)=>i==1?`(${e})`:i==-1?`${MI}(${e})`:`${i}(${e})`;
+function powh(p,i){return i<0?`(${fr(1,p**-i)})`:''+p**i}
+function linh(u,v){const a=u==1?X:u==-1?MI+X:u+X;return v==0?a:a+(v>0?'＋'+v:'−'+(-v))}
+function nh(p,j){if(j[1]==1){if(j[0]>=0&&p**j[0]<=1000)return''+p**j[0];if(j[0]<0&&p**-j[0]<=1000)return fr(1,p**-j[0]);return pw(p,j)}return j[0]>0?rt(j[1],j[0]==1?p:p**j[0]):fr(1,rt(j[1],-j[0]==1?p:p**-j[0]))}
+G.e17=()=>{const p=pick([2,3,5]);const i=pick([1,2,3,-1,-2].filter(k=>p**Math.abs(k)<=125));const u=pick([1,2,3,-1]),v=R(-3,3);const two=Math.random()<.3;let qq,x,ex,num,rhs;
+ if(!two){let j=Q(R(-4,6),pick([1,1,1,2,3]));if(j[1]>1&&j[0]==0)j=[1,j[1]];x=qd(qs(qd(j,[i,1]),[v,1]),[u,1]);rhs=nh(p,j);qq=`${pw(powh(p,i),linh(u,v))} = ${rhs}`;num=()=>Math.abs(Math.pow(Math.pow(p,i),u*qv(x)+v)-Math.pow(p,qv(j)))<1e-6*Math.pow(p,qv(j));
+  ex=[`底を ${p} にそろえる：${powh(p,i)} = ${pw(p,i)}，${rhs} = ${pw(p,j)}`,`${pw(p,mul(i,linh(u,v)))} = ${pw(p,j)}　→　${mul(i,linh(u,v))} = ${qh(j)}`,`<b>${X} = ${qh(x)}</b>`];
+  return{q:`次の方程式を解け。<div class="big">${qq}</div>`,...mk({h:`${X} = ${qh(x)}`,v:qv(x)},[{h:`${X} = ${qh(qd(qs(j,[v,1]),[u,1]))}`,v:qv(qd(qs(j,[v,1]),[u,1]))},{h:`${X} = ${qh(qn(x))}`,v:-qv(x)},{h:`${X} = ${qh(qd(qa(qd(j,[i,1]),[v,1]),[u,1]))}`,v:qv(qd(qa(qd(j,[i,1]),[v,1]),[u,1]))}],()=>{const d=Q(R(-6,6),R(1,3));return{h:`${X} = ${qh(d)}`,v:qv(d)}}),exp:ex,hint:'両辺を同じ底の累乗にする',ck:num()}}
+ const k=pick([1,2,-1].filter(t=>t!=i&&p**Math.abs(t)<=125)),w=pick([1,-1,2]),z=R(-3,3);const cx=i*u-k*w;if(cx==0)return G.e17();x=Q(k*z-i*v,cx);
+ qq=`${pw(powh(p,i),linh(u,v))} = ${pw(powh(p,k),linh(w,z))}`;
+ return{q:`次の方程式を解け。<div class="big">${qq}</div>`,...mk({h:`${X} = ${qh(x)}`,v:qv(x)},[{h:`${X} = ${qh(Q(z-v,u-w||1))}`,v:(z-v)/(u-w||1)},{h:`${X} = ${qh(qn(x))}`,v:-qv(x)},{h:`${X} = ${qh(Q(k*z+i*v,cx))}`,v:(k*z+i*v)/cx}],()=>{const d=Q(R(-6,6),R(1,3));return{h:`${X} = ${qh(d)}`,v:qv(d)}}),
+  exp:[`底を ${p} にそろえる：${pw(p,mul(i,linh(u,v)))} = ${pw(p,mul(k,linh(w,z)))}`,`指数どうしが等しい：${mul(i,linh(u,v))} = ${mul(k,linh(w,z))}`,`<b>${X} = ${qh(x)}</b>`],hint:'両辺を同じ底の累乗にする',ck:close(Math.pow(Math.pow(p,i),u*qv(x)+v),Math.pow(Math.pow(p,k),w*qv(x)+z))}};
+// ⑱指数不等式
+G.e18=()=>{const p=pick([2,3]);const i=pick([1,2,-1,-2,3].filter(k=>p**Math.abs(k)<=27));const u=pick([1,2,3,-1]),v=R(-3,3),rel=pick(['<','>',LE,GE]);const dbl=Math.random()<.2;
+ if(dbl){const b=pick([[2,1],[1,2],[1,2],[3,1]]);const B=b[1]==1?''+b[0]:'0.5';const P=b[0]*b[1]==2?2:3;const s=b[0]>b[1]?1:-1;let j1,j2;do{j1=R(-2,3);j2=R(-2,4)}while(j1>=j2);
+  const L=nh(P,[j1,1]),H=nh(P,[j2,1]);const x1=s*j1,x2=s*j2,lo=Math.min(x1,x2),hi=Math.max(x1,x2);const ans=`${nm(lo)} ${LE} ${X} ${LE} ${nm(hi)}`;
+  return{q:`次の不等式を満たす ${X} の値の範囲を求めよ。<div class="big">${L} ${LE} ${pw(B,X)} ${LE} ${H}</div>`,...mk(ans,[`${nm(-hi)} ${LE} ${X} ${LE} ${nm(-lo)}`,`${X} ${LE} ${nm(lo)}，${nm(hi)} ${LE} ${X}`,`${nm(lo)} ＜ ${X} ＜ ${nm(hi)}`,`${nm(lo+1)} ${LE} ${X} ${LE} ${nm(hi+1)}`]),
+   exp:[`${B} = ${s>0?P:pw(P,-1)} なので，${pw(B,X)} = ${pw(P,s>0?X:MI+X)}`,`${L} = ${pw(P,j1)}，${H} = ${pw(P,j2)}　→　${j1} ${LE} ${s>0?'':MI}${X} ${LE} ${j2}`,`<b>${ans}</b>`],hint:'すべて同じ底の累乗に',ck:[-3,-1.5,0,0.7,2,3.4].every(x=>{const val=Math.pow(qv(b),x);const ok=val>=Math.pow(P,j1)-1e-9&&val<=Math.pow(P,j2)+1e-9;return ok==(x>=lo-1e-9&&x<=hi+1e-9)})}}
+ const j=R(-3,5);const sb=i>0;// 底が1より大きいか
+ const lhs=pw(powh(p,i),linh(u,v)),rhs=nh(p,[j,1]);
+ // p^{i(ux+v)} rel p^j → i(ux+v) rel j → iu x rel j−iv
+ let c=i*u,d=j-i*v,r=rel;if(c<0)r=flip[r];const xv=Q(d,c);const ans=ineq(r,xv);
+ const test=x=>relf[rel](Math.pow(Math.pow(p,i),u*x+v),Math.pow(p,j)*(1+0*1e-12));
+ return{q:`次の不等式を解け。<div class="big">${lhs} ${rel} ${rhs}</div>`,...mk(ans,[ineq(flip[r],xv),ineq(r,qn(xv)),ineq(r,Q(j-v,u)),ineq(flip[r],Q(j-v,u))],()=>ineq(pick([r,flip[r]]),Q(R(-6,6),R(1,3)))),
+  exp:[`${rhs} = ${pw(p,j)}，${powh(p,i)} = ${pw(p,i)}`,`${pw(p,mul(i,linh(u,v)))} ${rel} ${pw(p,j)}`,`底 ${p} は1より大きいので，指数の大小は<b>そのまま</b>：${mul(i,linh(u,v))} ${rel} ${j}`,c<0?`${X}の係数がマイナスなので，わると向きが逆`:'',`<b>${ans}</b>`].filter(Boolean),hint:'底が1より小さいときは不等号の向きが逆になる',
+  ck:[-4,-2.3,-1,0.1,1.7,3,5].every(x=>Math.abs(x-qv(xv))<1e-6||test(x)==relf[r](x,qv(xv)))}};
+// ⑲置き換え（方程式・不等式）
+function quadh(A,B,C,tx,t2x){const t=(c,s,first)=>c==0?'':(c<0?' − ':first?'':' ＋ ')+(Math.abs(c)==1&&s?'':Math.abs(c)+(s?'·':''))+s;return (A==1?t2x:A+'·'+t2x)+t(B,tx)+t(C,'')}
+G.e19=()=>{const p=pick([2,3,5,2]);const inv=Math.random()<.25&&p!=5;const kind=pick(['eq','eq','in1','in2']);
+ const T2=inv?`(${fr(1,p*p)})<sup>${X}</sup>`:`${p*p}<sup>${X}</sup>`,T1=inv?`(${fr(1,p)})<sup>${X}</sup>`:`${p}<sup>${X}</sup>`;const tb=inv?`(${fr(1,p)})<sup>${X}</sup>`:`${p}<sup>${X}</sup>`;
+ const xOf=t=>inv?-Math.round(Math.log(t)/Math.log(p)):Math.round(Math.log(t)/Math.log(p));
+ let m1=R(0,p==5?2:3);let t1=p**m1,t2,ans,ex,cands,ck;
+ if(kind=='eq'){const twoPos=Math.random()<.35;let m2;if(twoPos){do{m2=R(0,p==5?2:2)}while(m2==m1);t2=p**m2}else t2=-pick([1,2,3,4,6]);
+  const B=-(t1+t2),C=t1*t2;const xs=[t1,t2].filter(t=>t>0).map(xOf).sort((a,b)=>a-b);ans=`${X} = ${xs.join('，')}`;
+  ex=[`${tb} = ${T} とおくと，${T}＞0`,`${T}<sup>2</sup>${B<0?' − '+(-B):B>0?' ＋ '+B:''}${T}${C<0?' − '+(-C):' ＋ '+C} = 0　→　(${T}${t1>0?'−'+t1:'＋'+(-t1)})(${T}${t2>0?'−'+t2:'＋'+(-t2)}) = 0`,twoPos?`${T} = ${t1}，${t2}（どちらも正）`:`${T}＞0 より ${T} = ${t1}（${T} = ${t2} は不適）`,`${tb} = ${twoPos?t1+'，'+t2:t1}　→　<b>${ans}</b>`];
+  cands=twoPos?[`${X} = ${xs[0]}`,`${X} = ${xs[1]}`,`${X} = ${xs.map(v=>-v).join('，')}`,`${X} = ${t1}，${t2}`]:[`${X} = ${xOf(t1)}，${nm(t2)}`,`${X} = ${t1}`,`${X} = ${-xOf(t1)}`,`解なし`];
+  const qq=`${quadh(1,B,C,T1,T2)} = 0`;
+  ck=[t1,t2].filter(t=>t>0).every(t=>{const x=xOf(t);const v=Math.pow(inv?1/(p*p):p*p,x)+B*Math.pow(inv?1/p:p,x)+C;return Math.abs(v)<1e-6});
+  return{q:`次の方程式を解け。<div class="big">${qq}</div>`,...mk(ans,cands),exp:ex,hint:`${tb} = ${T} とおく（${T}＞0）`,ck}}
+ if(kind=='in1'){t2=-pick([1,2,3,4]);const B=-(t1+t2),C=t1*t2,rel=pick(['<','>',LE,GE]);
+  // (t−t1)(t−t2) rel 0, t−t2>0 → t rel t1
+  const xr=inv?flip[rel]:rel;ans=ineq(xr,[xOf(t1),1]);
+  ex=[`${tb} = ${T} とおくと ${T}＞0`,`(${T}−${t1})(${T}＋${-t2}) ${rel} 0，${T}＋${-t2}＞0 なので　${T} ${rel} ${t1}`,`${tb} ${rel} ${tb.replace(X,'')}<sup>${xOf(t1)}</sup>${inv?'　底が1より小さいので向きが逆':''}`,`<b>${ans}</b>`];
+  const f=x=>Math.pow(inv?1/(p*p):p*p,x)+B*Math.pow(inv?1/p:p,x)+C;
+  return{q:`次の不等式を解け。<div class="big">${quadh(1,B,C,T1,T2)} ${rel} 0</div>`,...mk(ans,[ineq(flip[xr],[xOf(t1),1]),ineq(xr,[t1,1]),ineq(xr,[-xOf(t1),1]),`${X} ${xr} ${xOf(t1)}，${X} ${flip[xr]} ${nm(t2)}`]),exp:ex,hint:`${T}＞0 なので，負の解のほうの因数は正`,
+   ck:[-3,-1.2,0.3,1.5,2.6,4].every(x=>Math.abs(x-xOf(t1))<1e-6||relf[rel](f(x),0)==relf[xr](x,xOf(t1)))}}
+ let m2;do{m2=R(0,p==5?2:3)}while(Math.abs(m2-m1)<1);const a1=Math.min(m1,m2),a2=Math.max(m1,m2);t1=p**a1;t2=p**a2;const B=-(t1+t2),C=t1*t2,lt=Math.random()<.5;const rel=lt?pick(['<',LE]):pick(['>',GE]);
+ const x1=xOf(t1),x2=xOf(t2),lo=Math.min(x1,x2),hi=Math.max(x1,x2);const st=rel==LE||rel==GE?LE:'＜';
+ ans=lt?`${nm(lo)} ${st} ${X} ${st} ${nm(hi)}`:`${X} ${st=='＜'?'＜':LE} ${nm(lo)}，${nm(hi)} ${st=='＜'?'＜':LE} ${X}`;
+ const f=x=>Math.pow(inv?1/(p*p):p*p,x)+B*Math.pow(inv?1/p:p,x)+C;
+ return{q:`次の不等式を解け。<div class="big">${quadh(1,B,C,T1,T2)} ${rel} 0</div>`,...mk(ans,[lt?`${X} ${st=='＜'?'＜':LE} ${nm(lo)}，${nm(hi)} ${st=='＜'?'＜':LE} ${X}`:`${nm(lo)} ${st} ${X} ${st} ${nm(hi)}`,lt?`${t1} ${st} ${X} ${st} ${t2}`:`${X} ＜ ${t1}，${t2} ＜ ${X}`,`${nm(lo+1)} ${st} ${X} ${st} ${nm(hi+1)}`,`${nm(-hi)} ${st} ${X} ${st} ${nm(-lo)}`]),
+  exp:[`${tb} = ${T} とおく（${T}＞0）`,`(${T}−${t1})(${T}−${t2}) ${rel} 0　→　${lt?`${t1} ${st} ${T} ${st} ${t2}`:`${T} ${st=='＜'?'＜':LE} ${t1}，${t2} ${st=='＜'?'＜':LE} ${T}`}`,`${t1} = ${tb.replace(X,'')}<sup>${x1}</sup>，${t2} = ${tb.replace(X,'')}<sup>${x2}</sup>${inv?'　底が1より小さいので向きが逆':''}`,`<b>${ans}</b>`],hint:`${tb} = ${T} とおく`,
+  ck:[-3.5,-2.5,-1.5,-0.5,0.5,1.5,2.5,3.5].every(x=>{const inR=lt?(x>lo&&x<hi):(x<lo||x>hi);return relf[rel](f(x),0)==inR})}};
+// ⑳置き換え（最大・最小）
+G.e20=()=>{const f=R(1,3);
+ if(f==3){const B=pick([3,4,5,6]),C=R(1,6);const t0=B/2;let mn,tm;if(t0<=2){mn=4-2*B+C-2;tm=2}else{mn=C-2-B*B/4;tm=t0}const mh=Number.isInteger(mn)?nm(mn):(mn<0?MI:'')+fr(Math.abs(mn)*4,4).replace(/<span>(\d+)<\/span><span>4<\/span>/,(m,a)=>{const g=gcd(+a,4);return`<span>${a/g}</span><span>${4/g}</span>`});
+  const val=x=>4**x+4**-x-B*(2**x+2**-x)+C;let gm=1e9;for(let x=-4;x<=4;x+=0.0005)gm=Math.min(gm,val(x));
+  const alt=[C-2-B*B/4,4-2*B+C-2,C,4-2*B+C].filter(v=>Math.abs(v-mn)>1e-9).map(v=>({h:Number.isInteger(v)?nm(v):qh(Q(Math.round(v*4),4)),v}));
+  return{q:`関数 ${Y} = ${pw(4,X)} ＋ ${pw(4,MI+X)} − ${B}(${pw(2,X)} ＋ ${pw(2,MI+X)}) ＋ ${C} の最小値を求めよ。`,...mk({h:qh(Q(Math.round(mn*4),4)),v:mn},alt,()=>{const v=R(-6,6);return{h:nm(v),v}}),
+   exp:[`${T} = ${pw(2,X)}＋${pw(2,MI+X)} とおく。相加平均・相乗平均より ${T} ${GE} 2（${X}=0 のとき等号）`,`${pw(4,X)}＋${pw(4,MI+X)} = ${T}<sup>2</sup> − 2 なので　${Y} = ${T}<sup>2</sup> − ${B}${T} ＋ ${C-2}`,`軸は ${T} = ${qh(Q(B,2))}${t0<=2?`。${T}${GE}2 の範囲では ${T}=2 で最小`:`（${T}${GE}2 の中）で最小`}`,`最小値 <b>${qh(Q(Math.round(mn*4),4))}</b>`],hint:`${T} の範囲（${T}${GE}2）に注意`,ck:Math.abs(gm-mn)<1e-4}}
+ const a=pick([2,2,3]);const neg=f==2;const k=pick(a==2?[-1,0,1,2]:[0,1]);const t0=Q(...(k>=0?[a**k,1]:[1,a**-k]));const B2=qm(t0,[2,1]);// y = ±(t² − B2 t) + C
+ const C=R(-3,6);let dom=pick(['all','int','int','lt']);let m=0,n=0;if(dom=='int'){m=R(-2,0);n=R(1,2);}const L=dom=='lt'?R(1,2):0;
+ const yt=t=>(neg?-1:1)*(t*t-qv(B2)*t)+C,xOfT=t=>Math.round(Math.log(t)/Math.log(a)*1e6)/1e6;
+ const tlo=dom=='int'?Math.pow(a,m):0,thi=dom=='int'?Math.pow(a,n):dom=='lt'?Math.pow(a,L):Infinity;const inside=qv(t0)>=tlo&&qv(t0)<=thi&&(dom!='lt'||qv(t0)<thi);
+ const ext=qv(t0)>=tlo&&qv(t0)<=thi;
+ const vtx=yt(qv(t0));const vh=v=>{const q=Q(Math.round(v*4),4);return qh(q)};
+ let ans,ws;const BB=qv(B2);const disp=`${Y} = ${neg?MI:''}${pw(a*a,X)} ${neg?'＋':'−'} ${BB==1?'':qh(B2).includes('fr')?qh(B2)+'·':BB+'·'}${pw(a,X)} ${C<0?'− '+(-C):'＋ '+C}`;
+ if(dom=='int'){const e1=yt(tlo),e2=yt(thi);const far=Math.abs(tlo-qv(t0))>Math.abs(thi-qv(t0))?[m,e1]:[n,e2];
+  if(inside){ans=neg?`${X}=${nm(xOfT(qv(t0)))} で最大値 ${vh(vtx)}，${X}=${nm(far[0])} で最小値 ${vh(far[1])}`:`${X}=${nm(far[0])} で最大値 ${vh(far[1])}，${X}=${nm(xOfT(qv(t0)))} で最小値 ${vh(vtx)}`}
+  else{const big=e1>e2?[m,e1]:[n,e2],sm=e1>e2?[n,e2]:[m,e1];ans=`${X}=${nm(big[0])} で最大値 ${vh(big[1])}，${X}=${nm(sm[0])} で最小値 ${vh(sm[1])}`}
+  ws=[ans.replace(/最大値 ([^，]+)，(.*)最小値 (.*)$/,'最大値 $3，$2最小値 $1'),`${X}=${nm(xOfT(qv(t0)))} で最${neg?'小':'大'}値 ${vh(vtx)}，最${neg?'大':'小'}値はない`,`${X}=${nm(n)} で最大値 ${vh(yt(n))}，${X}=${nm(m)} で最小値 ${vh(yt(m))}`,`${X}=${nm(qv(t0))} で最${neg?'大':'小'}値 ${vh(vtx)}`]}
+ else{if(!ext)return G.e20();ans=`${X}=${nm(xOfT(qv(t0)))} で最${neg?'大':'小'}値 ${vh(vtx)}，最${neg?'小':'大'}値はない`;ws=[`${X}=${nm(xOfT(qv(t0)))} で最${neg?'小':'大'}値 ${vh(vtx)}，最${neg?'大':'小'}値はない`,`${X}=${vh(qv(t0))} で最${neg?'大':'小'}値 ${vh(vtx)}`,`${X}=0 で最${neg?'大':'小'}値 ${vh(yt(1))}，最${neg?'小':'大'}値はない`,`${X}=${nm(xOfT(qv(t0)))} で最${neg?'大':'小'}値 ${vh(C)}，最${neg?'小':'大'}値はない`]}
+ // 数値チェック
+ const yx=x=>yt(Math.pow(a,x));let mx=-1e9,mn2=1e9;const X0=dom=='int'?m:-8,X1=dom=='int'?n:dom=='lt'?L-1e-6:8;for(let x=X0;x<=X1;x+=0.0005){const v=yx(x);mx=Math.max(mx,v);mn2=Math.min(mn2,v)}
+ const okv=neg?Math.abs(mx-vtx)<1e-3||!inside:Math.abs(mn2-vtx)<1e-3||!inside;
+ const dh=dom=='all'?'':dom=='int'?`（${nm(m)} ${LE} ${X} ${LE} ${nm(n)}）`:`（${X} ＜ ${L}）`;
+ return{q:`次の関数の最大値，最小値があれば，それを求めよ。また，そのときの ${X} の値を求めよ。<div class="big">${disp}${dh}</div>`,...mk(ans,ws),
+  exp:[`${pw(a,X)} = ${T} とおく。${dom=='all'?`${T}＞0`:dom=='int'?`${pw(a,m)} ${LE} ${T} ${LE} ${pw(a,n)} → ${qh(Q(...(m>=0?[a**m,1]:[1,a**-m])))} ${LE} ${T} ${LE} ${a**n}`:`0 ＜ ${T} ＜ ${a**L}`}`,`${Y} = ${neg?MI:''}(${T} − ${qh(t0)})<sup>2</sup>${Math.abs(vtx)<1e-9?'':vtx<0?' − '+vh(-vtx):' ＋ '+vh(vtx)}（平方完成）`,`軸 ${T} = ${qh(t0)} は範囲の${inside?'中':'外'}。グラフで最大・最小を見る`,`${T} = ${qh(t0)} のとき ${pw(a,X)} = ${qh(t0)} → ${X} = ${nm(xOfT(qv(t0)))}`,`<b>${ans}</b>`],hint:`${T} の範囲を先に求める`,ck:okv}};
+
+// ===== 第2節 対数関数：22型 =====
+// 底の表示
+const baseH=b=>typeof b=='number'?''+b:b[1]==1?''+b[0]:fr(b[0],b[1],'sm');
+const LG=(b,M)=>`log<sub>${typeof b=='string'?b:baseH(b)}</sub>${M}`;
+// 素因数ベクトル（2,3,5）
+const PR=[2,3,5];
+function vecOf(n){const v=[0,0,0];PR.forEach((p,i)=>{while(n%p==0&&n>1){v[i]++;n/=p}});return n==1?v:null}
+function vecQ(q){const a=vecOf(q[0]),b=vecOf(q[1]);return a&&b?a.map((x,i)=>[x-b[i],1]):null}
+// ベクトル（有理数の指数，分母1か2）→ 表示 A√r
+function vh(e){let num=1,den=1,r=1;for(let i=0;i<3;i++){const x=e[i];const k=Math.floor(qv(x));const f=qv(x)-k;if(Math.abs(f-.5)<1e-9)r*=PR[i];if(k>=0)num*=PR[i]**k;else den*=PR[i]**(-k)}
+ const rr=r>1?rt(2,r):'';if(den==1)return (num==1&&rr?'':''+num)+rr;return fr((num==1&&rr?'':''+num)+rr,den)}
+const vval=e=>e.reduce((s,x,i)=>s*Math.pow(PR[i],qv(x)),1);
+const coefH=(c,first)=>{const s=c[0]<0?(first?MI:' − '):(first?'':' ＋ ');const a=[Math.abs(c[0]),c[1]];return s+(qeq(a,[1,1])?'':qh(a))};
+// 区間の集合
+const INF=1e9;
+function I(lo,li,hi,hi_){return{lo,li,hi,hi_}}
+function isect(A,B){const out=[];A.forEach(a=>B.forEach(b=>{let lo,li,hi,hi_;if(a.lo>b.lo||a.lo==b.lo&&!a.li){lo=a.lo;li=a.li}else{lo=b.lo;li=b.li}if(a.hi<b.hi||a.hi==b.hi&&!a.hi_){hi=a.hi;hi_=a.hi_}else{hi=b.hi;hi_=b.hi_}if(lo<hi||lo==hi&&li&&hi_)out.push(I(lo,li,hi,hi_))}));return out}
+const inS=(S,x)=>S.some(a=>(x>a.lo||a.li&&x==a.lo)&&(x<a.hi||a.hi_&&x==a.hi));
+function numH(v){if(Number.isInteger(v))return nm(v);for(let d=2;d<=12;d++){const n=Math.round(v*d);if(Math.abs(n/d-v)<1e-9)return qh(Q(n,d))}return v.toFixed(3)}
+function setH(S){if(!S.length)return'解なし';return S.map(a=>{const L=a.lo<=-INF/2,H=a.hi>=INF/2;if(a.lo==a.hi)return `${X} = ${numH(a.lo)}`;
+ if(L&&H)return'すべての実数';if(L)return `${X} ${a.hi_?LE:'＜'} ${numH(a.hi)}`;if(H)return `${X} ${a.li?GE:'＞'} ${numH(a.lo)}`;return `${numH(a.lo)} ${a.li?LE:'＜'} ${X} ${a.hi_?LE:'＜'} ${numH(a.hi)}`}).join('，')}
+const lin=(s,t)=>(s==1?X:s==-1?MI+X:s+X)+(t==0?'':t>0?'＋'+t:'−'+(-t));
+const lin2=(s,t)=>s==-1&&t>0?t+'−'+X:lin(s,t);
+// ㉑ 指数⇔対数の書きかえ
+function powDisp(q,k){// 底q（素数か10），指数k（有理数）の値の表示
+ if(k[1]==1)return qh(qpow([q,1],k[0]));return pv(q,k).h}
+G.l21=()=>{const bs=[[2,1,2,1],[3,1,3,1],[4,1,2,2],[5,1,5,1],[10,1,10,1],[25,1,5,2],[16,1,2,4],[8,1,2,3],[9,1,3,2],[1,2,2,-1],[1,3,3,-1]];const b=pick(bs);
+ let p;do{p=pick([[1,1],[2,1],[3,1],[-1,1],[-2,1],[-3,1],[1,2],[-1,2],[1,4],[3,2],[1,3],[2,3]])}while(Math.abs(qv(p)*b[3])>4||(qm(p,[b[3],1])[1]>4));
+ const k=qm(p,[b[3],1]),M=powDisp(b[2],k),B=b[1]==1?''+b[0]:`(${fr(1,b[1])})`,ph=qh(p);const dir=Math.random()<.5;
+ if(dir)return{q:`次の関係を ${LG('<i>a</i>','<i>M</i>')} = <i>p</i> の形に書け。<div class="big">${M} = ${pw(B,p)}</div>`,...mk(`${LG([b[0],b[1]],M)} = ${ph}`,[`${LG('<span>'+M+'</span>',B)} = ${ph}`,`${LG(ph,M)} = ${B}`,`${LG([b[0],b[1]],ph)} = ${M}`,`${LG([b[0],b[1]],M)} = ${qh(qn(p))}`,`${LG([b[0],b[1]],M)} = ${qh(qa(p,[1,1]))}`]),
+  exp:[`<i>M</i> = ${pw('<i>a</i>','<i>p</i>')} ⇔ ${LG('<i>a</i>','<i>M</i>')} = <i>p</i>（<b>底はそのまま，指数が答えになる</b>）`,`底 ${B}，真数 ${M}，指数 ${ph}`,`<b>${LG([b[0],b[1]],M)} = ${ph}</b>`],hint:'log の右下は「底」，答えは「指数」',ck:close(Math.pow(qv([b[0],b[1]]),qv(p)),Math.pow(b[2],qv(k)))}
+ return{q:`次の関係を <i>M</i> = ${pw('<i>a</i>','<i>p</i>')} の形に書け。<div class="big">${LG([b[0],b[1]],M)} = ${ph}</div>`,...mk(`${M} = ${pw(B,p)}`,[`${B} = ${pw('('+M+')',p)}`,`${ph} = ${pw(B,'<span>'+M+'</span>')}`,`${M} = ${pw('('+ph+')',B)}`,`${M} = ${pw(B,qn(p))}`,`${M} = ${pw(B,qa(p,[1,1]))}`]),
+  exp:[`${LG('<i>a</i>','<i>M</i>')} = <i>p</i> ⇔ <i>M</i> = ${pw('<i>a</i>','<i>p</i>')}`,`「底 ${B} を ${ph} 乗すると ${M}」`,`<b>${M} = ${pw(B,p)}</b>`],hint:'底を（答えの数）乗すると真数',ck:close(Math.pow(qv([b[0],b[1]]),qv(p)),Math.pow(b[2],qv(k)))}};
+// ㉒ 対数の値
+G.l22=()=>{const B=pick([{h:'2',q:2,k:[1,1]},{h:'3',q:3,k:[1,1]},{h:'5',q:5,k:[1,1]},{h:'4',q:2,k:[2,1]},{h:'9',q:3,k:[2,1]},{h:'8',q:2,k:[3,1]},{h:fr(1,2,'sm'),q:2,k:[-1,1],hp:`(${fr(1,2)})`},{h:fr(1,3,'sm'),q:3,k:[-1,1],hp:`(${fr(1,3)})`},{h:rt(2,3),q:3,k:[1,2]},{h:rt(2,2),q:2,k:[1,2]},{h:'0.2',q:5,k:[-1,1],dec:true},{h:'10',q:10,k:[1,1]},{h:'10',q:10,k:[1,1]}]);
+ let p;do{p=pick([[0,1],[1,1],[2,1],[3,1],[4,1],[-1,1],[-2,1],[-3,1],[1,2],[1,3],[-1,2],[3,2],[1,6],[2,3]])}while(Math.abs(qv(qm(p,B.k)))>6||qm(p,B.k)[1]>6||B.dec&&qm(p,B.k)[1]!=1||(B.q==5||B.q==10)&&Math.abs(qv(qm(p,B.k)))>4);
+ const k=qm(p,B.k);let M;if(B.dec){const e=k[0];M=e>=0?''+5**e:dec(2**-e,-e)}else if(B.q==10&&k[1]==1&&k[0]<0)M=dec(1,-k[0]);else M=powDisp(B.q,k);
+ const ans={h:qh(p),v:qv(p)};
+ return{q:`次の値を求めよ。<div class="big">${LG(B.h,M)}</div>`,...mk(ans,[{h:qh(qn(p)),v:-qv(p)},p[0]?{h:qh(qd([1,1],p)),v:1/qv(p)}:null,{h:qh(qa(p,[1,1])),v:qv(p)+1},{h:qh(k),v:qv(k)}],()=>{const d=Q(R(-4,5),R(1,3));return{h:qh(d),v:qv(d)}}),
+  exp:[`${LG('<i>a</i>',pw('<i>a</i>','<i>p</i>'))} = <i>p</i>：真数を「底の○乗」にする`,`${M} = ${pw(B.hp||B.h.replace('sm',''),p)}`,`<b>${LG(B.h,M)} = ${qh(p)}</b>`],hint:`${B.hp||B.h} を何乗すると ${M} になる？`,ck:close(Math.log(Math.pow(B.q,qv(k)))/Math.log(Math.pow(B.q,qv(B.k))),qv(p))}};
+// ㉓ 対数の計算（同じ底）
+const BV={2:[1,0,0],3:[0,1,0],5:[0,0,1],10:[1,0,1],6:[1,1,0]};
+G.l23=()=>{const b=pick([2,3,5,10,6,2,3]);const v=pick([[1,1],[2,1],[3,1],[-1,1],[-2,1],[1,2],[-3,1],[3,2]]);const V=BV[b].map(x=>qm([x,1],v));
+ if(V.some(x=>x[1]>2))return G.l23();
+ const T=R(2,3),terms=[];let acc=[[0,1],[0,1],[0,1]];
+ for(let i=0;i<T-1;i++){const c=pick([[1,1],[1,1],[-1,1],[2,1],[-2,1],[3,1],[1,2],[4,1]]);let e;do{e=[0,1,2].map(()=>[pick([0,0,1,2,-1]),1])}while(e.every(x=>x[0]==0));
+  if(qeq(c,[4,1])||qeq(c,[2,1])&&Math.random()<.4){e=[0,1,2].map(()=>[0,1]);e[R(0,1)]=[1,2]}// √2 などを2倍・4倍
+  terms.push({c,e});acc=acc.map((x,j)=>qa(x,qm(c,e[j])))}
+ const cl=pick([[1,1],[-1,1]]);const el=V.map((x,j)=>qd(qs(x,acc[j]),cl));
+ if(el.some(x=>Math.abs(qv(x))>4||x[1]>2)||el.every(x=>x[0]==0)||vval(el)>2000||vval(el)<1/2000)return G.l23();terms.push({c:cl,e:el});
+ if(terms.some(t=>vval(t.e)==1))return G.l23();
+ const sh=shuf(terms);const qq=sh.map((t,i)=>coefH(t.c,i==0)+LG(b,vh(t.e))).join('');
+ const num=sh.reduce((s,t)=>s+qv(t.c)*Math.log(vval(t.e)),0)/Math.log(b);
+ const prod=V;const ans={h:qh(v),v:qv(v)};
+ return{q:`次の式を計算せよ。<div class="big">${qq}</div>`,...mk(ans,[{h:qh(qa(v,[1,1])),v:qv(v)+1},{h:qh(qn(v)),v:-qv(v)},{h:qh(qm(v,[2,1])),v:2*qv(v)},{h:qh(qs(v,[1,1])),v:qv(v)-1}]),
+  exp:[`係数は真数の指数へ：<i>k</i>${LG('<i>a</i>','<i>M</i>')} = ${LG('<i>a</i>',pw('<i>M</i>','<i>k</i>'))}`,`たし算 → かけ算，ひき算 → わり算 で1つの log にまとめる`,`真数をまとめると ${vh(prod)} = ${pw(b,v)}`,`<b>${LG(b,pw(b,v))} = ${qh(v)}</b>`],hint:'1つの log にまとめる',ck:close(num,qv(v))}};
+// ㉔ 底の変換
+G.l24=()=>{const f=R(1,5);let qq,ans,ex,num,wr=[];
+ if(f==1){const p=pick([2,3,5]);let i,j;do{i=pick([1,2,3,-1,-2].filter(x=>p**Math.abs(x)<=125));j=R(-4,5)}while(j==0||Math.abs(i)==1&&Math.random()<.7||gcd(i,j)==Math.abs(i));
+  const ph=e=>e>=0?''+p**e:fr(1,p**-e);const B=i>0?''+p**i:fr(1,p**-i,'sm');qq=LG(B,ph(j));const v=Q(j,i);ans=v;num=Math.log(Math.pow(p,j))/Math.log(Math.pow(p,i));
+  wr=[Q(i,j),Q(j-i,1),qn(v),Q(j,1)];ex=[`底の変換公式で底を ${p} にする：${fr(LG(p,ph(j)),LG(p,i>0?p**i:fr(1,p**-i)))}`,`= ${fr(j,i)} = <b>${qh(v)}</b>`]}
+ else if(f==2){const p=pick([2,3]),q=pick([3,5,7].filter(x=>x!=p));const i=pick([1,2,3]),j=pick([1,2,3,5,-1]),k=pick([1,2]);const A=p**i,C=j>0?''+p**j:fr(1,p**-j),Bq=q**k;
+  qq=`${LG(A,Bq)}·${LG(Bq,C)}`;ans=Q(j,i);num=Math.log(Bq)/Math.log(A)*Math.log(Math.pow(p,j))/Math.log(Bq);wr=[Q(i,j),Q(j*k,i),Q(i*j,1),qn(ans)];
+  ex=[`2つ目を底 ${A} の対数に：${LG(Bq,C)} = ${fr(LG(A,C),LG(A,Bq))}`,`かけると ${LG(A,Bq)} が消える → ${LG(A,C)}`,`${LG(A,C)} = ${fr(j,i)} = <b>${qh(ans)}</b>`]}
+ else if(f==3){const P=[2,3,5];const ij=[pick([1,2]),pick([1,2,3])],kl=[pick([1,2]),pick([1,2])],mn=[pick([1,2]),pick([1,2,3])];
+  qq=`${LG(2**ij[0],3**ij[1])}·${LG(3**kl[0],5**kl[1])}·${LG(5**mn[0],2**mn[1])}`;ans=Q(ij[1]*kl[1]*mn[1],ij[0]*kl[0]*mn[0]);num=Math.log(3**ij[1])/Math.log(2**ij[0])*Math.log(5**kl[1])/Math.log(3**kl[0])*Math.log(2**mn[1])/Math.log(5**mn[0]);
+  wr=[qd([1,1],ans),Q(ij[1]+kl[1]+mn[1],ij[0]+kl[0]+mn[0]),[1,1],qm(ans,[2,1])];
+  ex=[`すべて底 2 にそろえる：${fr(ij[1]+LG(2,3),ij[0])} × ${fr(kl[1]+LG(2,5),kl[0]+LG(2,3))} × ${fr(mn[1],mn[0]+LG(2,5))}`,`${LG(2,3)}，${LG(2,5)} が約分で消える`,`${fr(ij[1]*kl[1]*mn[1],ij[0]*kl[0]*mn[0])} = <b>${qh(ans)}</b>`]}
+ else if(f==4){const p=pick([2,3]),q=pick([3,5].filter(x=>x!=p)),k=pick([1,2,3]),m=pick([1,2]),n=pick([1,2]);
+  qq=`(${LG(p,q)} ＋ ${LG(p*p,q**k)})(${LG(q,p**m)} ＋ ${LG(q*q,p**n)})`;ans=qm(Q(2+k,2),Q(2*m+n,2));const L=Math.log(q)/Math.log(p);num=(L+k*L/2)*(m/L+n/L/2);wr=[qm(Q(1+k,1),Q(m+n,1)),qm(Q(2+k,2),Q(m+n,1)),Q(k*n,4),qa(ans,[1,1])];
+  ex=[`底を ${p}，${q} にそろえる：${LG(p*p,q**k)} = ${fr(k+LG(p,q),2)}，${LG(q*q,p**n)} = ${fr(n+LG(q,p),2)}`,`1つ目 = ${qh(Q(2+k,2))}${LG(p,q)}，2つ目 = ${qh(Q(2*m+n,2))}${LG(q,p)}`,`${LG(p,q)}·${LG(q,p)} = 1 なので　<b>${qh(ans)}</b>`]}
+ else{const p=pick([2,3]),c=pick([3,5].filter(x=>x!=p));let a,b2,A,B;do{a=R(1,3);b2=R(0,3);A=p**a*c;B=c*c*p**b2}while(A>100||B>250||2*a-b2==0);ans=Q(2*a-b2,2);
+  qq=`${LG(p,A)} − ${LG(p*p,B)}`;num=Math.log(A)/Math.log(p)-Math.log(B)/Math.log(p*p);wr=[Q(2*a-b2,1),Q(a-b2,1),qn(ans),Q(a,1)];
+  ex=[`${LG(p*p,B)} = ${fr(LG(p,B),LG(p,p*p))} = ${fr(1,2)}${LG(p,B)} = ${LG(p,rt(2,B))}`,`${LG(p,A)} − ${LG(p,rt(2,B))} = ${LG(p,fr(A,rt(2,B)))}`,`${fr(A,rt(2,B))} = ${pv(p,ans).h} = ${pw(p,ans)}　→　<b>${qh(ans)}</b>`]}
+ return{q:`次の式を簡単にせよ。<div class="big">${qq}</div>`,...mk({h:qh(ans),v:qv(ans)},wr.map(w=>({h:qh(w),v:qv(w)})),()=>{const d=Q(R(-4,6),R(1,4));return{h:qh(d),v:qv(d)}}),exp:ex,hint:'底の変換公式で底をそろえる',ck:close(num,qv(ans))}};
+// ㉕ a, b で表す
+function linAB(c0,ca,cb,sa='<i>a</i>',sb='<i>b</i>'){// 有理数係数 → 表示（分母を共通に）
+ const d=[c0,ca,cb].reduce((m,c)=>lcm(m,c[1]),1);const n=[c0,ca,cb].map(c=>c[0]*d/c[1]);let s='';
+ [[n[1],sa],[n[2],sb],[n[0],'']].forEach(([k,sym])=>{if(k==0)return;const first=s=='';s+=(k<0?(first?MI:' − '):(first?'':' ＋ '))+(Math.abs(k)==1&&sym?'':Math.abs(k))+sym});
+ if(!s)s='0';return d==1?s:fr(s,d)}
+G.l25=()=>{const sys=R(1,3);let qq,ans,wr=[],ex,num,av,bv,given;
+ if(sys==1){given=`${LG(2,3)} = <i>a</i>，${LG(2,5)} = <i>b</i>`;av=Math.log2(3);bv=Math.log2(5);let e;do{e=[R(-2,2),R(0,2),R(0,2)]}while(e[1]+e[2]==0||Math.abs(e[0])+e[1]+e[2]<2);const half=Math.random()<.25;const E=e.map(x=>half?Q(x,2):[x,1]);
+  const toB3=Math.random()<.3&&E[1][0]!=0;const Xv=vh(E);
+  if(!toB3){qq=LG(2,Xv);ans=linAB(E[0],E[1],E[2]);wr=[linAB(E[0],E[2],E[1]),linAB(qn(E[0]),E[1],E[2]),linAB(E[0],qa(E[1],[1,1]),E[2]),linAB([0,1],E[1],E[2])];num=Math.log2(vval(E));ex=[`真数を素因数に分ける：${Xv} = ${E.map((x,i)=>x[0]?pw(PR[i],x):'').filter(Boolean).join('·')}`,`${LG(2,Xv)} = ${qh(E[0])} ＋ ${qh(E[1])}${LG(2,3)} ＋ ${qh(E[2])}${LG(2,5)}`,`<b>${ans}</b>`];
+   var val=qv(E[0])+qv(E[1])*av+qv(E[2])*bv}
+  else{qq=LG(3,Xv);const nu=linAB(E[0],E[1],E[2]);ans=fr(nu,'<i>a</i>');wr=[fr(nu,'<i>b</i>'),nu,fr('<i>a</i>',nu),fr(linAB(E[0],E[2],E[1]),'<i>a</i>')];num=Math.log(vval(E))/Math.log(3);ex=[`底を2に変換：${LG(3,Xv)} = ${fr(LG(2,Xv),LG(2,3))}`,`分子 = ${nu}，分母 = <i>a</i>`,`<b>${ans}</b>`];var val=(qv(E[0])+qv(E[1])*av+qv(E[2])*bv)/av}}
+ else if(sys==2){given=`${LG(10,2)} = <i>a</i>，${LG(10,3)} = <i>b</i>`;av=Math.log10(2);bv=Math.log10(3);const f=R(1,3);
+  if(f==3){qq=LG(2,3);ans=fr('<i>b</i>','<i>a</i>');wr=[fr('<i>a</i>','<i>b</i>'),'<i>b</i> − <i>a</i>','<i>ab</i>'];num=Math.log2(3);var val=bv/av;ex=[`${LG(2,3)} = ${fr(LG(10,3),LG(10,2))}`,`<b>${ans}</b>`]}
+  else{let e,w;do{e=[R(-3,3),R(-2,2)];w=f==2?R(-1,1):0}while(e[0]==0&&e[1]==0);const root=Math.random()<.3?pick([2,3]):1;
+   // 10^w × 2^e0 × 3^e1 を表示（5 は 10/2 で）
+   const use5=w==1&&e[0]<0;const E=[[e[0]+w,1],[e[1],1],[w,1]];if(E[0][0]<0&&E[2][0]>0&&!use5)return G.l25();
+   const Xv=root>1?rt(root,vh(E)):vh(E);qq=LG(10,Xv);const c=[Q(w,root),Q(e[0],root),Q(e[1],root)];ans=linAB(c[0],c[1],c[2]);
+   wr=[linAB(c[0],c[2],c[1]),linAB(qn(c[0]),c[1],c[2]),linAB(c[0],qn(c[1]),c[2]),linAB(c[0],c[1],qa(c[2],[1,1]))];num=Math.log10(vval(E))/root;var val=qv(c[0])+qv(c[1])*av+qv(c[2])*bv;
+   ex=[`真数を 2，3，10 で表す：${vh(E)} = ${w?pw(10,w)+'·':''}${pw(2,e[0])}·${pw(3,e[1])}${E[2][0]&&!w?'':''}`,`${LG(10,10)} = 1，${LG(10,5)} = 1 − <i>a</i> も使える`,root>1?`${rt(root,'□')} は ${fr(1,root)} 倍`:'',`<b>${ans}</b>`].filter(Boolean)}}
+ else{given=`${LG(2,3)} = <i>a</i>，${LG(3,7)} = <i>b</i>`;av=Math.log2(3);bv=Math.log(7)/Math.log(3);const m=R(1,3);let k;do{k=R(1,5)}while(k==m);qq=LG(2**m*7,2**k*7);
+  ans=fr(k+' ＋ <i>ab</i>',m+' ＋ <i>ab</i>');wr=[fr(k+' ＋ <i>b</i>',m+' ＋ <i>b</i>'),fr(k+' ＋ <i>a</i> ＋ <i>b</i>',m+' ＋ <i>a</i> ＋ <i>b</i>'),fr(m+' ＋ <i>ab</i>',k+' ＋ <i>ab</i>')];num=Math.log(2**k*7)/Math.log(2**m*7);var val=(k+av*bv)/(m+av*bv);
+  ex=[`底を2にする：${fr(LG(2,2**k*7),LG(2,2**m*7))} = ${fr(k+'＋'+LG(2,7),m+'＋'+LG(2,7))}`,`${LG(2,7)} = ${LG(2,3)}·${LG(3,7)} = <i>ab</i>`,`<b>${ans}</b>`]}
+ return{q:`${given} とするとき，次の式を <i>a</i>，<i>b</i> で表せ。<div class="big">${qq}</div>`,...mk(ans,wr,()=>linAB([R(-3,3),1],[R(-3,3),1],[R(-3,3),1])),exp:ex,hint:'真数を素因数に分けて，log の性質で分解する',ck:close(num,val)}};
+// ㉖ 等式の証明（2ˣ＝3ʸ＝12ᶻ）
+G.l26=()=>{const [p,q]=pick([[2,3],[3,5],[2,5],[2,3],[3,5]]);const al=pick([1,2,1]),be=pick([1,1,2]);const N=p**al*q**be;
+ const tm=(c,s)=>(c==1?'':c)+s;const eq=(a,b,s1='＋')=>`${fr(a,X)} ${s1} ${fr(b,Y)} = ${fr(1,'<i>z</i>')}`;
+ const ans=eq(al,be);const w=[eq(be,al),eq(al,be,'−'),eq(1,1),`${fr(al,X)} ＋ ${fr(be,Y)} = <i>z</i>`,eq(al+1,be)].filter(x=>x!=ans);
+ const z=1.37,k=Math.pow(N,z),x=Math.log(k)/Math.log(p),y=Math.log(k)/Math.log(q);
+ return{q:`0 でない実数 ${X}，${Y}，<i>z</i> が ${pw(p,X)} = ${pw(q,Y)} = ${pw(N,'<i>z</i>')} を満たすとき，成り立つ等式はどれか。`,...mk(ans,w),
+  exp:[`各辺は正なので，底 ${p} の対数をとる：${X} = ${Y}${LG(p,q)} = <i>z</i>${LG(p,N)}`,`${fr(1,Y)} = ${fr(LG(p,q),X)}，${fr(1,'<i>z</i>')} = ${fr(LG(p,N),X)}`,`${LG(p,N)} = ${LG(p,`(${pw(p,al)}·${pw(q,be)})`)} = ${al} ＋ ${tm(be,LG(p,q))}`,`よって ${fr(al,X)} ＋ ${fr(be,Y)} = ${fr(al+'＋'+tm(be,LG(p,q)),X)} = ${fr(1,'<i>z</i>')}`,`<b>${ans}</b>`],hint:`両辺の底 ${p} の対数をとる`,ck:close(al/x+be/y,1/z)}};
+// ㉗ a^(log_a M)
+G.l27=()=>{const p=pick([2,3,10,2,3]);const i=pick([1,1,2,3].filter(t=>p**t<=1000)),j=pick([1,1,2].filter(t=>p**t<=100)),c=pick([[1,1],[1,1],[-1,1],[2,1],[-2,1],[1,2]]);
+ const r=pick([2,3,5,7].filter(t=>t!=p)),u=pick([[1,1],[2,1],[1,2],[-1,1]]);const Mh=qeq(u,[1,1])?''+r:qeq(u,[2,1])?''+r*r:qeq(u,[1,2])?rt(2,r):fr(1,r);
+ const E=qm(qm(qm(u,c),[i,1]),[1,j]);if(E[1]>2||Math.abs(qv(E))>4)return G.l27();const ans=pv(r,E);
+ const ch=c[0]==1&&c[1]==1?'':qeq(c,[-1,1])?MI:qh(c);const qq=pw(''+p**i,ch+LG(p**j,Mh));
+ const num=Math.pow(p**i,qv(c)*Math.log(Math.pow(r,qv(u)))/Math.log(p**j));
+ return{q:`次の式を簡単にせよ。<div class="big">${qq}</div>`,...mk(ans,[pv(r,qn(E)),pv(r,u),pv(r,qm(E,[2,1])),pv(r,qa(E,[1,1]))],()=>{const k=R(2,20);return{h:''+k,v:k}}),
+  exp:[`${pw('<i>a</i>',LG('<i>a</i>','<i>M</i>'))} = <i>M</i>（log の定義そのもの）`,`底と指数の log の底を ${p} にそろえる：${p**i} = ${pw(p,i)}，${LG(p**j,Mh)} = ${j==1?'':fr(1,j)}${LG(p,Mh)}`,`${pw(p,`${(h=>h=='1'?'':h==MI+'1'?MI:h)(qh(qm(c,Q(i,j))))}${LG(p,Mh)}`)} = ${pw(p,LG(p,`(${Mh})<sup>${eh(qm(c,Q(i,j)))}</sup>`))} = (${Mh})<sup>${eh(qm(c,Q(i,j)))}</sup>`,`= <b>${ans.h}</b>`],hint:`${pw('<i>a</i>',LG('<i>a</i>','<i>M</i>'))} = <i>M</i> が使える形にする`,ck:close(num,ans.v)}};
+// ㉘ 対数関数のグラフと位置関係
+G.l28=()=>{const a=pick([2,3]);const g=x=>Math.log(x)/Math.log(a);const base=`${LG(a,X)}`;const ty=R(1,7);let fh,desc,F,ex;
+ const D={xs:'<i>x</i>軸に関して対称',ys:'<i>y</i>軸に関して対称',os:'原点に関して対称',yx:`直線 ${Y} = ${X} に関して対称`};
+ if(ty==1){fh=LG(fr(1,a,'sm'),X);desc=D.xs;F=x=>-g(x);ex=`${LG(fr(1,a,'sm'),X)} = ${fr(LG(a,X),LG(a,fr(1,a,'sm')))} = ${MI}${LG(a,X)}`}
+ else if(ty==2){fh=pw(a,X);desc=D.yx;F=null;ex=`${Y} = ${pw(a,X)} ⇔ ${X} = ${LG(a,Y)}：<i>x</i>と<i>y</i>を入れかえた関係`}
+ else if(ty==3){const p=pick([1,2,-1,3]);fh=LG(a,`(${lin(1,-p)})`);desc=`<i>x</i>軸方向に ${nm(p)} だけ平行移動`;F=x=>g(x-p);ex=`<i>x</i> を <i>x</i>−(${nm(p)}) におきかえた形`}
+ else if(ty==4){const q=pick([1,2,-1,-2]);fh=`${LG(a,X)} ${q>0?'＋':'−'} ${Math.abs(q)}`;desc=`<i>y</i>軸方向に ${nm(q)} だけ平行移動`;F=x=>g(x)+q;ex=`全体に ${nm(q)} をたした形`}
+ else if(ty==5){const m=pick([1,2]);fh=LG(a,(a**m)+X);desc=`<i>y</i>軸方向に ${m} だけ平行移動`;F=x=>g(a**m*x);ex=`${LG(a,(a**m)+X)} = ${LG(a,a**m)} ＋ ${LG(a,X)} = ${m} ＋ ${LG(a,X)}`}
+ else if(ty==6){fh=LG(a,`(${MI}${X})`);desc=D.ys;F=x=>g(-x);ex=`<i>x</i> → −<i>x</i>：左右がひっくり返る`}
+ else{fh=LG(a,fr(1,X));desc=D.xs;F=x=>-g(x);ex=`${LG(a,fr(1,X))} = ${MI}${LG(a,X)}`}
+ const all=[D.xs,D.ys,D.os,D.yx,`<i>x</i>軸方向に 1 だけ平行移動`,`<i>y</i>軸方向に 1 だけ平行移動`,`<i>x</i>軸方向に ${MI}1 だけ平行移動`,`<i>y</i>軸方向に 2 だけ平行移動`,`<i>x</i>軸方向に 2 だけ平行移動`];
+ const near=desc.includes('方向に')?[desc.replace(/(−?)(\d)/,(m,s,d)=>s?d:MI+d),desc.includes('<i>x</i>軸方向')?desc.replace('<i>x</i>軸方向','<i>y</i>軸方向'):desc.replace('<i>y</i>軸方向','<i>x</i>軸方向')]:[];
+ const pl=F?plot([{f:g,c:'#999',dash:true,lab:`log`},{f:F,c:'#d64545',lab:'答え',lx:ty==6?-2.5:2}],{x0:-4,x1:6,y0:-4,y1:4}):plot([{f:g,c:'#999',dash:true,lab:'log'},{f:x=>Math.pow(a,x),c:'#d64545',lab:'指数',lx:0.8},{f:x=>x,c:'#bbb',w:1}],{x0:-3,x1:5,y0:-3,y1:5});
+ const ck=F?[0.5,1.7,3.2].every(x=>{const t=desc;let v;if(t==D.xs)v=-g(x);else if(t==D.ys)v=g(-(-x));else{const s=t.match(/(−?)(\d)/);const d=(s[1]?-1:1)*+s[2];v=t.includes('<i>x</i>軸方向')?g(x-d):g(x)+d}if(t==D.ys)return close(F(-x),g(x));return !isFinite(v)||!isFinite(F(x))||close(v,F(x))}):close(g(Math.pow(a,1.3)),1.3);
+ return{q:`${Y} = ${fh} のグラフは，${Y} = ${base} のグラフをどのように移したものか。`,...mk(desc,near.concat(shuf(all))),exp:[ex,pl,`答え：<b>${desc}</b>`],hint:'式を変形して，<i>x</i> や <i>y</i> がどう変わったかを見る',ck}};
+// ㉙ 対数関数の値域
+G.l29=()=>{const b=pick([[2,1],[3,1],[1,2],[1,3]]),P=b[0]*b[1];let e1,e2;do{e1=pick([[-2,1],[-1,1],[0,1],[1,2],[1,1],[-1,2]]);e2=pick([[1,1],[2,1],[3,2],[3,1],[1,2],[5,2]])}while(qv(e1)>=qv(e2)||Math.abs(Math.pow(P,qv(e2)))>40);
+ const sgn=b[0]>b[1]?1:-1;const xa=pv(P,qm(e1,[sgn,1])),xb=pv(P,qm(e2,[sgn,1]));const lo=xa.v<xb.v?xa:xb,hi=xa.v<xb.v?xb:xa;
+ const ans=`${qh(e1)} ${LE} ${Y} ${LE} ${qh(e2)}`;
+ return{q:`次の関数の値域を求めよ。<div class="big">${Y} = ${LG(b,X)}　（${lo.h} ${LE} ${X} ${LE} ${hi.h}）</div>`,...mk(ans,[`${qh(qn(e2))} ${LE} ${Y} ${LE} ${qh(qn(e1))}`,`${lo.h} ${LE} ${Y} ${LE} ${hi.h}`,`${qh(e1)} ＜ ${Y} ＜ ${qh(e2)}`,`${qh(qa(e1,[1,1]))} ${LE} ${Y} ${LE} ${qh(qa(e2,[1,1]))}`]),
+  exp:[`底 ${baseH(b)} は1より${sgn>0?'大きい → 増加':'小さい → 減少'}関数`,`${X} = ${lo.h} のとき ${Y} = ${qh(sgn>0?e1:e2)}，${X} = ${hi.h} のとき ${Y} = ${qh(sgn>0?e2:e1)}`,`<b>${ans}</b>`],hint:'両はしの <i>x</i> を「底の○乗」にする',ck:close(Math.log(lo.v)/Math.log(qv(b)),qv(sgn>0?e1:e2))}};
+// ㉚ 対数の大小比較
+G.l30=()=>{const f=R(1,3);let items,ex;
+ if(f==1){const b=pick([[2,1],[3,1],[5,1],[1,2],[1,3]]);const bv=qv(b);const cs=[[2,3],[3,2],[2,5],[3,5],[2,11],[3,7],[1,6],[1,10],[1,0.5]];let its;
+  do{its=shuf(cs).slice(0,2).map(c=>({c:c[0],M:c[1]}));its.push({k:pick([1,2,3,-1,0,7].filter(k=>Math.abs(k)<=3||bv==2))})}while(false);
+  items=its.map(o=>{if(o.k!=null){const v=o.k;return{h:nm(v),v,tr:o.k}}const Mh=o.M==0.5?'0.5':''+o.M;return{h:`${o.c==1?'':o.c}${LG(b,Mh)}`,v:o.c*Math.log(o.M)/Math.log(bv),tr:o}});
+  const tr=items.map(i=>typeof i.tr=='number'?`${i.h} = ${LG(b,qh(qpow(b,i.tr)))}`:`${i.h} = ${LG(b,i.tr.c==1?(''+i.tr.M):pw(i.tr.M,i.tr.c))}`);
+  ex=[`すべて ${LG(b,'□')} の形にする：`+tr.join('，'),`真数の大小をくらべ，底 ${baseH(b)} が1より${bv>1?'大きい → そのまま':'小さい → <b>逆</b>'}`]}
+ else if(f==2){const N=pick([6,5,7,10,3]);let bs=shuf([2,3,4,5,7,9].filter(x=>x!=N)).slice(0,3);const small=N<Math.min(...bs);items=bs.map(b=>({h:LG(b,N),v:Math.log(N)/Math.log(b)}));
+  ex=[`${LG('<i>b</i>',N)} = ${fr(1,LG(N,'<i>b</i>'))}（底の変換）`,`底 ${N} は1より大きいので，<i>b</i> が大きいほど ${LG(N,'<i>b</i>')} が大きい → 逆数は小さい`,small?'':'（真数が底より小さいものは1より小さい）']}
+ else{const p=pick([2,3]);const ks=shuf([[1,2],[1,1],[2,1],[4,1]]).slice(0,2);items=ks.map(k=>{const M=pick([3,5,6,7,9,10,11].filter(m=>m%p!=0||m==6));const B=qeq(k,[1,2])?rt(2,p):''+p**k[0];return{h:LG(B,M),v:Math.log(M)/Math.log(Math.pow(p,qv(k))),k,M}});
+  const c=pick([[1,1],[2,1],[3,2],[3,1]]);items.push({h:qh(c),v:qv(c),c});
+  ex=[`底を ${p} にそろえる：${LG(rt(2,p),'<i>M</i>')} = 2${LG(p,'<i>M</i>')}，${LG(p*p,'<i>M</i>')} = ${fr(1,2)}${LG(p,'<i>M</i>')}`,items.map(i=>i.c?`${i.h} = ${LG(p,pv(p,i.c).h)}`:`${i.h} = ${LG(p,qeq(i.k,[1,2])?i.M*i.M:qeq(i.k,[1,1])?i.M:qeq(i.k,[2,1])?rt(2,i.M):rt(4,i.M))}`).join('，'),`底 ${p} は1より大きいので，真数の大小と同じ`]}
+ const s=items.slice().sort((a,b)=>a.v-b.v);if(new Set(items.map(i=>i.h)).size<3||Math.min(s[1].v-s[0].v,s[2].v-s[1].v)<1e-6)return G.l30();
+ const ord=o=>o.map(i=>i.h).join(' ＜ ');const perms=[[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]].map(p=>p.map(i=>s[i]));
+ return{q:`次の3つの数の大小を不等号を用いて表せ。<div class="big">${shuf(items).map(i=>i.h).join('，　')}</div>`,...mk(ord(s),perms.map(ord)),exp:ex.filter(Boolean).concat([`→ <b>${ord(s)}</b>`]),hint:'底をそろえて，真数をくらべる',ck:true}};
+// ㉛ 基本の方程式・不等式
+G.l31=()=>{const b=pick([[2,1],[3,1],[5,1],[10,1],[1,2],[1,3],[1,10],[4,1]]);const bv=qv(b);let p=pick([-3,-2,-1,1,2,3,4]);if(Math.pow(Math.max(b[0],b[1]),Math.abs(p))>1000)p=p>0?2:-1;
+ const c=Math.random()<.3?pick([1,-1,2,-2]):0;const val=qpow(b,p),xv=qs(val,[c,1]);const inner=c?`(${lin(1,c)})`:X;const kind=pick(['=','<','>',LE,GE,'=']);
+ if(kind=='='){const ans=`${X} = ${qh(xv)}`;return{q:`次の方程式を解け。<div class="big">${LG(b,inner)} = ${p}</div>`,...mk(ans,[`${X} = ${qh(Q(p*b[0],b[1]))}`,`${X} = ${qh(qs(qpow(b,-p),[c,1]))}`,`${X} = ${qh(qa(val,[c,1]))}`,`${X} = ${p}`,`${X} = ${qh(qm(val,[2,1]))}`,`${X} = ${qh(qa(xv,[1,1]))}`,`${X} = ${qh(qs(xv,[1,1]))}`]),exp:[`対数の定義から ${inner} = ${pw(b[1]==1?b[0]:'('+fr(1,b[1])+')',p)} = ${qh(val)}`,`<b>${ans}</b>`],hint:'log の定義：底を右辺の数だけ累乗',ck:close(Math.log(qv(xv)+c)/Math.log(bv),p)}}
+ // 不等式
+ const dom=I(-c,false,INF,false);const inc=bv>1;let S2;const t=qv(xv);
+ if(kind=='<'||kind==LE){S2=inc?[I(-INF,false,t,kind==LE)]:[I(t,kind==LE,INF,false)]}else{S2=inc?[I(t,kind==GE,INF,false)]:[I(-INF,false,t,kind==GE)]}
+ const S=isect([dom],S2),ans=setH(S);const bad1=setH(S2),fl=kind=='<'||kind==LE?(inc?[I(t,kind==LE,INF,false)]:[I(-INF,false,t,kind==LE)]):(inc?[I(-INF,false,t,kind==GE)]:[I(t,kind==GE,INF,false)]);
+ const test=x=>x+c>0&&relf[kind=='<'?'<':kind=='>'?'>':kind](Math.log(x+c)/Math.log(bv),p);
+ return{q:`次の不等式を解け。<div class="big">${LG(b,inner)} ${kind} ${p}</div>`,...mk(ans,[bad1,setH(isect([dom],fl)),setH(isect([dom],[I(-INF,false,qv(qs(qpow(b,-p),[c,1])),true)])),setH(fl)],()=>setH(isect([dom],[I(-INF,false,R(1,20),true)]))),
+  exp:[`真数は正：${inner} ＞ 0　→　${X} ＞ ${nm(-c)} …①`,`${p} = ${LG(b,qh(val))} と変形`,`底 ${baseH(b)} は1より${inc?'大きい → 向きそのまま':'小さい → 向きが<b>逆</b>'}：${inner} ${inc?kind:flip[kind]} ${qh(val)} …②`,`①，②の共通範囲：<b>${ans}</b>`],hint:'まず真数＞0。次に底と1の大小',
+  ck:[-5,-1.5,-0.5,0.3,0.9,2.2,5.5,9.1,30,140,900].every(x=>Math.abs(x-t)<1e-9||Math.abs(x+c)<1e-9||test(x)==inS(S,x))}};
+// ㉜ 真数条件つきの方程式・不等式
+G.l32=()=>{const f=pick(['eq','eq','ineq','lin','quad','quad']);
+ if(f=='eq'){const a=pick([2,3,10,4,6]);const k=pick([1,2,3].filter(t=>a**t<=100&&a**t>=4));const P=a**k;const prs=[];for(let m=1;m<=P;m++)if(P%m==0)prs.push([m,P/m]);
+  const [m,n]=pick(prs),c=pick([1,1,2]),r1=R(-3,8);const u=m-c*r1,v=n-r1;if(u==0&&v==0)return G.l32();
+  const r2=qs(Q(-(c*v+u),c),[r1,1]);const v2=c*qv(r2)+u>0&&qv(r2)+v>0;if(qeq(r2,[r1,1]))return G.l32();
+  const sols=v2?[[r1,1],r2].sort((x,y)=>qv(x)-qv(y)):[[r1,1]];const ans=`${X} = ${sols.map(qh).join('，')}`;const both=`${X} = ${[[r1,1],r2].sort((x,y)=>qv(x)-qv(y)).map(qh).join('，')}`;
+  const L1=lin(c,u),L2=lin(1,v);
+  return{q:`次の方程式を解け。<div class="big">${LG(a,`(${L1})`)} ＋ ${LG(a,`(${L2})`)} = ${k}</div>`,...mk(ans,[v2?`${X} = ${r1}`:both,v2?`${X} = ${qh(r2)}`:`${X} = ${qh(r2)}`,`${X} = ${r1+1}`,`解なし`]),
+   exp:[`真数は正：${L1} ＞ 0 かつ ${L2} ＞ 0 …①`,`左辺を1つに：${LG(a,`(${L1})(${L2})`)} = ${k}　→　(${L1})(${L2}) = ${pw(a,k)} = ${P}`,`整理して解くと ${X} = ${[[r1,1],r2].map(qh).join('，')}`,v2?'どちらも①を満たす':`${X} = ${qh(r2)} は①を満たさない`,`<b>${ans}</b>`],hint:'最初に真数条件。答えが条件を満たすか確かめる',
+   ck:sols.every(x=>{const X1=c*qv(x)+u,X2=qv(x)+v;return X1>0&&X2>0&&close(Math.log(X1*X2)/Math.log(a),k)})}}
+ if(f=='ineq'){const a=pick([2,3,6,10]);const k=pick([1,2].filter(t=>a**t<=36));const P=a**k;const prs=[];for(let m=1;m<=P;m++)if(P%m==0)prs.push([m,P/m]);const [m,n]=pick(prs);const r1=R(-2,6),u=m-r1,v=n-r1;if(u==v)return G.l32();
+  const rel=pick(['<',LE,'>',GE]);const D=Math.max(-u,-v);const dom=[I(D,false,INF,false)];const lt=rel=='<'||rel==LE;const S=isect(dom,lt?[I(-INF,false,r1,rel==LE)]:[I(r1,rel==GE,INF,false)]);const ans=setH(S);
+  const r2=-(u+v)-r1;const quadS=lt?[I(r2,rel==LE,r1,rel==LE)]:[I(-INF,false,r2,rel==GE),I(r1,rel==GE,INF,false)];
+  const test=x=>x+u>0&&x+v>0&&relf[rel](Math.log((x+u)*(x+v))/Math.log(a),k);
+  return{q:`次の不等式を解け。<div class="big">${LG(a,`(${lin(1,u)})`)} ＋ ${LG(a,`(${lin(1,v)})`)} ${rel} ${k}</div>`,...mk(ans,[setH(quadS),setH(isect(dom,lt?[I(r1,rel==GE,INF,false)]:[I(-INF,false,r1,rel==LE)])),setH(isect([I(Math.min(-u,-v),false,INF,false)],lt?[I(-INF,false,r1,rel==LE)]:[I(r1,rel==GE,INF,false)])),setH(isect(dom,lt?[I(-INF,false,r1+1,rel==LE)]:[I(r1+1,rel==GE,INF,false)]))]),
+   exp:[`真数は正：${X} ＞ ${nm(-u)} かつ ${X} ＞ ${nm(-v)}　→　${X} ＞ ${nm(D)} …①`,`${LG(a,`(${lin(1,u)})(${lin(1,v)})`)} ${rel} ${LG(a,P)}`,`底 ${a} は1より大きい：(${lin(1,u)})(${lin(1,v)}) ${rel} ${P}　→　${setH(quadS)} …②`,`①，②の共通範囲：<b>${ans}</b>`],hint:'真数条件と2次不等式の共通範囲',
+   ck:[-9,-5.5,-3.3,-1.1,0.2,1.7,3.4,5.9,8.2,12].every(x=>Math.abs(x-r1)<1e-9||Math.abs(x-D)<1e-9||test(x)==inS(S,x))}}
+ if(f=='lin'){const b=pick([[2,1],[3,1],[1,2],[1,3]]),bv=qv(b);const s1=pick([-1,-2,1]),t1=R(-3,6),s2=pick([1,3,2]),t2=R(-2,3);if(s1==s2)return G.l32();const rel=pick([GE,LE,'<','>']);
+  const doms=[s1>0?I(-t1/s1,false,INF,false):I(-INF,false,-t1/s1,false),s2>0?I(-t2/s2,false,INF,false):I(-INF,false,-t2/s2,false)];
+  const r=bv>1?rel:flip[rel];// (s1-s2)x r t2-t1
+  const cc=s1-s2,dd=t2-t1;let rr=cc<0?flip[r]:r;const bd=dd/cc;const comp=rr=='<'||rr==LE?I(-INF,false,bd,rr==LE):I(bd,rr==GE,INF,false);
+  const S=isect(isect([doms[0]],[doms[1]]),[comp]);if(!S.length)return G.l32();const ans=setH(S);
+  const compF=rr=='<'||rr==LE?I(bd,rr!=LE,INF,false):I(-INF,false,bd,rr!=GE);
+  const test=x=>s1*x+t1>0&&s2*x+t2>0&&relf[rel](Math.log(s1*x+t1)/Math.log(bv),Math.log(s2*x+t2)/Math.log(bv));
+  return{q:`次の不等式を解け。<div class="big">${LG(b,`(${lin2(s1,t1)})`)} ${rel} ${LG(b,`(${lin(s2,t2)})`)}</div>`,...mk(ans,[setH([comp]),setH(isect(isect([doms[0]],[doms[1]]),[compF])),setH(isect([doms[0]],[comp])),setH(isect([doms[1]],[comp]))],()=>setH([I(R(-3,0),false,R(1,4),true)])),
+   exp:[`真数は正：${lin2(s1,t1)} ＞ 0 かつ ${lin(s2,t2)} ＞ 0 …①`,`底 ${baseH(b)} は1より${bv>1?'大きい → 向きそのまま':'小さい → 向きが<b>逆</b>'}：${lin2(s1,t1)} ${r} ${lin(s2,t2)} …②`,`①，②の共通範囲：<b>${ans}</b>`],hint:'真数条件 → 底と1の大小',
+   ck:[-6,-3.7,-2.2,-1.1,-0.4,0.35,0.9,1.6,2.8,4.1,6.3].every(x=>S.some(a=>Math.abs(x-a.lo)<1e-9||Math.abs(x-a.hi)<1e-9)||Math.abs(x-bd)<1e-9||test(x)==inS(S,x))}}
+ // quad：2log_a(sx+t) rel log_a(x+q)
+ const s=pick([1,-1]);let r1,r2;do{r1=R(-4,4);r2=R(r1+1,r1+7)}while((r1+r2)%2==0);const t=s*(1-r1-r2)/2,qq=t*t-r1*r2;const b=pick([[2,1],[3,1],[5,1],[1,2],[1,3]]),bv=qv(b);const rel=pick(['<','>',LE,GE]);
+ const L=lin2(s,t),Rr=lin(1,qq);const alt=Math.random()<.3;
+ const dom=isect([s>0?I(-t,false,INF,false):I(-INF,false,t,false)],[I(-qq,false,INF,false)]);if(!dom.length)return G.l32();const rr=bv>1?rel:flip[rel];
+ const quadS=rr=='<'||rr==LE?[I(r1,rr==LE,r2,rr==LE)]:[I(-INF,false,r1,rr==GE),I(r2,rr==GE,INF,false)];const S=isect(dom,quadS);if(!S.length)return G.l32();const ans=setH(S);
+ const quadF=rr=='<'||rr==LE?[I(-INF,false,r1,rr!=LE),I(r2,rr!=LE,INF,false)]:[I(r1,rr!=GE,r2,rr!=GE)];
+ const qtxt=alt?`${LG(b,`(${L})`)} ${rel} ${LG(b[1]==1?[b[0]**2,1]:[1,b[1]**2],`(${Rr})`)}`:`2${LG(b,`(${L})`)} ${rel} ${LG(b,`(${Rr})`)}`;
+ const test=x=>s*x+t>0&&x+qq>0&&relf[rel](2*Math.log(s*x+t)/Math.log(bv),Math.log(x+qq)/Math.log(bv));
+ return{q:`次の不等式を解け。<div class="big">${qtxt}</div>`,...mk(ans,[setH(quadS),setH(isect(dom,quadF)),setH(dom),setH(isect(dom,[I(r1,true,INF,false)]))],()=>setH([I(R(-4,0),false,R(1,5),false)])),
+  exp:[`真数は正：${L} ＞ 0 かつ ${Rr} ＞ 0　→　${setH(dom)} …①`,alt?`右辺の底を ${baseH(b)} に：${LG(b[1]==1?[b[0]**2,1]:[1,b[1]**2],'<i>M</i>')} = ${fr(1,2)}${LG(b,'<i>M</i>')}。両辺を2倍`:`左辺 = ${LG(b,`(${L})<sup>2</sup>`)}`,`底 ${baseH(b)} は1より${bv>1?'大きい → 向きそのまま':'小さい → 向きが<b>逆</b>'}：(${L})<sup>2</sup> ${rr} ${Rr}`,`整理すると (${lin(1,-r1)})(${lin(1,-r2)}) ${rr} 0　→　${setH(quadS)} …②`,`①，②の共通範囲：<b>${ans}</b>`],hint:'真数条件を最初に。2log → log(□)²',
+  ck:[-9,-6.5,-4.6,-3.3,-2.4,-1.5,-0.6,0.4,1.3,2.6,3.8,5.2,6.9,9.4,13].every(x=>[r1,r2,-t*s,-qq].some(bd=>Math.abs(x-bd)<1e-9)||test(x)==inS(S,x))}};
+// ㉝ log x = t とおく
+G.l33=()=>{const a=pick([2,3]);let r1,r2;do{r1=R(-3,2);r2=R(r1+1,4)}while(Math.abs(r1)+Math.abs(r2)>6);const B=-(r1+r2),C=r1*r2;
+ const k2=pick([0,0,1,-1]);let m=pick([1,2,3]);if((B-k2)%m!=0)m=1;const k1=(B-k2)/m;if(k1==0&&k2==0)return G.l33();
+ const tA=k1==0?'':`${k1<0?' − ':' ＋ '}${Math.abs(k1)==1?'':Math.abs(k1)}${LG(a,m==1?X:pw(X,m))}`;const tB=k2==0?'':`${k2>0?' − ':' ＋ '}${LG(fr(1,a,'sm'),X)}`;const tC=C==0?'':C<0?` − ${-C}`:` ＋ ${C}`;
+ const kind=pick(['=','=','<',LE,'>',GE]);const lhs=`(${LG(a,X)})<sup>2</sup>${tA}${tB}${tC}`;
+ const x1=pv(a,[r1,1]),x2=pv(a,[r2,1]);let ans,S;
+ if(kind=='=')ans=`${X} = ${x1.h}，${x2.h}`;else if(kind=='<'||kind==LE){S=[I(x1.v,kind==LE,x2.v,kind==LE)];ans=`${x1.h} ${kind==LE?LE:'＜'} ${X} ${kind==LE?LE:'＜'} ${x2.h}`}else{S=[I(0,false,x1.v,kind==GE),I(x2.v,kind==GE,INF,false)];ans=`0 ＜ ${X} ${kind==GE?LE:'＜'} ${x1.h}，${x2.h} ${kind==GE?LE:'＜'} ${X}`}
+ const w=kind=='='?[`${X} = ${r1}，${r2}`,`${X} = ${pv(a,[-r1,1]).h}，${pv(a,[-r2,1]).h}`,`${X} = ${x2.h}`]:[kind=='<'||kind==LE?`${r1} ${kind==LE?LE:'＜'} ${X} ${kind==LE?LE:'＜'} ${r2}`:`${X} ${kind==GE?LE:'＜'} ${r1}，${r2} ${kind==GE?LE:'＜'} ${X}`,kind=='<'||kind==LE?`0 ＜ ${X} ${kind==LE?LE:'＜'} ${x1.h}，${x2.h} ${kind==LE?LE:'＜'} ${X}`:`${x1.h} ${kind==GE?LE:'＜'} ${X} ${kind==GE?LE:'＜'} ${x2.h}`,kind=='<'||kind==LE?`${X} ${kind==LE?LE:'＜'} ${x2.h}`:`${X} ${kind==GE?LE:'＜'} ${x1.h}，${x2.h} ${kind==GE?LE:'＜'} ${X}`];
+ const f=x=>Math.pow(Math.log(x)/Math.log(a),2)+k1*m*Math.log(x)/Math.log(a)-k2*(-Math.log(x)/Math.log(a))*(-1)*(-1)+C;// 確認用（下で直接）
+ const F=x=>{const t=Math.log(x)/Math.log(a);return t*t+k1*m*t+(k2? -k2*(-t)*(-1)*(-1):0)+C};
+ const G2=x=>{const t=Math.log(x)/Math.log(a);return t*t+k1*m*t+k2*(Math.log(x)/Math.log(1/a))*-1+C};
+ const ck=kind=='='?[x1.v,x2.v].every(x=>Math.abs(G2(x))<1e-9):[0.05,0.2,0.4,0.7,1.3,2.5,5,11,30,70,200].every(x=>[x1.v,x2.v].some(b=>Math.abs(b-x)<1e-9)||relf[kind=='<'?'<':kind=='>'?'>':kind](G2(x),0)==inS(S,x));
+ return{q:`次の${kind=='='?'方程式':'不等式'}を解け。<div class="big">${lhs} ${kind} 0</div>`,...mk(ans,w),
+  exp:[`真数は正：${X} ＞ 0`,`${LG(a,X)} = ${T} とおく${m>1?`。${LG(a,pw(X,m))} = ${m}${T}`:''}${k2?`。${LG(fr(1,a,'sm'),X)} = ${MI}${T}`:''}`,`${T}<sup>2</sup>${B?(B<0?' − ':' ＋ ')+(Math.abs(B)==1?'':Math.abs(B))+T:''}${tC} ${kind} 0　→　(${T}${r1<0?'＋'+(-r1):r1?'−'+r1:''})(${T}${r2<0?'＋'+(-r2):r2?'−'+r2:''}) ${kind} 0`,kind=='='?`${T} = ${r1}，${r2}`:kind=='<'||kind==LE?`${r1} ${kind==LE?LE:'＜'} ${T} ${kind==LE?LE:'＜'} ${r2}`:`${T} ${kind==GE?LE:'＜'} ${r1}，${r2} ${kind==GE?LE:'＜'} ${T}`,`${X} = ${pw(a,T)} にもどす（底 ${a}＞1 なので向きそのまま）：<b>${ans}</b>`],hint:`${LG(a,X)} = ${T} とおく`,ck}};
+// ㉞ 対数を含む関数の最大・最小
+G.l34=()=>{const f=pick([1,1,2]);
+ if(f==2){const a=pick([2,3,2]);const h=a==2?pick([2,4]):3;const k=Math.round(Math.log(h*h)/Math.log(a));const u=R(-2,3),v=u+2*h,mid=u+h;const inv=Math.random()<.35;const B=inv?[1,a]:[a,1];
+  const ans=inv?`${X} = ${mid} で最小値 ${MI}${k}，最大値はない`:`${X} = ${mid} で最大値 ${k}，最小値はない`;
+  const val=x=>(Math.log(x-u)+Math.log(v-x))/Math.log(inv?1/a:a);let ext=inv?1e9:-1e9;for(let x=u+1e-3;x<v;x+=0.001)ext=inv?Math.min(ext,val(x)):Math.max(ext,val(x));
+  return{q:`関数 ${Y} = ${LG(B,`(${lin(1,-u)})`)} ＋ ${LG(B,`(${lin2(-1,v)})`)} の最${inv?'小':'大'}値と，そのときの ${X} の値を求めよ。`,...mk(ans,[inv?`${X} = ${mid} で最小値 ${k}，最大値はない`:`${X} = ${mid} で最大値 ${h*h}，最小値はない`,inv?`${X} = ${mid} で最小値 ${MI}${h*h}，最大値はない`:`${X} = ${mid} で最大値 ${MI}${k}，最小値はない`,`${X} = ${u+1} で最${inv?'小':'大'}値 ${k}，最${inv?'大':'小'}値はない`]),
+   exp:[`真数は正：${nm(u)} ＜ ${X} ＜ ${v}`,`${Y} = ${LG(B,`(${lin(1,-u)})(${lin2(-1,v)})`)}`,`真数 = −(${lin(1,-mid)})<sup>2</sup> ＋ ${h*h}：${X} = ${mid} で最大値 ${h*h}`,`底 ${baseH(B)} は1より${inv?'小さい → 真数が最大のとき <i>y</i> は最小':'大きい → 真数が最大のとき <i>y</i> も最大'}：${LG(B,h*h)} = ${inv?MI:''}${k}`,`<b>${ans}</b>`],hint:'1つの log にまとめて，真数を平方完成',ck:Math.abs(ext-(inv?-k:k))<1e-4}}
+ const a=pick([2,3]);let e1,e2;do{e1=R(-1,1);e2=R(e1+2,e1+5)}while(a==3&&e2>4);const m=pick([1,2]);let t0=R(e1-1,e2);let Bc=-2*t0;if(Bc%m!=0)return G.l34();const k1=Bc/m,C=R(-4,3);const prodForm=Math.random()<.3;
+ const yt=t=>t*t+Bc*t+C;let disp;
+ if(prodForm){// (log(x/a^p))(log(a^q x)) = (t−p)(t+q) = t²+(q−p)t−pq
+  let p_,q_,g_=0;do{p_=R(1,3);q_=p_-2*t0;if(g_++>30)return G.l34()}while(q_<0||q_>3||q_+p_==0);disp=`(${LG(a,fr(X,a**p_))})(${LG(a,(q_?a**q_:'')+X)})`;var yy=t=>(t-p_)*(t+q_);}
+ else{disp=`(${LG(a,X)})<sup>2</sup>${k1==0?'':(k1<0?' − ':' ＋ ')+(Math.abs(k1)==1?'':Math.abs(k1))+LG(a,m==1?X:pw(X,m))}${C==0?'':C<0?' − '+(-C):' ＋ '+C}`;var yy=yt}
+ const xs=pv(a,[e1,1]),xe=pv(a,[e2,1]);let tv=[[e1,yy(e1)],[e2,yy(e2)]];const inside=t0>e1&&t0<e2;if(inside)tv.push([t0,yy(t0)]);const mx=tv.reduce((x,y)=>y[1]>x[1]?y:x),mn=tv.reduce((x,y)=>y[1]<x[1]?y:x);
+ const xh=t=>pv(a,[t,1]).h;const ans=`${X} = ${xh(mx[0])} で最大値 ${nm(mx[1])}，${X} = ${xh(mn[0])} で最小値 ${nm(mn[1])}`;
+ let gx=-1e9,gn=1e9;for(let i=0;i<=20000;i++){const x=xs.v+(xe.v-xs.v)*i/20000;const t=Math.log(x)/Math.log(a);const v=yy(t);gx=Math.max(gx,v);gn=Math.min(gn,v)}
+ return{q:`${xs.h} ${LE} ${X} ${LE} ${xe.h} のとき，次の関数の最大値と最小値を求めよ。また，そのときの ${X} の値を求めよ。<div class="big">${Y} = ${disp}</div>`,...mk(ans,[`${X} = ${mx[0]} で最大値 ${nm(mx[1])}，${X} = ${mn[0]} で最小値 ${nm(mn[1])}`,`${X} = ${xh(mn[0])} で最大値 ${nm(mx[1])}，${X} = ${xh(mx[0])} で最小値 ${nm(mn[1])}`,`${X} = ${xe.h} で最大値 ${nm(yy(e2))}，${X} = ${xs.h} で最小値 ${nm(yy(e1))}`,`${X} = ${xh(mx[0])} で最大値 ${nm(mx[1])}，最小値はない`]),
+  exp:[`${LG(a,X)} = ${T} とおく。底 ${a}＞1 なので ${e1} ${LE} ${T} ${LE} ${e2}`,`${Y} = ${T}<sup>2</sup>${Bc?(Bc<0?' − ':' ＋ ')+(Math.abs(Bc)==1?'':Math.abs(Bc))+T:''}${(prodForm?yy(0):C)==0?'':(prodForm?yy(0):C)<0?' − '+(-(prodForm?yy(0):C)):' ＋ '+(prodForm?yy(0):C)} = (${T}${t0<0?'＋'+(-t0):t0?'−'+t0:''})<sup>2</sup>${(yy(t0))<0?' − '+(-yy(t0)):yy(t0)?' ＋ '+yy(t0):''}`,`軸 ${T} = ${t0} は範囲の${inside?'中':'外'}。最大は ${T} = ${mx[0]}，最小は ${T} = ${mn[0]}`,`${X} = ${pw(a,T)} にもどす：<b>${ans}</b>`],hint:`${LG(a,X)} = ${T} とおき，${T} の範囲を先に`,ck:Math.abs(gx-mx[1])<1e-6&&Math.abs(gn-mn[1])<1e-3&&mx[0]!=mn[0]}};
+// ㉟ 底の異なる指数方程式
+G.l35=()=>{const [p,q]=pick([[2,3],[2,5],[3,5],[2,3]]);let u,v;do{u=R(-2,2);v=R(-2,2)}while(u==v);const L=LG(p,q);
+ // x+u = (x+v)L → x = (u − vL)/(L − 1)
+ const numh=(c0,cL)=>{let s='';if(cL)s+=(cL<0?MI:'')+(Math.abs(cL)==1?'':Math.abs(cL))+L;if(c0)s+=(s?(c0<0?' − ':' ＋ '):(c0<0?MI:''))+Math.abs(c0);return s||'0'};
+ const ans=fr(numh(u,-v),`${L} − 1`);const w=[fr(numh(u,-v),`1 − ${L}`),fr(numh(-u,v),`${L} − 1`),fr(numh(v,-u),`${L} − 1`),fr(numh(u,-v),L)];
+ const lv=Math.log(q)/Math.log(p),xv=(u-v*lv)/(lv-1);
+ const lh=x=>x==0?X:`${X}${x>0?'＋'+x:'−'+(-x)}`;
+ return{q:`次の方程式を解け。<div class="big">${pw(p,lh(u))} = ${pw(q,lh(v))}</div>`,...mk(ans,w),
+  exp:[`底がちがうので，両辺の底 ${p} の対数をとる`,`${lh(u)} = (${lh(v)})${L}`,`${X} の項を集める：(${L} − 1)${X} = ${numh(u,-v)}`,`${L} − 1 ≠ 0 なので　<b>${X} = ${ans}</b>`],hint:'両辺の対数をとる',ck:close(Math.pow(p,xv+u),Math.pow(q,xv+v))}};
+// ㊱ 常用対数表
+const r4=v=>{const s=(Math.round(v*10000)/10000).toFixed(4);return s.replace('-',MI)};
+G.l36=()=>{if(Math.random()<.35){// log10 の値から
+  const i=R(0,3),j=R(0,3),k=pick([2,3,5,7]);if(i+j==0)return G.l36();const val=(i*0.3010+j*0.4771)/k;if(Math.abs(val*1e5%10-5)<0.6)return G.l36();
+  const N=2**i*3**j;const ans=r4(val);const ch=[r4(i*0.3010+j*0.4771),r4(val*2),r4((i*0.4771+j*0.3010)/k),r4(val+1)];
+  return{q:`${LG(10,2)} = 0.3010，${LG(10,3)} = 0.4771 とする。次の値を，小数第5位を四捨五入して小数第4位まで求めよ。<div class="big">${LG(10,rt(k,N))}</div>`,...mk({h:ans,v:+r4(val).replace(MI,'-')},ch.map(c=>({h:c,v:+c.replace(MI,'-')})),()=>{const z=r4(val+R(-20,20)/100);return{h:z,v:+z.replace(MI,'-')}}),
+   exp:[`${rt(k,N)} = ${pw('('+(i?pw(2,i):'')+(i&&j?'·':'')+(j?pw(3,j):'')+')',[1,k])}`,`${LG(10,rt(k,N))} = ${fr(1,k)}(${i?i+'×0.3010':''}${i&&j?'＋':''}${j?j+'×0.4771':''}) = ${val.toFixed(6)}…`,`<b>${ans}</b>`],hint:`${rt(k,'□')} は ${fr(1,k)} 乗`,ck:Math.abs(val-Math.log10(N)/k)<0.001}}
+ const a=R(100,999)/100,n=R(-4,6);const t=Math.round(Math.log10(a)*10000)/10000;const v=t+n;const Ms=n>=0?(a*10**n).toFixed(Math.max(0,2-n)):dec(Math.round(a*100),2-n);
+ const ans=r4(v);const ch=[r4(t+n+1),r4(t+n-1),r4(-(t+Math.abs(n))),r4(t-n)];
+ return{q:`常用対数表より ${LG(10,a.toFixed(2))} = ${t.toFixed(4)} である。これを用いて，次の値を求めよ。<div class="big">${LG(10,Ms)}</div>`,...mk({h:ans,v},ch.map(c=>({h:c,v:+c.replace(MI,'-')})),()=>{const z=r4(v+R(-20,20)/100);return{h:z,v:+z.replace(MI,'-')}}),
+  exp:[`${Ms} = ${a.toFixed(2)} × ${pw(10,n)}`,`${LG(10,Ms)} = ${LG(10,a.toFixed(2))} ＋ ${LG(10,pw(10,n))} = ${t.toFixed(4)} ＋ (${nm(n)})`,`<b>${ans}</b>`],hint:'□.□□ × 10ⁿ の形にする',ck:Math.abs(Math.log10(+Ms)-v)<1e-3}};
+// ㊲ 桁数
+const LGT={2:0.3010,3:0.4771,5:0.6990,6:0.7781,12:1.0792,18:1.2553,15:1.1761};
+const LGH={2:`${LG(10,2)} = 0.3010`,3:`${LG(10,3)} = 0.4771`};
+const need=p=>p==2||p==5?[2]:p==3?[3]:[2,3];
+G.l37=()=>{const p=pick([2,3,6,12,18,5,15]);const n=R(10,100);const L=Math.round(n*LGT[p]*10000)/10000;const fl=Math.floor(L);if(L-fl<0.03||L-fl>0.97||Math.floor(n*Math.log10(p))!=fl)return G.l37();
+ const d=fl+1;const ex2=p==5?`${LG(10,5)} = ${LG(10,fr(10,2))} = 1 − 0.3010 = 0.6990`:p==6?`${LG(10,6)} = 0.3010＋0.4771 = 0.7781`:p==12?`${LG(10,12)} = 2×0.3010＋0.4771 = 1.0792`:p==18?`${LG(10,18)} = 0.3010＋2×0.4771 = 1.2553`:p==15?`${LG(10,15)} = 0.4771＋1−0.3010 = 1.1761`:LGH[p];
+ return{q:`${pw(p,n)} は何桁の数か。ただし，${need(p).map(k=>LGH[k]).join('，')} とする。`,...mk({h:d+' 桁',v:d},[d-1,d+1,Math.round(L)==d?d+2:Math.round(L),n].map(v=>({h:v+' 桁',v}))),
+  exp:[ex2,`${LG(10,pw(p,n))} = ${n} × ${LGT[p].toFixed(4)} = ${L.toFixed(4).replace(/0+$/,'').replace(/\.$/,'')}`,`${fl} ＜ ${LG(10,pw(p,n))} ＜ ${fl+1} なので　${pw(10,fl)} ＜ ${pw(p,n)} ＜ ${pw(10,fl+1)}`,`<b>${d} 桁</b>（${pw(10,fl)} は ${fl+1} 桁の最小の数）`],hint:'10ⁿ ≦ N ＜ 10ⁿ⁺¹ なら n＋1 桁',ck:true}};
+// ㊳ 小数第何位
+const RL=[{h:`(${fr(1,2)})`,l:-0.3010,k:[2],ex:`${LG(10,fr(1,2))} = −0.3010`},{h:`(${fr(1,3)})`,l:-0.4771,k:[3],ex:`${LG(10,fr(1,3))} = −0.4771`},{h:`(${fr(1,5)})`,l:-0.6990,k:[2],ex:`${LG(10,fr(1,5))} = ${LG(10,fr(2,10))} = 0.3010 − 1 = −0.6990`},{h:'0.4',l:-0.3980,k:[2],ex:`${LG(10,'0.4')} = ${LG(10,fr(pw(2,2),10))} = 2×0.3010 − 1 = −0.3980`},{h:`(${fr(3,5)})`,l:-0.2219,k:[2,3],ex:`${LG(10,fr(3,5))} = ${LG(10,fr(6,10))} = 0.3010＋0.4771−1 = −0.2219`},{h:'0.3',l:-0.5229,k:[3],ex:`${LG(10,'0.3')} = 0.4771 − 1 = −0.5229`},{h:'0.8',l:-0.0970,k:[2],ex:`${LG(10,'0.8')} = 3×0.3010 − 1 = −0.0970`}];
+G.l38=()=>{const r=pick(RL);const n=R(10,100);const L=Math.round(n*r.l*10000)/10000;const fl=Math.floor(L);const fr_=L-fl;if(fr_<0.03||fr_>0.97||Math.floor(n*Math.log10(Math.pow(10,r.l)))!=fl)return G.l38();
+ const pos=-fl;
+ return{q:`${pw(r.h,n)} を小数で表したとき，小数第何位に初めて 0 でない数字が現れるか。ただし，${r.k.map(k=>LGH[k]).join('，')} とする。`,...mk({h:`小数第 ${pos} 位`,v:pos},[pos-1,pos+1,Math.round(-L)==pos?pos+2:Math.round(-L)].map(v=>({h:`小数第 ${v} 位`,v})),()=>{const v=pos+R(-4,4);return{h:`小数第 ${v} 位`,v}}),
+  exp:[r.ex,`${LG(10,pw(r.h,n))} = ${n} × (${nm(r.l).replace('-',MI)}) = ${MI}${(-L).toFixed(4).replace(/0+$/,'').replace(/\.$/,'')}`,`${MI}${pos} ＜ ${MI}${(-L).toFixed(2)}… ＜ ${MI}${pos-1} なので　${pw(10,-pos)} ＜ ${pw(r.h,n)} ＜ ${pw(10,-(pos-1))}`,`<b>小数第 ${pos} 位</b>`],hint:`10<sup>−k</sup> ≦ M ＜ 10<sup>−k＋1</sup> なら小数第 k 位`,ck:true}};
+// ㊴ 桁数から n
+G.l39=()=>{const p=pick([2,3,6,2,3]);const k=R(5,30);const lo=(k-1)/LGT[p],hi=k/LGT[p];if(lo-Math.floor(lo)<0.02||Math.ceil(hi)-hi<0.02||Math.ceil(lo)>=hi)return G.l39();
+ const ns=[];for(let n=Math.ceil(lo);n<hi;n++)ns.push(n);if(!ns.length)return G.l39();const sh=a=>`${'<i>n</i>'} = ${a.join('，')}`;
+ return{q:`${pw(p,'<i>n</i>')} が ${k} 桁の数となるような自然数 <i>n</i> をすべて求めよ。ただし，${need(p).map(q=>LGH[q]).join('，')} とする。`,...mk(sh(ns),[sh(ns.map(n=>n+1)),sh(ns.map(n=>n-1)),ns.length>1?sh(ns.slice(0,-1)):sh([ns[0],ns[0]+1]),sh(ns.concat([ns[ns.length-1]+1]))]),
+  exp:[`${k} 桁 ⇔ ${pw(10,k-1)} ${LE} ${pw(p,'<i>n</i>')} ＜ ${pw(10,k)}`,`常用対数をとる：${k-1} ${LE} <i>n</i> × ${LGT[p].toFixed(4)} ＜ ${k}`,`${fr(k-1,LGT[p].toFixed(4))} = ${lo.toFixed(2)}…，${fr(k,LGT[p].toFixed(4))} = ${hi.toFixed(2)}…`,`<b>${sh(ns)}</b>`],hint:'□桁 ⇔ 10^(□−1) ≦ N ＜ 10^□',ck:ns.every(n=>Math.floor(n*Math.log10(p))+1==k)}};
+// ㊵ 不等式を満たす最小・最大の自然数
+G.l40=()=>{const f=R(1,3);
+ if(f==1){const r=pick(RL.filter(x=>x.l<-0.09));const m=R(3,20);const b=m/(-r.l);if(b-Math.floor(b)<0.02||Math.ceil(b)-b<0.02)return G.l40();const n=Math.floor(b)+1;
+  return{q:`${pw(r.h,'<i>n</i>')} ＜ ${pw(10,-m)} を満たす最小の自然数 <i>n</i> を求めよ。ただし，${r.k.map(k=>LGH[k]).join('，')} とする。`,...mk({h:`<i>n</i> = ${n}`,v:n},[n-1,n+1,Math.ceil(m/(-r.l))==n?m:Math.ceil(m/(-r.l))].map(v=>({h:`<i>n</i> = ${v}`,v})),()=>{const v=n+R(-4,4);return{h:`<i>n</i> = ${v}`,v}}),
+   exp:[r.ex,`両辺の常用対数：<i>n</i> × (${MI}${(-r.l).toFixed(4)}) ＜ ${MI}${m}`,`負の数でわるので向きが<b>逆</b>：<i>n</i> ＞ ${fr(m,(-r.l).toFixed(4))} = ${b.toFixed(2)}…`,`<b><i>n</i> = ${n}</b>`],hint:'負の数でわると不等号の向きが逆',ck:Math.pow(Math.pow(10,r.l),n)<Math.pow(10,-m)&&Math.pow(Math.pow(10,r.l),n-1)>=Math.pow(10,-m)}}
+ if(f==2){const [p,q]=pick([[3,2],[3,4],[3,8],[3,16],[2,3],[2,9],[6,8],[6,16],[3,6]]);const A=R(10,40);const lp=p==6?0.7781:LGT[p],lq={2:.3010,4:.6020,8:.9030,16:1.2040,3:.4771,9:.9542,6:.7781}[q];const b=A*lp/lq;if(b-Math.floor(b)<0.02||Math.ceil(b)-b<0.02)return G.l40();const n=Math.floor(b);
+  return{q:`不等式 ${pw(p,A)} ＞ ${pw(q,'<i>n</i>')} を満たす最大の自然数 <i>n</i> を求めよ。ただし，${LGH[2]}，${LGH[3]} とする。`,...mk({h:`<i>n</i> = ${n}`,v:n},[n+1,n-1,Math.round(b)==n?n+2:Math.round(b)].map(v=>({h:`<i>n</i> = ${v}`,v})),()=>{const v=n+R(-4,4);return{h:`<i>n</i> = ${v}`,v}}),
+   exp:[`常用対数をとる：${A} × ${lp.toFixed(4)} ＞ <i>n</i> × ${lq.toFixed(4)}`,`<i>n</i> ＜ ${fr((A*lp).toFixed(4),lq.toFixed(4))} = ${b.toFixed(2)}…`,`<b><i>n</i> = ${n}</b>`],hint:'両辺の常用対数をとる',ck:A*Math.log10(p)>n*Math.log10(q)&&A*Math.log10(p)<(n+1)*Math.log10(q)}}
+ const A=R(10,40);const b=A*0.4771/0.3010;if(b-Math.floor(b)<0.02||Math.ceil(b)-b<0.02)return G.l40();const n=Math.floor(b);
+ return{q:`${pw(2,'<i>n</i>')} ＜ ${pw(3,A)} ＜ ${pw(2,'<i>n</i>＋1')} を満たす自然数 <i>n</i> を求めよ。ただし，${LGH[2]}，${LGH[3]} とする。`,...mk({h:`<i>n</i> = ${n}`,v:n},[n+1,n-1,A].map(v=>({h:`<i>n</i> = ${v}`,v})),()=>{const v=n+R(-4,4);return{h:`<i>n</i> = ${v}`,v}}),
+  exp:[`常用対数をとる：0.3010<i>n</i> ＜ ${A}×0.4771 ＜ 0.3010(<i>n</i>＋1)`,`${fr((A*0.4771).toFixed(4),'0.3010')} = ${b.toFixed(2)}… なので　<i>n</i> ＜ ${b.toFixed(2)}… ＜ <i>n</i>＋1`,`<b><i>n</i> = ${n}</b>`],hint:'各辺の常用対数をとる',ck:n*Math.log10(2)<A*Math.log10(3)&&A*Math.log10(3)<(n+1)*Math.log10(2)}};
+// ㊶ 文章題
+G.l41=()=>{const f=R(1,3);
+ if(f==1){const [rem,rh,lr]=pick([[0.3,'30',-0.5229],[0.2,'20',-0.6990],[0.4,'40',-0.3980],[0.5,'50',-0.3010]]);const k=R(2,5);const P=(100-10**(2-k)).toFixed(Math.max(0,k-2));const b=k/(-lr);if(b-Math.floor(b)<0.02||Math.ceil(b)-b<0.02)return G.l41();const n=Math.floor(b)+1;
+  return{q:`1枚で ${100-+rh}％ の花粉を除去できるフィルターがある。${P}％ より多くの花粉を一度に除去するには，このフィルターは最低何枚必要か。ただし，${rem==0.3?LGH[3]:LGH[2]} とする。`,...mk({h:`${n} 枚`,v:n},[n-1,n+1,k+1].map(v=>({h:v+' 枚',v})),()=>{const v=n+R(-3,3);return v>0?{h:v+' 枚',v}:null}),
+   exp:[`1枚で ${rh}％ が残る → <i>n</i> 枚で ${pw(rem,'<i>n</i>')} が残る`,`${pw(rem,'<i>n</i>')} ＜ 1 − ${(+P/100).toFixed(k)} = ${pw(10,-k)}`,`常用対数：<i>n</i> × (${MI}${(-lr).toFixed(4)}) ＜ ${MI}${k}　→　<i>n</i> ＞ ${b.toFixed(2)}…`,`<b>最低 ${n} 枚</b>`],hint:'残る割合で不等式をつくる',ck:Math.pow(rem,n)<Math.pow(10,-k)&&Math.pow(rem,n-1)>=Math.pow(10,-k)}}
+ if(f==2){const T=pick([30,20,15]);const per=60/T;const k=R(3,7);const b=k/(per*0.3010);if(b-Math.floor(b)<0.02||Math.ceil(b)-b<0.02)return G.l41();const t=Math.floor(b)+1;
+  return{q:`ある菌は，${T} 分ごとにその個数が 2 倍に増えるという。菌の個数がある時点の ${pw(10,k)} 倍をこえるのは，その時点から何時間後か。ただし，${LGH[2]} とし，答えは整数で求めよ。`,...mk({h:`${t} 時間後`,v:t},[t-1,t+1,Math.ceil(k/0.3010)].map(v=>({h:v+' 時間後',v})),()=>{const v=t+R(-3,3);return v>0?{h:v+' 時間後',v}:null}),
+   exp:[`1時間で ${per} 回 2 倍 → <i>t</i> 時間後は ${pw(2,per+'<i>t</i>')} 倍`,`${pw(2,per+'<i>t</i>')} ＞ ${pw(10,k)}　→　${per}<i>t</i> × 0.3010 ＞ ${k}`,`<i>t</i> ＞ ${b.toFixed(2)}…`,`<b>${t} 時間後</b>`],hint:'何時間で何回2倍になるか',ck:Math.pow(2,per*t)>Math.pow(10,k)&&Math.pow(2,per*(t-1))<=Math.pow(10,k)}}
+ const r=pick(RL.filter(x=>x.h=='0.4'||x.h=='0.3'||x.h=='0.8'||x.h.includes(fr(1,2))||x.h.includes(fr(1,3))));const m=R(2,6);const lo=(m-1)/(-r.l),hi=m/(-r.l);const ns=[];for(let n=1;n<60;n++){const L=n*r.l;if(L>=-m&&L<-(m-1))ns.push(n)}
+ if(!ns.length||lo-Math.floor(lo)<0.02||Math.ceil(hi)-hi<0.02||ns.some(n=>Math.floor(n*Math.log10(Math.pow(10,r.l)))!=-m))return G.l41();const sh=a=>`<i>n</i> = ${a.join('，')}`;
+ return{q:`${pw(r.h,'<i>n</i>')} が，小数第 ${m} 位に初めて 0 でない数字が現れる小数となるような自然数 <i>n</i> をすべて求めよ。ただし，${r.k.map(k=>LGH[k]).join('，')} とする。`,...mk(sh(ns),[sh(ns.map(n=>n+1)),sh(ns.map(n=>n-1).filter(n=>n>0).length?ns.map(n=>n-1):[ns[0]+2]),sh(ns.concat([ns[ns.length-1]+1])),ns.length>1?sh(ns.slice(1)):sh([ns[0],ns[0]+1])]),
+  exp:[r.ex,`小数第 ${m} 位 ⇔ ${pw(10,-m)} ${LE} M ＜ ${pw(10,-m+1)} ⇔ ${MI}${m} ${LE} <i>n</i>×(${MI}${(-r.l).toFixed(4)}) ＜ ${MI}${m-1}`,`${lo.toFixed(2)}… ＜ <i>n</i> ${LE} ${hi.toFixed(2)}…`,`<b>${sh(ns)}</b>`],hint:'小数第k位 ⇔ 10^(−k) ≦ M ＜ 10^(−k+1)',ck:true}};
+// ㊷ 3^√2 と 4 の比較
+G.l42=()=>{const [b,rt2,lo,hi]=pick([[3,2,1.4,1.5],[2,2,1.4,1.5],[3,3,1.7,1.8],[2,3,1.7,1.8]]);const lb=LGT[b];const L1=lo*lb,L2=hi*lb;
+ const cands=[2,3,4,6,8,9,12,16,18].filter(a=>a!=b);const lg_=a=>{let v=0,x=a;while(x%2==0){v+=.3010;x/=2}while(x%3==0){v+=.4771;x/=3}return x==1?v:null};
+ const ok=cands.filter(a=>{const la=lg_(a);return la!=null&&(la<L1-0.005||la>L2+0.005)});if(!ok.length)return G.l42();const a=pick(ok),la=lg_(a);const big=la>L2;
+ const B=pw(b,rt(2,rt2)),ans=big?`${B} ＜ ${a}`:`${a} ＜ ${B}`;
+ return{q:`${a} と ${B} の大小を不等号を用いて表せ。ただし，${LGH[2]}，${LGH[3]}，${lo} ＜ ${rt(2,rt2)} ＜ ${hi} とする。`,...mk(ans,[big?`${a} ＜ ${B}`:`${B} ＜ ${a}`,`${a} = ${B}`,'この条件だけでは決められない']),
+  exp:[`常用対数で比べる：${LG(10,B)} = ${rt(2,rt2)} × ${lb.toFixed(4)}`,`${lo}×${lb.toFixed(4)} ＜ ${LG(10,B)} ＜ ${hi}×${lb.toFixed(4)}　→　${L1.toFixed(4)} ＜ ${LG(10,B)} ＜ ${L2.toFixed(4)}`,`${LG(10,a)} = ${la.toFixed(4)}`,`底10は1より大きいので　<b>${ans}</b>`],hint:'両方の常用対数をくらべる',ck:big==(Math.log10(a)>Math.sqrt(rt2)*Math.log10(b))}};
+// 不等号の表示を全角に
+const _fx=t=>typeof t!='string'||t.includes('<svg')?t:t.replace(/ < /g,' ＜ ').replace(/ > /g,' ＞ ').replace(/-(?=\d)/g,MI);
+Object.keys(G).filter(k=>k[0]=='l').forEach(k=>{const g=G[k];G[k]=()=>{const p=g();p.q=_fx(p.q);p.a=_fx(p.a);p.opts=p.opts.map(_fx);p.exp=p.exp.map(_fx);return p}});
+
+
+</script>
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+// ===== 型の一覧 =====
+const SECS=[{id:'e',name:'第1節 指数関数'},{id:'l',name:'第2節 対数関数'}];
+const TYPES=[
+ ['e01','e','0・負の指数の値','問題集313／教科書 練習1','れいじょう ふのしすう まいなす'],
+ ['e02','e','指数法則（文字式）','問題集314／教科書 例2・練習2','しすうほうそく もじしき'],
+ ['e03','e','指数法則（数の計算）','問題集315','しすうほうそく けいさん'],
+ ['e04','e','n乗根の意味','問題集316／教科書 例3・研究','るいじょうこん じょうこん いみ'],
+ ['e05','e','累乗根の値','問題集317・322／教科書 例4・練習3','るいじょうこん あたい'],
+ ['e06','e','累乗根の性質で計算','問題集318／教科書 例5・練習5','るいじょうこん せいしつ'],
+ ['e07','e','分数の指数の値','問題集319／教科書 例6・練習6','ぶんすう しすう ゆうりすう'],
+ ['e08','e','分数の指数の計算','問題集320・321・323／教科書 例題1・練習7・章末A1','ぶんすう しすう けいさん'],
+ ['e09','e','累乗根を aʳ の形に','問題集324','るいじょうこん しすう かたち'],
+ ['e10','e','累乗根のたし算・ひき算','問題集326／教科書 問題2(2)','るいじょうこん たしざん ひきざん'],
+ ['e11','e','展開（乗法公式）','問題集327／教科書 問題2(3)(4)','てんかい じょうほうこうしき'],
+ ['e12','e','x^½＋x^−½ から式の値','CONNECT31／章末B9','たいしょうしき しきのあたい'],
+ ['e13','e','10ⁿ を使う計算','問題集325／教科書 問題1','ひかり はやさ じかん'],
+ ['e14','e','指数関数のグラフと位置関係','問題集330・331・335／教科書 練習9・10・問題3','ぐらふ たいしょう へいこういどう'],
+ ['e15','e','指数関数の値域','問題集332','ちいき'],
+ ['e16','e','指数の大小比較','問題集333・336・例題20／教科書 例題2・練習11','だいしょう ひかく'],
+ ['e17','e','指数方程式（底をそろえる）','問題集334／教科書 例題3・練習12・問題4・章末A3','ほうていしき ていをそろえる'],
+ ['e18','e','指数不等式（底と1の大小）','問題集334／教科書 例題4・練習13・問題4・章末A2','ふとうしき てい'],
+ ['e19','e','t とおく方程式・不等式','問題集337・338／教科書 応用例題1・練習14・15・問題5','おきかえ ほうていしき ふとうしき'],
+ ['e20','e','t とおく最大・最小','問題集339／教科書 問題6・7','さいだい さいしょう おきかえ'],
+ ['l21','l','指数⇔対数の書きかえ','問題集340／教科書 練習16・17','かきかえ ていぎ しすう たいすう'],
+ ['l22','l','対数の値','問題集341／教科書 練習18','たいすうのあたい'],
+ ['l23','l','対数の計算（同じ底）','問題集342／教科書 例9・練習20・問題8(1)','けいさん せいしつ まとめる'],
+ ['l24','l','底の変換公式','問題集343・345／教科書 例10・練習21・問題8(2)','ていのへんかん'],
+ ['l25','l','a，b で表す','問題集346・347／教科書 問題9','もじであらわす'],
+ ['l26','l','2ˣ＝3ʸ＝12ᶻ 型の等式','問題集344・349／教科書 例題21・章末B13','しょうめい とうしき'],
+ ['l27','l','a^(log M) の計算','教科書 章末A4','るいじょう たいすう'],
+ ['l28','l','対数関数のグラフの移動','問題集351・355／教科書 練習22・23・問題10','ぐらふ へいこういどう たいしょう'],
+ ['l29','l','対数関数の値域','問題集352','ちいき'],
+ ['l30','l','対数の大小比較','問題集353・356／教科書 例題5・練習24・章末B11','だいしょう ひかく'],
+ ['l31','l','基本の方程式・不等式','問題集354／教科書 例題6・練習25','ほうていしき ふとうしき きほん'],
+ ['l32','l','真数条件つきの方程式・不等式','問題集358・359／教科書 練習26〜28・応用例題2・3・問題11・章末A5・B10','しんすうじょうけん'],
+ ['l33','l','log x = t とおく','問題集362／教科書 問題12','おきかえ にじ'],
+ ['l34','l','対数の最大・最小','問題集360・CONNECT32／教科書 練習29・30・章末B12','さいだい さいしょう'],
+ ['l35','l','底の異なる指数方程式','CONNECT33','そこがちがう たいすうをとる'],
+ ['l36','l','常用対数の値','問題集364／教科書 例11・練習31・章末B15','じょうようたいすう'],
+ ['l37','l','桁数','問題集365／教科書 例題7・練習32・章末A6','けたすう なんけた'],
+ ['l38','l','小数第何位','問題集366／教科書 例題8・練習34・問題13','しょうすうだいなんい'],
+ ['l39','l','桁数から n を求める','CONNECT35・問題集373／教科書 練習33','けたすう n'],
+ ['l40','l','不等式を満たす最小・最大の n','CONNECT34・問題集372／教科書 章末B16','さいしょう さいだい しぜんすう'],
+ ['l41','l','文章題（フィルター・増殖）','問題集376／教科書 章末A7・A8','ぶんしょうだい おうよう'],
+ ['l42','l','常用対数で大小（4 と 3^√2 など）','教科書 問題14・章末B14','だいしょう るーと'],
+].map((t,i)=>({id:t[0],sec:t[1],name:t[2],src:t[3],yomi:t[4],no:i+1}));
+const TB={};TYPES.forEach(t=>TB[t.id]=t);
+const circ=n=>n<=20?'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'[n-1]:'㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺'[n-21];
+// ===== 保存 =====
+const K={st:'kj5_st',day:'kj5_day',prog:'kj5_prog',th:'kj5_th',ex:'kj5_ex',name:'kj5_name',mode:'kj5_mode',note:'kj5_note'};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const fmtT=t=>{const x=new Date(t);return (x.getMonth()+1)+'/'+x.getDate()+' '+x.getHours()+':'+String(x.getMinutes()).padStart(2,'0')};
+function st(id){const S=store.get(K.st,{});return S[id]||{n:0,ok:0,s:0,best:0,pass:null,h:[]}}
+function rate(id){const s=st(id);return s.n?Math.round(s.ok/s.n*100):null}
+function record(id,ok,hinted,mode){const S=store.get(K.st,{});const s=S[id]||{n:0,ok:0,s:0,best:0,pass:null,h:[]};s.n++;if(ok)s.ok++;
+ if(mode=='mc'){s.s=ok&&!hinted?s.s+1:0;s.best=Math.max(s.best,s.s);if(s.s>=3&&!s.pass)s.pass=Date.now()}
+ s.h.push([Date.now(),ok?1:0,hinted?1:0,mode=='mc'?1:0]);if(s.h.length>40)s.h.shift();S[id]=s;store.set(K.st,S);
+ const D=store.get(K.day,{}),t=today();D[t]=D[t]||{n:0,ok:0};D[t].n++;if(ok)D[t].ok++;store.set(K.day,D);return s}
+// ===== ホーム =====
+function renderHome(){let h='';const S=store.get(K.st,{});
+ SECS.forEach(sec=>{const L=TYPES.filter(t=>t.sec==sec.id);if(!L.length)return;const pc=L.filter(t=>(S[t.id]||{}).pass).length;
+  h+=`<div class="sec"><span>${sec.name}</span><span>✅ ${pc}/${L.length}</span></div>`;
+  L.forEach(t=>{const s=S[t.id]||{};const r=s.pass?`<span class="pass">✅合格</span>`:s.n?`<span class="strk">🔥${s.s||0}/3</span>`:'<span class="note">まだ</span>';
+   h+=`<button class="urow" onclick="openSetup('${t.id}')"><span class="num ${s.pass?'ok':''}">${t.no}</span><span class="uname">${esc(t.name)}<small>${esc(t.src)}${s.n?`　正答率 ${Math.round(s.ok/s.n*100)}%（${s.n}問）`:''}</small></span><span class="ucnt">${r}</span></button>`})});
+ const exd=EXPLAINS.filter(e=>(store.get(K.ex,{})[e.id]||{}).done).length;
+ h+=`<div class="sec"><span>まとめ</span></div><button class="urow" onclick="openSetup('ALL')"><span class="num all">全</span><span class="uname">ぜんぶの型から<small>ランダムに出題・⭐苦手な型だけもえらべる</small></span><span class="ucnt"></span></button>`;
+ h+=`<button class="urow" onclick="show('explain')"><span class="num ex">💬</span><span class="uname">自分の言葉で説明<small>教科書の【？】を声に出して説明 → 録音 → 模範とくらべる</small></span><span class="ucnt">⭕${exd}/${EXPLAINS.length}</span></button>`;
+ document.getElementById('unitList').innerHTML=h;
+ const pc=TYPES.filter(t=>(S[t.id]||{}).pass).length,TH=store.get(K.th,[]),best=TH.length?Math.max(...TH.map(x=>x.sc)):null;
+ document.getElementById('overview').innerHTML=`<div class="row" style="justify-content:space-between"><b>合格した型 ${pc} / ${TYPES.length}</b><span class="note">確認テスト最高 ${best==null?'−':best+'点'}</span></div><div class="prog"><div style="width:${pc/TYPES.length*100}%"></div></div><div class="note">同じ型を<b>ヒントなしで3問連続正解</b>すると ✅合格。全部そろったら 🎓テストで合格証をもらおう。</div>`;
+ const p=store.get(K.prog,null);document.getElementById('resumeBox').innerHTML=p&&p.list&&p.i<p.list.length?`<div class="card resume"><b>📌 前回の続きがあります</b>（${p.kind=='test'?'確認テスト':'練習'}：${p.i+1}問目）<div class="row" style="margin-top:8px"><button class="btn sm acc" onclick="resume()">▶ 続きから再開</button><button class="btn sm sub" onclick="clearProg();renderHome()">すてる</button></div></div>`:'';}
+let SET=Object.assign({mode:'mc',kind:'chal',weak:false,cnt:5},store.get(K.mode,{}));let setupId=null;
+function chip(l,on,fn,sub){return `<button class="chip${on?' on':''}" onclick="${fn}">${l}${sub?'<small>'+sub+'</small>':''}</button>`}
+function openSetup(id){setupId=id;renderSetup()}
+function setS(k,v){SET[k]=v;store.set(K.mode,SET);renderSetup()}
+function renderSetup(){const all=setupId=='ALL',t=TB[setupId];let h=`<h2>${all?'ぜんぶの型から':circ(t.no)+' '+esc(t.name)}</h2>`;
+ if(!all){const s=st(t.id);h+=`<div class="note">${esc(t.src)}　${s.pass?'✅合格済み（'+fmtT(s.pass)+'）':'今の連続正解 '+(s.s||0)+'/3'}</div>`;
+  h+=`<h3>練習のしかた</h3><div class="chips">${chip('🏆 合格チャレンジ',SET.kind=='chal',"setS('kind','chal')",'3問連続正解まで（最大10問）')}${chip('📝 5問練習',SET.kind=='prac',"setS('kind','prac')",'いろいろな数字で')}</div>`}
+ else h+=`<h3>問題数</h3><div class="chips">${[5,10,20].map(n=>chip(n+'問',SET.cnt==n,`setS('cnt',${n})`)).join('')}</div><div class="chips" style="margin-top:8px">${chip('⭐ 苦手な型だけ',SET.weak,`setS('weak',${!SET.weak})`,'正答率80%未満・未合格')}</div>`;
+ h+=`<h3>答え方</h3><div class="chips">${chip('🔘 4択で答える',SET.mode=='mc',"setS('mode','mc')",'合格の記録はこちら')}${chip('✏️ 紙に解いて答え合わせ',SET.mode=='self',"setS('mode','self')",'自分で○×')}</div>`;
+ h+=`<button class="btn wide acc" onclick="closeOvl();start()">▶ スタート</button><button class="btn wide sub" onclick="closeOvl()">閉じる</button>`;openOvl(h)}
+// ===== 出題 =====
+let S=null;
+function make(id){const p=G[id]();p.tid=id;return p}
+function start(){if(setupId=='ALL'){let ids=TYPES.map(t=>t.id);if(SET.weak){const w=ids.filter(id=>{const r=rate(id);return !st(id).pass||r!=null&&r<80});if(w.length)ids=w}
+  const list=[];for(let i=0;i<SET.cnt;i++)list.push(make(ids[i%ids.length]));S={list:shuf(list),i:0,ok:0,miss:[],mode:SET.mode,kind:'mix'}}
+ else S={list:[make(setupId)],i:0,ok:0,miss:[],mode:SET.mode,kind:SET.kind,tid:setupId};
+ if(S.kind=='prac')for(let i=1;i<5;i++)S.list.push(make(setupId));
+ S.hint=false;S.done=false;save();show('quiz');renderQ()}
+function startList(list,mode,kind,extra){S=Object.assign({list,i:0,ok:0,miss:[],mode,kind,hint:false,done:false},extra||{});save();show('quiz');renderQ()}
+function save(){if(S)store.set(K.prog,S)}function clearProg(){try{localStorage.removeItem(K.prog)}catch(e){}}
+function resume(){S=store.get(K.prog,null);if(!S)return;S.done=false;S.hint=false;if(S.kind=='test')show('test');show('quiz');renderQ()}
+function quitQuiz(){save();show(S&&S.kind=='test'?'test':'home')}
+function renderQ(){if(S.i>=S.list.length)return finish();const p=S.list[S.i],t=TB[p.tid];S.done=false;
+ const tot=S.kind=='chal'?'（3連続で合格）':'/ '+S.list.length+' 問';
+ document.getElementById('qPos').textContent=(S.i+1)+' 問目 '+tot;document.getElementById('qScore').textContent=S.kind=='chal'?'連続 '+st(S.tid).s+'/3':'正解 '+S.ok;
+ document.getElementById('qBar').style.width=(S.kind=='chal'?Math.min(st(S.tid).s,3)/3:S.i/S.list.length)*100+'%';
+ document.getElementById('qTag').innerHTML=`<span class="tag">${circ(t.no)} ${esc(t.name)}</span>${S.kind=='test'?'<span class="tag">🎓 確認テスト</span>':''}`;
+ let h=`<div class="q">${p.q}</div>`;
+ if(S.kind!='test')h+=`<button class="btn sm sub" id="hintBtn" onclick="showHint()">💡 ヒント</button><div id="hintBox"></div>`;
+ if(S.mode=='mc'||S.kind=='test')h+='<div class="opts">'+p.opts.map((o,k)=>`<button class="opt" onclick="choose(${k})">${o}</button>`).join('')+'</div>';
+ else h+=`<div class="note" style="margin-top:8px">ノートに解いてから，答えを見よう。</div><button class="btn wide sub" id="revBtn" onclick="reveal()">👀 答えを見る</button><div id="revArea"></div>`;
+ h+='<div id="fbArea"></div>';document.getElementById('qCard').innerHTML=h;window.scrollTo(0,0)}
+function showHint(){const p=S.list[S.i];S.hint=true;document.getElementById('hintBox').innerHTML=`<div class="hint">💡 ${p.hint}<div class="note">ヒントを見た問題は，合格の連続正解には数えません。</div></div>`;document.getElementById('hintBtn').remove()}
+function choose(k){if(S.done)return;const p=S.list[S.i],ok=p.opts[k]===p.a;document.querySelectorAll('#qCard .opt').forEach((b,j)=>{if(p.opts[j]===p.a)b.classList.add('ok');else if(j===k)b.classList.add('ng')});judge(ok)}
+function reveal(){const p=S.list[S.i];document.getElementById('revBtn').remove();document.getElementById('revArea').innerHTML=`<div class="fb ok">答え：<span class="big" style="font-size:20px">${p.a}</span></div><div class="row"><button class="btn" style="flex:1" onclick="selfJ(true)">⭕ 合っていた</button><button class="btn sub" style="flex:1" onclick="selfJ(false)">❌ ちがった</button></div>`}
+function selfJ(ok){if(S.done)return;document.querySelector('#revArea .row').remove();judge(ok)}
+function judge(ok){S.done=true;const p=S.list[S.i];let s=null;
+ if(S.kind=='test'){S.res=S.res||{};S.res[p.tid]=ok?1:0}else s=record(p.tid,ok,S.hint,S.mode);
+ if(ok)S.ok++;else S.miss.push(S.i);
+ let h=`<div class="fb ${ok?'ok':'ng'}">${ok?'⭕ 正解！':'❌ ざんねん。正解は <span style="font-size:19px">'+p.a+'</span>'}${s&&S.mode=='mc'?`<div class="note">${S.hint?'ヒントを見たので連続正解はリセット':ok?`連続正解 ${s.s}/3${s.s>=3?'　🎉 この型は合格！':''}`:'連続正解はリセット'}</div>`:''}</div>`;
+ if(S.kind!='test'||true)h+=`<div class="ex"><b>📘 解き方</b>${p.exp.map(x=>`<div>${x}</div>`).join('')}</div>`;
+ let last=false;if(S.kind=='chal'){if(s.s>=3||S.list.length>=10)last=true;else S.list.push(make(S.tid))}
+ h+=`<button class="btn wide" onclick="nextQ()">${last||S.i+1>=S.list.length?'結果を見る ▶':'次へ ▶'}</button>`;
+ document.getElementById('fbArea').innerHTML=h;if(last)S.list.length=S.i+1;S.i++;save();S.i--}
+function nextQ(){S.i++;S.hint=false;save();renderQ()}
+function finish(){clearProg();const n=S.list.length;let h='';
+ if(S.kind=='test')return finishTest();
+ if(S.kind=='chal'){const s=st(S.tid);h=s.s>=3?`<h2>🎉 合格！</h2><p>${circ(TB[S.tid].no)} ${esc(TB[S.tid].name)} を，ヒントなしで3問連続正解しました。</p><p class="note">合格日時：${fmtT(s.pass)}</p>`:`<h2>もう少し！</h2><p>10問のうち ${S.ok} 問正解。連続正解は ${s.s}/3 です。解き方を読んで，もう一度チャレンジしよう。</p>`}
+ else h=`<h2>おつかれさま！</h2><div style="font-size:22px;text-align:center;font-weight:bold">${S.ok} / ${n} 問正解</div>`;
+ if(S.miss.length)h+='<h3>まちがえた問題</h3>'+S.miss.map(i=>missCard(S.list[i])).join('');
+ h+=`<button class="btn wide acc" onclick="${S.tid?`setupId='${S.tid}';SET.kind='chal';start()`:`show('home')`}">${S.tid?'🏆 もう一度チャレンジ':'🏠 ホームへ'}</button><button class="btn wide sub" onclick="show('home')">🏠 ホームへ</button>`;
+ document.getElementById('resultCard').innerHTML=h;show('result')}
+function missCard(p){return `<div class="card" style="margin:6px 0"><span class="tag">${circ(TB[p.tid].no)} ${esc(TB[p.tid].name)}</span><div class="q">${p.q}</div><div>答え：<b>${p.a}</b></div><details><summary class="note">解き方</summary><div class="ex">${p.exp.map(x=>`<div>${x}</div>`).join('')}</div></details></div>`}
+function showMiss(){openOvl('<h2>✗ 今回のミス</h2>'+(S&&S.miss.length?S.miss.map(i=>missCard(S.list[i])).join(''):'<p>まだありません 👍</p>')+'<button class="btn wide" onclick="closeOvl()">閉じる</button>')}
+// ===== 確認テスト・合格証 =====
+let TSC='all';
+function renderTest(){const S2=store.get(K.st,{}),TH=store.get(K.th,[]);const secs=SECS.filter(s=>TYPES.some(t=>t.sec==s.id));
+ const L=TSC=='all'?TYPES:TYPES.filter(t=>t.sec==TSC),pc=L.filter(t=>(S2[t.id]||{}).pass).length;
+ let h=`<div class="card"><h2>🎓 確認テスト</h2><p class="q" style="font-size:15px">型ごとに1問ずつ，<b>毎回ちがう数字</b>で出題します。ヒントなし・4択。<b>80点以上で合格証</b>がもらえます。</p>
+ <h3>範囲</h3><div class="chips">${secs.map(s=>chip(s.name,TSC==s.id,`TSC='${s.id}';renderTest()`,TYPES.filter(t=>t.sec==s.id).length+'問')).join('')}${secs.length>1?chip('ぜんぶ',TSC=='all',"TSC='all';renderTest()",TYPES.length+'問'):''}</div>
+ <p class="note">この範囲の合格した型：${pc}/${L.length}${pc<L.length?'（全部 ✅ にしてから受けるのがおすすめ）':''}</p><button class="btn wide acc" onclick="startTest()">▶ 確認テストを始める</button></div>`;
+ h+=`<div class="card"><h2>これまでの結果</h2>${TH.length?'<table class="rk">'+TH.slice().reverse().map((x,i)=>`<tr><td>${fmtT(x.t)}</td><td>${x.scope}</td><td><b>${x.sc}点</b></td><td>${x.sc>=80?`<button class="btn sm ok" onclick="showCert(${TH.length-1-i})">合格証</button>`:''}</td></tr>`).join('')+'</table>':'<p class="note">まだ受けていません。</p>'}</div>`;
+ document.getElementById('testBody').innerHTML=h}
+function startTest(){const L=TSC=='all'?TYPES:TYPES.filter(t=>t.sec==TSC);startList(L.map(t=>make(t.id)),'mc','test',{scope:TSC=='all'?'ぜんぶ':SECS.find(s=>s.id==TSC).name,res:{}})}
+function finishTest(){const n=S.list.length,sc=Math.round(S.ok/n*100);const TH=store.get(K.th,[]);TH.push({t:Date.now(),scope:S.scope,sc,n,ok:S.ok,res:S.res});store.set(K.th,TH);
+ const D=store.get(K.day,{}),t=today();D[t]=D[t]||{n:0,ok:0};D[t].n+=n;D[t].ok+=S.ok;store.set(K.day,D);
+ let h=`<h2>🎓 確認テスト 結果</h2><div style="font-size:30px;text-align:center;font-weight:bold;color:${sc>=80?'var(--ok)':'var(--acc)'}">${sc} 点</div><p style="text-align:center">${S.ok} / ${n} 問正解${sc>=80?'　🎉 合格！':'　あと少し！'}</p>`;
+ h+='<table class="rk">'+S.list.map(p=>`<tr><td>${circ(TB[p.tid].no)} ${esc(TB[p.tid].name)}</td><td>${S.res[p.tid]?'⭕':'❌'}</td><td>${S.res[p.tid]?'':`<button class="btn sm sub" onclick="setupId='${p.tid}';SET.kind='chal';start()">練習</button>`}</td></tr>`).join('')+'</table>';
+ if(sc>=80)h+=`<button class="btn wide ok" onclick="showCert(${TH.length-1})">🏅 合格証を見る</button>`;
+ if(S.miss.length)h+='<h3>まちがえた問題</h3>'+S.miss.map(i=>missCard(S.list[i])).join('');
+ h+=`<button class="btn wide sub" onclick="show('test')">🎓 テストの画面へ</button>`;document.getElementById('resultCard').innerHTML=h;show('result')}
+function showCert(i){const x=store.get(K.th,[])[i];if(!x)return;let nm_=store.get(K.name,'');if(!nm_){nm_=prompt('合格証にのせる名前を入れてね')||'';if(nm_)store.set(K.name,nm_)}
+ const S2=store.get(K.st,{});const passed=TYPES.filter(t=>(S2[t.id]||{}).pass).length;
+ openOvl(`<div class="cert"><div class="note">数学Ⅱ 第5章 指数関数と対数関数</div><h2>合 格 証</h2><div style="font-size:18px;margin:8px 0"><b>${esc(nm_||'　　　　')}</b> さん</div><div class="sc">${x.sc} 点</div><div>確認テスト（${esc(x.scope)}）　${x.ok} / ${x.n} 問正解</div><div style="margin:8px 0">型ごとの合格：${passed} / ${TYPES.length}</div><div class="note">毎回ちがう数字の問題で，ヒントなしで解いた記録です。</div><div style="margin-top:10px">${new Date(x.t).toLocaleString('ja-JP')}</div><div style="margin-top:6px">創才学院</div></div>
+ <div class="row" style="margin-top:10px"><button class="btn sm" onclick="printCert(${i})">🖨 印刷</button><button class="btn sm acc" onclick="closeOvl();openReport()">📋 先生に報告</button><button class="btn sm sub" onclick="closeOvl()">閉じる</button></div>`)}
+function printCert(i){document.getElementById('printArea').innerHTML=document.querySelector('.cert').outerHTML;closeOvl();setTimeout(()=>window.print(),150)}
+// ===== 説明 =====
+let rec=null,chunks=[];
+function renderExplain(){const st_=store.get(K.ex,{});document.getElementById('exList').innerHTML='<div class="card note">教科書の【？】です。声に出して説明 → 録音して聞き返す → ✅チェック → 模範とくらべる。</div>'+EXPLAINS.map(e=>{const s=st_[e.id]||{};return `<div class="card"><span class="tag">${esc(e.src)}</span><h2>💬 ${e.title}</h2><div class="note">ヒント：${e.hint}</div>
+ <div class="row" style="margin-top:8px"><button class="btn sm acc" id="rb_${e.id}" onclick="toggleRec('${e.id}')">🎙 録音する</button><span id="rs_${e.id}" class="note"></span></div><div id="ra_${e.id}"></div>
+ <h3>チェック：自分の説明に入っていた？</h3><div class="kw">${e.keys.map((k,i)=>`<label><input type="checkbox" ${s['k'+i]?'checked':''} onchange="kwSave('${e.id}','k${i}',this.checked)">${k}</label>`).join('')}</div>
+ <button class="btn sm sub" onclick="this.nextElementSibling.style.display='block';this.remove()">📖 模範の説明を見る</button><div style="display:none" class="ex">${e.model}</div>
+ <button class="btn sm ${s.done?'ok':'sub'}" style="margin-top:8px" onclick="kwSave('${e.id}','done',${!s.done});renderExplain()">${s.done?'⭕ できた（もう一度押すと取り消し）':'できた！'}</button></div>`}).join('')}
+function kwSave(id,k,v){const s=store.get(K.ex,{});s[id]=s[id]||{};s[id][k]=v;store.set(K.ex,s)}
+async function toggleRec(id){const b=document.getElementById('rb_'+id),s=document.getElementById('rs_'+id);if(rec&&rec.state==='recording'){rec.stop();return}
+ try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});rec=new MediaRecorder(stream);chunks=[];rec.ondataavailable=e=>chunks.push(e.data);
+  rec.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const url=URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||'audio/mp4'}));document.getElementById('ra_'+id).innerHTML='<audio controls src="'+url+'" style="width:100%;margin-top:6px"></audio>';b.textContent='🎙 もう一度録音';s.textContent='聞き返してチェックしよう'};
+  rec.start();b.textContent='⏹ 止める';s.textContent='録音中…'}catch(e){s.textContent='録音できませんでした（Safari／Chromeで開くと録音できます）。声に出すだけでもOK！'}}
+// ===== 苦手・検索 =====
+function renderRank(){const L=TYPES.filter(t=>st(t.id).n).sort((a,b)=>rate(a.id)-rate(b.id));
+ document.getElementById('rankBody').innerHTML=L.length?'<table class="rk">'+L.map(t=>{const s=st(t.id);return `<tr onclick="openSetup('${t.id}')"><td>${circ(t.no)}</td><td>${esc(t.name)}<br><span class="note">${s.n}問・正答率 ${rate(t.id)}%</span></td><td>${s.pass?'✅':'🔥'+s.s+'/3'}</td></tr>`}).join('')+'</table>':'<p class="note">まだ記録がありません。</p>'}
+function kata2hira(s){return s.replace(/[ァ-ン]/g,c=>String.fromCharCode(c.charCodeAt(0)-96))}
+let SF='all';
+function noteOf(id){return (store.get(K.note,{})[id])||{memo:'',sc:[]}}
+function setNote(id,f){const N=store.get(K.note,{});const n=N[id]||{memo:'',sc:[]};f(n);N[id]=n;store.set(K.note,N)}
+function lastSc(id){const n=noteOf(id);return n.sc.length?n.sc[n.sc.length-1]:null}
+function doSearch(){const q=kata2hira(document.getElementById('sq').value.trim());const out=document.getElementById('sRes');
+ const fl=[['all','ぜんぶ'],['weak','⭐苦手だけ'],['done','学習した型'],['memo','📝メモあり'],['ng','❌学校テストで間違えた']];
+ let h='<div class="chips" style="margin:8px 0">'+fl.map(f=>chip(f[1],SF==f[0],`SF='${f[0]}';doSearch()`)).join('')+'</div>';
+ if(!q&&SF=='all'){out.innerHTML=h+'<p class="note">型の名前・ひらがな・問題番号・<b>自分のメモ</b>で探せます（例：334，ていのへんかん，真数）。<br>見つかった型をタップすると「学習のあと」（いつ・どの形で解いたか，テストの結果，ふり返りメモ）が見られます。</p>';return}
+ const L=TYPES.filter(t=>{const s=st(t.id),n=noteOf(t.id),ls=lastSc(t.id);
+  if(q&&!(t.name+t.yomi+t.src+n.memo).includes(q))return false;
+  if(SF=='weak')return s.n&&(!s.pass||rate(t.id)<80);if(SF=='done')return s.n>0;if(SF=='memo')return !!n.memo.trim();if(SF=='ng')return ls&&!ls[1];return true});
+ out.innerHTML=h+'<p class="note">'+L.length+'件</p>'+L.map(t=>{const s=st(t.id),n=noteOf(t.id),ls=lastSc(t.id);return `<div class="card" style="margin:6px 0;padding:10px;cursor:pointer" onclick="openAfter('${t.id}')"><b>${circ(t.no)} ${esc(t.name)}</b><div class="note">${esc(t.src)}</div><div class="note">${s.n?`${s.n}問・正答率 ${rate(t.id)}%・${s.pass?'✅合格':'連続 '+s.s+'/3'}　最近：${s.h.slice(-10).map(x=>x[1]?'⭕':'❌').join('')}`:'まだ解いていません'}${ls?`　学校テスト：${ls[1]?'⭕':'❌'}`:''}${n.memo.trim()?'　📝メモあり':''}</div><div class="note" style="color:var(--pri)">▶ タップで「学習のあと」</div></div>`}).join('')}
+function openAfter(id){const t=TB[id],s=st(id),n=noteOf(id);
+ const mc=s.h.filter(x=>x[3]),pp=s.h.filter(x=>!x[3]),hi=s.h.filter(x=>x[2]).length;
+ const studied=TYPES.filter(x=>st(x.id).n).sort((a,b)=>rate(a.id)-rate(b.id));const rk=studied.findIndex(x=>x.id==id);
+ const TH=store.get(K.th,[]).filter(x=>x.res&&x.res[id]!=null);
+ let h=`<h2>📒 学習のあと</h2><p><b>${circ(t.no)} ${esc(t.name)}</b><br><span class="note">${esc(t.src)}</span></p>`;
+ h+=`<h3>練習</h3><p>${s.n?`${s.n}問・正答率 <b>${rate(id)}%</b>・今の連続 ${s.s}/3・最高連続 ${s.best||0}<br>${s.pass?'✅合格（'+fmtT(s.pass)+'）':'まだ合格していません'}<br>4択：⭕${mc.filter(x=>x[1]).length}/${mc.length}　紙に解いて：⭕${pp.filter(x=>x[1]).length}/${pp.length}　ヒントを見た：${hi}回<br>苦手ランキング：${rk+1}位／${studied.length}型中`:'まだ解いていません'}</p>`;
+ if(s.h.length)h+='<table class="rk">'+s.h.slice(-10).reverse().map(x=>`<tr><td>${fmtT(x[0])}</td><td>${x[3]?'4択':'紙に解いて'}${x[2]?'・💡':''}</td><td>${x[1]?'⭕':'❌'}</td></tr>`).join('')+'</table><p class="note">最近10回（新しい順）</p>';
+ h+=`<h3>🎓 アプリの確認テスト</h3><p>${TH.length?TH.map(x=>`${fmtT(x.t)} ${x.res[id]?'⭕':'❌'}`).join('<br>'):'まだ出ていません'}</p>`;
+ h+=`<h3>📝 学校のテスト</h3><p class="note">返ってきたテストで，この型の問題ができたかを記録しよう。</p><div class="row"><button class="btn sm ok" onclick="addSc('${id}',1)">⭕ テストで正解</button><button class="btn sm" style="background:#c0392b" onclick="addSc('${id}',0)">❌ テストで間違えた</button></div><p>${n.sc.length?n.sc.map((x,i)=>`${fmtT(x[0])} ${x[1]?'⭕正解':'❌間違えた'} <button class="btn sm sub" style="padding:2px 8px" onclick="delSc('${id}',${i})">取り消す</button>`).join('<br>'):'<span class="note">まだ記録がありません</span>'}</p>`;
+ h+=`<h3>✏️ ふり返りメモ</h3><textarea id="memoT" rows="4" placeholder="例：真数条件を忘れた／不等号の向きを変え忘れた">${esc(n.memo)}</textarea><button class="btn sm" style="margin-top:4px" onclick="saveMemo('${id}')">メモを保存</button> <span id="memoOk" class="note"></span><p class="note">メモも🔍検索で探せます。</p>`;
+ h+=`<button class="btn wide" onclick="closeOvl();openSetup('${id}')">▶ この型を練習する</button><button class="btn wide sub" onclick="closeOvl();doSearch()">閉じる</button>`;openOvl(h)}
+function addSc(id,ok){setNote(id,n=>n.sc.push([Date.now(),ok]));openAfter(id)}
+function delSc(id,i){if(!confirm('この記録を取り消しますか？'))return;setNote(id,n=>n.sc.splice(i,1));openAfter(id)}
+function saveMemo(id){const v=document.getElementById('memoT').value;setNote(id,n=>n.memo=v);document.getElementById('memoOk').textContent='保存しました ✅'}
+// ===== 印刷 =====
+let pSel=new Set(),pN=3;
+function openPrint(){if(!pSel.size)TYPES.forEach(t=>pSel.add(t.id));renderPrint()}
+function togP(id){pSel.has(id)?pSel.delete(id):pSel.add(id);renderPrint()}
+function renderPrint(){openOvl(`<h2>🖨 プリント（毎回ちがう数字）</h2><div class="chips">${chip('ぜんぶ',false,"TYPES.forEach(t=>pSel.add(t.id));renderPrint()")}${chip('はずす',false,"pSel.clear();renderPrint()")}${chip('未合格だけ',false,"pSel=new Set(TYPES.filter(t=>!st(t.id).pass).map(t=>t.id));renderPrint()")}</div>
+ <div class="chips" style="margin-top:8px">${TYPES.map(t=>chip(circ(t.no)+' '+esc(t.name),pSel.has(t.id),`togP('${t.id}')`)).join('')}</div>
+ <h3>1つの型につき</h3><div class="chips">${[1,2,3,5].map(n=>chip(n+'問',pN==n,`pN=${n};renderPrint()`)).join('')}</div>
+ <button class="btn wide" onclick="makePrint()">🖨 印刷する（解答・解き方つき）</button><button class="btn wide sub" onclick="closeOvl()">閉じる</button>`)}
+function makePrint(){const ids=TYPES.filter(t=>pSel.has(t.id));if(!ids.length)return alert('型をえらんでね');let q='<h1>指数関数・対数関数 練習プリント</h1><div>名前（　　　　　　　）　日付（　／　）</div>',a='<div class="pgbr"></div><h1>解答・解き方</h1>',n=0;
+ ids.forEach(t=>{q+=`<h2>${circ(t.no)} ${t.name}</h2>`;a+=`<h2>${circ(t.no)} ${t.name}</h2>`;for(let i=0;i<pN;i++){const p=make(t.id);n++;q+=`<div class="pq">${n}. ${p.q}<div style="height:2.5em"></div></div>`;a+=`<div class="pq">${n}. 答え：<b>${p.a}</b><div style="font-size:10pt">${p.exp.filter(x=>!x.includes('<svg')).join('<br>')}</div></div>`}});
+ document.getElementById('printArea').innerHTML=q+a;closeOvl();setTimeout(()=>window.print(),200)}
+// ===== 報告 =====
+function repText(fam){const D=store.get(K.day,{}),td=D[today()]||{n:0,ok:0},S2=store.get(K.st,{}),TH=store.get(K.th,[]);
+ let s=(fam?'【古賀先生に転送してください】\n':'')+`【指数・対数 学習報告】${today()} ${store.get(K.name,'')}\n■今日：${td.n}問（⭕${td.ok}／❌${td.n-td.ok}）\n`;
+ SECS.forEach(sec=>{const L=TYPES.filter(t=>t.sec==sec.id);if(L.length)s+=`■${sec.name}：合格 ${L.filter(t=>(S2[t.id]||{}).pass).length}/${L.length}\n`});
+ if(TH.length){const b=TH.reduce((m,x)=>x.sc>m.sc?x:m,TH[0]);s+=`■確認テスト：${TH.length}回，最高 ${b.sc}点（${b.scope}，${fmtT(b.t)}）${b.sc>=80?' 🏅合格証あり':''}\n`}
+ const notp=TYPES.filter(t=>(S2[t.id]||{}).n&&!(S2[t.id]||{}).pass).sort((a,b)=>rate(a.id)-rate(b.id)).slice(0,5);
+ s+='■まだ合格していない型（正答率の低い順）\n'+(notp.length?notp.map(t=>`　${circ(t.no)}${t.name}：${rate(t.id)}%（連続${st(t.id).s}/3）`).join('\n'):'　なし');
+ const ng=TYPES.filter(t=>{const l=lastSc(t.id);return l&&!l[1]});if(ng.length)s+='\n■学校のテストで間違えた型\n'+ng.map(t=>`　${circ(t.no)}${t.name}${noteOf(t.id).memo.trim()?'（メモ：'+noteOf(t.id).memo.trim().slice(0,30)+'）':''}`).join('\n');
+ const ex=store.get(K.ex,{});s+=`\n■💬説明：${EXPLAINS.filter(e=>(ex[e.id]||{}).done).length}/${EXPLAINS.length}`;return s}
+function openReport(){openOvl(`<h2>📋 先生に報告</h2><textarea id="repT" rows="14" readonly style="font-size:13px">${esc(repText(false))}</textarea>
+ <div class="row" style="margin-top:8px"><button class="btn sm" onclick="sendLine(false)">LINEで先生へ</button><button class="btn sm acc" onclick="sendLine(true)">👪 おうちの人に送る</button><button class="btn sm sub" onclick="showQR()">📱 QR</button><button class="btn sm sub" onclick="copyRep()">コピー</button></div><div id="qrBox" style="text-align:center;margin-top:8px"></div><button class="btn wide sub" onclick="closeOvl()">閉じる</button>`)}
+function sendLine(f){location.href='https://line.me/R/share?text='+encodeURIComponent(repText(f))}
+function copyRep(){try{navigator.clipboard.writeText(repText(false)).then(()=>alert('コピーしました'),()=>alert('長押しでコピーしてください'))}catch(e){alert('長押しでコピーしてください')}}
+function showQR(){try{qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];const q=qrcode(0,'L');q.addData(repText(false));q.make();document.getElementById('qrBox').innerHTML=q.createSvgTag(3,6)+'<div class="note">塾で先生のスマホに読み取ってもらおう</div>'}catch(e){document.getElementById('qrBox').textContent='QRコードを作れませんでした'}}
+function resetAll(){if(confirm('このアプリの記録（合格・テスト・説明）を全部消しますか？')){Object.values(K).forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});SET={mode:'mc',kind:'chal',weak:false,cnt:5};renderHome()}}
+// ===== 画面 =====
+function openOvl(h){document.getElementById('ovlBody').innerHTML=h;document.getElementById('ovl').classList.add('show')}
+function closeOvl(){document.getElementById('ovl').classList.remove('show')}
+function show(t){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById('s-'+t).classList.add('show');
+ const tab={quiz:S&&S.kind=='test'?'test':'home',result:S&&S.kind=='test'?'test':'home',explain:'home'}[t]||t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+ if(t=='home')renderHome();if(t=='test')renderTest();if(t=='explain')renderExplain();if(t=='rank')renderRank();if(t=='search')doSearch();
+ if(t=='sum')document.getElementById('sumBody').innerHTML='<h2>📘 まとめ</h2>'+SUMMARY;if(t=='help')document.getElementById('helpBody').innerHTML=HELP;window.scrollTo(0,0)}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{if(S&&document.getElementById('s-quiz').classList.contains('show'))save();show(b.dataset.t)});
+
+// ===== 💬 自分の言葉で説明（教科書の【？】）=====
+const EXPLAINS=[
+ {id:'x1',src:'教科書 例題3',title:`方程式 ${pw(27,X)} = 9 で，${pw(27,X)} = ${pw(3,'3'+X)}，9 = ${pw(3,2)} と変形したのはなぜ？`,hint:'底がそろうと，どこを比べればよい？',
+  keys:['両辺の底を3にそろえるため','底が同じなら指数どうしが等しい','3<i>x</i> = 2 という1次方程式になる'],
+  model:`①27も9も3の累乗なので，両辺を「3の○乗」にそろえられる。②底が同じなら，両辺が等しいとき指数どうしも等しい。③だから 3${X} = 2 という簡単な方程式になり，${X} = ${fr(2,3)} と解ける。`},
+ {id:'x2',src:'教科書 例題4',title:'指数の不等式で「底」に着目したのはなぜ？',hint:'底が1より大きい／小さいでグラフはどうなる？',
+  keys:['底が1より大きいと増加関数','底が1より小さいと減少関数','減少関数のときは不等号の向きが逆になる'],
+  model:`①${pw('<i>a</i>',X)} は，底が1より大きいと増加関数，1より小さいと減少関数。②増加関数なら「指数が大きいほど値も大きい」ので不等号の向きはそのまま。③減少関数なら逆になる。だから，まず底と1の大小を見る必要がある。`},
+ {id:'x3',src:'教科書 応用例題1',title:`${pw(2,X)} = ${T} とおいたとき，${T}＞0 である理由を，グラフを使って説明しよう。`,hint:`${Y} = ${pw(2,X)} のグラフはどこにある？`,
+  keys:[`${Y} = ${pw(2,X)} のグラフはいつも<i>x</i>軸より上`,'値域は正の数全体',`だから ${T} の負の解は捨てる`],
+  model:`①${Y} = ${pw(2,X)} のグラフは，<i>x</i>軸を漸近線として，いつも<i>x</i>軸より上にある。②つまり ${pw(2,X)} の値域は正の数全体で，0や負にはならない。③だから ${T} = ${pw(2,X)} は ${T}＞0。2次方程式で負の解が出たら，それは答えにならない。`},
+ {id:'x4',src:'問題集 例題20',title:`最後に ${rt(6,7)}＞0，${rt(2,2)}＞0，${rt(3,3)}＞0 を確かめたのはなぜ？`,hint:'マイナスの数を6乗すると？',
+  keys:['6乗の大小だけでは元の大小は決まらない','負の数は6乗すると正になってしまう','正の数どうしなら6乗の大小と元の大小が同じ'],
+  model:`①6乗すると，マイナスの数もプラスになるので，6乗の大小だけでは元の数の大小はわからない。②3つとも正の数だとわかれば，「6乗が大きいほうが元も大きい」と言える。③だから最後に正であることを確かめた。`},
+ {id:'x5',src:'教科書 例題2',title:`${rt(2,2)} = ${pw(2,[1,2])}，${rt(3,4)} = ${pw(2,[2,3])}，${rt(5,8)} = ${pw(2,[3,5])} と変形したのはなぜ？`,hint:'底がそろうと，何を比べればよい？',
+  keys:['3つとも底を2にそろえるため','指数の大小を比べればよい','底2は1より大きいので指数が大きいほど大きい'],
+  model:`①3つとも2の累乗なので，「2の分数乗」にそろえられる。②底がそろえば，あとは指数 ${fr(1,2)}，${fr(2,3)}，${fr(3,5)} の大小を比べればよい。③底2は1より大きいので，指数が大きいほど値も大きい。`},
+ {id:'x6',src:'教科書 例題21',title:`${pw(2,X)} = ${pw(3,Y)} = ${pw(12,'<i>z</i>')} で，各辺の対数をとったのはなぜ？`,hint:'指数に文字があるとき，その文字を下ろすには？',
+  keys:['対数をとると指数を前に出せる','各辺は正なので対数がとれる','x，y，z をそろった形で表せる'],
+  model:`①指数に ${X}，${Y}，<i>z</i> があるままでは計算できない。②各辺は正の数なので対数がとれて，${LG(2,pw(3,Y))} = ${Y}${LG(2,3)} のように指数を前に出せる。③すると ${X}，${Y}，<i>z</i> を同じ底の log で表せて，${fr(1,X)}，${fr(1,Y)}，${fr(1,'<i>z</i>')} の関係が計算できる。`},
+ {id:'x7',src:'教科書 例題5',title:'対数の大小を比べるとき，底をそろえたのはなぜ？',hint:'底が同じなら，何を比べればよい？',
+  keys:['底がそろえば真数を比べればよい','底が1より大きいと真数が大きいほど大きい','底が1より小さいと大小が逆'],
+  model:`①底がちがうままでは比べにくい。②底をそろえると，${LG('<i>a</i>','<i>M</i>')} の大小は真数 <i>M</i> の大小で決まる。③ただし底が1より大きければそのまま，1より小さければ大小が逆になる。`},
+ {id:'x8',src:'教科書 例題6(2)',title:`不等式で「${X}＞0」を最初に確かめたのはなぜ？`,hint:'log の真数になれる数は？',
+  keys:['真数は正でなければならない','真数条件をみたさない範囲は答えにならない','最後に共通範囲をとる'],
+  model:`①log の真数は正の数でなければならない（真数条件）。②式を変形して出た範囲の中には，真数が0以下になるところがふくまれることがある。③だから最初に ${X}＞0 を確かめて，最後に共通範囲を答えにする。`},
+ {id:'x9',src:'教科書 応用例題2',title:'方程式を解いたあと，出てきた解を確かめたのはなぜ？',hint:'まとめる前と後で，使える x の範囲は同じ？',
+  keys:['log をまとめると真数条件が広がることがある','出てきた解が真数条件をみたすか確かめる','みたさない解は捨てる'],
+  model:`①${LG('<i>a</i>','<i>M</i>')} ＋ ${LG('<i>a</i>','<i>N</i>')} = ${LG('<i>a</i>','<i>MN</i>')} とまとめると，<i>M</i>，<i>N</i> がどちらも負でも <i>MN</i> は正になってしまう。②そのため，2次方程式の解に元の式では使えない解がまざることがある。③だから真数条件をみたすか確かめ，みたさない解は捨てる。`},
+ {id:'x10',src:'教科書 応用例題3',title:`底が ${fr(1,2)} の不等式で，不等号の向きを変えたのはなぜ？`,hint:`${Y} = ${LG(fr(1,2,'sm'),X)} は増加？減少？`,
+  keys:['底が1より小さいと減少関数','真数が大きいほど log の値は小さい','だから真数の不等式は向きが逆'],
+  model:`①底が ${fr(1,2)} のように1より小さいとき，${Y} = ${LG('<i>a</i>',X)} は減少関数になる。②つまり真数が大きいほど log の値は小さい。③だから log の不等式を真数の不等式に直すとき，不等号の向きが逆になる。`},
+ {id:'x11',src:'教科書 例題7',title:`${pw(10,'<i>n</i>')} ${LE} <i>N</i> ＜ ${pw(10,'<i>n</i>＋1')} なら <i>N</i> は（<i>n</i>＋1）桁，となるのはなぜ？`,hint:`${pw(10,2)} = 100 は何桁？ 999 は？`,
+  keys:[`${pw(10,'<i>n</i>')} は（<i>n</i>＋1）桁の最小の数`,`${pw(10,'<i>n</i>＋1')} は（<i>n</i>＋2）桁の最小の数`,'その間の数はすべて（n＋1）桁'],
+  model:`①たとえば ${pw(10,2)} = 100 は3桁でいちばん小さい数，${pw(10,3)} = 1000 は4桁でいちばん小さい数。②100以上1000未満の数はすべて3桁。③同じように ${pw(10,'<i>n</i>')} ${LE} <i>N</i> ＜ ${pw(10,'<i>n</i>＋1')} なら <i>N</i> は（<i>n</i>＋1）桁。常用対数をとると <i>n</i> ${LE} ${LG(10,'<i>N</i>')} ＜ <i>n</i>＋1 で，整数部分から桁数がわかる。`},
+ {id:'x12',src:'教科書 例題8',title:`${pw(10,'−<i>n</i>')} ${LE} <i>M</i> ＜ ${pw(10,'−<i>n</i>＋1')} なら小数第 <i>n</i> 位に初めて 0 でない数字が現れる，となるのはなぜ？`,hint:`${pw(10,-2)} = 0.01，${pw(10,-1)} = 0.1 の間の数は？`,
+  keys:[`${pw(10,'−<i>n</i>')} は小数第 n 位が1の数`,'その間の数は小数第 n 位に初めて0でない数字が出る','負の数でも整数部分の取り方に注意'],
+  model:`①たとえば ${pw(10,-2)} = 0.01，${pw(10,-1)} = 0.1。②0.01以上0.1未満の数（0.0□…）は，小数第2位に初めて0でない数字が現れる。③同じように考えると小数第 <i>n</i> 位。常用対数が −4.6… なら ${MI}5 ${LE} … ＜ ${MI}4 なので小数第5位。`},
+];
+// ===== 📘 まとめ =====
+const SUMMARY=`
+<h3>① 指数の拡張</h3>
+<table class="sum"><tr><td>${pw('<i>a</i>',0)} = 1</td><td>${pw('<i>a</i>','−<i>n</i>')} = ${fr(1,pw('<i>a</i>','<i>n</i>'))}</td></tr>
+<tr><td>${pw('<i>a</i>',fr('<i>m</i>','<i>n</i>','sm'))} = ${rt('<i>n</i>',pw('<i>a</i>','<i>m</i>'))}</td><td>${pw('<i>a</i>',fr(1,'<i>n</i>','sm'))} = ${rt('<i>n</i>','<i>a</i>')}</td></tr></table>
+<h3>② 指数法則（かけ算→たす，わり算→ひく，累乗→かける）</h3>
+<table class="sum"><tr><td>${pw('<i>a</i>','<i>r</i>')}${pw('<i>a</i>','<i>s</i>')} = ${pw('<i>a</i>','<i>r</i>＋<i>s</i>')}</td><td>${pw('<i>a</i>','<i>r</i>')} ÷ ${pw('<i>a</i>','<i>s</i>')} = ${pw('<i>a</i>','<i>r</i>−<i>s</i>')}</td></tr>
+<tr><td>(${pw('<i>a</i>','<i>r</i>')})<sup><i>s</i></sup> = ${pw('<i>a</i>','<i>rs</i>')}</td><td>(<i>ab</i>)<sup><i>r</i></sup> = ${pw('<i>a</i>','<i>r</i>')}${pw('<i>b</i>','<i>r</i>')}</td></tr></table>
+<h3>③ 累乗根の性質</h3>
+<table class="sum"><tr><td>${rt('<i>n</i>','<i>a</i>')}${rt('<i>n</i>','<i>b</i>')} = ${rt('<i>n</i>','<i>ab</i>')}</td><td>${fr(rt('<i>n</i>','<i>a</i>'),rt('<i>n</i>','<i>b</i>'))} = ${rt('<i>n</i>',fr('<i>a</i>','<i>b</i>'))}</td></tr>
+<tr><td>(${rt('<i>n</i>','<i>a</i>')})<sup><i>m</i></sup> = ${rt('<i>n</i>',pw('<i>a</i>','<i>m</i>'))}</td><td>${rt('<i>m</i>',rt('<i>n</i>','<i>a</i>'))} = ${rt('<i>mn</i>','<i>a</i>')}</td></tr></table>
+<p class="note">迷ったら <b>すべて「底の分数乗」</b> に直して，指数を計算する。</p>
+<h3>④ 指数関数 ${Y} = ${pw('<i>a</i>',X)}</h3>
+<p>・点 (0, 1) を通り，<i>x</i>軸が漸近線。値域は<b>正の数全体</b>（${pw('<i>a</i>',X)}＞0）<br>・<b><i>a</i>＞1 → 増加</b>（右上がり），<b>0＜<i>a</i>＜1 → 減少</b>（右下がり）</p>
+<table class="sum"><tr><th>式</th><th>${Y} = ${pw('<i>a</i>',X)} との関係</th></tr><tr><td>${Y} = ${MI}${pw('<i>a</i>',X)}</td><td><i>x</i>軸に関して対称</td></tr><tr><td>${Y} = ${pw('<i>a</i>',MI+X)}</td><td><i>y</i>軸に関して対称</td></tr><tr><td>${Y} = ${MI}${pw('<i>a</i>',MI+X)}</td><td>原点に関して対称</td></tr><tr><td>${Y} = ${pw('<i>a</i>',X+'−<i>p</i>')}＋<i>q</i></td><td><i>x</i>軸方向に<i>p</i>，<i>y</i>軸方向に<i>q</i></td></tr></table>
+<h3>⑤ 方程式・不等式</h3>
+<p>1. <b>底をそろえる</b>（${pw('<i>a</i>','<i>p</i>')} = ${pw('<i>a</i>','<i>q</i>')} ⇔ <i>p</i> = <i>q</i>）<br>2. 不等式は<b>底と1の大小</b>：1より小さいときは向きが<b>逆</b><br>3. ${pw(4,X)}，${pw(9,X)} があれば ${pw(2,X)} = ${T}，${pw(3,X)} = ${T} とおく。<b>${T}＞0 に注意</b></p>
+<h3>⑥ 大小比較のコツ</h3>
+<p>・底をそろえて指数をくらべる　・指数をそろえて底をくらべる　・何乗かして整数にする（正の数どうしのとき）</p>
+<h3>⑦ 対数の定義</h3>
+<p><i>M</i> = ${pw('<i>a</i>','<i>p</i>')} ⇔ ${LG('<i>a</i>','<i>M</i>')} = <i>p</i>　（<i>a</i>＞0，<i>a</i>≠1，<b><i>M</i>＞0</b>）<br>${LG('<i>a</i>','<i>a</i>')} = 1，${LG('<i>a</i>',1)} = 0，${LG('<i>a</i>',pw('<i>a</i>','<i>p</i>'))} = <i>p</i>，${pw('<i>a</i>',LG('<i>a</i>','<i>M</i>'))} = <i>M</i></p>
+<h3>⑧ 対数の性質（かけ算→たす，わり算→ひく，累乗→前に出す）</h3>
+<table class="sum"><tr><td>${LG('<i>a</i>','<i>MN</i>')} = ${LG('<i>a</i>','<i>M</i>')} ＋ ${LG('<i>a</i>','<i>N</i>')}</td><td>${LG('<i>a</i>',fr('<i>M</i>','<i>N</i>'))} = ${LG('<i>a</i>','<i>M</i>')} − ${LG('<i>a</i>','<i>N</i>')}</td></tr>
+<tr><td>${LG('<i>a</i>',pw('<i>M</i>','<i>k</i>'))} = <i>k</i>${LG('<i>a</i>','<i>M</i>')}</td><td>底の変換：${LG('<i>a</i>','<i>b</i>')} = ${fr(LG('<i>c</i>','<i>b</i>'),LG('<i>c</i>','<i>a</i>'))}</td></tr></table>
+<p class="note">${LG('<i>a</i>','<i>b</i>')}·${LG('<i>b</i>','<i>a</i>')} = 1，${LG(pw('<i>a</i>','<i>n</i>'),'<i>M</i>')} = ${fr(1,'<i>n</i>')}${LG('<i>a</i>','<i>M</i>')}</p>
+<h3>⑨ 対数関数 ${Y} = ${LG('<i>a</i>',X)}</h3>
+<p>・点 (1, 0) を通り，<i>y</i>軸が漸近線。定義域は<b>正の数全体</b><br>・<b><i>a</i>＞1 → 増加</b>，<b>0＜<i>a</i>＜1 → 減少</b><br>・${Y} = ${pw('<i>a</i>',X)} と<b>直線 ${Y} = ${X} に関して対称</b>　・${LG(fr(1,'<i>a</i>','sm'),X)} = ${MI}${LG('<i>a</i>',X)}（<i>x</i>軸に関して対称）</p>
+<h3>⑩ 方程式・不等式の手順</h3>
+<p>1. <b>まず真数条件</b>（真数＞0）<br>2. 1つの log にまとめて，<b>底をそろえる</b><br>3. 不等式は<b>底と1の大小</b>：1より小さいときは向きが<b>逆</b><br>4. 最後に<b>真数条件との共通範囲</b>／解が条件をみたすか確認<br>5. ${LG('<i>a</i>',X)} が何度も出たら ${LG('<i>a</i>',X)} = ${T} とおく（${T} はすべての実数）</p>
+<h3>⑪ 常用対数（${LG(10,2)} = 0.3010，${LG(10,3)} = 0.4771）</h3>
+<p>・${LG(10,5)} = 1 − ${LG(10,2)} = 0.6990<br>・<b>桁数</b>：<i>n</i> ${LE} ${LG(10,'<i>N</i>')} ＜ <i>n</i>＋1 → <b>（<i>n</i>＋1）桁</b><br>・<b>小数第何位</b>：${MI}<i>n</i> ${LE} ${LG(10,'<i>M</i>')} ＜ ${MI}<i>n</i>＋1 → <b>小数第 <i>n</i> 位</b><br>・負の数でわると不等号の向きが逆（${LG(10,'0.3')} などは負）</p>`;
+// ===== ❓ 使い方 =====
+const HELP=`<h2>❓ 使い方</h2>
+<h3>このアプリは？</h3><p>数学Ⅱ「第5章 指数関数と対数関数」の問題を，<b>型ごとに数字を毎回かえて</b>出すアプリです。問題集（CONNECT）と教科書のすべての問題を型に分けました。答えはアプリが計算して出しています。</p>
+<h3>ねらい</h3><p>① <b>数字が変わってもできる</b>ようになる　② できたことを<b>記録で証明</b>できる</p>
+<h3>🏠 ホーム</h3><p>型をタップ → 練習のしかたをえらぶ。<br><b>🏆 合格チャレンジ</b>：ヒントなしで<b>3問連続正解</b>したら ✅合格（最大10問）。<br><b>📝 5問練習</b>：いろいろな数字で5問。<br>答え方は「4択」か「紙に解いて答え合わせ」。<b>合格の記録は4択だけ</b>で数えます。</p>
+<h3>💡 ヒント</h3><p>考え方の手がかりが出ます。ヒントを見た問題は，連続正解に数えません。</p>
+<h3>🎓 確認テスト・合格証</h3><p>型ごとに1問ずつ，ヒントなしで出題。<b>80点以上で合格証</b>。日時・点数・合格した型の数がのります。先生に見せたり，報告で送ったりできます。</p>
+<h3>💬 自分の言葉で説明</h3><p>教科書の【？】を，声に出して説明 → 録音して聞き返す → チェック → 模範の説明。</p>
+<h3>🔍 検索と「学習のあと」</h3><p>型の名前・ひらがな・問題番号・自分のメモで探せます。型をタップすると「学習のあと」：いつ・4択か紙か・⭕❌，苦手ランキングの順位，アプリの確認テストの結果が見られます。<br><b>学校のテストが返ってきたら</b>，型ごとに「⭕テストで正解／❌テストで間違えた」を記録し，<b>ふり返りメモ</b>（なぜ間違えたか）を書こう。「❌学校テストで間違えた」でしぼりこめて，先生への報告にも入ります。</p>
+<h3>そのほか</h3><p>📘まとめ：公式と考え方。⭐苦手：正答率の低い型。🔍検索：型の名前・問題番号・ひらがなで探す。🖨プリント：毎回ちがう数字で，解答・解き方つき。📋報告：LINEで先生へ／👪おうちの人へ／📱QR。<br>途中でやめても「▶ 続きから再開」できます。記録はこのスマホの中だけ。LINEの中とSafariでは記録が別々になります。</p>
+<h3>おすすめの使い方</h3><p>① 📘まとめを読む → ② ①から順に🏆合格チャレンジ → ③ ⭐苦手をもう一度 → ④ 🎓確認テストで合格証 → ⑤ 📋先生に報告</p>
+<h3>うまく動かないとき</h3><p>古い版が出るときは，URLの最後に ?v=3 を付けて開く。</p>`;
+
+renderHome();
+</script>
+</body>
+</html>
